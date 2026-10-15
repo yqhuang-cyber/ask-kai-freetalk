@@ -96,14 +96,15 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         connections.delete(ws);
         sessions.delete(ws);
       };
-      const endAndSave = () => {
+      const endAndSave = ({keepPlayback=false}={}) => {
         if(ended||ending)return;
         if(spokenClose?.timer)clearTimeout(spokenClose.timer);
         const canSave=planningPort&&teaching.planning&&!teaching.closed&&ticket.identity.authorization_until>Date.now()&&ticket.identity.scopes.includes('learning:write');
         let record=null;
         if(canSave){try{record=teaching.learningRecord();}catch{record=null;}}
         if(!record){finish();return;}
-        ending=true;recordController=new AbortController();teaching.planning.close();send({type:'output.stop'});
+        ending=true;recordController=new AbortController();teaching.planning.close();
+        if(!keepPlayback)send({type:'output.stop'});
         void planningPort.append(ticket.identity,record,ticket.session_id,{signal:recordController.signal}).then(receipt=>{send({type:'learning.record.receipt',status:receipt.status,mocked:true});metrics?.count(providerKind,receipt.status==='accepted'?'mock_records_saved':'mock_records_pending');}).catch(()=>{send({type:'learning.record.receipt',status:'failed',mocked:true});metrics?.count(providerKind,'mock_records_failed');}).finally(()=>finish());
       };
       const speakCloseSummary = () => {
@@ -248,6 +249,13 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             completeStats(packet.response_id,'cancelled');flushContext();return;
           }
           if (packet.control==='user.speech.started') {diagnose('user.speech.started',{turn_id:packet.turn_id,source:'provider_speech_start',active:!!runtime.active});if(ready)interrupt(undefined,'provider_speech_start');return;}
+          if(packet.control==='user.exit.intent') {
+            diagnose('user.exit.intent',{turn_id:packet.turn_id,response_id:packet.response_id});
+            // Collection sessions keep the scripted peer. Ordinary web closes
+            // after the reply audio already sent, without a second fixed script.
+            if(!diagnostics)endAndSave({keepPlayback:true});
+            return;
+          }
           if(packet.control==='context.updated') {
             if(pendingContext && packet.version===pendingContext.version){clearTimeout(pendingContext.timer);appliedContext=pendingContext.snapshot;appliedVersion=packet.version;appliedDecision=appliedContext.decision;appliedLanguage=appliedContext.language;pendingContext=null;diagnose('context.applied',{context_version:appliedVersion,turn_id:appliedDecision?.turn_id,context_hash:appliedContext.hash,context_policy_version:appliedContext.policy_version});send({type:'teaching.context.applied',version:appliedVersion,context_hash:appliedContext.hash});flushContext();}
             else diagnose('context.confirmation.ignored',{reason:pendingContext?'wrong_version':'no_pending'});

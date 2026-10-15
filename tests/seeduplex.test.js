@@ -40,6 +40,10 @@ test('Seeduplex startup requires separate static and ACK review; output pcm is e
   const x = setup(); assert.ok(x.provider instanceof SeeduplexProvider);
   assert.equal(x.sent[0].session.instructions,'trusted lesson');
   assert.equal(x.sent[0].session.audio.output.format.type,'pcm_s16le');
+  assert.deepEqual(x.sent[0].extension,{dialog:{extra:{enable_user_query_exit:true}}});
+  const extra=profile();extra.session_create.extension={dialog:{extra:{enable_user_query_exit:true,model:'1.2.1.1'}}};
+  assert.throws(()=>validateSeeduplexProfile(extra),/UNREVIEWED/);
+  const bare=profile();delete bare.session_create.extension;assert.equal(validateSeeduplexProfile(bare),bare);
   x.provider.close();
 });
 test('text before audio starts a response once; cumulative ASR updates replace partials and final alone forms an attempt',()=>{
@@ -164,6 +168,24 @@ test('identified audio boundaries own ID-less PCM; usage never completes output 
   assert.deepEqual(x.packets.filter(p=>p.audio).map(p=>p.event.response_id),[first.id,fresh.id]);
   assert.deepEqual(x.packets.filter(p=>p.event?.type==='response.done').map(p=>p.event.response_id),[first.id,fresh.id]);
   assert.deepEqual(x.failures,[]);x.provider.close();
+});
+test('audio.done exit status asks the client to leave; other codes stay ordinary completions',()=>{
+  const exited=setup();exited.ready();
+  exited.wire(output('response.output_audio.started'));
+  exited.wire(output('response.output_audio.done',undefined,undefined,{status_code:'20000002'}));
+  assert.equal(exited.packets.filter(p=>p.control==='user.exit.intent').length,1);
+  assert.equal(exited.packets.filter(p=>p.event?.type==='response.done').length,1);
+  assert.deepEqual(exited.failures,[]);exited.provider.close();
+  const numeric=setup();numeric.ready();
+  numeric.wire(output('response.output_audio.started'));
+  numeric.wire(output('response.output_audio.done',undefined,undefined,{status_code:20000002}));
+  assert.equal(numeric.packets.filter(p=>p.control==='user.exit.intent').length,1);
+  numeric.provider.close();
+  const ordinary=setup();ordinary.ready();
+  ordinary.wire(output('response.output_audio.started'));
+  ordinary.wire(output('response.output_audio.done',undefined,undefined,{status_code:'20000000'}));
+  assert.equal(ordinary.packets.some(p=>p.control==='user.exit.intent'),false);
+  assert.equal(ordinary.provider.activeReply,null);assert.deepEqual(ordinary.failures,[]);ordinary.provider.close();
 });
 test('unbound audio fails before a boundary; post-completion no-ID audio stays fenced',()=>{
   const orphan=setup();orphan.ready();orphan.wire(pcm());assert.deepEqual(orphan.failures,['PROVIDER_PROTOCOL_ERROR']);orphan.provider.close();

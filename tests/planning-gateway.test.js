@@ -98,6 +98,30 @@ test('a recognized goodbye speaks the sourced summary before closing and always 
   const saved=context.learning_history.find(row=>row.observations.some(line=>line.includes('我喜欢音乐')));
   assert.ok(saved);assert.ok(saved.observations.some(line=>line.startsWith('知识点：')));assert.ok(saved.observations.some(line=>line.startsWith('表达：')));
 });
+test('Doubao exit signal closes and saves without a second fixed script or cutting playback',async t=> {
+  const f=await fixture(t),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json();
+  const {ws,provider,packets}=await f.open(ticket);
+  provider.emit('session.ready');
+  provider.emit('user.final',{text:'我喜欢音乐。'},{turn_id:'talk'});
+  await until(()=>packets.some(p=>p.type==='teaching.state'&&p.decision?.turn_id==='talk'));
+  provider.control('user.exit.intent',{turn_id:'talk',response_id:'talk-reply'});
+  await once(ws,'close');
+  assert.equal(provider.spoken,undefined);
+  assert.equal(packets.some(p=>p.type==='output.stop'),false);
+  assert.equal(packets.find(p=>p.type==='learning.record.receipt')?.status,'accepted');
+  assert.ok(packets.some(p=>p.type==='session.closed'));
+});
+test('collection diagnostics ignore the Doubao exit signal',async t=> {
+  const f=await fixture(t),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json();
+  const {ws,provider,packets}=await f.open(ticket);
+  provider.emit('session.ready');ws.send(JSON.stringify({type:'diagnostics.enable'}));
+  await until(()=>packets.some(p=>p.event?.type==='session.ready'));
+  provider.control('user.exit.intent',{turn_id:'talk',response_id:'talk-reply'});
+  await new Promise(r=>setTimeout(r,30));
+  assert.equal(packets.some(p=>p.type==='session.closed'),false);
+  assert.equal(provider.closed,undefined);
+  ws.close();await once(ws,'close');
+});
 test('free practice uses host skills without resources and shares the page/voice plan',async t=> {
   const f=await fixture(t);let reads=0;f.backend.planningPort.getResource=async()=>{reads++;throw new Error('TOPIC_MANAGER_OFFLINE');};
   const ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json();

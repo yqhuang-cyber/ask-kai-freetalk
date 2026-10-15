@@ -64,9 +64,17 @@ response.done means reply **output** completed, using identified audio.done and,
 if text has started, text.done. It is not a supplier interaction/usage ACK.
 Late usage cannot clear a new reply, acknowledge a control or create an attempt.
 Explicit-ID response.done remains compatible with already reviewed fixtures.
-See [repair probe and remaining acceptance](actions-connect.md). Unknown tool requests fail;
-tools, history continuation, locations and model extension settings are disabled.
-No required safety setting is inferred from an optional demo extension.
+See [repair probe and remaining acceptance](actions-connect.md). Unknown tool requests fail.
+Tools, history continuation, locations and any other model extension settings stay
+disabled. The voice adapter adds one field on `session.create`:
+`extension.dialog.extra.enable_user_query_exit` set to `true`. The committed
+profile JSON stays without it, so pinned connect-probe hashes do not move.
+The full-duplex page says this makes
+`response.output_audio.done` carry an exit-intent signal for the client to close.
+That page does not print the signal JSON. 接入必读 maps the event to old
+`TTSEnded`, whose published example uses `status_code` `"20000002"`. The adapter
+reads that value, then the client closes and saves. No safety setting is inferred
+from any other demo extension field.
 
 ## Internal setup
 

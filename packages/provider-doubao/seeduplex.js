@@ -8,6 +8,24 @@ export const SEEDUPLEX_SOURCE = 'https://docs.volcengine.com/docs/DoubaoVoice/en
 // Supplied official PDF: session.audio.output.speed, default 0, range [-50,100].
 // -20 is our initial slow preset, pending real listening calibration.
 export const SEEDUPLEX_SPEEDS = Object.freeze({slow:-20,normal:0});
+// Full-duplex session.create puts Dialog settings in extension.dialog.
+// enable_user_query_exit is the documented switch; default false. When true,
+// response.output_audio.done carries the exit signal and the client closes.
+// That page does not print the signal JSON. 接入必读 maps this event to
+// TTSEnded, whose published example is status_code "20000002".
+export const SEEDUPLEX_EXIT_EXTENSION = Object.freeze({dialog:Object.freeze({extra:Object.freeze({enable_user_query_exit:true})})});
+export function isSeeduplexExitExtension(extension) {
+  if (extension === undefined) return true;
+  if (!extension || typeof extension !== 'object' || Array.isArray(extension)) return false;
+  const dialog = extension.dialog;
+  if (Object.keys(extension).length !== 1 || !dialog || typeof dialog !== 'object' || Array.isArray(dialog)) return false;
+  const extra = dialog.extra;
+  if (Object.keys(dialog).length !== 1 || !extra || typeof extra !== 'object' || Array.isArray(extra)) return false;
+  return Object.keys(extra).length === 1 && extra.enable_user_query_exit === true;
+}
+export function isSeeduplexExitSignal(raw) {
+  return raw?.status_code === '20000002' || raw?.status_code === 20000002;
+}
 export function validateSeeduplexProfile(profile,{protocolProbe=false}={}) {
   validateProfile(profile);
   const rt = profile.realtime, session = profile.session_create.session;
@@ -21,7 +39,7 @@ export function validateSeeduplexProfile(profile,{protocolProbe=false}={}) {
   // The PDF identifies ACK types, but does not prove their ordering/identity on an account.
   // Do not enable this policy solely because the static mapping has been reviewed.
   if (rt.ordered_acks_reviewed !== true) throw new Error('SEEDUPLEX_ACK_REVIEW_REQUIRED');
-  if (session.id !== undefined || session.tools?.length || profile.session_create.extension !== undefined) throw new Error('UNREVIEWED_SEEDUPLEX_FEATURE');
+  if (session.id !== undefined || session.tools?.length || !isSeeduplexExitExtension(profile.session_create.extension)) throw new Error('UNREVIEWED_SEEDUPLEX_FEATURE');
   return profile;
 }
 export function validateDoubaoRealtimeProfile(profile) {
@@ -40,12 +58,10 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
   speechStartKind='asr_candidate';
   constructor(options) {
     validateSeeduplexProfile(options.profile,{protocolProbe:options.protocolProbe===true});
-    let profile=options.profile;
-    if (options.speechPace !== undefined) {
-      if (!isSpeechPace(options.speechPace)) throw new Error('INVALID_SPEECH_PACE');
-      profile=structuredClone(profile); // Isolate concurrent sessions and preserve the reviewed source profile.
-      profile.session_create.session.audio.output.speed=SEEDUPLEX_SPEEDS[options.speechPace];
-    }
+    if (options.speechPace !== undefined && !isSpeechPace(options.speechPace)) throw new Error('INVALID_SPEECH_PACE');
+    const profile=structuredClone(options.profile); // Isolate concurrent sessions and preserve the reviewed source profile.
+    if (options.speechPace !== undefined) profile.session_create.session.audio.output.speed=SEEDUPLEX_SPEEDS[options.speechPace];
+    profile.session_create.extension=structuredClone(SEEDUPLEX_EXIT_EXTENSION);
     super({...options,profile});
     this.speechPace=options.speechPace;
     this.wireSeen = new Set(); this.turns = new Map(); this.replies = new Map();
@@ -189,6 +205,9 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
       if(raw.type==='response.output_audio.done'){
         reply.audioDone=true;reply.wireDone=true;
         if(this.audioLane===reply){this.audioLane=null;this.audioFence=true;}
+        // Signal the client before completing output, so a local closing script
+        // cannot start after Doubao has already marked this reply as an exit.
+        if(isSeeduplexExitSignal(raw))this.onEvent({control:'user.exit.intent',turn_id:reply.turn,response_id:reply.id});
         this.completeOutput(reply);return;
       }
       if (reply.status !== 'active') return; // cancelled/completed IDs cannot reopen
