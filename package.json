@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=22.18.0"
+    "node": ">=22.19.0"
   },
   "scripts": {
     "start": "node --env-file-if-exists=.env apps/realtime-gateway/src/main.js",
@@ -40,6 +40,8 @@
     "eval:agent:long": "node scripts/long-session-eval.js"
   },
   "dependencies": {
+    "@earendil-works/pi-agent-core": "1.2.0",
+    "@earendil-works/pi-ai": "1.2.0",
     "@langchain/core": "1.2.14",
     "@langchain/openai": "1.6.2",
     "ws": "8.21.0"

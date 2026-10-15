@@ -33,16 +33,23 @@ export class ConversationInitializer {
   async prepare(entry,identity,{signal}={}) {
     requireIdentity(identity,'session:create',this.clock());
     const expiresAt=this.clock()+this.budgetMs;
-    const deadline=AbortSignal.timeout(this.budgetMs),combined=signal?AbortSignal.any([signal,deadline]):deadline;
+    // A ref'd timer keeps the deadline active when the only other wait is a
+    // port call that ignores abort. AbortSignal.timeout() does not.
+    const deadlineControl=new AbortController(),deadlineTimer=setTimeout(()=>deadlineControl.abort(),this.budgetMs);
+    const deadline=deadlineControl.signal,combined=signal?AbortSignal.any([signal,deadline]):deadline;
     let aborted;
-    const [context,resource]=await Promise.race([Promise.all([this.port.read(identity),entry.mode==='free'?null:this.port.getResource(identity,entry,{signal:combined})]),new Promise((_,reject)=>{aborted=()=>reject(new Error('PREPARATION_CANCELLED'));combined.addEventListener('abort',aborted,{once:true});if(combined.aborted)aborted();})]).finally(()=>combined.removeEventListener('abort',aborted));
+    let context,resource;
+    try {
+      [context,resource]=await Promise.race([Promise.all([this.port.read(identity),entry.mode==='free'?null:this.port.getResource(identity,entry,{signal:combined})]),new Promise((_,reject)=>{aborted=()=>reject(new Error('PREPARATION_CANCELLED'));combined.addEventListener('abort',aborted,{once:true});if(combined.aborted)aborted();})]).finally(()=>combined.removeEventListener('abort',aborted));
+    } finally {clearTimeout(deadlineTimer);}
     combined.throwIfAborted();requireIdentity(identity,'session:create',this.clock());
     const topic=resource?.schema_version==='topic-pack-v1';
     if(entry.mode==='topic')requireTopicGoal(entry,context,resource);
     const input=immutable({...(topic?{planning_needs:assessNeeds(context,resource)}:{}),entry,...(topic?topicModelInput(context,resource):{student_profile:context.student_profile,learning_profile:context.learning_profile,learning_history:context.learning_history}),coverage:context.coverage,history_page:context.history_page,snapshot_ref:context.snapshot_id,...(entry.mode==='free'?{skill_catalog:FREE_PRACTICE_CATALOG}:{}),required_strategy:{language_support:context.learning_profile.language_support,correction:context.student_profile.conversation_preferences.correction,pace:entry.speech_pace??context.student_profile.conversation_preferences.pace},resource});
     const result=await boundedProposal({planner:topic?(typeof this.planner?.planTopicConversation==='function'?this.planner:null):this.planner,method:topic?'planTopicConversation':'planConversation',input,signal:combined,budgetMs:Math.max(1,expiresAt-this.clock()-50),clock:this.clock,deadlineAt:expiresAt-50,validate:p=>(topic?validateTopicConversation:validateConversation)(p,{entry,context,resource}),fallback:()=>(topic?topicFallback:conservativeConversation)(entry,context,resource)});
     combined.throwIfAborted();requireIdentity(identity,'session:create',this.clock());
-    const p=result.proposal,plan={schema_version:topic?'conversation-plan-v2':'conversation-plan-v1',plan_id:randomUUID(),revision:1,session_id:null,mode:entry.mode,resource_refs:resource?[{id:resource.id,version:resource.version,...(topic?{hash:resource.hash}:{})}]:[],input_refs:{context:context.snapshot_id,revision:context.revision,coverage:context.coverage,policy:PLANNING_VERSION,prompt:plannerDescriptor(this.planner).prompt},...p,...(topic?{goal_instance:p.primary_goal_id?{schema_version:'goal-instance-v1',instance_id:randomUUID(),skill_id:p.key_points[0],resource_ref:{id:resource.id,version:resource.version,hash:resource.hash},task:p.teaching_decision.task,support_level:p.strategy.support_level,observation:'unassessed'}:null}:{}),primary_goal:resource?.goals.find(g=>g.id===p.primary_goal_id)??null,goal_status:p.primary_goal_id?'active':'unverified',planner_kind:result.planner_kind,planner_profile:plannerDescriptor(this.planner),degraded_reason:result.degraded_reason,planner_attempts:result.attempts,execution_mode:this.mode};
+    const described=this.planner?.plannerFor?.(entry)??this.planner,profile=plannerDescriptor(described);
+    const p=result.proposal,plan={schema_version:topic?'conversation-plan-v2':'conversation-plan-v1',plan_id:randomUUID(),revision:1,session_id:null,mode:entry.mode,resource_refs:resource?[{id:resource.id,version:resource.version,...(topic?{hash:resource.hash}:{})}]:[],input_refs:{context:context.snapshot_id,revision:context.revision,coverage:context.coverage,policy:PLANNING_VERSION,prompt:profile.prompt},...p,...(topic?{goal_instance:p.primary_goal_id?{schema_version:'goal-instance-v1',instance_id:randomUUID(),skill_id:p.key_points[0],resource_ref:{id:resource.id,version:resource.version,hash:resource.hash},task:p.teaching_decision.task,support_level:p.strategy.support_level,observation:'unassessed'}:null}:{}),primary_goal:resource?.goals.find(g=>g.id===p.primary_goal_id)??null,goal_status:p.primary_goal_id?'active':'unverified',planner_kind:result.planner_kind,planner_profile:profile,degraded_reason:result.degraded_reason,planner_attempts:result.attempts,execution_mode:this.mode};
     return {plan:immutable({...plan,hash:planHash(plan)}),context,resource};
   }
 }

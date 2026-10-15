@@ -6,7 +6,10 @@
 
 
 Run `npm ci --ignore-scripts`, `npm run verify` and `npm run replay` on Node
->=22.18. No provider credentials or network are required. CI runs Node 22 and 24.
+>=22.19. No provider credentials or network are required. CI runs Node 22 and 24.
+Optional Pi planning (`ASK_KAI_PLANNER_PROVIDER=pi`) uses the same commands;
+`npm run eval:goals -- --live --pi` is a separate real MiniMax batch and is not
+part of `verify`.
 
 `npm run verify:p0` now combines these checks with the 16-case scoped content
 suite and 10 authored negative controls. See [Task 09](p0-regression.md) and its
