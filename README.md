@@ -98,26 +98,49 @@ sequenceDiagram
     W->>G: 选择自由聊天并准备
     G->>H: 按授权读取个人画像、学习画像和近期记录
     H-->>G: 资料、来源、覆盖状态和版本
-    G->>C: 按学生话题和偏好规划；不读取课程
+    G->>C: 自由聊天入口、偏好和资料版本；不读取课程
     opt 规划模型已配置
-        C->>L: 有界的初始化请求
-        L-->>C: 初始无目标的计划提案
+        C->>L: POST /v1/chat/completions，只要一个 JSON
+        L-->>C: 初始提案：目的、切入、开场、空目标、策略和依据
     end
-    C->>C: 校验目标、候选和知识点都为空
-    C-->>G: 接受计划，或标明改用规则计划
+    C->>C: 校验 primary_goal_id、候选和知识点都为空
+    C-->>G: 接受的会话计划，或标明改用规则计划
+    G->>G: 把计划和人设、回复策略编译成完整 instructions
     G-->>W: 准备完成；提示和词卡可以为空
     W->>G: 开始对话
     G->>H: 再次核对资料版本
     G->>G: 核对入口、语速和有效期，一次性使用这份准备
     G-->>W: 签发一次性连接票据
     W->>G: 建立 WebSocket
-    G->>P: 创建会话，应用初始计划
-    P-->>G: 经核验的真实就绪
+    G->>P: session.create，instructions 写入 session.instructions
+    P-->>G: session.created，带 session.id
     G-->>W: 可以开始采音
     W->>W: 持续采音、播放和渐进字幕
 ```
 
-准备好了还不等于已经连上语音。模型没有在时限内给出合格计划时，页面会写明当前使用规则计划。学生取消、更换学习者或更正偏好，会使正在进行的准备作废。
+自由聊天的初始化不返回教学目标。MiniMax 的 `POST /v1/chat/completions` 只要求正文是一个 JSON 对象。校验接受的提案只有这些字段：`conversation_purpose`、`content_focus`、最多两条 `opening_options`、`primary_goal_id: null`、空的 `candidate_goal_ids` 和 `key_points`、`strategy`，以及 `selection_basis`。`strategy` 里的语言支架、纠错和语速必须等于已授权偏好。目标或知识点只要非空就拒绝。未配置、超时或不合格时，规则计划仍是这个形状，页面会标明。
+
+宿主再补上计划编号、哈希和来源。`primary_goal` 仍为空，`goal_status` 是 `unverified`。这些字段留在 Ask Kai，不会作为豆包的顶层参数。豆包没有单独的设置教学目标接口。当前适配器把编译后的整段文字放进 `session.create` 的 `session.instructions`，同时带上配置里的模型 `1.2.6.1` 和音频格式。`session.created` 里的 `session.id` 通过适配器核验后，才变成内部就绪。下面是契约形状，不是某次真实返回：
+
+```json
+{
+  "conversation_purpose": "跟随学生选择进行自然交流",
+  "content_focus": "由学生选择话题",
+  "opening_options": [],
+  "primary_goal_id": null,
+  "candidate_goal_ids": [],
+  "key_points": [],
+  "strategy": {
+    "language_support": "auto",
+    "support_level": "unknown",
+    "correction": "gentle",
+    "pace": "slow"
+  },
+  "selection_basis": [{ "reason": "free_student_choice", "refs": ["snapshot-id"] }]
+}
+```
+
+准备好了还不等于已经连上语音。学生取消、更换学习者或更正偏好，会使正在进行的准备作废。
 
 ### 4.2 每一轮
 
@@ -127,24 +150,30 @@ sequenceDiagram
     participant P as 豆包实时全双工
     participant G as Gateway
     participant L as MiniMax M3
-    W->>G: 持续上传音频
-    G->>P: 实时音频
-    P-->>G: 一段有效的学生表达
+    W->>G: 持续上传 16 kHz、20 毫秒 PCM
+    G->>P: input_audio_buffer.append
+    P-->>G: conversation.item.input_audio_transcription.completed
+    G->>G: 映射为内部 user.final 后才规划
     par 语音可以先出来
-        P-->>G: 有归属的文字、音频和完成事件
+        P-->>G: response.output_text 与 response.output_audio
         G-->>W: 隔离旧回复后转发
     and 后台规划这一轮
-        G->>L: 当前表达、实际前文、上一轮执行情况和硬约束
-        L-->>G: 下一步计划
+        G->>L: POST /v1/chat/completions，当前句、前文、上一轮执行和硬约束
+        L-->>G: 下一步提案：意图、动作、回复任务和预期观察
         G->>G: 校验来源、版本和策略；拒绝过期结果
+        G->>G: 重新编译完整 instructions，附上后续输入建议
     end
-    opt 计划仍然有效，并且处在安全的回复边界
-        G->>P: 更新后续输入
-        P-->>G: 确认这一版上下文
+    opt 计划仍有效，且没有活动回复或待确认控制
+        G->>P: session.update，换上整份 session.instructions
+        P-->>G: session.updated
     end
 ```
 
-明确的结束可以由规则直接处理，不必等模型。新的一句话、偏好更正、打断或退出，都会让旧计划失效。确认回执只说明对应版本的上下文已经更新，不能反过来证明已经开口的那一句用了新计划。
+每一轮不按动作调用不同的豆包接口。学生音频走 `input_audio_buffer.append`。转写完成事件带 `text`；旧夹具带 `transcript`，两者冲突就失败。适配器把它映射成内部 `user.final`，接受之后才用同一种 MiniMax JSON 接口做下一步规划。语音回复可以同时从 `response.output_text` 和 `response.output_audio` 出来，不等规划结束。
+
+合格提案包含 `interpretation`、`prior_outcome`、`goal_assessment`、一个 `action`、`active_goal_id`、`local_help_target`、`reply_directive`、`expected_observation`、`proposed_plan_patch`、`evidence_refs` 和 `rationale_code`。`reply_directive` 只有任务、支架程度、0 或 1 个新点和预算引用。`expected_observation.required_student_answer` 必须是 `null`。明确结束可以由规则直接给出 `CLOSE`，不必等模型。
+
+接受后，这些字段只作为文末的“后续输入建议”写进重新编译的整段指令。当前适配器在没有活动回复、也没有待确认的取消或上下文更新时，发送 `session.update`：供应商会话 `id` 加上这份完整 `instructions`。`session.updated` 只确认这一版上下文。它不能证明已经开口的那一句用了新计划，豆包也不会回“已执行某个动作”的业务回执。新的一句话、偏好更正、打断或退出，都会让旧计划失效。字段如何进入指令，见 [规划到豆包的链路](docs/planning-to-doubao-chain.md)。
 
 ## 5. 动态规划、语言支架与学习小结
 
