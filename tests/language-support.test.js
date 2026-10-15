@@ -17,7 +17,11 @@ const event=(text,turn='t1',type='user.final')=>({version:1,event_id:`e-${turn}`
 const judgement={case_id:'language-case',scores:Object.fromEntries(Object.keys(WEIGHTS).map(k=>[k,2])),critical_failure:false,handoff_required:false,handoff_delivered:false,human_review_approved:false};
 
 test('unknown/beginner defaults to English support; reported understanding and known expressions reduce it',()=> {
-  for(const memory of [[],[record('chinese_comprehension','beginner')]])assert.equal(new LanguageSupport({memory}).snapshot().english_support,'required');
+  for(const memory of [[],[record('chinese_comprehension','beginner')]]) {
+    const policy=new LanguageSupport({memory});
+    assert.equal(policy.snapshot().english_support,'required');
+    assert.match(policy.instructions(),/会话默认.*每一句中文后紧跟一句短英文/);
+  }
   const understood=new LanguageSupport({memory:[record('chinese_comprehension','comfortable')]});
   assert.equal(understood.snapshot().english_support,'adaptive');
   const known=new LanguageSupport({memory:[record('known_expressions',['茶','我喜欢音乐'])]});
