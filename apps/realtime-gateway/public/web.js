@@ -100,13 +100,15 @@ async function loadSpeechPaces() {
 void loadSpeechPaces();
 async function stop(text='对话已结束。',failed=false) {
   summaryCards.finish();
-  const stopped=++generation;presentation.reset();const previous=ws;ws=null;previous?.close();
+  const stopped=++generation;const previous=ws;ws=null;previous?.close();
   preparationEpoch++;preparer.cancel();preparationPromise=null;
   status.textContent=failed?'连接中断':'未连接';message.textContent=text;message.dataset.state=failed?'failed':'idle';
-  const audio=io;io=null;await audio?.close();
+  const audio=io;io=null;audio?.stopCapture();await audio?.drain();
+  presentation.reset();caption.textContent='';student.textContent='';
+  await audio?.close();
   observe('session.end',{state:'closed'});
   if(stopped!==generation)return;
-  controls(false);caption.textContent='';student.textContent='';
+  controls(false);
   document.querySelector('.preview').textContent='Web 对话 · 豆包未连接';
   muted=false;mute.setAttribute('aria-pressed','false');mute.textContent='静音';
 }
@@ -146,6 +148,7 @@ connect.addEventListener('click',async()=> {
         if(packet.type==='diagnostics.event'){trace?.gateway(packet.row);refreshDiagnostics();return;}
         if(packet.type==='session.config'){config=packet.audio;paceHint.textContent=packet.speech?.supported && ['slow','normal'].includes(packet.speech.pace)?`本次语速：${packet.speech.pace==='slow'?'慢速':'正常'}；结束后可切换。`:'本次使用服务默认语速。';return;}
         if(packet.type==='teaching.state'){if(!summaryCards.state.suppressed)learning(packet);return;}
+        if(packet.type==='session.closing'){message.textContent='正在说这轮小结……';return;}
         if(packet.type==='teaching.summary'){if(summaryCards.accept(packet))learning(packet);return;}
         if(packet.type==='learning.record.receipt'){document.querySelector('#learning-attempts').textContent=packet.status==='accepted'?'本轮尝试已保存到本地 mock 内存；重启后重置。':'本轮记录未保存，请保留当前小结。';return;}
         if(packet.type==='session.failed'){if(['AUTHORIZATION_REVOKED','SAFETY_RESTRICTED'].includes(packet.code))suppressLearning(packet.code);observe('browser.failed',{code:packet.code});await stop(safetyMessage ?? failureMessage(packet.code),true);return;}
@@ -174,7 +177,7 @@ connect.addEventListener('click',async()=> {
 });
 mute.addEventListener('click',()=>{muted=!muted;io?.mute(muted);mute.setAttribute('aria-pressed',String(muted));mute.textContent=muted?'取消静音':'静音';});
 end.addEventListener('click',()=>{
-  if(ws?.readyState===WebSocket.OPEN){const save=dynamicPlanning&&document.querySelector('#save-learning-input').checked;ws.send(JSON.stringify({type:'session.end',...(save?{save_learning:true}:{})}));const current=generation;message.textContent='正在结束对话……';void io?.close();setTimeout(()=>{if(current===generation)void stop();},save?3500:1500);}
+  if(ws?.readyState===WebSocket.OPEN){ws.send(JSON.stringify({type:'session.end',save_learning:true}));const current=generation;message.textContent='正在结束对话……';void io?.close();setTimeout(()=>{if(current===generation)void stop();},3500);}
   else void stop();
 });
 interrupt.addEventListener('click',()=> {

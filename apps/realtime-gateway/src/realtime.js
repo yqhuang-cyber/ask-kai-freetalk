@@ -40,6 +40,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
       let outputGate;
       let ended = false;
       let ending=false;
+      let spokenClose=null;
       let recordController;
       let ready = false;
       let lastResponse = null;
@@ -70,6 +71,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
       };
       const finish = (code,endReason) => {
         if (ended) return;
+        if(spokenClose?.timer)clearTimeout(spokenClose.timer);
         if(code||endReason==='transport_closed')recordController?.abort();
         for(const id of replyStats.keys())completeStats(id,code?'failed':'closed');
         diagnose('session.end',{state:code?'failed':'closed',code:code??undefined});
@@ -93,6 +95,43 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         ws.close(code ? 1011:1000,'session ended');
         connections.delete(ws);
         sessions.delete(ws);
+      };
+      const endAndSave = () => {
+        if(ended||ending)return;
+        if(spokenClose?.timer)clearTimeout(spokenClose.timer);
+        const canSave=planningPort&&teaching.planning&&!teaching.closed&&ticket.identity.authorization_until>Date.now()&&ticket.identity.scopes.includes('learning:write');
+        let record=null;
+        if(canSave){try{record=teaching.learningRecord();}catch{record=null;}}
+        if(!record){finish();return;}
+        ending=true;recordController=new AbortController();teaching.planning.close();send({type:'output.stop'});
+        void planningPort.append(ticket.identity,record,ticket.session_id,{signal:recordController.signal}).then(receipt=>{send({type:'learning.record.receipt',status:receipt.status,mocked:true});metrics?.count(providerKind,receipt.status==='accepted'?'mock_records_saved':'mock_records_pending');}).catch(()=>{send({type:'learning.record.receipt',status:'failed',mocked:true});metrics?.count(providerKind,'mock_records_failed');}).finally(()=>finish());
+      };
+      const speakCloseSummary = () => {
+        if(!spokenClose||spokenClose.phase==='wait_summary'||ended||ending)return;
+        if(Date.now()>spokenClose.deadline){endAndSave();return;}
+        if(runtime.active||pendingCancel.size){spokenClose.timer=setTimeout(speakCloseSummary,200);return;}
+        spokenClose.phase='wait_summary';spokenClose.responseId=null;
+        try{
+          if(typeof provider.speakFixedText!=='function'){endAndSave();return;}
+          provider.speakFixedText(spokenClose.script);
+          send({type:'session.closing'});
+        }catch{endAndSave();return;}
+        spokenClose.timer=setTimeout(()=>endAndSave(),12000);
+      };
+      const armSpokenClose = turnId => {
+        if(spokenClose||ended||ending)return;
+        spokenClose={turnId,phase:'wait_reply',script:teaching.spokenCloseScript(),responseId:runtime.active?.id??null,deadline:Date.now()+12000,timer:null};
+        if(!spokenClose.responseId)spokenClose.timer=setTimeout(speakCloseSummary,1500);
+      };
+      const noteSpokenClose = event => {
+        if(!spokenClose||ended||ending)return;
+        if(event.type==='response.started') {
+          if(spokenClose.phase==='wait_reply'){clearTimeout(spokenClose.timer);spokenClose.responseId=event.response_id;}
+          else if(spokenClose.phase==='wait_summary'&&!spokenClose.responseId)spokenClose.responseId=event.response_id;
+        }
+        if(event.type!=='response.done'&&event.type!=='response.cancelled')return;
+        if(spokenClose.phase==='wait_reply'&&(!spokenClose.responseId||spokenClose.responseId===event.response_id)){clearTimeout(spokenClose.timer);spokenClose.responseId=null;speakCloseSummary();}
+        else if(spokenClose.phase==='wait_summary'&&spokenClose.responseId===event.response_id){clearTimeout(spokenClose.timer);endAndSave();}
       };
       const readyTimer = setTimeout(()=>finish('PROVIDER_READY_TIMEOUT'),readyTimeoutMs);
       const lifetime = setTimeout(()=>finish('SESSION_DURATION_LIMIT'),Math.min(maxSessionMs,ticket.identity.authorization_until-Date.now()));
@@ -167,13 +206,9 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             if (bytes.length > 1024) throw new Error('CONTROL_TOO_LARGE');
             const value = JSON.parse(bytes.toString());
           if (value?.type === 'session.end' && Object.keys(value).every(k=>['type','save_learning'].includes(k)) && (value.save_learning===undefined||typeof value.save_learning==='boolean')) {
-            // Explicit opt-in only. Submitted facts remain attempted-only mock
-            // observations; no transcript/audio, automatic mastery or retries.
-            if(value.save_learning===true&&planningPort&&teaching.planning&&!teaching.closed&&ticket.identity.authorization_until>Date.now()&&ticket.identity.scopes.includes('learning:write')) {
-              const record=teaching.learningRecord();
-              if(record){ending=true;recordController=new AbortController();teaching.planning.close();send({type:'output.stop'});void planningPort.append(ticket.identity,record,ticket.session_id,{signal:recordController.signal}).then(receipt=>{send({type:'learning.record.receipt',status:receipt.status,mocked:true});metrics?.count(providerKind,receipt.status==='accepted'?'mock_records_saved':'mock_records_pending');}).catch(()=>{send({type:'learning.record.receipt',status:'failed',mocked:true});metrics?.count(providerKind,'mock_records_failed');}).finally(()=>finish());return;}
-            }
-            finish();
+            // Student end always writes the sourced mock record. The checkbox
+            // no longer gates it. Facts stay attempted-only, without transcript or mastery.
+            endAndSave();
           }
             else if(value?.type==='diagnostics.enable' && Object.keys(value).length===1) {
               if(!diagnostics) {
@@ -284,11 +319,15 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             // A final can arrive after this reply's observed terminal boundary.
             // Flush only that owned completed turn, never an arbitrary early final.
             if(teaching.completedReplyTurns.has(event.turn_id))flushContext();
+            // Collection sessions enable diagnostics and must keep the scripted
+            // reply as the only model reply. Ordinary web sessions speak the summary.
+            if(decision.action==='CLOSE'&&decision.reason==='student_end'&&!diagnostics)armSpokenClose(event.turn_id);
             if(teaching.planning)void teaching.planTurn(event).then(plan=> {
               if(!plan||ended)return;
               send({type:'teaching.state',...teaching.view()});flushContext();
             }).catch(()=>diagnose('planning.rejected',{turn_id:event.turn_id,reason:'planning_failed'}));
           }
+          noteSpokenClose(event);
           const projected={type:'event',event:packet.event,audio:packet.audio,sample_rate:packet.sample_rate,provider_connected:ready && providerKind==='doubao',synthetic:providerKind!=='doubao'};
           if(outputGate && ['response.started','response.text.delta','response.audio.chunk','response.done'].includes(event.type))outputGate.push(projected);else send(projected);
           if(teaching.completeReply(event)) {

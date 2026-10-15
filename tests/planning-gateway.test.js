@@ -47,7 +47,7 @@ test('explicit end-save writes attempted-only mock record, returns receipt, dedu
   provider.emit('session.ready');provider.emit('user.final',{text:'我下午打篮球。'},{turn_id:'turn-a'});
   await until(()=>packets.some(p=>p.type==='teaching.state'&&p.attempt_count===1));ws.send(JSON.stringify({type:'session.end',save_learning:true}));await once(ws,'close');
   const receipt=packets.find(p=>p.type==='learning.record.receipt');assert.equal(receipt.status,'accepted');assert.equal(receipt.mocked,true);
-  const i=f.backend.bridge.verify(await f.backend.pocPort.issue(),'session:create'),context=await f.backend.planningPort.read(i);assert.ok(context.learning_history.some(h=>h.activity_type==='ask_kai'&&h.observations[0].includes('本地 mock 已保存')));
+  const i=f.backend.bridge.verify(await f.backend.pocPort.issue(),'session:create'),context=await f.backend.planningPort.read(i);assert.ok(context.learning_history.some(h=>h.activity_type==='ask_kai'&&h.observations.some(line=>line.startsWith('知识点：'))));
   assert.equal(context.learning_profile.kp_states[1].evidence_state,'prompted_attempt');
 });
 test('mock planning ports separate owners/scopes, reject fabricated mastery and deduplicate record writes',async t=> {
@@ -73,6 +73,30 @@ test('planning diagnostics preserve anonymous causal fields without prompt, stud
   assert.equal(clean.path,'next_turn_advisory');assert.ok(!JSON.stringify(clean).includes('PRIVATE'));
   assert.equal(clean.rejection_code,'PREREQUISITE_UNVERIFIED');assert.equal(clean.goal_status,'paused');assert.deepEqual(metadata({rejection_code:'PRIVATE'}),{});
   const trace=new ExperienceTrace();trace.gateway({name:'planning.accepted',at_ms:2,fields:clean});assert.equal(trace.snapshot().timeline[0].turn_ref,'t1');assert.equal(trace.snapshot().contains_text,false);
+});
+test('a recognized goodbye speaks the sourced summary before closing and always writes recent history',async t=> {
+  const f=await fixture(t),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json();
+  const {ws,provider,packets}=await f.open(ticket);
+  provider.emit('session.ready');
+  provider.emit('user.final',{text:'我喜欢音乐。'},{turn_id:'talk'});
+  provider.emit('response.started',{},{turn_id:'talk',response_id:'talk-reply'});
+  provider.emit('response.done',{},{turn_id:'talk',response_id:'talk-reply'});
+  provider.emit('user.final',{text:'再见。'},{turn_id:'bye'});
+  provider.emit('response.started',{},{turn_id:'bye',response_id:'bye-reply'});
+  provider.emit('response.done',{},{turn_id:'bye',response_id:'bye-reply'});
+  await until(()=>typeof provider.spoken==='string');
+  assert.match(provider.spoken,/知识点：兴趣爱好/);assert.match(provider.spoken,/表达：我喜欢音乐/);assert.match(provider.spoken,/还不代表已经掌握/);
+  assert.equal(packets.some(p=>p.type==='session.closed'),false);
+  provider.emit('response.started',{},{turn_id:'summary',response_id:'summary-reply'});
+  provider.emit('response.text.delta',{text:provider.spoken},{turn_id:'summary',response_id:'summary-reply'});
+  provider.emit('response.done',{},{turn_id:'summary',response_id:'summary-reply'});
+  await once(ws,'close');
+  const summaryIndex=packets.findIndex(p=>p.type==='teaching.summary'),closedIndex=packets.findIndex(p=>p.type==='session.closed');
+  assert.ok(summaryIndex>=0&&summaryIndex<closedIndex);
+  assert.equal(packets.find(p=>p.type==='learning.record.receipt').status,'accepted');
+  const identity=f.backend.bridge.verify(await f.backend.pocPort.issue(),'session:create'),context=await f.backend.planningPort.read(identity);
+  const saved=context.learning_history.find(row=>row.observations.some(line=>line.includes('我喜欢音乐')));
+  assert.ok(saved);assert.ok(saved.observations.some(line=>line.startsWith('知识点：')));assert.ok(saved.observations.some(line=>line.startsWith('表达：')));
 });
 test('free practice uses host skills without resources and shares the page/voice plan',async t=> {
   const f=await fixture(t);let reads=0;f.backend.planningPort.getResource=async()=>{reads++;throw new Error('TOPIC_MANAGER_OFFLINE');};
