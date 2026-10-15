@@ -215,16 +215,18 @@ sequenceDiagram
 
 ## 7. 启动
 
-需要 Node ≥ 22.18。
+需要 Node ≥ 22.18。依赖安装和本机语音配置分开做。密钥和审核后的语音配置只留在本机，不要提交。
 
 ```bash
 npm ci --ignore-scripts
-npm run poc
+cp .env.example .env
+mkdir -p .local
+cp docs/protocol/seeduplex-profile.template.json .local/seeduplex-profile.json
 ```
 
-打开 http://127.0.0.1:4310 。没有语音密钥时可以查看学习者和偏好，不能开始真实对话，也不会申请麦克风。
+`.env` 和 `.local/` 都在 `.gitignore` 里。`.local` 以点开头，文件列表里默认看不见；用路径 `.local/seeduplex-profile.json` 直接打开。
 
-真实语音在本机 `.env` 配置，不要提交密钥：
+在 `.env` 写入本机密钥，并把语音提供方改成豆包：
 
 ```dotenv
 ASK_KAI_BACKEND=mock
@@ -238,6 +240,22 @@ MINIMAX_API_KEY=你的本地规划模型密钥
 MINIMAX_BASE_URL=https://api.minimax.cn/v1
 MINIMAX_PLANNER_MODEL=MiniMax-M3
 ```
+
+仓库里的 `docs/protocol/seeduplex-profile.template.json` 三个审核开关保持 `false`，不能直接拿来启动网页语音。只在本机副本 `.local/seeduplex-profile.json` 上，审核完成后把这三项改成 `true`：
+
+- `reviewed`
+- `realtime.reviewed`
+- `realtime.ordered_acks_reviewed`
+
+密钥只放在 `.env` 的 `DOUBAO_API_KEY` 和 `MINIMAX_API_KEY`，不要写进 JSON，也不要贴到对话里。`docs/protocol/seeduplex-connect.profile.json` 只覆盖静态连接探针，实时开关仍是 `false`，同样不能当作网页语音配置。审核范围见 [Seeduplex 接入说明](docs/protocol/seeduplex-integration.md)。这三个布尔值是本机操作记录。进程接受配置，不等于这一次会话已经连上豆包，也不等于设备听感通过。
+
+```bash
+npm run poc
+```
+
+打开 http://127.0.0.1:4310 。启动日志出现 `reviewed voice configured; readiness per session` 时，说明这份本地配置通过了静态校验。页面上的准备完成还不等于语音已连接；只有这一次会话收到豆包就绪之后，才会申请麦克风。
+
+没有密钥，或本地配置仍有审核开关为 `false` 时，豆包模式会拒绝启动。把 `ASK_KAI_PROVIDER` 留在 `replay` 可以打开页面查看学习者和偏好；那是合成预览，不会连接豆包。
 
 工程检查：
 
