@@ -15,11 +15,12 @@ const sha=v=>createHash('sha256').update(v).digest('hex');
 async function sources(dir) {
   const out={};for(const x of await readdir(dir,{withFileTypes:true})){const p=dir+'/'+x.name;if(x.isDirectory())Object.assign(out,await sources(p));else if(x.name.endsWith('.js'))out[p]=sha(await readFile(p));}return out;
 }
-export async function runGoalEval({live=false,selected=null,legacyContract=false,draftContract=false,captureReview=live,onCase=()=>{}}={}) {
+export async function runGoalEval({live=false,selected=null,legacyContract=false,draftContract=false,pi=false,captureReview=live,onCase=()=>{}}={}) {
   const bytes=await readFile('docs/eval-datasets/dynamic-goals-v1/cases.json'),dataset=JSON.parse(bytes);
+  if(pi&&(!live||legacyContract||draftContract))throw new Error('INVALID_GOAL_EVAL_ARGUMENT');
   if(legacyContract&&(process.env.ASK_KAI_PLANNER_PROVIDER??'minimax')!=='minimax')throw new Error('LEGACY_BASELINE_MINIMAX_ONLY');
   if(legacyContract&&draftContract)throw new Error('INVALID_GOAL_EVAL_ARGUMENT');
-  const planner=live?(legacyContract?legacyPlanner():configuredPlanner({...process.env,...(draftContract?{ASK_KAI_PLANNER_PROTOCOL:'draft_v1'}:{})})):null;
+  const planner=live?(legacyContract?legacyPlanner():configuredPlanner({...process.env,...(pi?{ASK_KAI_PLANNER_PROVIDER:'pi'}:{}),...(draftContract?{ASK_KAI_PLANNER_PROTOCOL:'draft_v1'}:{})})):null;
   if(legacyContract&&planner)planner.describe=()=>({provider:'minimax',model:'MiniMax-M3',output_format:'json_prompt',draft:'full_contract_v3',prompt:'kai-planner-v3'});
   const descriptor=plannerDescriptor(planner);if(live&&!planner)throw new Error('MINIMAX_PLANNER_CONFIG_REQUIRED');
   if(selected&&!dataset.cases.some(c=>c.id===selected))throw new Error('UNKNOWN_GOAL_EVAL_CASE');
@@ -33,7 +34,7 @@ export async function runGoalEval({live=false,selected=null,legacyContract=false
     try{bound=new Preparations({initializer}).bind(await initializer.prepare(entry,identity),'eval-'+c.id);}
     catch{const row={id:c.id,status:'initialization_failed',initial_accepted:false,turns:[],elapsed_ms:Math.round(performance.now()-start)};results.push(row);onCase(row);continue;}
     const s=new TeachingSession({sessionId:bound.plan.session_id,mode:c.mode,mission:identity.mission,planning:bound,planner,onAcceptedProposal:captured=>{if(captureReview)privateReview.push(planningReviewRow(c.id,Number(captured.input_snapshot.turn.turn_id.slice(5)),captured));}});
-    const initial={goal:bound.plan.primary_goal?.id??null,planner:bound.plan.planner_kind,degraded_reason:bound.plan.degraded_reason,attempts:bound.plan.planner_attempts,passed:c.initial_goals.includes(bound.plan.primary_goal?.id??null)};
+    const initial={goal:bound.plan.primary_goal?.id??null,planner:bound.plan.planner_kind,output_format:bound.plan.planner_profile?.output_format??null,degraded_reason:bound.plan.degraded_reason,attempts:bound.plan.planner_attempts,passed:c.initial_goals.includes(bound.plan.primary_goal?.id??null)};
     const turns=[];
     for(const [index,row] of c.turns.entries()) {
       const e={version:1,event_id:'input-'+c.id+'-'+index,session_id:s.sessionId,seq:index+1,at_ms:index,type:'user.final',turn_id:'turn-'+index,payload:{text:row.text}};
@@ -54,6 +55,6 @@ export async function runGoalEval({live=false,selected=null,legacyContract=false
 }
 const args=process.argv.slice(2);
 if(import.meta.url===new URL(process.argv[1],'file:').href) {
-  try{if(args.some(a=>a!=='--live'&&a!=='--legacy-contract'&&a!=='--draft-contract'&&a!=='--capture-review'&&!a.startsWith('--case=')))throw new Error('INVALID_GOAL_EVAL_ARGUMENT');console.log(JSON.stringify(await runGoalEval({live:args.includes('--live'),legacyContract:args.includes('--legacy-contract'),draftContract:args.includes('--draft-contract'),captureReview:args.includes('--live')||args.includes('--capture-review'),selected:args.find(a=>a.startsWith('--case='))?.slice(7),onCase:c=>console.error(c.id+': '+c.status)}),null,2));}
+  try{if(args.some(a=>a!=='--live'&&a!=='--legacy-contract'&&a!=='--draft-contract'&&a!=='--capture-review'&&a!=='--pi'&&!a.startsWith('--case=')))throw new Error('INVALID_GOAL_EVAL_ARGUMENT');console.log(JSON.stringify(await runGoalEval({live:args.includes('--live'),legacyContract:args.includes('--legacy-contract'),draftContract:args.includes('--draft-contract'),pi:args.includes('--pi'),captureReview:args.includes('--live')||args.includes('--capture-review'),selected:args.find(a=>a.startsWith('--case='))?.slice(7),onCase:c=>console.error(c.id+': '+c.status)}),null,2));}
   catch(error){console.error(['MINIMAX_PLANNER_CONFIG_REQUIRED','UNKNOWN_GOAL_EVAL_CASE','INVALID_GOAL_EVAL_ARGUMENT','LEGACY_BASELINE_MINIMAX_ONLY'].includes(error.message)?error.message:'GOAL_EVAL_FAILED');process.exitCode=1;}
 }

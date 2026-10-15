@@ -215,7 +215,7 @@ sequenceDiagram
 
 ## 7. 启动
 
-需要 Node ≥ 22.18。
+需要 Node ≥ 22.19。
 
 ```bash
 npm ci --ignore-scripts

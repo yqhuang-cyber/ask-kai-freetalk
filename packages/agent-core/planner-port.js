@@ -1,6 +1,7 @@
 import { DraftPlanner,PLANNER_PROMPT_VERSION,safeDraftFields } from './planner-draft.js';
 import { MiniMaxJsonTransport } from '../provider-minimax/planner.js';
 import { FullContractPlanner } from './planner-full-contract.js';
+import { ModePlanner,PiMiniMaxPlanner } from './pi-planner.js';
 export { PLANNER_PROMPT_VERSION };
 export class MiniMaxPlanner extends FullContractPlanner {
   constructor(options){super({transport:new MiniMaxJsonTransport(options)});}
@@ -12,12 +13,14 @@ export function plannerDescriptor(planner) {
 }
 export function configuredPlanner(env=process.env,{factories={}}={}) {
   const provider=env.ASK_KAI_PLANNER_PROVIDER??'minimax';
-  if(provider==='minimax') {
+  if(provider==='minimax'||provider==='pi') {
     const protocol=env.ASK_KAI_PLANNER_PROTOCOL??'full_contract_v3';
     if(!['full_contract_v3','draft_v1'].includes(protocol))throw new Error('PLANNER_PROTOCOL_NOT_REGISTERED');
     if(!env.MINIMAX_API_KEY)return null;
     const options={apiKey:env.MINIMAX_API_KEY,baseURL:env.MINIMAX_BASE_URL,model:env.MINIMAX_PLANNER_MODEL??'MiniMax-M3'};
-    return protocol==='draft_v1'?new DraftPlanner({transport:new MiniMaxJsonTransport(options)}):new MiniMaxPlanner(options);
+    const shared=protocol==='draft_v1'?new DraftPlanner({transport:new MiniMaxJsonTransport(options)}):new MiniMaxPlanner(options);
+    if(provider==='minimax')return shared;
+    return new ModePlanner({free:new PiMiniMaxPlanner(options),shared});
   }
   if(!Object.hasOwn(factories,provider))throw new Error('PLANNER_PROVIDER_NOT_REGISTERED');
   const planner=factories[provider](env);

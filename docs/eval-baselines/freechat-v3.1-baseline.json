@@ -63,10 +63,12 @@
     "packages/provider-replay/index.js": "fb981e5ae882bed864818a8774f2161350b64db6c10e49122ade9fbe4e2bd874"
   },
   "dependencies": {
+    "@earendil-works/pi-agent-core": "1.2.0",
+    "@earendil-works/pi-ai": "1.2.0",
     "@langchain/core": "1.2.14",
     "@langchain/openai": "1.6.2",
     "ws": "8.21.0"
   },
-  "lock_sha256": "5bd01f4081c464f42dddb81d094043f19fd1b9b8d7292ca37300d43eb60c38e3",
+  "lock_sha256": "d565dfea38d0df90590b344c64673dc74022bb5f807963f1ef2e887ebf7a7490",
   "profile_hash_encoding": "raw_file_bytes"
 }

@@ -19,7 +19,7 @@
 
 只给自由对话的初始计划和逐轮计划加一条可关闭的 Pi 路径。默认仍是现在的 MiniMax JSON。主题和 Mission 先不动。
 
-Pi 包只用 `@earendil-works/pi-agent-core` 和 `@earendil-works/pi-ai`，并锁死确切版本。不引入完整的 `pi-coding-agent`。开始写代码前，按所选版本重读停止、自动重试、上下文压缩、`terminate` 和默认工具。pindu 锁的是 1.1.0；2026-10-12 的 npm 最新版是 1.2.0，且该版本声明 Node 22.19 或更新。本仓库目前是 Node ≥ 22.18。版本和 Node 要求在 PI-00 一起定下来。
+Pi 包只用 `@earendil-works/pi-agent-core` 和 `@earendil-works/pi-ai`，并锁死确切版本。不引入完整的 `pi-coding-agent`。开始写代码前，按所选版本重读停止、自动重试、上下文压缩、`terminate` 和默认工具。pindu 锁的是 1.1.0；本次选定 npm 上的 1.2.0。该版本要求 Node 22.19 或更新，仓库引擎已改为 `>=22.19.0`。
 
 运行限制：
 
@@ -75,12 +75,14 @@ Pi 自带的 MiniMax 接入使用另一套地址和报文。它不进入 PI-07�
 
 ## 6. 版本记录
 
-PI-00 完成前，下表保持空白。实施时补上实际安装的版本，不追着 Pi 的 `main` 分支升级。
+2026-10-15 按 Pi 1.2.0 的循环接口核对：停止用调用方的 `AbortSignal` 传给这一次模型请求；`pi-agent-core` 不会自己重试，自动重试只存在于完整编码代理的 `prompt()`，这里没有接入。不设置上下文压缩。工具结果带 `terminate: true`，并且每轮正常结束后不再请求模型。默认不注册读文件、改文件或命令工具，会话对象用完即丢，不写 `~/.pi`，不读 `AGENTS.md`。
 
 | 项 | 选定值 |
 | --- | --- |
-| `@earendil-works/pi-agent-core` | 待定 |
-| `@earendil-works/pi-ai` | 待定 |
-| Node | 待定；须同时满足本仓库与所选 Pi 包的要求 |
-| 默认规划 | 保持现有 MiniMax JSON，直到 PI-08 |
-| 语音 | 保持豆包 Seeduplex，`next_turn_advisory` |
+| `@earendil-works/pi-agent-core` | 1.2.0 |
+| `@earendil-works/pi-ai` | 1.2.0 |
+| Node | `>=22.19.0` |
+| 默认规划 | 现有 MiniMax JSON。`ASK_KAI_PLANNER_PROVIDER=pi` 时，只有自由对话走 Pi 工具提交 |
+| 语音 | 豆包 Seeduplex，`next_turn_advisory` |
+| PI-07 真实对照 | 未跑。命令是 `npm run eval:goals -- --live --pi`，需要 MiniMax 密钥，不调用豆包 |
+| PI-08 决定 | 未做。默认规划保持 JSON |

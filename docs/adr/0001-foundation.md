@@ -9,7 +9,10 @@ with local mock business contracts and a separately configured real voice adapte
 ## Decision
 
 Use Node >=22.18, ESM JavaScript and Node's built-in test runner. This step has
-no external dependencies and can install offline. `provider.d.ts` documents the
+no external dependencies and can install offline. On 2026-10-15 the repository
+engine moved to Node >=22.19 because the optional Pi planner pins
+`@earendil-works/pi-agent-core` and `@earendil-works/pi-ai` at 1.2.0. The
+default planner remains the in-repository MiniMax JSON transport. `provider.d.ts` documents the
 proposed provider port; this is not a TypeScript build or a claim of static type
 verification. Runtime event validation is implemented in `contracts/events.js`.
 

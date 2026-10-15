@@ -1,6 +1,6 @@
 # Incremental delivery
 
-2026-10-15 Pi 接入只新增任务清单，未改运行代码、依赖、学习者数据或冻结评测。MiniMax 的初始计划和逐轮计划可以改由 Pi 的单次工具提交来做，HTTP 仍用现有 MiniMax 配置；豆包实时全双工继续走现有语音适配器。默认规划保持现有 JSON，直到对照结果写出决定。见 [Pi 接入任务清单](pi-integration-tasking.md)。
+2026-10-15 Pi 自由对话规划已接入为可关闭路径：锁 `pi-agent-core` / `pi-ai` 1.2.0，Node 要求改为 `>=22.19.0`。`ASK_KAI_PLANNER_PROVIDER=pi` 时，自由对话的初始计划和逐轮计划用 `submit_conversation_plan` / `submit_turn_plan` 各提交一次，请求仍走现有 MiniMax 配置；主题和 Mission 仍走原来的 JSON 规划。豆包语音未改。默认不加这个变量时行为与原来一致。真实 12 案／18 轮对照和是否改默认都还没做。见 [Pi 接入任务清单](pi-integration-tasking.md)。
 
 2026-10-15 按用户最新要求恢复主题目标与页面这一项：主题初始化必须有一个合法教学目标，拒绝空目标提案并在期限内修复／回退；缺学习证据仍可选择无先修冲突的探索任务，已有稳定能力安排新情境应用，不据此虚构薄弱点。明确只想聊天、请求目标先修不足或全部候选不可用时准备失败并提示调整选择／free。页面展示同一已接受计划的目标、关联知识点和表达任务，切换／重准备／失败时清除旧内容；语音上下文使用相同 goal_details，会中暂停保留原任务、替换时同步新知识点与任务。其余主题 TODO 继续搁置，learner-data、冻结评测输入／oracle 和 Topic Pack 生成准入未修改。实施与本轮检查见[主题目标准备与展示](topic-chain-implementation.md#主题目标准备与展示)。
 
