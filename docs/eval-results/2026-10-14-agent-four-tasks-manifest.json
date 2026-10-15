@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-14",
+  "base_commit": "6b7e4cf",
+  "source_hashes": {
+    "packages/agent-core/planning-state.js": "b0ce056263bf9425e6f3352ab3dee0b78792ea2899b2e21573584564105b854a",
+    "packages/agent-core/teaching.js": "48b542f2659bf171b1a79bab00337d485a0ad10a93c2f52aa264e792655d5570",
+    "packages/agent-core/goal-lifecycle.js": "ed07ffba4e98e1de0554f2234f907ac12997d359a63d11193ef056199dcbc01c",
+    "packages/agent-core/observation-port.js": "abcedfcaad748abe6aa98045a78ee86fc780797c6d67bc4f82bc0360dff8833a",
+    "packages/agent-core/fallback-policy.js": "085e45e4af6a1f28ac2a7c25e9fecfb73063732116b61def3e55edfccd84bbdc",
+    "packages/agent-core/agent-reasoning.js": "c859fef5de627dbc4a77198af6b6aac5595c7d180695ed44f92a1264a9296943",
+    "packages/agent-core/planner-draft.js": "b0c2d55e14b399fdb1b40f7543c2d9c3d735cdee25cecbfce5ed19a454ba97fa",
+    "apps/eval-runner/src/planning-review-bundle.js": "d8702a2f3a4a9e88639e48abc4a46eb3a1f1d2e7916a6da8f5c7711494ba0ff0",
+    "apps/eval-runner/src/planning-semantic-review.js": "403e395ba46f6361a5692f4030a7a1b33afaac8560af7e829d1b7fa03740347c",
+    "apps/eval-runner/src/long-session.js": "e8232cdc67b52618d0d6863d823569c20597c24359a42ca01e5e619af4bfa3c8",
+    "scripts/goal-eval.js": "95b02ba773ec7c13fbda35c7acd23bca9adfcf3db5ef3aa07b9f4ac397d7023e",
+    "scripts/review-planning.js": "e4ef1016c9813beb022086223cf14b949d072039395cea913fa0dbb5eeecac1a",
+    "scripts/long-session-eval.js": "f59ad498e5099c6e5582793aa4a2d96ea5bf8ef868a0653ccb7f10f0f06bc6cd"
+  },
+  "budgets_ms": {
+    "initial": 10000,
+    "turn": 5000,
+    "observation_shadow_maximum": 2000
+  },
+  "new_doubao_calls": 0,
+  "old_rule_reproduction": {
+    "prior_state": "6b7e4cf",
+    "shared_contracts": "current",
+    "synthetic": true,
+    "stopped_goal_auto_restored": true,
+    "prior_result": "express-likes",
+    "current_result": "express-time",
+    "not_full_baseline_comparison": true
+  },
+  "semantic_quality_accepted": false,
+  "current_turn_control_verified": false,
+  "model_calls_enabled": false
+}

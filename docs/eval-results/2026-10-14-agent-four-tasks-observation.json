@@ -1,0 +1,33 @@
+{
+  "version": "shadow-observation-validation-v1",
+  "port": "synthetic_fixture",
+  "model_calls_enabled": false,
+  "provider_connected": false,
+  "cases": [
+    {
+      "id": "paraphrase-candidate",
+      "status": "candidate_validated",
+      "reason": null,
+      "learning_fact": false
+    },
+    {
+      "id": "quoted-candidate",
+      "status": "rejected",
+      "reason": "OBSERVATION_ROLE_CONFLICT",
+      "learning_fact": false
+    },
+    {
+      "id": "cross-goal",
+      "status": "rejected",
+      "reason": "INVALID_OBSERVATION_CANDIDATE",
+      "learning_fact": false
+    },
+    {
+      "id": "ignored-abort-late-result",
+      "status": "cancelled",
+      "learning_fact": false
+    }
+  ],
+  "semantic_quality_accepted": false,
+  "persisted_learning_facts": 0
+}

@@ -1,0 +1,726 @@
+{
+  "version": "agent-feedback-eval-v1",
+  "dataset_sha256": "e42b327b68f29548d8a4831ec90d2565440124049f5febacd8fe5ea9c1c69e18",
+  "source_hashes": {
+    "packages/agent-core/learner-feedback.js": "6f481de21b8c69b2c2272ab3220e08ba85026943f158a24d02b4593b0e4456d5",
+    "packages/agent-core/agent-reasoning.js": "c859fef5de627dbc4a77198af6b6aac5595c7d180695ed44f92a1264a9296943",
+    "packages/agent-core/planning-observations.js": "6641e3ebf1dd6b3c6845d23ad4c25378d2807c80c85796b9278ccb173d25b747",
+    "packages/agent-core/planning-state.js": "b0ce056263bf9425e6f3352ab3dee0b78792ea2899b2e21573584564105b854a",
+    "packages/agent-core/plan-validator.js": "b8988eb93283d743df438fe1241401ab876c3e7f834f7d88e3e694d980783f88",
+    "packages/agent-core/teaching.js": "48b542f2659bf171b1a79bab00337d485a0ad10a93c2f52aa264e792655d5570",
+    "packages/agent-core/natural-teaching.js": "2eeaead67ceb89f7a34db6881649143c5893d36d8e77a405f66655b1e8aa163f",
+    "packages/agent-core/planner-full-contract.js": "04be44643169939c4f63b87a2741230b0aaab30655702e51091061e66f3367ac",
+    "packages/agent-core/planner-draft.js": "b0c2d55e14b399fdb1b40f7543c2d9c3d735cdee25cecbfce5ed19a454ba97fa",
+    "packages/provider-minimax/planner.js": "2e22d4598bc4a1fa2b986af14fda315a1d782b15e7750fe9072f8bdb63293461",
+    "apps/eval-runner/src/agent-feedback.js": "024e9dab0ac763e38992fd60e96281cf22daf4f06de0cfa63bbe57d0a896e373",
+    "apps/eval-runner/src/planning-semantic-review.js": "403e395ba46f6361a5692f4030a7a1b33afaac8560af7e829d1b7fa03740347c",
+    "scripts/agent-eval.js": "a906b92d73da8964e277d9abb17cad60775750e4490534d06c720eb988e44491"
+  },
+  "candidate": {
+    "provider": "none",
+    "model": null,
+    "output_format": "unknown",
+    "prompt": "kai-planner-v7",
+    "draft": null
+  },
+  "policies": {
+    "feedback": "kai-learner-feedback-v1",
+    "reasoning": "kai-agent-reasoning-v2",
+    "review": "kai-planning-semantic-review-v1"
+  },
+  "synthetic_inputs": true,
+  "synthetic_output_events": true,
+  "model_calls_enabled": false,
+  "real_voice_connected": false,
+  "browser_audio_tested": false,
+  "contains_transcripts": false,
+  "transport": [],
+  "cases": [
+    {
+      "id": "direct-likes",
+      "initial_planner": "rule",
+      "planner": "rule",
+      "degraded_reason": "planner_unconfigured",
+      "learner_attempt_count": 1,
+      "signal": "supported_attempt",
+      "prompt_scope": "unknown",
+      "checks": [
+        {
+          "field": "attempts",
+          "passed": true
+        },
+        {
+          "field": "signal",
+          "passed": true
+        },
+        {
+          "field": "prompt_scope",
+          "passed": true
+        },
+        {
+          "field": "no_mastery_or_prompt_inference",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "planner_attempts": [],
+      "semantic_review": {
+        "status": "not_reviewed",
+        "criteria": [],
+        "semantic_quality_accepted": false,
+        "human_calibrated": false
+      },
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "direct-time",
+      "initial_planner": "rule",
+      "planner": "rule",
+      "degraded_reason": "planner_unconfigured",
+      "learner_attempt_count": 1,
+      "signal": "supported_attempt",
+      "prompt_scope": "unknown",
+      "checks": [
+        {
+          "field": "attempts",
+          "passed": true
+        },
+        {
+          "field": "signal",
+          "passed": true
+        },
+        {
+          "field": "prompt_scope",
+          "passed": true
+        },
+        {
+          "field": "no_mastery_or_prompt_inference",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "planner_attempts": [],
+      "semantic_review": {
+        "status": "not_reviewed",
+        "criteria": [],
+        "semantic_quality_accepted": false,
+        "human_calibrated": false
+      },
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "teacher-reported",
+      "initial_planner": "rule",
+      "planner": "rule",
+      "degraded_reason": "planner_unconfigured",
+      "learner_attempt_count": 0,
+      "signal": "unassessed_input",
+      "prompt_scope": "unknown",
+      "checks": [
+        {
+          "field": "attempts",
+          "passed": true
+        },
+        {
+          "field": "signal",
+          "passed": true
+        },
+        {
+          "field": "no_mastery_or_prompt_inference",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "planner_attempts": [],
+      "semantic_review": {
+        "status": "not_reviewed",
+        "criteria": [],
+        "semantic_quality_accepted": false,
+        "human_calibrated": false
+      },
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "quoted-example",
+      "initial_planner": "rule",
+      "planner": "rule",
+      "degraded_reason": "planner_unconfigured",
+      "learner_attempt_count": 0,
+      "signal": "unassessed_input",
+      "prompt_scope": "unknown",
+      "checks": [
+        {
+          "field": "attempts",
+          "passed": true
+        },
+        {
+          "field": "signal",
+          "passed": true
+        },
+        {
+          "field": "no_mastery_or_prompt_inference",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "planner_attempts": [],
+      "semantic_review": {
+        "status": "not_reviewed",
+        "criteria": [],
+        "semantic_quality_accepted": false,
+        "human_calibrated": false
+      },
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "ability-self-report",
+      "initial_planner": "rule",
+      "planner": "rule",
+      "degraded_reason": "planner_unconfigured",
+      "learner_attempt_count": 0,
+      "signal": "unassessed_input",
+      "prompt_scope": "unknown",
+      "checks": [
+        {
+          "field": "attempts",
+          "passed": true
+        },
+        {
+          "field": "signal",
+          "passed": true
+        },
+        {
+          "field": "no_mastery_or_prompt_inference",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "planner_attempts": [],
+      "semantic_review": {
+        "status": "not_reviewed",
+        "criteria": [],
+        "semantic_quality_accepted": false,
+        "human_calibrated": false
+      },
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "difficulty-report",
+      "initial_planner": "rule",
+      "planner": "rule",
+      "degraded_reason": "planner_unconfigured",
+      "learner_attempt_count": 0,
+      "signal": "difficulty_report",
+      "prompt_scope": "unknown",
+      "checks": [
+        {
+          "field": "attempts",
+          "passed": true
+        },
+        {
+          "field": "signal",
+          "passed": true
+        },
+        {
+          "field": "no_mastery_or_prompt_inference",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "planner_attempts": [],
+      "semantic_review": {
+        "status": "not_reviewed",
+        "criteria": [],
+        "semantic_quality_accepted": false,
+        "human_calibrated": false
+      },
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "negative-expression",
+      "initial_planner": "rule",
+      "planner": "rule",
+      "degraded_reason": "planner_unconfigured",
+      "learner_attempt_count": 0,
+      "signal": "unassessed_input",
+      "prompt_scope": "unknown",
+      "checks": [
+        {
+          "field": "attempts",
+          "passed": true
+        },
+        {
+          "field": "signal",
+          "passed": true
+        },
+        {
+          "field": "no_mastery_or_prompt_inference",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "planner_attempts": [],
+      "semantic_review": {
+        "status": "not_reviewed",
+        "criteria": [],
+        "semantic_quality_accepted": false,
+        "human_calibrated": false
+      },
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "question-not-statement",
+      "initial_planner": "rule",
+      "planner": "rule",
+      "degraded_reason": "planner_unconfigured",
+      "learner_attempt_count": 0,
+      "signal": "unassessed_input",
+      "prompt_scope": "unknown",
+      "checks": [
+        {
+          "field": "attempts",
+          "passed": true
+        },
+        {
+          "field": "signal",
+          "passed": true
+        },
+        {
+          "field": "no_mastery_or_prompt_inference",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "planner_attempts": [],
+      "semantic_review": {
+        "status": "not_reviewed",
+        "criteria": [],
+        "semantic_quality_accepted": false,
+        "human_calibrated": false
+      },
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "in-final-repair",
+      "initial_planner": "rule",
+      "planner": "rule",
+      "degraded_reason": "planner_unconfigured",
+      "learner_attempt_count": 0,
+      "signal": "unassessed_input",
+      "prompt_scope": "unknown",
+      "checks": [
+        {
+          "field": "attempts",
+          "passed": true
+        },
+        {
+          "field": "signal",
+          "passed": true
+        },
+        {
+          "field": "no_mastery_or_prompt_inference",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "planner_attempts": [],
+      "semantic_review": {
+        "status": "not_reviewed",
+        "criteria": [],
+        "semantic_quality_accepted": false,
+        "human_calibrated": false
+      },
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "single-english-word",
+      "initial_planner": "rule",
+      "planner": "rule",
+      "degraded_reason": "planner_unconfigured",
+      "learner_attempt_count": 0,
+      "signal": "unassessed_input",
+      "prompt_scope": "unknown",
+      "checks": [
+        {
+          "field": "attempts",
+          "passed": true
+        },
+        {
+          "field": "signal",
+          "passed": true
+        },
+        {
+          "field": "no_mastery_or_prompt_inference",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "planner_attempts": [],
+      "semantic_review": {
+        "status": "not_reviewed",
+        "criteria": [],
+        "semantic_quality_accepted": false,
+        "human_calibrated": false
+      },
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "paraphrase-outside-rule",
+      "initial_planner": "rule",
+      "planner": "rule",
+      "degraded_reason": "planner_unconfigured",
+      "learner_attempt_count": 0,
+      "signal": "unassessed_input",
+      "prompt_scope": "unknown",
+      "checks": [
+        {
+          "field": "attempts",
+          "passed": true
+        },
+        {
+          "field": "signal",
+          "passed": true
+        },
+        {
+          "field": "no_mastery_or_prompt_inference",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "planner_attempts": [],
+      "semantic_review": {
+        "status": "not_reviewed",
+        "criteria": [],
+        "semantic_quality_accepted": false,
+        "human_calibrated": false
+      },
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "time-discussion",
+      "initial_planner": "rule",
+      "planner": "rule",
+      "degraded_reason": "planner_unconfigured",
+      "learner_attempt_count": 0,
+      "signal": "unassessed_input",
+      "prompt_scope": "unknown",
+      "checks": [
+        {
+          "field": "attempts",
+          "passed": true
+        },
+        {
+          "field": "signal",
+          "passed": true
+        },
+        {
+          "field": "no_mastery_or_prompt_inference",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "planner_attempts": [],
+      "semantic_review": {
+        "status": "not_reviewed",
+        "criteria": [],
+        "semantic_quality_accepted": false,
+        "human_calibrated": false
+      },
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "teacher-full-forwarded",
+      "initial_planner": "rule",
+      "planner": "rule",
+      "degraded_reason": "planner_unconfigured",
+      "learner_attempt_count": 1,
+      "signal": "supported_attempt",
+      "prompt_scope": "matching_model_forwarded",
+      "checks": [
+        {
+          "field": "attempts",
+          "passed": true
+        },
+        {
+          "field": "signal",
+          "passed": true
+        },
+        {
+          "field": "prompt_scope",
+          "passed": true
+        },
+        {
+          "field": "no_mastery_or_prompt_inference",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "planner_attempts": [],
+      "semantic_review": {
+        "status": "not_reviewed",
+        "criteria": [],
+        "semantic_quality_accepted": false,
+        "human_calibrated": false
+      },
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "teacher-partial-forwarded",
+      "initial_planner": "rule",
+      "planner": "rule",
+      "degraded_reason": "planner_unconfigured",
+      "learner_attempt_count": 1,
+      "signal": "supported_attempt",
+      "prompt_scope": "matching_model_forwarded",
+      "checks": [
+        {
+          "field": "attempts",
+          "passed": true
+        },
+        {
+          "field": "signal",
+          "passed": true
+        },
+        {
+          "field": "prompt_scope",
+          "passed": true
+        },
+        {
+          "field": "no_mastery_or_prompt_inference",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "planner_attempts": [],
+      "semantic_review": {
+        "status": "not_reviewed",
+        "criteria": [],
+        "semantic_quality_accepted": false,
+        "human_calibrated": false
+      },
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "client-reported-playback",
+      "initial_planner": "rule",
+      "planner": "rule",
+      "degraded_reason": "planner_unconfigured",
+      "learner_attempt_count": 1,
+      "signal": "supported_attempt",
+      "prompt_scope": "matching_model_forwarded",
+      "checks": [
+        {
+          "field": "attempts",
+          "passed": true
+        },
+        {
+          "field": "signal",
+          "passed": true
+        },
+        {
+          "field": "prompt_scope",
+          "passed": true
+        },
+        {
+          "field": "no_mastery_or_prompt_inference",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "planner_attempts": [],
+      "semantic_review": {
+        "status": "not_reviewed",
+        "criteria": [],
+        "semantic_quality_accepted": false,
+        "human_calibrated": false
+      },
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "cancelled-model",
+      "initial_planner": "rule",
+      "planner": "rule",
+      "degraded_reason": "planner_unconfigured",
+      "learner_attempt_count": 1,
+      "signal": "supported_attempt",
+      "prompt_scope": "cancelled_output",
+      "checks": [
+        {
+          "field": "attempts",
+          "passed": true
+        },
+        {
+          "field": "signal",
+          "passed": true
+        },
+        {
+          "field": "prompt_scope",
+          "passed": true
+        },
+        {
+          "field": "no_mastery_or_prompt_inference",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "planner_attempts": [],
+      "semantic_review": {
+        "status": "not_reviewed",
+        "criteria": [],
+        "semantic_quality_accepted": false,
+        "human_calibrated": false
+      },
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "unrelated-teacher",
+      "initial_planner": "rule",
+      "planner": "rule",
+      "degraded_reason": "planner_unconfigured",
+      "learner_attempt_count": 1,
+      "signal": "supported_attempt",
+      "prompt_scope": "unknown",
+      "checks": [
+        {
+          "field": "attempts",
+          "passed": true
+        },
+        {
+          "field": "signal",
+          "passed": true
+        },
+        {
+          "field": "prompt_scope",
+          "passed": true
+        },
+        {
+          "field": "no_mastery_or_prompt_inference",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "planner_attempts": [],
+      "semantic_review": {
+        "status": "not_reviewed",
+        "criteria": [],
+        "semantic_quality_accepted": false,
+        "human_calibrated": false
+      },
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "autonomous-same-turn",
+      "initial_planner": "rule",
+      "planner": "rule",
+      "degraded_reason": "planner_unconfigured",
+      "learner_attempt_count": 1,
+      "signal": "supported_attempt",
+      "prompt_scope": "unknown",
+      "checks": [
+        {
+          "field": "attempts",
+          "passed": true
+        },
+        {
+          "field": "signal",
+          "passed": true
+        },
+        {
+          "field": "prompt_scope",
+          "passed": true
+        },
+        {
+          "field": "no_mastery_or_prompt_inference",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "planner_attempts": [],
+      "semantic_review": {
+        "status": "not_reviewed",
+        "criteria": [],
+        "semantic_quality_accepted": false,
+        "human_calibrated": false
+      },
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "paused-target",
+      "initial_planner": "rule",
+      "planner": "rule",
+      "degraded_reason": "planner_unconfigured",
+      "learner_attempt_count": 0,
+      "signal": "no_active_goal",
+      "prompt_scope": "unknown",
+      "checks": [
+        {
+          "field": "attempts",
+          "passed": true
+        },
+        {
+          "field": "signal",
+          "passed": true
+        },
+        {
+          "field": "no_mastery_or_prompt_inference",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "planner_attempts": [],
+      "semantic_review": {
+        "status": "not_reviewed",
+        "criteria": [],
+        "semantic_quality_accepted": false,
+        "human_calibrated": false
+      },
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "free-no-goal",
+      "initial_planner": "rule",
+      "planner": "rule",
+      "degraded_reason": "planner_unconfigured",
+      "learner_attempt_count": 0,
+      "signal": "no_active_goal",
+      "prompt_scope": "unknown",
+      "checks": [
+        {
+          "field": "attempts",
+          "passed": true
+        },
+        {
+          "field": "signal",
+          "passed": true
+        },
+        {
+          "field": "no_mastery_or_prompt_inference",
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "planner_attempts": [],
+      "semantic_review": {
+        "status": "not_reviewed",
+        "criteria": [],
+        "semantic_quality_accepted": false,
+        "human_calibrated": false
+      },
+      "semantic_quality_accepted": false
+    }
+  ],
+  "denominators": {
+    "cases": 20,
+    "behavior_pass": 20,
+    "initial_failed": 0,
+    "llm_turns": 0,
+    "rule_turns": 20,
+    "reviewed": 0,
+    "review_all_criteria_pass": 0
+  },
+  "review_mode": "not_reviewed",
+  "independent_calibrated_judge": false,
+  "human_calibrated": false,
+  "semantic_quality_accepted": false,
+  "current_turn_control_verified": false
+}

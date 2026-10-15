@@ -1,0 +1,110 @@
+{
+  "synthetic": true,
+  "session_id": "fixture-normal",
+  "events": [
+    {
+      "version": 1,
+      "event_id": "normal-0",
+      "session_id": "fixture-normal",
+      "seq": 0,
+      "at_ms": 0,
+      "type": "session.ready",
+      "payload": {}
+    },
+    {
+      "version": 1,
+      "event_id": "normal-1",
+      "session_id": "fixture-normal",
+      "seq": 1,
+      "at_ms": 100,
+      "type": "user.partial",
+      "turn_id": "t1",
+      "payload": {
+        "text": "我喜欢足球"
+      }
+    },
+    {
+      "version": 1,
+      "event_id": "normal-2",
+      "session_id": "fixture-normal",
+      "seq": 2,
+      "at_ms": 200,
+      "type": "user.final",
+      "turn_id": "t1",
+      "payload": {
+        "text": "我喜欢足球。"
+      }
+    },
+    {
+      "version": 1,
+      "event_id": "normal-3",
+      "session_id": "fixture-normal",
+      "seq": 3,
+      "at_ms": 300,
+      "type": "response.started",
+      "turn_id": "t1",
+      "response_id": "r1",
+      "payload": {}
+    },
+    {
+      "version": 1,
+      "event_id": "normal-4",
+      "session_id": "fixture-normal",
+      "seq": 4,
+      "at_ms": 400,
+      "type": "response.text.delta",
+      "turn_id": "t1",
+      "response_id": "r1",
+      "payload": {
+        "text": "你喜欢足球。"
+      }
+    },
+    {
+      "version": 1,
+      "event_id": "normal-5",
+      "session_id": "fixture-normal",
+      "seq": 5,
+      "at_ms": 500,
+      "type": "response.audio.chunk",
+      "turn_id": "t1",
+      "response_id": "r1",
+      "payload": {
+        "byte_length": 320,
+        "format": "pcm_s16le"
+      }
+    },
+    {
+      "version": 1,
+      "event_id": "normal-6",
+      "session_id": "fixture-normal",
+      "seq": 6,
+      "at_ms": 600,
+      "type": "response.text.delta",
+      "turn_id": "t1",
+      "response_id": "r1",
+      "payload": {
+        "text": "你喜欢踢足球吗？"
+      }
+    },
+    {
+      "version": 1,
+      "event_id": "normal-7",
+      "session_id": "fixture-normal",
+      "seq": 7,
+      "at_ms": 700,
+      "type": "response.done",
+      "turn_id": "t1",
+      "response_id": "r1",
+      "payload": {}
+    },
+    {
+      "version": 1,
+      "event_id": "normal-8",
+      "session_id": "fixture-normal",
+      "seq": 8,
+      "at_ms": 800,
+      "type": "session.closed",
+      "payload": {}
+    }
+  ]
+}

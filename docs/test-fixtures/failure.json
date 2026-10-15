@@ -1,0 +1,37 @@
+{
+  "synthetic": true,
+  "session_id": "fixture-failure",
+  "events": [
+    {
+      "version": 1,
+      "event_id": "failure-0",
+      "session_id": "fixture-failure",
+      "seq": 0,
+      "at_ms": 0,
+      "type": "session.failed",
+      "payload": {
+        "code": "SYNTHETIC_CONNECT_FAILURE"
+      }
+    },
+    {
+      "version": 1,
+      "event_id": "failure-1",
+      "session_id": "fixture-failure",
+      "seq": 1,
+      "at_ms": 100,
+      "type": "session.ready",
+      "payload": {}
+    },
+    {
+      "version": 1,
+      "event_id": "failure-2",
+      "session_id": "fixture-failure",
+      "seq": 2,
+      "at_ms": 200,
+      "type": "response.started",
+      "turn_id": "t1",
+      "response_id": "r1",
+      "payload": {}
+    }
+  ]
+}

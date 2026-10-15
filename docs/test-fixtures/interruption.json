@@ -1,0 +1,167 @@
+{
+  "synthetic": true,
+  "session_id": "fixture-interruption",
+  "events": [
+    {
+      "version": 1,
+      "event_id": "interruption-0",
+      "session_id": "fixture-interruption",
+      "seq": 0,
+      "at_ms": 0,
+      "type": "session.ready",
+      "payload": {}
+    },
+    {
+      "version": 1,
+      "event_id": "interruption-1",
+      "session_id": "fixture-interruption",
+      "seq": 1,
+      "at_ms": 100,
+      "type": "user.final",
+      "turn_id": "t1",
+      "payload": {
+        "text": "我喜欢足球。"
+      }
+    },
+    {
+      "version": 1,
+      "event_id": "interruption-2",
+      "session_id": "fixture-interruption",
+      "seq": 2,
+      "at_ms": 200,
+      "type": "response.started",
+      "turn_id": "t1",
+      "response_id": "r1",
+      "payload": {}
+    },
+    {
+      "version": 1,
+      "event_id": "interruption-3",
+      "session_id": "fixture-interruption",
+      "seq": 3,
+      "at_ms": 300,
+      "type": "response.text.delta",
+      "turn_id": "t1",
+      "response_id": "r1",
+      "payload": {
+        "text": "我们聊足球。"
+      }
+    },
+    {
+      "version": 1,
+      "event_id": "interruption-4",
+      "session_id": "fixture-interruption",
+      "seq": 4,
+      "at_ms": 400,
+      "type": "response.cancel.requested",
+      "turn_id": "t1",
+      "response_id": "r1",
+      "payload": {}
+    },
+    {
+      "version": 1,
+      "event_id": "interruption-5",
+      "session_id": "fixture-interruption",
+      "seq": 5,
+      "at_ms": 500,
+      "type": "user.final",
+      "turn_id": "t2",
+      "payload": {
+        "text": "我还喜欢游泳。"
+      }
+    },
+    {
+      "version": 1,
+      "event_id": "interruption-6",
+      "session_id": "fixture-interruption",
+      "seq": 6,
+      "at_ms": 600,
+      "type": "response.started",
+      "turn_id": "t2",
+      "response_id": "r2",
+      "payload": {}
+    },
+    {
+      "version": 1,
+      "event_id": "interruption-7",
+      "session_id": "fixture-interruption",
+      "seq": 7,
+      "at_ms": 700,
+      "type": "response.audio.chunk",
+      "turn_id": "t1",
+      "response_id": "r1",
+      "payload": {
+        "byte_length": 320,
+        "format": "pcm_s16le"
+      }
+    },
+    {
+      "version": 1,
+      "event_id": "interruption-8",
+      "session_id": "fixture-interruption",
+      "seq": 8,
+      "at_ms": 800,
+      "type": "response.done",
+      "turn_id": "t1",
+      "response_id": "r1",
+      "payload": {}
+    },
+    {
+      "version": 1,
+      "event_id": "interruption-9",
+      "session_id": "fixture-interruption",
+      "seq": 9,
+      "at_ms": 900,
+      "type": "response.cancelled",
+      "turn_id": "t1",
+      "response_id": "r1",
+      "payload": {}
+    },
+    {
+      "version": 1,
+      "event_id": "interruption-10",
+      "session_id": "fixture-interruption",
+      "seq": 10,
+      "at_ms": 1000,
+      "type": "response.text.delta",
+      "turn_id": "t1",
+      "response_id": "r1",
+      "payload": {
+        "text": "旧回复，不应显示。"
+      }
+    },
+    {
+      "version": 1,
+      "event_id": "interruption-11",
+      "session_id": "fixture-interruption",
+      "seq": 11,
+      "at_ms": 1100,
+      "type": "response.text.delta",
+      "turn_id": "t2",
+      "response_id": "r2",
+      "payload": {
+        "text": "你也喜欢游泳。"
+      }
+    },
+    {
+      "version": 1,
+      "event_id": "interruption-12",
+      "session_id": "fixture-interruption",
+      "seq": 12,
+      "at_ms": 1200,
+      "type": "response.done",
+      "turn_id": "t2",
+      "response_id": "r2",
+      "payload": {}
+    },
+    {
+      "version": 1,
+      "event_id": "interruption-13",
+      "session_id": "fixture-interruption",
+      "seq": 13,
+      "at_ms": 1300,
+      "type": "session.closed",
+      "payload": {}
+    }
+  ]
+}

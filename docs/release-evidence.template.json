@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "revision": null,
+  "content_threshold": null,
+  "artifacts": {
+    "provider_voice": null,
+    "browser_audio": null,
+    "hskai_integration": null,
+    "safeguarding": null,
+    "privacy": null,
+    "market_admission": null,
+    "original_p0_regression": null
+  }
+}

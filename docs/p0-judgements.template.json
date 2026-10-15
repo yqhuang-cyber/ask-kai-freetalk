@@ -1,0 +1,470 @@
+{
+  "source": "human",
+  "judge_version": "pending-human-review-version",
+  "cases": [
+    {
+      "case_id": "P0-C01",
+      "scores": {
+        "intent": null,
+        "correctness": null,
+        "instructions": null,
+        "level": null,
+        "expression": null,
+        "continuity": null,
+        "progress": null,
+        "personalization": null,
+        "persona": null,
+        "safety": null
+      },
+      "critical_failure": false,
+      "handoff_required": false,
+      "handoff_delivered": false,
+      "human_review_approved": false,
+      "p0_checks": {
+        "translation_alignment": null,
+        "single_teaching_point": null,
+        "one_question_or_task": null,
+        "natural_relevance": null,
+        "honest_learning_claims": null,
+        "respect_choice": null,
+        "adaptive_scaffold": null,
+        "clarification_limit": null
+      }
+    },
+    {
+      "case_id": "P0-C02",
+      "scores": {
+        "intent": null,
+        "correctness": null,
+        "instructions": null,
+        "level": null,
+        "expression": null,
+        "continuity": null,
+        "progress": null,
+        "personalization": null,
+        "persona": null,
+        "safety": null
+      },
+      "critical_failure": false,
+      "handoff_required": false,
+      "handoff_delivered": false,
+      "human_review_approved": false,
+      "p0_checks": {
+        "translation_alignment": null,
+        "single_teaching_point": null,
+        "one_question_or_task": null,
+        "natural_relevance": null,
+        "honest_learning_claims": null,
+        "respect_choice": null,
+        "adaptive_scaffold": null,
+        "clarification_limit": null
+      }
+    },
+    {
+      "case_id": "P0-C03",
+      "scores": {
+        "intent": null,
+        "correctness": null,
+        "instructions": null,
+        "level": null,
+        "expression": null,
+        "continuity": null,
+        "progress": null,
+        "personalization": null,
+        "persona": null,
+        "safety": null
+      },
+      "critical_failure": false,
+      "handoff_required": false,
+      "handoff_delivered": false,
+      "human_review_approved": false,
+      "p0_checks": {
+        "translation_alignment": null,
+        "single_teaching_point": null,
+        "one_question_or_task": null,
+        "natural_relevance": null,
+        "honest_learning_claims": null,
+        "respect_choice": null,
+        "adaptive_scaffold": null,
+        "clarification_limit": null
+      }
+    },
+    {
+      "case_id": "P0-C04",
+      "scores": {
+        "intent": null,
+        "correctness": null,
+        "instructions": null,
+        "level": null,
+        "expression": null,
+        "continuity": null,
+        "progress": null,
+        "personalization": null,
+        "persona": null,
+        "safety": null
+      },
+      "critical_failure": false,
+      "handoff_required": false,
+      "handoff_delivered": false,
+      "human_review_approved": false,
+      "p0_checks": {
+        "translation_alignment": null,
+        "single_teaching_point": null,
+        "one_question_or_task": null,
+        "natural_relevance": null,
+        "honest_learning_claims": null,
+        "respect_choice": null,
+        "adaptive_scaffold": null,
+        "clarification_limit": null
+      }
+    },
+    {
+      "case_id": "P0-C05",
+      "scores": {
+        "intent": null,
+        "correctness": null,
+        "instructions": null,
+        "level": null,
+        "expression": null,
+        "continuity": null,
+        "progress": null,
+        "personalization": null,
+        "persona": null,
+        "safety": null
+      },
+      "critical_failure": false,
+      "handoff_required": false,
+      "handoff_delivered": false,
+      "human_review_approved": false,
+      "p0_checks": {
+        "translation_alignment": null,
+        "single_teaching_point": null,
+        "one_question_or_task": null,
+        "natural_relevance": null,
+        "honest_learning_claims": null,
+        "respect_choice": null,
+        "adaptive_scaffold": null,
+        "clarification_limit": null
+      }
+    },
+    {
+      "case_id": "P0-C06",
+      "scores": {
+        "intent": null,
+        "correctness": null,
+        "instructions": null,
+        "level": null,
+        "expression": null,
+        "continuity": null,
+        "progress": null,
+        "personalization": null,
+        "persona": null,
+        "safety": null
+      },
+      "critical_failure": false,
+      "handoff_required": false,
+      "handoff_delivered": false,
+      "human_review_approved": false,
+      "p0_checks": {
+        "translation_alignment": null,
+        "single_teaching_point": null,
+        "one_question_or_task": null,
+        "natural_relevance": null,
+        "honest_learning_claims": null,
+        "respect_choice": null,
+        "adaptive_scaffold": null,
+        "clarification_limit": null
+      }
+    },
+    {
+      "case_id": "P0-C07",
+      "scores": {
+        "intent": null,
+        "correctness": null,
+        "instructions": null,
+        "level": null,
+        "expression": null,
+        "continuity": null,
+        "progress": null,
+        "personalization": null,
+        "persona": null,
+        "safety": null
+      },
+      "critical_failure": false,
+      "handoff_required": false,
+      "handoff_delivered": false,
+      "human_review_approved": false,
+      "p0_checks": {
+        "translation_alignment": null,
+        "single_teaching_point": null,
+        "one_question_or_task": null,
+        "natural_relevance": null,
+        "honest_learning_claims": null,
+        "respect_choice": null,
+        "adaptive_scaffold": null,
+        "clarification_limit": null
+      }
+    },
+    {
+      "case_id": "P0-C08",
+      "scores": {
+        "intent": null,
+        "correctness": null,
+        "instructions": null,
+        "level": null,
+        "expression": null,
+        "continuity": null,
+        "progress": null,
+        "personalization": null,
+        "persona": null,
+        "safety": null
+      },
+      "critical_failure": false,
+      "handoff_required": false,
+      "handoff_delivered": false,
+      "human_review_approved": false,
+      "p0_checks": {
+        "translation_alignment": null,
+        "single_teaching_point": null,
+        "one_question_or_task": null,
+        "natural_relevance": null,
+        "honest_learning_claims": null,
+        "respect_choice": null,
+        "adaptive_scaffold": null,
+        "clarification_limit": null
+      }
+    },
+    {
+      "case_id": "P0-C09",
+      "scores": {
+        "intent": null,
+        "correctness": null,
+        "instructions": null,
+        "level": null,
+        "expression": null,
+        "continuity": null,
+        "progress": null,
+        "personalization": null,
+        "persona": null,
+        "safety": null
+      },
+      "critical_failure": false,
+      "handoff_required": false,
+      "handoff_delivered": false,
+      "human_review_approved": false,
+      "p0_checks": {
+        "translation_alignment": null,
+        "single_teaching_point": null,
+        "one_question_or_task": null,
+        "natural_relevance": null,
+        "honest_learning_claims": null,
+        "respect_choice": null,
+        "adaptive_scaffold": null,
+        "clarification_limit": null
+      }
+    },
+    {
+      "case_id": "P0-C10",
+      "scores": {
+        "intent": null,
+        "correctness": null,
+        "instructions": null,
+        "level": null,
+        "expression": null,
+        "continuity": null,
+        "progress": null,
+        "personalization": null,
+        "persona": null,
+        "safety": null
+      },
+      "critical_failure": false,
+      "handoff_required": false,
+      "handoff_delivered": false,
+      "human_review_approved": false,
+      "p0_checks": {
+        "translation_alignment": null,
+        "single_teaching_point": null,
+        "one_question_or_task": null,
+        "natural_relevance": null,
+        "honest_learning_claims": null,
+        "respect_choice": null,
+        "adaptive_scaffold": null,
+        "clarification_limit": null
+      }
+    },
+    {
+      "case_id": "P0-C11",
+      "scores": {
+        "intent": null,
+        "correctness": null,
+        "instructions": null,
+        "level": null,
+        "expression": null,
+        "continuity": null,
+        "progress": null,
+        "personalization": null,
+        "persona": null,
+        "safety": null
+      },
+      "critical_failure": false,
+      "handoff_required": false,
+      "handoff_delivered": false,
+      "human_review_approved": false,
+      "p0_checks": {
+        "translation_alignment": null,
+        "single_teaching_point": null,
+        "one_question_or_task": null,
+        "natural_relevance": null,
+        "honest_learning_claims": null,
+        "respect_choice": null,
+        "adaptive_scaffold": null,
+        "clarification_limit": null
+      }
+    },
+    {
+      "case_id": "P0-C12",
+      "scores": {
+        "intent": null,
+        "correctness": null,
+        "instructions": null,
+        "level": null,
+        "expression": null,
+        "continuity": null,
+        "progress": null,
+        "personalization": null,
+        "persona": null,
+        "safety": null
+      },
+      "critical_failure": false,
+      "handoff_required": false,
+      "handoff_delivered": false,
+      "human_review_approved": false,
+      "p0_checks": {
+        "translation_alignment": null,
+        "single_teaching_point": null,
+        "one_question_or_task": null,
+        "natural_relevance": null,
+        "honest_learning_claims": null,
+        "respect_choice": null,
+        "adaptive_scaffold": null,
+        "clarification_limit": null
+      }
+    },
+    {
+      "case_id": "P0-C13",
+      "scores": {
+        "intent": null,
+        "correctness": null,
+        "instructions": null,
+        "level": null,
+        "expression": null,
+        "continuity": null,
+        "progress": null,
+        "personalization": null,
+        "persona": null,
+        "safety": null
+      },
+      "critical_failure": false,
+      "handoff_required": false,
+      "handoff_delivered": false,
+      "human_review_approved": false,
+      "p0_checks": {
+        "translation_alignment": null,
+        "single_teaching_point": null,
+        "one_question_or_task": null,
+        "natural_relevance": null,
+        "honest_learning_claims": null,
+        "respect_choice": null,
+        "adaptive_scaffold": null,
+        "clarification_limit": null
+      }
+    },
+    {
+      "case_id": "P0-C14",
+      "scores": {
+        "intent": null,
+        "correctness": null,
+        "instructions": null,
+        "level": null,
+        "expression": null,
+        "continuity": null,
+        "progress": null,
+        "personalization": null,
+        "persona": null,
+        "safety": null
+      },
+      "critical_failure": false,
+      "handoff_required": false,
+      "handoff_delivered": false,
+      "human_review_approved": false,
+      "p0_checks": {
+        "translation_alignment": null,
+        "single_teaching_point": null,
+        "one_question_or_task": null,
+        "natural_relevance": null,
+        "honest_learning_claims": null,
+        "respect_choice": null,
+        "adaptive_scaffold": null,
+        "clarification_limit": null
+      }
+    },
+    {
+      "case_id": "P0-C15",
+      "scores": {
+        "intent": null,
+        "correctness": null,
+        "instructions": null,
+        "level": null,
+        "expression": null,
+        "continuity": null,
+        "progress": null,
+        "personalization": null,
+        "persona": null,
+        "safety": null
+      },
+      "critical_failure": false,
+      "handoff_required": false,
+      "handoff_delivered": false,
+      "human_review_approved": false,
+      "p0_checks": {
+        "translation_alignment": null,
+        "single_teaching_point": null,
+        "one_question_or_task": null,
+        "natural_relevance": null,
+        "honest_learning_claims": null,
+        "respect_choice": null,
+        "adaptive_scaffold": null,
+        "clarification_limit": null
+      }
+    },
+    {
+      "case_id": "P0-C16",
+      "scores": {
+        "intent": null,
+        "correctness": null,
+        "instructions": null,
+        "level": null,
+        "expression": null,
+        "continuity": null,
+        "progress": null,
+        "personalization": null,
+        "persona": null,
+        "safety": null
+      },
+      "critical_failure": false,
+      "handoff_required": false,
+      "handoff_delivered": false,
+      "human_review_approved": false,
+      "p0_checks": {
+        "translation_alignment": null,
+        "single_teaching_point": null,
+        "one_question_or_task": null,
+        "natural_relevance": null,
+        "honest_learning_claims": null,
+        "respect_choice": null,
+        "adaptive_scaffold": null,
+        "clarification_limit": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+name: Frozen Agent collection evidence diagnostic
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/live/collection-diagnostic-request.json']
+permissions:
+  contents: read
+concurrency:
+  group: frozen-agent-collection-diagnostic
+  cancel-in-progress: false
+jobs:
+  collect:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci --ignore-scripts
+      - name: Collect independent authored-input diagnostic evidence
+        env:
+          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+        run: node scripts/actions-collection-diagnostic.js
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: task02-collection-evidence
+          path: |
+            .local/collection-diagnostic/diagnostic-request.json
+            .local/collection-diagnostic/diagnostic-failure.json
+            .local/collection-diagnostic/diagnostic-report.json
+            .local/collection-diagnostic/observations.json
+            .local/collection-diagnostic/collection-report.json
+            .local/collection-diagnostic/protocol-diagnostics.json
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: task02-authored-input-fixtures
+          path: |
+            .local/collection-diagnostic/ask-kai-*/audio-manifest.json
+            .local/collection-diagnostic/ask-kai-*/input-*.pcm
+          retention-days: 7

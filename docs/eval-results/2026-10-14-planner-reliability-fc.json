@@ -1,0 +1,717 @@
+{
+  "date": "2026-10-14",
+  "scope": "real Doubao connectivity, single authored audio input per connection; no playback",
+  "batches": {
+    "fc-rule": {
+      "version": "fc-planning-experiment-v1",
+      "planner": {
+        "provider": "none",
+        "model": null,
+        "output_format": "unknown",
+        "prompt": "kai-planner-v5",
+        "draft": null
+      },
+      "rule_planner_mode": true,
+      "profile_sha256": "000d8d6799a1e66abc7f6568d07e47c310a7749c5ab73690175a45998f482386",
+      "input_source": "local_os_authored_speech",
+      "cases": [
+        {
+          "id": "chat",
+          "initial_planner": "rule",
+          "version": "seeduplex-fc-planning-probe-v1",
+          "input_source": "local_os_authored_speech",
+          "input_sha256": "03ef91118dadd162bb151335e47ca54c556f222023d5c050b4e1879ced44698d",
+          "microphone_uploaded": false,
+          "contains_transcripts": false,
+          "contains_audio": false,
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_observed": true,
+          "asr_final_count": 1,
+          "tool_call_batches": 1,
+          "tool_results_sent": 1,
+          "plan_accepted": true,
+          "planner_kind": "rule",
+          "plan_hash": "26d6c26f9c5d0ab2bea477345903e94022a5df50de4ddee06272e9eeba1ab835",
+          "pre_tool_output_events": 0,
+          "waiting_tool_output_events": 0,
+          "post_tool_output_events": 31,
+          "audio_bytes": 347355,
+          "input_frames": 374,
+          "input_frames_while_waiting": 58,
+          "hold_ms": 1200,
+          "timeline": [
+            {
+              "name": "socket_open",
+              "at_ms": 355
+            },
+            {
+              "name": "provider_ready",
+              "at_ms": 460
+            },
+            {
+              "name": "asr_final",
+              "at_ms": 4435
+            },
+            {
+              "name": "tool_call_received",
+              "at_ms": 5095
+            },
+            {
+              "name": "tool_wait_started",
+              "at_ms": 5095
+            },
+            {
+              "name": "plan_accepted",
+              "at_ms": 6318
+            },
+            {
+              "name": "tool_result_sent",
+              "at_ms": 6318
+            },
+            {
+              "name": "post_tool_output_events",
+              "at_ms": 7010
+            },
+            {
+              "name": "close_requested",
+              "at_ms": 8300
+            }
+          ],
+          "current_turn_generation_gate_verified": false,
+          "mandatory_tool_api_verified": false,
+          "real_experience_accepted": false,
+          "ended": "reply_output_done",
+          "status": "sample_order_observed"
+        },
+        {
+          "id": "refusal",
+          "initial_planner": "rule",
+          "version": "seeduplex-fc-planning-probe-v1",
+          "input_source": "local_os_authored_speech",
+          "input_sha256": "35c86fd6c3d4651f18dd4cf728abef242916e2d5f7bd6b4830017e3830d6056f",
+          "microphone_uploaded": false,
+          "contains_transcripts": false,
+          "contains_audio": false,
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_observed": true,
+          "asr_final_count": 1,
+          "tool_call_batches": 1,
+          "tool_results_sent": 1,
+          "plan_accepted": true,
+          "planner_kind": "rule",
+          "plan_hash": "284338a12420d88dc81f2e208c78b019559ec184efcfa1a67aff1d67907c95d1",
+          "pre_tool_output_events": 0,
+          "waiting_tool_output_events": 0,
+          "post_tool_output_events": 31,
+          "audio_bytes": 334590,
+          "input_frames": 394,
+          "input_frames_while_waiting": 57,
+          "hold_ms": 1200,
+          "timeline": [
+            {
+              "name": "socket_open",
+              "at_ms": 277
+            },
+            {
+              "name": "provider_ready",
+              "at_ms": 391
+            },
+            {
+              "name": "asr_final",
+              "at_ms": 4546
+            },
+            {
+              "name": "tool_call_received",
+              "at_ms": 5036
+            },
+            {
+              "name": "tool_wait_started",
+              "at_ms": 5036
+            },
+            {
+              "name": "plan_accepted",
+              "at_ms": 6257
+            },
+            {
+              "name": "tool_result_sent",
+              "at_ms": 6257
+            },
+            {
+              "name": "post_tool_output_events",
+              "at_ms": 7349
+            },
+            {
+              "name": "close_requested",
+              "at_ms": 8681
+            }
+          ],
+          "current_turn_generation_gate_verified": false,
+          "mandatory_tool_api_verified": false,
+          "real_experience_accepted": false,
+          "ended": "reply_output_done",
+          "status": "sample_order_observed"
+        },
+        {
+          "id": "switch",
+          "initial_planner": "rule",
+          "version": "seeduplex-fc-planning-probe-v1",
+          "input_source": "local_os_authored_speech",
+          "input_sha256": "e0e6770e78e703557fa8a442e51b16eaf5c965a6b603f5c292e8447d5a4e335c",
+          "microphone_uploaded": false,
+          "contains_transcripts": false,
+          "contains_audio": false,
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_observed": true,
+          "asr_final_count": 1,
+          "tool_call_batches": 1,
+          "tool_results_sent": 1,
+          "plan_accepted": true,
+          "planner_kind": "rule",
+          "plan_hash": "5fe390a24faf852f931b6a7560f5f681616d4edd3ea59fc24cf83488d5beab6c",
+          "pre_tool_output_events": 0,
+          "waiting_tool_output_events": 0,
+          "post_tool_output_events": 54,
+          "audio_bytes": 611247,
+          "input_frames": 392,
+          "input_frames_while_waiting": 57,
+          "hold_ms": 1200,
+          "timeline": [
+            {
+              "name": "socket_open",
+              "at_ms": 274
+            },
+            {
+              "name": "provider_ready",
+              "at_ms": 377
+            },
+            {
+              "name": "asr_final",
+              "at_ms": 3315
+            },
+            {
+              "name": "tool_call_received",
+              "at_ms": 4155
+            },
+            {
+              "name": "tool_wait_started",
+              "at_ms": 4155
+            },
+            {
+              "name": "plan_accepted",
+              "at_ms": 5359
+            },
+            {
+              "name": "tool_result_sent",
+              "at_ms": 5359
+            },
+            {
+              "name": "post_tool_output_events",
+              "at_ms": 6126
+            },
+            {
+              "name": "close_requested",
+              "at_ms": 8612
+            }
+          ],
+          "current_turn_generation_gate_verified": false,
+          "mandatory_tool_api_verified": false,
+          "real_experience_accepted": false,
+          "ended": "reply_output_done",
+          "status": "sample_order_observed"
+        }
+      ],
+      "microphone_uploaded": false,
+      "browser_audio_tested": false,
+      "production_controlled_enabled": false,
+      "mandatory_tool_api_verified": false,
+      "current_turn_generation_gate_verified": false
+    },
+    "fc-rule-v2": {
+      "version": "fc-planning-experiment-v2",
+      "source_hashes": {
+        "scripts/fc-planning-probe.js": "c7b00a30ceb714d7d94fa8d3bfd1095000cdf858c505c27119ae3e0d2a74d4dc",
+        "packages/provider-doubao/fc-planning-probe.js": "5b3b8fa3f32be26815aa969b72c42a61a7ec49290adf75a71e355a293698e432",
+        "packages/agent-core/planner-port.js": "ca29f40b885457101f404c46d13e2054d87293a99d3bc2c053694009fc95e2e3",
+        "packages/agent-core/planner-draft.js": "f29bc2f40100bde425bc897c107e9993c9d45a32a44fe46ae9fe858cd5e04b08",
+        "packages/agent-core/planner-full-contract.js": "fe3f26b8fa5aeab021cdea132d11e113e93a54cdeb48714d998428691aa5be5e",
+        "packages/provider-minimax/planner.js": "2e22d4598bc4a1fa2b986af14fda315a1d782b15e7750fe9072f8bdb63293461",
+        "packages/agent-core/planning-state.js": "09b74f351c50a77cf3ef9b7a346fdc79b58312a3b4b6306831ac13b6d0990502"
+      },
+      "planner": {
+        "provider": "none",
+        "model": null,
+        "output_format": "unknown",
+        "prompt": "kai-planner-v5",
+        "draft": null
+      },
+      "rule_planner_mode": true,
+      "profile_sha256": "000d8d6799a1e66abc7f6568d07e47c310a7749c5ab73690175a45998f482386",
+      "input_source": "local_os_authored_speech",
+      "cases": [
+        {
+          "id": "chat",
+          "initial_planner": "rule",
+          "version": "seeduplex-fc-planning-probe-v2",
+          "input_source": "local_os_authored_speech",
+          "input_sha256": "03ef91118dadd162bb151335e47ca54c556f222023d5c050b4e1879ced44698d",
+          "microphone_uploaded": false,
+          "contains_transcripts": false,
+          "contains_audio": false,
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_observed": true,
+          "asr_final_count": 1,
+          "tool_call_batches": 1,
+          "tool_results_sent": 1,
+          "plan_accepted": true,
+          "planner_kind": "rule",
+          "plan_hash": "204ee90f85a0d7072ec7dfbe7e0f13dcb35f4f99ddda3ce4130dab8bf08beeea",
+          "pre_tool_output_events": 0,
+          "waiting_tool_output_events": 0,
+          "post_tool_output_events": 31,
+          "audio_bytes": 359190,
+          "input_frames": 410,
+          "input_frames_while_waiting": 58,
+          "hold_ms": 1200,
+          "timeline": [
+            {
+              "name": "socket_open",
+              "at_ms": 375
+            },
+            {
+              "name": "provider_ready",
+              "at_ms": 484
+            },
+            {
+              "name": "asr_final",
+              "at_ms": 4528
+            },
+            {
+              "name": "tool_call_received",
+              "at_ms": 5430
+            },
+            {
+              "name": "tool_wait_started",
+              "at_ms": 5430
+            },
+            {
+              "name": "plan_accepted",
+              "at_ms": 5459
+            },
+            {
+              "name": "tool_result_sent",
+              "at_ms": 6661
+            },
+            {
+              "name": "post_tool_output_events",
+              "at_ms": 7773
+            },
+            {
+              "name": "close_requested",
+              "at_ms": 9162
+            }
+          ],
+          "current_turn_generation_gate_verified": false,
+          "mandatory_tool_api_verified": false,
+          "real_experience_accepted": false,
+          "ended": "reply_output_done",
+          "status": "sample_order_observed"
+        },
+        {
+          "id": "refusal",
+          "initial_planner": "rule",
+          "version": "seeduplex-fc-planning-probe-v2",
+          "input_source": "local_os_authored_speech",
+          "input_sha256": "35c86fd6c3d4651f18dd4cf728abef242916e2d5f7bd6b4830017e3830d6056f",
+          "microphone_uploaded": false,
+          "contains_transcripts": false,
+          "contains_audio": false,
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_observed": true,
+          "asr_final_count": 1,
+          "tool_call_batches": 1,
+          "tool_results_sent": 1,
+          "plan_accepted": true,
+          "planner_kind": "rule",
+          "plan_hash": "33b718553092561605fcd34883c3c0da9c31efb71bc10a3b8a1e1ce31195069d",
+          "pre_tool_output_events": 0,
+          "waiting_tool_output_events": 0,
+          "post_tool_output_events": 26,
+          "audio_bytes": 275913,
+          "input_frames": 377,
+          "input_frames_while_waiting": 58,
+          "hold_ms": 1200,
+          "timeline": [
+            {
+              "name": "socket_open",
+              "at_ms": 266
+            },
+            {
+              "name": "provider_ready",
+              "at_ms": 370
+            },
+            {
+              "name": "asr_final",
+              "at_ms": 4355
+            },
+            {
+              "name": "tool_call_received",
+              "at_ms": 4852
+            },
+            {
+              "name": "tool_wait_started",
+              "at_ms": 4852
+            },
+            {
+              "name": "plan_accepted",
+              "at_ms": 4860
+            },
+            {
+              "name": "tool_result_sent",
+              "at_ms": 6061
+            },
+            {
+              "name": "post_tool_output_events",
+              "at_ms": 7174
+            },
+            {
+              "name": "close_requested",
+              "at_ms": 8296
+            }
+          ],
+          "current_turn_generation_gate_verified": false,
+          "mandatory_tool_api_verified": false,
+          "real_experience_accepted": false,
+          "ended": "reply_output_done",
+          "status": "sample_order_observed"
+        },
+        {
+          "id": "switch",
+          "initial_planner": "rule",
+          "version": "seeduplex-fc-planning-probe-v2",
+          "input_source": "local_os_authored_speech",
+          "input_sha256": "e0e6770e78e703557fa8a442e51b16eaf5c965a6b603f5c292e8447d5a4e335c",
+          "microphone_uploaded": false,
+          "contains_transcripts": false,
+          "contains_audio": false,
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_observed": true,
+          "asr_final_count": 1,
+          "tool_call_batches": 1,
+          "tool_results_sent": 1,
+          "plan_accepted": true,
+          "planner_kind": "rule",
+          "plan_hash": "421e6ee96d4d1d0d1011af0782a269fd1562a0d9d98c06c2a03fd268cec0451a",
+          "pre_tool_output_events": 0,
+          "waiting_tool_output_events": 0,
+          "post_tool_output_events": 42,
+          "audio_bytes": 516561,
+          "input_frames": 381,
+          "input_frames_while_waiting": 57,
+          "hold_ms": 1200,
+          "timeline": [
+            {
+              "name": "socket_open",
+              "at_ms": 392
+            },
+            {
+              "name": "provider_ready",
+              "at_ms": 483
+            },
+            {
+              "name": "asr_final",
+              "at_ms": 3406
+            },
+            {
+              "name": "tool_call_received",
+              "at_ms": 4279
+            },
+            {
+              "name": "tool_wait_started",
+              "at_ms": 4279
+            },
+            {
+              "name": "plan_accepted",
+              "at_ms": 4283
+            },
+            {
+              "name": "tool_result_sent",
+              "at_ms": 5484
+            },
+            {
+              "name": "post_tool_output_events",
+              "at_ms": 6534
+            },
+            {
+              "name": "close_requested",
+              "at_ms": 8479
+            }
+          ],
+          "current_turn_generation_gate_verified": false,
+          "mandatory_tool_api_verified": false,
+          "real_experience_accepted": false,
+          "ended": "reply_output_done",
+          "status": "sample_order_observed"
+        }
+      ],
+      "microphone_uploaded": false,
+      "browser_audio_tested": false,
+      "production_controlled_enabled": false,
+      "mandatory_tool_api_verified": false,
+      "current_turn_generation_gate_verified": false
+    },
+    "fc-m3-v2": {
+      "version": "fc-planning-experiment-v2",
+      "source_hashes": {
+        "scripts/fc-planning-probe.js": "c7b00a30ceb714d7d94fa8d3bfd1095000cdf858c505c27119ae3e0d2a74d4dc",
+        "packages/provider-doubao/fc-planning-probe.js": "5b3b8fa3f32be26815aa969b72c42a61a7ec49290adf75a71e355a293698e432",
+        "packages/agent-core/planner-port.js": "ca29f40b885457101f404c46d13e2054d87293a99d3bc2c053694009fc95e2e3",
+        "packages/agent-core/planner-draft.js": "f29bc2f40100bde425bc897c107e9993c9d45a32a44fe46ae9fe858cd5e04b08",
+        "packages/agent-core/planner-full-contract.js": "fe3f26b8fa5aeab021cdea132d11e113e93a54cdeb48714d998428691aa5be5e",
+        "packages/provider-minimax/planner.js": "2e22d4598bc4a1fa2b986af14fda315a1d782b15e7750fe9072f8bdb63293461",
+        "packages/agent-core/planning-state.js": "09b74f351c50a77cf3ef9b7a346fdc79b58312a3b4b6306831ac13b6d0990502"
+      },
+      "planner": {
+        "provider": "minimax",
+        "model": "MiniMax-M3",
+        "output_format": "json_prompt",
+        "prompt": "kai-planner-v3",
+        "draft": "full_contract_v3"
+      },
+      "rule_planner_mode": false,
+      "profile_sha256": "000d8d6799a1e66abc7f6568d07e47c310a7749c5ab73690175a45998f482386",
+      "input_source": "local_os_authored_speech",
+      "cases": [
+        {
+          "id": "chat",
+          "initial_planner": "rule",
+          "version": "seeduplex-fc-planning-probe-v2",
+          "input_source": "local_os_authored_speech",
+          "input_sha256": "03ef91118dadd162bb151335e47ca54c556f222023d5c050b4e1879ced44698d",
+          "microphone_uploaded": false,
+          "contains_transcripts": false,
+          "contains_audio": false,
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_observed": true,
+          "asr_final_count": 1,
+          "tool_call_batches": 1,
+          "tool_results_sent": 1,
+          "plan_accepted": true,
+          "planner_kind": "rule",
+          "plan_hash": "bee318996abaee2af59bb3cefe4521b4b5124417dbafc7349557343a31077324",
+          "pre_tool_output_events": 0,
+          "waiting_tool_output_events": 0,
+          "post_tool_output_events": 30,
+          "audio_bytes": 335547,
+          "input_frames": 592,
+          "input_frames_while_waiting": 237,
+          "hold_ms": 1200,
+          "timeline": [
+            {
+              "name": "socket_open",
+              "at_ms": 330
+            },
+            {
+              "name": "provider_ready",
+              "at_ms": 423
+            },
+            {
+              "name": "asr_final",
+              "at_ms": 4442
+            },
+            {
+              "name": "tool_call_received",
+              "at_ms": 5180
+            },
+            {
+              "name": "tool_wait_started",
+              "at_ms": 5180
+            },
+            {
+              "name": "plan_accepted",
+              "at_ms": 10194
+            },
+            {
+              "name": "tool_result_sent",
+              "at_ms": 10194
+            },
+            {
+              "name": "post_tool_output_events",
+              "at_ms": 11557
+            },
+            {
+              "name": "close_requested",
+              "at_ms": 12926
+            }
+          ],
+          "current_turn_generation_gate_verified": false,
+          "mandatory_tool_api_verified": false,
+          "real_experience_accepted": false,
+          "ended": "reply_output_done",
+          "status": "sample_order_observed"
+        }
+      ],
+      "microphone_uploaded": false,
+      "browser_audio_tested": false,
+      "production_controlled_enabled": false,
+      "mandatory_tool_api_verified": false,
+      "current_turn_generation_gate_verified": false
+    },
+    "fc-m3-final": {
+      "version": "fc-planning-experiment-v2",
+      "source_hashes": {
+        "scripts/fc-planning-probe.js": "d0c9eec3fa5fb0341059bb0dc8d00e1a5d92281f885d5093250aaa58fbfd3de6",
+        "packages/provider-doubao/fc-planning-probe.js": "dc857e3a09e383456b2ad46e52e6672745d1e4b089876960201c91717a0c04f7",
+        "packages/agent-core/planner-port.js": "ca29f40b885457101f404c46d13e2054d87293a99d3bc2c053694009fc95e2e3",
+        "packages/agent-core/planner-draft.js": "f29bc2f40100bde425bc897c107e9993c9d45a32a44fe46ae9fe858cd5e04b08",
+        "packages/agent-core/planner-full-contract.js": "fe3f26b8fa5aeab021cdea132d11e113e93a54cdeb48714d998428691aa5be5e",
+        "packages/provider-minimax/planner.js": "2e22d4598bc4a1fa2b986af14fda315a1d782b15e7750fe9072f8bdb63293461",
+        "packages/agent-core/planning-state.js": "09b74f351c50a77cf3ef9b7a346fdc79b58312a3b4b6306831ac13b6d0990502"
+      },
+      "planner": {
+        "provider": "minimax",
+        "model": "MiniMax-M3",
+        "output_format": "json_prompt",
+        "prompt": "kai-planner-v3",
+        "draft": "full_contract_v3"
+      },
+      "transport": [
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 4583
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 9950,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 8865
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3678,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3679,
+          "state": "body_received",
+          "response_bytes": 1358,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2085,
+          "completion_tokens": 170
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3679,
+          "state": "output_shape",
+          "content_bytes": 739,
+          "json_prefix": true,
+          "reasoning_present": false
+        }
+      ],
+      "rule_planner_mode": false,
+      "profile_sha256": "000d8d6799a1e66abc7f6568d07e47c310a7749c5ab73690175a45998f482386",
+      "input_source": "local_os_authored_speech",
+      "cases": [
+        {
+          "id": "chat",
+          "initial_planner": "rule",
+          "initial_degraded_reason": "planner_timeout",
+          "version": "seeduplex-fc-planning-probe-v2",
+          "input_source": "local_os_authored_speech",
+          "input_sha256": "03ef91118dadd162bb151335e47ca54c556f222023d5c050b4e1879ced44698d",
+          "microphone_uploaded": false,
+          "contains_transcripts": false,
+          "contains_audio": false,
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_observed": true,
+          "asr_final_count": 1,
+          "tool_call_batches": 1,
+          "tool_results_sent": 1,
+          "plan_accepted": true,
+          "planner_kind": "llm",
+          "degraded_reason": null,
+          "plan_hash": "2e3eb2072989a322478c7ea82d3fa392c6754520050814531a7f7790fefeaf11",
+          "pre_tool_output_events": 0,
+          "waiting_tool_output_events": 0,
+          "post_tool_output_events": 39,
+          "audio_bytes": 467328,
+          "input_frames": 504,
+          "input_frames_while_waiting": 175,
+          "hold_ms": 1200,
+          "timeline": [
+            {
+              "name": "socket_open",
+              "at_ms": 338
+            },
+            {
+              "name": "provider_ready",
+              "at_ms": 447
+            },
+            {
+              "name": "asr_final",
+              "at_ms": 4463
+            },
+            {
+              "name": "tool_call_received",
+              "at_ms": 5023
+            },
+            {
+              "name": "tool_wait_started",
+              "at_ms": 5023
+            },
+            {
+              "name": "plan_accepted",
+              "at_ms": 8727
+            },
+            {
+              "name": "tool_result_sent",
+              "at_ms": 8727
+            },
+            {
+              "name": "post_tool_output_events",
+              "at_ms": 9451
+            },
+            {
+              "name": "close_requested",
+              "at_ms": 11152
+            }
+          ],
+          "current_turn_generation_gate_verified": false,
+          "mandatory_tool_api_verified": false,
+          "real_experience_accepted": false,
+          "ended": "reply_output_done",
+          "status": "sample_order_observed"
+        }
+      ],
+      "microphone_uploaded": false,
+      "browser_audio_tested": false,
+      "production_controlled_enabled": false,
+      "mandatory_tool_api_verified": false,
+      "current_turn_generation_gate_verified": false
+    }
+  },
+  "total_connections": 8,
+  "current_turn_generation_gate_verified": false,
+  "production_controlled_enabled": false,
+  "notes": [
+    "Early v1 plan_accepted timing includes intentional hold; v2 separates timing and rechecks expiry.",
+    "M3 integrated samples include both rule fallback and LLM; never merge fallback into LLM success."
+  ]
+}

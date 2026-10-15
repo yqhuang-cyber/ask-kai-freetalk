@@ -1,0 +1,54 @@
+{
+ "schema_version":"agent-long-session-v1","source":"authored_synthetic_multi_turn_constraints","cases":[
+ {"id":"topic-lifecycle","mode":"sports","fixture":"b","turns":[
+  {"text":"我下午打篮球。","expect":{"goal":"express-time","status":"active","attempts":1}},
+  {"text":"“我下午打篮球。”是什么意思？","expect":{"goal":"express-time","attempts":1}},
+  {"text":"这个练习太难了。","expect":{"goal":"express-time","attempts":1}},
+  {"text":"这个练习我还是不会。","expect":{"goal":"express-likes","status":"active","attempts":1}},
+  {"text":"我喜欢跑步。","expect":{"goal":"express-likes","attempts":2}},
+  {"text":"我不想练习了，只想聊比赛。","expect":{"status":"paused","attempts":2}},
+  {"text":"老师说，我喜欢篮球。","expect":{"status":"paused","attempts":2}},
+  {"text":"planet 中文怎么说？","expect":{"status":"paused","attempts":2,"local_help":true}},
+  {"text":"我们继续聊宇宙。","expect":{"status":"paused","local_help":false,"attempts":2}},
+  {"text":"我想练习喜好表达。","expect":{"goal":"express-likes","status":"active","attempts":2}},
+  {"text":"我喜欢游泳。","prior_reply":{"text":"可以说：我喜欢游泳。","state":"completed"},"expect":{"attempts":3,"prompt_scope":"matching_model_forwarded"}},
+  {"text":"取消这个目标。","expect":{"goal":null,"status":"retired","attempts":3}},
+  {"text":"我喜欢篮球。","expect":{"goal":null,"attempts":3}},
+  {"text":"我想练习时间表达。","expect":{"goal":"express-time","status":"active","attempts":3}},
+  {"text":"我晚上游泳。","expect":{"goal":"express-time","attempts":4}},
+  {"text":"再见。","expect":{"goal":"express-time","status":"paused","attempts":4,"action":"CLOSE"}}
+ ]},
+ {"id":"free-consent","mode":"free","fixture":"a","turns":[
+  {"text":"planet 中文怎么说？","expect":{"goal":null,"attempts":0,"local_help":true}},
+  {"text":"我们继续聊宇宙。","expect":{"goal":null,"attempts":0,"local_help":false}},
+  {"text":"老师说，我喜欢篮球。","expect":{"goal":null,"attempts":0}},
+  {"text":"我想练习喜好表达。","expect":{"goal":"express-likes","status":"active","attempts":0}},
+  {"text":"篮球是我最喜欢的运动。","expect":{"goal":"express-likes","attempts":0}},
+  {"text":"我喜欢篮球。","expect":{"attempts":1}},
+  {"text":"我不想练习了。","expect":{"status":"paused","attempts":1}},
+  {"text":"我喜欢跑步。","expect":{"status":"paused","attempts":1}},
+  {"text":"planet 中文怎么说？","expect":{"status":"paused","local_help":true,"attempts":1}},
+  {"text":"我想练习时间表达。","expect":{"goal":"express-likes","status":"paused","attempts":1}},
+  {"text":"我们继续聊宇宙。","expect":{"status":"paused","attempts":1}},
+  {"text":"我想练习喜好表达。","expect":{"status":"active","attempts":1}},
+  {"text":"我喜欢游泳。","expect":{"attempts":2}},
+  {"text":"再见。","expect":{"status":"paused","attempts":2,"action":"CLOSE"}}
+ ]},
+ {"id":"mission-declined-prerequisite","mode":"mission","fixture":"b","turns":[
+  {"text":"我上午跑步。","expect":{"goal":"express-time","attempts":1}},
+  {"text":"我想练习喜好表达。","expect":{"goal":"express-likes","attempts":1}},
+  {"text":"我喜欢足球。","expect":{"goal":"express-likes","attempts":2}},
+  {"text":"取消这个目标。","expect":{"goal":null,"status":"retired","attempts":2}},
+  {"text":"我下午打篮球。","expect":{"goal":null,"attempts":2}},
+  {"text":"planet 中文怎么说？","expect":{"goal":null,"local_help":true,"attempts":2}},
+  {"text":"我想练习时间表达。","expect":{"goal":"express-time","status":"active","attempts":2}},
+  {"text":"这个练习太难了。","expect":{"goal":"express-time","attempts":2}},
+  {"text":"这个练习我还是不会。","expect":{"goal":"express-time","status":"active","attempts":2,"declined":["express-likes"]}},
+  {"text":"“我喜欢足球。”是什么意思？","expect":{"goal":"express-time","attempts":2}},
+  {"text":"我下午游泳。","expect":{"goal":"express-time","attempts":3}},
+  {"text":"老师说，我喜欢篮球。","expect":{"goal":"express-time","attempts":3}},
+  {"text":"我们换个话题聊宇宙。","expect":{"goal":"express-time","status":"paused","attempts":3}},
+  {"text":"再见。","expect":{"status":"paused","attempts":3,"action":"CLOSE"}}
+ ]}
+ ]
+}

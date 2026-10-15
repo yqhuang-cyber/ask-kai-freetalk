@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "kind": "doubao_multiturn_trial",
+  "request_id": "multiturn-2026-10-11-05",
+  "profile_sha256": "629c7b08463cce4d2a548242cda96cf3e52363ce77e493d6f4b4f2f8e0a2b4de",
+  "dataset_sha256": "8d32f2b2729fcc5a01875781ab1f28db12d8c07e5cd2ecf0d8848f959542406a",
+  "case_id": "ask-kai-v2-001",
+  "expected_turns": 4,
+  "duration_ms": 300000
+}

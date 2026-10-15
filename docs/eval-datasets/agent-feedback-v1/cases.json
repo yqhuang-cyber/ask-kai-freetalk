@@ -1,0 +1,26 @@
+{
+  "schema_version":"agent-feedback-cases-v1",
+  "source":"independently_authored_synthetic_feedback_constraints",
+  "cases":[
+    {"id":"direct-likes","fixture":"a","text":"我喜欢篮球。","expect":{"attempts":1,"signal":"supported_attempt","prompt_scope":"unknown"}},
+    {"id":"direct-time","fixture":"b","text":"我下午打篮球。","expect":{"attempts":1,"signal":"supported_attempt","prompt_scope":"unknown"}},
+    {"id":"teacher-reported","fixture":"a","text":"老师说，我喜欢篮球。","expect":{"attempts":0,"signal":"unassessed_input"}},
+    {"id":"quoted-example","fixture":"a","text":"“我喜欢篮球。”是什么意思？","expect":{"attempts":0,"signal":"unassessed_input"}},
+    {"id":"ability-self-report","fixture":"a","text":"我会说我喜欢篮球。","expect":{"attempts":0,"signal":"unassessed_input"}},
+    {"id":"difficulty-report","fixture":"b","text":"这个练习太难了。","expect":{"attempts":0,"signal":"difficulty_report"}},
+    {"id":"negative-expression","fixture":"a","text":"我不喜欢篮球。","expect":{"attempts":0,"signal":"unassessed_input"}},
+    {"id":"question-not-statement","fixture":"a","text":"我喜欢篮球吗？","expect":{"attempts":0,"signal":"unassessed_input"}},
+    {"id":"in-final-repair","fixture":"a","text":"我喜欢篮球。不是，我说错了。","expect":{"attempts":0,"signal":"unassessed_input"}},
+    {"id":"single-english-word","fixture":"a","text":"basketball","expect":{"attempts":0,"signal":"unassessed_input"}},
+    {"id":"paraphrase-outside-rule","fixture":"a","text":"篮球是我最喜欢的运动。","expect":{"attempts":0,"signal":"unassessed_input"}},
+    {"id":"time-discussion","fixture":"b","text":"例句是，我下午打篮球。","expect":{"attempts":0,"signal":"unassessed_input"}},
+    {"id":"teacher-full-forwarded","fixture":"a","prior_reply":{"text":"可以说：我喜欢篮球。","state":"completed"},"text":"我喜欢篮球。","expect":{"attempts":1,"signal":"supported_attempt","prompt_scope":"matching_model_forwarded"}},
+    {"id":"teacher-partial-forwarded","fixture":"a","prior_reply":{"text":"我喜欢篮球。","state":"forwarded"},"text":"我喜欢篮球。","expect":{"attempts":1,"signal":"supported_attempt","prompt_scope":"matching_model_forwarded"}},
+    {"id":"client-reported-playback","fixture":"a","prior_reply":{"text":"我喜欢篮球。","state":"completed","consumption":"client_reported_complete"},"text":"我喜欢篮球。","expect":{"attempts":1,"signal":"supported_attempt","prompt_scope":"matching_model_forwarded"}},
+    {"id":"cancelled-model","fixture":"a","prior_reply":{"text":"我喜欢篮球。","state":"cancelled","late_text":"我喜欢篮球。"},"text":"我喜欢篮球。","expect":{"attempts":1,"signal":"supported_attempt","prompt_scope":"cancelled_output"}},
+    {"id":"unrelated-teacher","fixture":"a","prior_reply":{"text":"你好。","state":"completed"},"text":"我喜欢篮球。","expect":{"attempts":1,"signal":"supported_attempt","prompt_scope":"unknown"}},
+    {"id":"autonomous-same-turn","fixture":"a","prior_reply":{"text":"我喜欢篮球。","state":"completed","same_turn":true},"text":"我喜欢篮球。","expect":{"attempts":1,"signal":"supported_attempt","prompt_scope":"unknown"}},
+    {"id":"paused-target","fixture":"a","before":"我不想练习了。","text":"我喜欢篮球。","expect":{"attempts":0,"signal":"no_active_goal"}},
+    {"id":"free-no-goal","fixture":"a","mode":"free","text":"我喜欢篮球。","expect":{"attempts":0,"signal":"no_active_goal"}}
+  ]
+}

@@ -1,0 +1,69 @@
+name: POC candidate evaluation
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/live/candidate-evaluation-request.json']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: poc-candidate-evaluation
+  cancel-in-progress: false
+jobs:
+  collect:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        batch: [batch-01, batch-02, batch-03, batch-04, batch-05, batch-06, batch-07, batch-08]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci --ignore-scripts
+      - name: Read fixed input run
+        id: fixture
+        run: |
+          node --input-type=module -e 'import {readFileSync,appendFileSync} from "node:fs"; const r=JSON.parse(readFileSync(".github/live/candidate-evaluation-request.json")); const id=r.input_fixture_run; if(id!=null) {if(!Number.isSafeInteger(id)||id<1)throw new Error("INVALID_INPUT_FIXTURE_RUN");appendFileSync(process.env.GITHUB_OUTPUT,`run_id=${id}\n`);}'
+      - uses: actions/download-artifact@v4
+        if: steps.fixture.outputs.run_id != ''
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ steps.fixture.outputs.run_id }}
+          pattern: candidate-*
+          merge-multiple: true
+          path: .local/candidate-input-fixtures
+      - name: Collect explicitly declared candidate
+        # Runtime and evaluation revisions are independent. Exact runtime bytes
+        # are checked again by the candidate contract before any provider call.
+        # This permits a fixed-PCM repeat of a prior declared candidate.
+        env:
+          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+        run: |
+          node --input-type=module -e 'import {readFileSync} from "node:fs";import {execFileSync} from "node:child_process";const r=JSON.parse(readFileSync(".github/live/candidate-evaluation-request.json"));if(!/^[a-f0-9]{40}$/.test(r.agent_revision))throw new Error("INVALID_AGENT_REVISION");execFileSync("git",["restore",`--source=${r.agent_revision}`,"--worktree","--","packages","apps/realtime-gateway","apps/hskai-mock"]);'
+          node scripts/actions-candidate-evaluation.js ${{ matrix.batch }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: candidate-${{ matrix.batch }}
+          path: |
+            .local/candidate-evaluation/candidate.json
+            .local/candidate-evaluation/request.json
+            .local/candidate-evaluation/failure.json
+            .local/candidate-evaluation/observations.json
+            .local/candidate-evaluation/collection-report.json
+            .local/candidate-evaluation/protocol-diagnostics.json
+            .local/candidate-evaluation/scoring-input.json
+            .local/candidate-evaluation/judgements.json
+            .local/candidate-evaluation/score-report.json
+            .local/candidate-evaluation/*/audio-manifest.json
+            .local/candidate-evaluation/*/*.pcm
+          retention-days: 7

@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "reviewed": true,
+  "endpoint": "wss://openspeech.bytedance.com/api/v3/duplex/realtime/dialogue",
+  "evidence_source": "https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh",
+  "auth": {
+    "header": "X-Api-Key",
+    "env": "DOUBAO_API_KEY",
+    "prefix": ""
+  },
+  "ready": {
+    "type": "session.created",
+    "session_id_path": "session.id"
+  },
+  "observed_event_types": [
+    "session.created",
+    "session.updated",
+    "session.closed",
+    "error",
+    "input_audio_buffer.committed",
+    "conversation.item.input_audio_transcription.started",
+    "conversation.item.input_audio_transcription.delta",
+    "conversation.item.input_audio_transcription.completed",
+    "conversation.item.input_audio_transcription.failed",
+    "response.output_text.delta",
+    "response.output_text.done",
+    "response.output_audio.started",
+    "response.output_audio.delta",
+    "response.output_audio.done",
+    "response.done",
+    "response.canceled",
+    "response.function_call_arguments.done"
+  ],
+  "identity_paths": [
+    "session.id",
+    "item_id",
+    "question_id",
+    "response_id"
+  ],
+  "probe": {
+    "mute_after_ready": true
+  },
+  "session_create": {
+    "type": "session.create",
+    "session": {
+      "model": "1.2.6.1",
+      "instructions": "你是 Kai，一位友善的 AI 中文学习伙伴。请用简短中文回答。",
+      "audio": {
+        "input": {
+          "format": {
+            "type": "pcm",
+            "rate": 16000
+          }
+        },
+        "output": {
+          "format": {
+            "type": "pcm_s16le",
+            "rate": 24000
+          },
+          "voice": "zh_male_xiaotian_jupiter_bigtts",
+          "speed": -20
+        }
+      }
+    }
+  },
+  "realtime": {
+    "protocol": "seeduplex-1.2.6.1",
+    "reviewed": false,
+    "ordered_acks_reviewed": false,
+    "evidence_source": "https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh",
+    "audio": {
+      "encoding": "pcm_s16le",
+      "input_rate": 16000,
+      "output_rate": 24000,
+      "frame_ms": 20
+    },
+    "initial_instructions": "session.instructions"
+  },
+  "review_scope": "static_session_connect_only"
+}

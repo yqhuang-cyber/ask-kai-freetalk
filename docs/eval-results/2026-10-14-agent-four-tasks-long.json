@@ -1,0 +1,1413 @@
+{
+  "version": "agent-long-session-eval-v1",
+  "dataset_sha256": "7497fdd22f49f82ef3b80303f19425e999ba75008b103c786256d92d4d0cdafb",
+  "synthetic_inputs": true,
+  "synthetic_output_events": true,
+  "real_provider_connected": false,
+  "model_calls_enabled": false,
+  "cases": [
+    {
+      "id": "topic-lifecycle",
+      "mode": "sports",
+      "turns": [
+        {
+          "index": 0,
+          "goal": "express-time",
+          "status": "active",
+          "attempts": 1,
+          "local_help": false,
+          "action": "FOLLOW_UP",
+          "prompt_scope": "unknown",
+          "declined": [],
+          "planner": "rule",
+          "rationale": "fallback_follow_observed_content",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 1,
+          "goal": "express-time",
+          "status": "active",
+          "attempts": 1,
+          "local_help": false,
+          "action": "FOLLOW_UP",
+          "prompt_scope": "unknown",
+          "declined": [],
+          "planner": "rule",
+          "rationale": "conservative_planner_fallback",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 2,
+          "goal": "express-time",
+          "status": "active",
+          "attempts": 1,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [],
+          "planner": "rule",
+          "rationale": "fallback_student_difficulty",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 3,
+          "goal": "express-likes",
+          "status": "active",
+          "attempts": 1,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [],
+          "planner": "rule",
+          "rationale": "repeated_explicit_difficulty",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 4,
+          "goal": "express-likes",
+          "status": "active",
+          "attempts": 2,
+          "local_help": false,
+          "action": "FOLLOW_UP",
+          "prompt_scope": "unknown",
+          "declined": [],
+          "planner": "rule",
+          "rationale": "fallback_follow_observed_content",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 5,
+          "goal": "express-likes",
+          "status": "paused",
+          "attempts": 2,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_respect_current_choice",
+          "checks": [
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 6,
+          "goal": "express-likes",
+          "status": "paused",
+          "attempts": 2,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_reported_content",
+          "checks": [
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 7,
+          "goal": "express-likes",
+          "status": "paused",
+          "attempts": 2,
+          "local_help": true,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_local_expression_help",
+          "checks": [
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "local_help",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 8,
+          "goal": "express-likes",
+          "status": "paused",
+          "attempts": 2,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_paused_conversation",
+          "checks": [
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "local_help",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 9,
+          "goal": "express-likes",
+          "status": "active",
+          "attempts": 2,
+          "local_help": false,
+          "action": "FOLLOW_UP",
+          "prompt_scope": "unknown",
+          "declined": [],
+          "planner": "rule",
+          "rationale": "conservative_planner_fallback",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 10,
+          "goal": "express-likes",
+          "status": "active",
+          "attempts": 3,
+          "local_help": false,
+          "action": "FOLLOW_UP",
+          "prompt_scope": "matching_model_forwarded",
+          "declined": [],
+          "planner": "rule",
+          "rationale": "fallback_follow_observed_content",
+          "checks": [
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "prompt_scope",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 11,
+          "goal": null,
+          "status": "retired",
+          "attempts": 3,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_paused_conversation",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 12,
+          "goal": null,
+          "status": "retired",
+          "attempts": 3,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_paused_conversation",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 13,
+          "goal": "express-time",
+          "status": "active",
+          "attempts": 3,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_requested_practice",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 14,
+          "goal": "express-time",
+          "status": "active",
+          "attempts": 4,
+          "local_help": false,
+          "action": "FOLLOW_UP",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_follow_observed_content",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 15,
+          "goal": "express-time",
+          "status": "paused",
+          "attempts": 4,
+          "local_help": false,
+          "action": "CLOSE",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "student_end_rule",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "action",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        }
+      ],
+      "snapshots": 16,
+      "passed": true,
+      "summary": {
+        "attempts": 4,
+        "goals": [
+          {
+            "id": "express-time",
+            "status": "paused",
+            "assessment": "unverified"
+          },
+          {
+            "id": "express-likes",
+            "status": "retired",
+            "assessment": "unverified"
+          }
+        ],
+        "controlled_execution": false
+      },
+      "shadow_candidates": [],
+      "synthetic": true,
+      "provider_connected": false,
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "free-consent",
+      "mode": "free",
+      "turns": [
+        {
+          "index": 0,
+          "goal": null,
+          "status": "unverified",
+          "attempts": 0,
+          "local_help": true,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [],
+          "planner": "rule",
+          "rationale": "fallback_local_expression_help",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "local_help",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 1,
+          "goal": null,
+          "status": "unverified",
+          "attempts": 0,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [],
+          "planner": "rule",
+          "rationale": "conservative_planner_fallback",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "local_help",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 2,
+          "goal": null,
+          "status": "unverified",
+          "attempts": 0,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [],
+          "planner": "rule",
+          "rationale": "fallback_reported_content",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 3,
+          "goal": "express-likes",
+          "status": "active",
+          "attempts": 0,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [],
+          "planner": "rule",
+          "rationale": "fallback_requested_practice",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 4,
+          "goal": "express-likes",
+          "status": "active",
+          "attempts": 0,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [],
+          "planner": "rule",
+          "rationale": "conservative_planner_fallback",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 5,
+          "goal": "express-likes",
+          "status": "active",
+          "attempts": 1,
+          "local_help": false,
+          "action": "FOLLOW_UP",
+          "prompt_scope": "unknown",
+          "declined": [],
+          "planner": "rule",
+          "rationale": "fallback_follow_observed_content",
+          "checks": [
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 6,
+          "goal": "express-likes",
+          "status": "paused",
+          "attempts": 1,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_respect_current_choice",
+          "checks": [
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 7,
+          "goal": "express-likes",
+          "status": "paused",
+          "attempts": 1,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_paused_conversation",
+          "checks": [
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 8,
+          "goal": "express-likes",
+          "status": "paused",
+          "attempts": 1,
+          "local_help": true,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_local_expression_help",
+          "checks": [
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "local_help",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 9,
+          "goal": "express-likes",
+          "status": "paused",
+          "attempts": 1,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_paused_conversation",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 10,
+          "goal": "express-likes",
+          "status": "paused",
+          "attempts": 1,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_paused_conversation",
+          "checks": [
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 11,
+          "goal": "express-likes",
+          "status": "active",
+          "attempts": 1,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [],
+          "planner": "rule",
+          "rationale": "fallback_requested_practice",
+          "checks": [
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 12,
+          "goal": "express-likes",
+          "status": "active",
+          "attempts": 2,
+          "local_help": false,
+          "action": "FOLLOW_UP",
+          "prompt_scope": "unknown",
+          "declined": [],
+          "planner": "rule",
+          "rationale": "fallback_follow_observed_content",
+          "checks": [
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 13,
+          "goal": "express-likes",
+          "status": "paused",
+          "attempts": 2,
+          "local_help": false,
+          "action": "CLOSE",
+          "prompt_scope": "unknown",
+          "declined": [],
+          "planner": "rule",
+          "rationale": "student_end_rule",
+          "checks": [
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "action",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        }
+      ],
+      "snapshots": 14,
+      "passed": true,
+      "summary": {
+        "attempts": 2,
+        "goals": [
+          {
+            "id": "express-likes",
+            "status": "paused",
+            "assessment": "unverified"
+          }
+        ],
+        "controlled_execution": false
+      },
+      "shadow_candidates": [],
+      "synthetic": true,
+      "provider_connected": false,
+      "semantic_quality_accepted": false
+    },
+    {
+      "id": "mission-declined-prerequisite",
+      "mode": "mission",
+      "turns": [
+        {
+          "index": 0,
+          "goal": "express-time",
+          "status": "active",
+          "attempts": 1,
+          "local_help": false,
+          "action": "FOLLOW_UP",
+          "prompt_scope": "unknown",
+          "declined": [],
+          "planner": "rule",
+          "rationale": "fallback_follow_observed_content",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 1,
+          "goal": "express-likes",
+          "status": "active",
+          "attempts": 1,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [],
+          "planner": "rule",
+          "rationale": "fallback_requested_practice",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 2,
+          "goal": "express-likes",
+          "status": "active",
+          "attempts": 2,
+          "local_help": false,
+          "action": "FOLLOW_UP",
+          "prompt_scope": "unknown",
+          "declined": [],
+          "planner": "rule",
+          "rationale": "fallback_follow_observed_content",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 3,
+          "goal": null,
+          "status": "retired",
+          "attempts": 2,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_paused_conversation",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 4,
+          "goal": null,
+          "status": "retired",
+          "attempts": 2,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_paused_conversation",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 5,
+          "goal": null,
+          "status": "retired",
+          "attempts": 2,
+          "local_help": true,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_local_expression_help",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "local_help",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 6,
+          "goal": "express-time",
+          "status": "active",
+          "attempts": 2,
+          "local_help": false,
+          "action": "FOLLOW_UP",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "conservative_planner_fallback",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 7,
+          "goal": "express-time",
+          "status": "active",
+          "attempts": 2,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_student_difficulty",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 8,
+          "goal": "express-time",
+          "status": "active",
+          "attempts": 2,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_student_difficulty",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "declined",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 9,
+          "goal": "express-time",
+          "status": "active",
+          "attempts": 2,
+          "local_help": false,
+          "action": "FOLLOW_UP",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "conservative_planner_fallback",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 10,
+          "goal": "express-time",
+          "status": "active",
+          "attempts": 3,
+          "local_help": false,
+          "action": "FOLLOW_UP",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_follow_observed_content",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 11,
+          "goal": "express-time",
+          "status": "active",
+          "attempts": 3,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_reported_content",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 12,
+          "goal": "express-time",
+          "status": "paused",
+          "attempts": 3,
+          "local_help": false,
+          "action": "RESPOND",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "fallback_respect_current_choice",
+          "checks": [
+            {
+              "field": "goal",
+              "passed": true
+            },
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "index": 13,
+          "goal": "express-time",
+          "status": "paused",
+          "attempts": 3,
+          "local_help": false,
+          "action": "CLOSE",
+          "prompt_scope": "unknown",
+          "declined": [
+            "express-likes"
+          ],
+          "planner": "rule",
+          "rationale": "student_end_rule",
+          "checks": [
+            {
+              "field": "status",
+              "passed": true
+            },
+            {
+              "field": "attempts",
+              "passed": true
+            },
+            {
+              "field": "action",
+              "passed": true
+            },
+            {
+              "field": "attempted_only",
+              "passed": true
+            }
+          ],
+          "passed": true
+        }
+      ],
+      "snapshots": 14,
+      "passed": true,
+      "summary": {
+        "attempts": 3,
+        "goals": [
+          {
+            "id": "express-time",
+            "status": "paused",
+            "assessment": "unverified"
+          },
+          {
+            "id": "express-likes",
+            "status": "retired",
+            "assessment": "unverified"
+          }
+        ],
+        "controlled_execution": false
+      },
+      "shadow_candidates": [],
+      "synthetic": true,
+      "provider_connected": false,
+      "semantic_quality_accepted": false
+    }
+  ],
+  "denominators": {
+    "sessions": 3,
+    "turns": 44,
+    "passed_turns": 44
+  },
+  "semantic_quality_accepted": false
+}

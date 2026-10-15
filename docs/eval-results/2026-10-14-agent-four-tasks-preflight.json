@@ -1,0 +1,23 @@
+{
+  "version": "accepted-planner-semantic-review-v1",
+  "source": "authored_synthetic_goal_eval",
+  "dataset_sha256": "ff32faffb09359bc55235caff84fe143b18a5eeaa27900c4a621ba14ce4a45de",
+  "private_review_sha256": "d3d9a758d0657df816932f38e5bb65dad8b343bca92e435fc69f78d7148cffa8",
+  "context_rows_validated": 18,
+  "input_bundle_version": "synthetic-planning-review-v2",
+  "limited_context": false,
+  "missing_context": [],
+  "denominators": {
+    "accepted_llm_proposals": 0,
+    "reviewed": 0,
+    "all_criteria_pass": 0
+  },
+  "cases": [],
+  "transport": [],
+  "model_calls_enabled": false,
+  "review_mode": "preflight_only",
+  "human_calibrated": false,
+  "semantic_quality_accepted": false,
+  "real_voice_connected": false,
+  "contains_transcripts": false
+}

@@ -1,0 +1,20 @@
+import { ExperienceTrace } from '../apps/realtime-gateway/public/diagnostics.js';
+// Authored metadata only: no network, account, microphone or real student data.
+const trace=new ExperienceTrace({now:()=>0});
+const gateway=(name,at_ms,fields={})=>trace.gateway({name,at_ms,fields});
+gateway('session.config',0,{synthetic:true,protocol:'synthetic',input_rate:16000,output_rate:24000,frame_ms:20,speed_explicit:false,cancel_timeout_ms:1500});
+gateway('session.ready',10,{provider_ready:true});
+gateway('response.started',100,{response_id:'synthetic-reply',turn_id:'synthetic-turn'});
+gateway('response.first_text',120,{response_id:'synthetic-reply',elapsed_ms:20});
+trace.record('caption.received',{response_id:'synthetic-reply',chars:30,pending_chars:30},'browser',150);
+gateway('response.first_audio',140,{response_id:'synthetic-reply',elapsed_ms:40});
+trace.record('audio.queued',{response_id:'synthetic-reply',queue_ms:650,duration_ms:620},'browser',180);
+trace.record('caption.revealed',{response_id:'synthetic-reply',visible_chars:3,pending_chars:27},'browser',220);
+trace.record('manual.interrupt',{response_id:'synthetic-reply'},'browser',250);
+trace.record('audio.stopped',{sources:2,queue_ms:580},'browser',250);
+trace.record('caption.cleared',{response_id:'synthetic-reply',visible_chars:3,pending_chars:27},'browser',250);
+gateway('cancel.requested',225,{response_id:'synthetic-reply',source:'manual',active:true,pending_context:false});
+gateway('event.dropped',230,{response_id:'synthetic-reply',reason:'inactive_response'});
+gateway('cancel.ack',255,{response_id:'synthetic-reply',ack_ms:30});
+gateway('response.complete',255,{response_id:'synthetic-reply',state:'cancelled',text_chars:30,text_deltas:1,audio_chunks:2,pcm_duration_ms:620,elapsed_ms:155});
+console.log(JSON.stringify(trace.snapshot({caseId:'E07'}),null,2));

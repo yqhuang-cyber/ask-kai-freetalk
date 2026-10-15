@@ -1,0 +1,35 @@
+name: Doubao live connection probe
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/live/doubao-connect-request.json']
+permissions:
+  contents: read
+concurrency:
+  group: doubao-live-connect
+  cancel-in-progress: false
+jobs:
+  connect:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci --ignore-scripts
+      - name: Live metadata-only connect (5 seconds)
+        env:
+          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+        run: node scripts/actions-doubao-probe.js --live
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: doubao-connect-metadata
+          path: .local/doubao-connect/result.json
+          retention-days: 3
+          if-no-files-found: warn

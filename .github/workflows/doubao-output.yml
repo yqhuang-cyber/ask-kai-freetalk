@@ -1,0 +1,34 @@
+name: Doubao live output and controls probe
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/live/doubao-output-request.json']
+permissions:
+  contents: read
+concurrency:
+  group: doubao-live-output
+  cancel-in-progress: false
+jobs:
+  output:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci --ignore-scripts
+      - name: Fixed authored TTS, update, cancel and graceful close
+        env:
+          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+        run: node scripts/actions-doubao-output.js
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: doubao-output-metadata
+          path: .local/doubao-output/result.json
+          retention-days: 3

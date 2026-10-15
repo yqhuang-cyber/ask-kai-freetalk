@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "kind": "ask_kai_evaluation_batch",
+  "request_id": "evaluation-2026-10-12-01",
+  "agent_revision": "6661d7ba3ecf7f3eef8f23f74c5d625cb8f457e2",
+  "dataset_sha256": "8d32f2b2729fcc5a01875781ab1f28db12d8c07e5cd2ecf0d8848f959542406a",
+  "profile_sha256": "dc1a5bbd61c67969313f85286af1b872591a732225d55487302e3bc561bfafc0",
+  "batch_count": 8,
+  "duration_ms": 1200000,
+  "case_ids": [
+    "ask-kai-v2-031"
+  ],
+  "rerun_of": 38155134937
+}

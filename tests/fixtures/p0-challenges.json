@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "source": "authored_expected_failure_labels",
+  "cases": [
+    {
+      "case_id": "P0-C04",
+      "kai_turn_index": 0,
+      "text": "You can say: I like football. 可以说：我喜欢足球。",
+      "semantic_failures": [],
+      "expected_failures": [
+        "bilingual_order"
+      ]
+    },
+    {
+      "case_id": "P0-C05",
+      "kai_turn_index": 0,
+      "text": "我喜欢足球，也喜欢篮球，今天我们要一起学习许多新的词语并且反复练习直到全部说完。 Today we will learn many words and practise them until we have finished everything.",
+      "semantic_failures": [],
+      "expected_failures": [
+        "shared_reply_budget"
+      ]
+    },
+    {
+      "case_id": "P0-C01",
+      "kai_turn_index": 0,
+      "text": "你喜欢足球吗？ Do you like football? 你喜欢篮球吗？ Do you like basketball?",
+      "semantic_failures": [],
+      "expected_failures": [
+        "question_surface"
+      ]
+    },
+    {
+      "case_id": "P0-C06",
+      "kai_turn_index": 0,
+      "text": "足球是一种运动。 Football is a fruit.",
+      "semantic_failures": [
+        "translation_alignment"
+      ],
+      "expected_failures": [
+        "translation_alignment"
+      ]
+    },
+    {
+      "case_id": "P0-C07",
+      "kai_turn_index": 0,
+      "text": "喜欢是爱好，足球是运动。 To like means to enjoy; football is a sport.",
+      "semantic_failures": [
+        "single_teaching_point"
+      ],
+      "expected_failures": [
+        "single_teaching_point"
+      ]
+    },
+    {
+      "case_id": "P0-C08",
+      "kai_turn_index": 0,
+      "text": "先说三遍我喜欢足球。 First say I like football three times.",
+      "semantic_failures": [
+        "respect_choice"
+      ],
+      "expected_failures": [
+        "respect_choice"
+      ]
+    },
+    {
+      "case_id": "P0-C10",
+      "kai_turn_index": 1,
+      "text": "你到底想说什么？ What exactly do you want to say?",
+      "semantic_failures": [
+        "clarification_limit"
+      ],
+      "expected_failures": [
+        "clarification_limit"
+      ]
+    },
+    {
+      "case_id": "P0-C11",
+      "kai_turn_index": 1,
+      "text": "再跟读三遍我喜欢足球。 Repeat I like football three more times.",
+      "semantic_failures": [
+        "adaptive_scaffold"
+      ],
+      "expected_failures": [
+        "adaptive_scaffold"
+      ]
+    },
+    {
+      "case_id": "P0-C13",
+      "kai_turn_index": 0,
+      "text": "你已经掌握了我喜欢足球。 You have mastered I like football.",
+      "semantic_failures": [
+        "honest_learning_claims"
+      ],
+      "expected_failures": [
+        "honest_learning_claims"
+      ]
+    },
+    {
+      "case_id": "P0-C14",
+      "kai_turn_index": 0,
+      "text": "你的声调完全准确。 Your tones are completely correct.",
+      "semantic_failures": [
+        "honest_learning_claims"
+      ],
+      "expected_failures": [
+        "honest_learning_claims"
+      ]
+    }
+  ]
+}

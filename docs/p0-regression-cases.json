@@ -1,0 +1,356 @@
+{
+  "version": 1,
+  "suite_version": "kai-p0-v1",
+  "scope": "reported_poc_experience_only",
+  "original_workbook": false,
+  "content_cases": [
+    {
+      "id": "P0-C01",
+      "mode": "sports",
+      "scenario": "尝试后自然回应",
+      "checks": [
+        "translation_alignment",
+        "single_teaching_point",
+        "one_question_or_task",
+        "natural_relevance",
+        "honest_learning_claims"
+      ],
+      "expected": [
+        "承接喜好，只追问一个问题；不宣称掌握。"
+      ]
+    },
+    {
+      "id": "P0-C02",
+      "mode": "mission",
+      "scenario": "Mission 第一目标承接",
+      "checks": [
+        "translation_alignment",
+        "single_teaching_point",
+        "one_question_or_task",
+        "natural_relevance",
+        "honest_learning_claims"
+      ],
+      "expected": [
+        "示例 Mission 的第一目标是表达喜好；承接到生活，不罗列其他目标。"
+      ]
+    },
+    {
+      "id": "P0-C03",
+      "mode": "free",
+      "scenario": "日常交流零教学",
+      "checks": [
+        "translation_alignment",
+        "single_teaching_point",
+        "one_question_or_task",
+        "natural_relevance",
+        "honest_learning_claims"
+      ],
+      "expected": [
+        "回应学生当前话题，不强行引入运动或学习任务。"
+      ]
+    },
+    {
+      "id": "P0-C04",
+      "mode": "sports",
+      "scenario": "英文输入仍按中英句对回复",
+      "checks": [
+        "translation_alignment",
+        "single_teaching_point",
+        "one_question_or_task",
+        "natural_relevance",
+        "honest_learning_claims"
+      ],
+      "expected": [
+        "学生说英文也先短中文、再对应英文，示范不额外展开。"
+      ]
+    },
+    {
+      "id": "P0-C05",
+      "mode": "mission",
+      "scenario": "混合语言输入",
+      "checks": [
+        "translation_alignment",
+        "single_teaching_point",
+        "one_question_or_task",
+        "natural_relevance",
+        "honest_learning_claims"
+      ],
+      "expected": [
+        "接受混合表达，回应当前意图，不把混合输入当作能力差。"
+      ]
+    },
+    {
+      "id": "P0-C06",
+      "mode": "free",
+      "scenario": "英文翻译须对应中文",
+      "checks": [
+        "translation_alignment",
+        "single_teaching_point",
+        "one_question_or_task",
+        "natural_relevance",
+        "honest_learning_claims"
+      ],
+      "expected": [
+        "中文事实正确，英文忠实对应，没有额外内容。"
+      ]
+    },
+    {
+      "id": "P0-C07",
+      "mode": "sports",
+      "scenario": "请求长解释仍只解释一个点",
+      "checks": [
+        "translation_alignment",
+        "single_teaching_point",
+        "one_question_or_task",
+        "natural_relevance",
+        "honest_learning_claims"
+      ],
+      "expected": [
+        "本轮只解释一个点，其他内容留待学生回应，不堆词义、语法、示例。"
+      ]
+    },
+    {
+      "id": "P0-C08",
+      "mode": "sports",
+      "scenario": "拒绝练习",
+      "checks": [
+        "translation_alignment",
+        "single_teaching_point",
+        "one_question_or_task",
+        "natural_relevance",
+        "honest_learning_claims",
+        "respect_choice"
+      ],
+      "expected": [
+        "尊重拒绝，不继续要求复述、跟读或说明理由。"
+      ]
+    },
+    {
+      "id": "P0-C09",
+      "mode": "mission",
+      "scenario": "Mission 中换题",
+      "checks": [
+        "translation_alignment",
+        "single_teaching_point",
+        "one_question_or_task",
+        "natural_relevance",
+        "honest_learning_claims",
+        "respect_choice"
+      ],
+      "expected": [
+        "暂停原目标，跟随新话题，一次至多一个问题。"
+      ]
+    },
+    {
+      "id": "P0-C10",
+      "mode": "free",
+      "scenario": "含糊后只澄清一次",
+      "checks": [
+        "translation_alignment",
+        "single_teaching_point",
+        "one_question_or_task",
+        "natural_relevance",
+        "honest_learning_claims",
+        "clarification_limit"
+      ],
+      "expected": [
+        "第一次可澄清一次；继续含糊时等待，不再次盘问或催促。"
+      ]
+    },
+    {
+      "id": "P0-C11",
+      "mode": "sports",
+      "scenario": "已尝试后减少支架",
+      "checks": [
+        "translation_alignment",
+        "single_teaching_point",
+        "one_question_or_task",
+        "natural_relevance",
+        "honest_learning_claims",
+        "adaptive_scaffold"
+      ],
+      "expected": [
+        "尝试后跟进内容，避免反复示范或强制跟读。"
+      ]
+    },
+    {
+      "id": "P0-C12",
+      "mode": "free",
+      "scenario": "求助示范后自然交流",
+      "checks": [
+        "translation_alignment",
+        "single_teaching_point",
+        "one_question_or_task",
+        "natural_relevance",
+        "honest_learning_claims",
+        "adaptive_scaffold"
+      ],
+      "expected": [
+        "求助时给一个示范，后续尝试后减少支架；没有发音或掌握结论。"
+      ]
+    },
+    {
+      "id": "P0-C13",
+      "mode": "sports",
+      "scenario": "引用示例不等于掌握",
+      "checks": [
+        "translation_alignment",
+        "single_teaching_point",
+        "one_question_or_task",
+        "natural_relevance",
+        "honest_learning_claims"
+      ],
+      "expected": [
+        "引用教师示例不算独立使用、掌握或学生发音证据。"
+      ]
+    },
+    {
+      "id": "P0-C14",
+      "mode": "free",
+      "scenario": "没有发音评测就不诊断",
+      "checks": [
+        "translation_alignment",
+        "single_teaching_point",
+        "one_question_or_task",
+        "natural_relevance",
+        "honest_learning_claims"
+      ],
+      "expected": [
+        "不从识别或听懂推断声调准确、发音标准或具体诊断。"
+      ]
+    },
+    {
+      "id": "P0-C15",
+      "mode": "mission",
+      "scenario": "结束意图不给新任务",
+      "checks": [
+        "translation_alignment",
+        "single_teaching_point",
+        "one_question_or_task",
+        "natural_relevance",
+        "honest_learning_claims",
+        "respect_choice"
+      ],
+      "expected": [
+        "回应结束，不追加练习或新问题；口语结束建议不冒充实际挂断。"
+      ]
+    },
+    {
+      "id": "P0-C16",
+      "mode": "free",
+      "scenario": "英文优先请求不覆盖 P0 顺序",
+      "checks": [
+        "translation_alignment",
+        "single_teaching_point",
+        "one_question_or_task",
+        "natural_relevance",
+        "honest_learning_claims"
+      ],
+      "expected": [
+        "回答表达求助，仍遵守中文先、对应英文后，不朗读内部规则。"
+      ]
+    }
+  ],
+  "runtime_cases": [
+    {
+      "id": "P0-R01",
+      "concern": "语速配置与真实就绪",
+      "node_tests": [
+        "tests/speech-pace.test.js",
+        "tests/realtime.test.js"
+      ],
+      "browser_check": "scripts/browser-check.js",
+      "manual_cases": [
+        "E01"
+      ]
+    },
+    {
+      "id": "P0-R02",
+      "concern": "停顿等待与插话确认",
+      "node_tests": [
+        "tests/turn-taking.test.js"
+      ],
+      "browser_check": "scripts/browser-check.js",
+      "manual_cases": [
+        "E02",
+        "E03",
+        "E04",
+        "E05",
+        "E06"
+      ]
+    },
+    {
+      "id": "P0-R03",
+      "concern": "取消、迟到事件与持续采音",
+      "node_tests": [
+        "tests/interruption.test.js",
+        "tests/seeduplex.test.js"
+      ],
+      "browser_check": "scripts/browser-check.js",
+      "manual_cases": [
+        "E06",
+        "E07"
+      ]
+    },
+    {
+      "id": "P0-R04",
+      "concern": "中英顺序与共享回复预算",
+      "node_tests": [
+        "tests/reply-policy.test.js"
+      ],
+      "browser_check": "scripts/browser-check.js",
+      "manual_cases": [
+        "E01",
+        "E08"
+      ]
+    },
+    {
+      "id": "P0-R05",
+      "concern": "自然教学、拒绝、换题与冷却",
+      "node_tests": [
+        "tests/natural-teaching.test.js"
+      ],
+      "browser_check": "scripts/browser-check.js",
+      "manual_cases": [
+        "E08"
+      ]
+    },
+    {
+      "id": "P0-R06",
+      "concern": "渐进字幕、播放时钟与清理",
+      "node_tests": [
+        "tests/captions.test.js",
+        "tests/experience-baseline.test.js"
+      ],
+      "browser_check": "scripts/browser-check.js",
+      "manual_cases": [
+        "E01",
+        "E07",
+        "E08"
+      ]
+    },
+    {
+      "id": "P0-R07",
+      "concern": "有来源的总结、未知目标与异常状态",
+      "node_tests": [
+        "tests/learning-summary.test.js",
+        "tests/authorization.test.js"
+      ],
+      "browser_check": "scripts/browser-check.js",
+      "manual_cases": [
+        "E09"
+      ]
+    },
+    {
+      "id": "P0-R08",
+      "concern": "总结卡、空状态与会话隔离",
+      "node_tests": [
+        "tests/summary-cards.test.js"
+      ],
+      "browser_check": "scripts/browser-check.js",
+      "manual_cases": [
+        "E09"
+      ]
+    }
+  ]
+}

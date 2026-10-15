@@ -1,0 +1,85 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { once } from 'node:events';
+import { readFile } from 'node:fs/promises';
+import { ExperienceTrace,metadata } from '../apps/realtime-gateway/public/diagnostics.js';
+import { Presentation } from '../apps/realtime-gateway/public/presentation.js';
+import { setup,until } from './helpers/realtime.js';
+
+test('export aliases reply/turn IDs, filters arbitrary strings and keeps clocks separate',()=>{
+  let now=100;const trace=new ExperienceTrace({now:()=>now});
+  trace.gateway({name:'session.config',at_ms:2,fields:{synthetic:false,protocol:'seeduplex-1.2.6.1',text:'private transcript',api_key:'secret',voice:'private-voice',endpoint:'secret-url'}});
+  trace.gateway({name:'session.ready',at_ms:5,fields:{provider_ready:true}});
+  now=108;trace.record('caption.received',{response_id:'private-response',turn_id:'private-turn',chars:9,pending_chars:9,audio:'secret-audio'});
+  trace.gateway({name:'response.complete',at_ms:20,fields:{response_id:'private-response',turn_id:'private-turn',state:'done',text_chars:9,pcm_duration_ms:1800,elapsed_ms:15,text_deltas:2,audio_chunks:3}});
+  trace.gateway({name:'arbitrary-secret-name',at_ms:30,fields:{}});
+  const report=trace.snapshot({caseId:'E01',outcome:'pass'}),json=JSON.stringify(report);
+  for(const value of ['private-response','private-turn','private transcript','secret','private-voice'])assert.ok(!json.includes(value));
+  assert.equal(report.kind,'real_provider');assert.equal(report.real_experience_accepted,false);
+  assert.equal(report.timeline[2].at_ms,8);assert.equal(report.timeline[3].at_ms,20);
+  assert.equal(report.timeline[2].response_ref,report.timeline[3].response_ref);
+  assert.equal(report.summary.responses[0].received_pcm_ms,1800);
+  assert.deepEqual(metadata({queue_ms:NaN,frames:Infinity,text:'secret',code:'SECRET_CODE',state:'secret',output_speed:-20}),{output_speed:-20});
+  assert.deepEqual(metadata(JSON.parse('{"__proto__":{"text":"secret"},"constructor":"secret"}')),{});
+  assert.deepEqual(metadata(null),{});
+});
+test('trace bounds memory and makes incomplete retention explicit; synthetic never becomes real',()=>{
+  const trace=new ExperienceTrace({now:()=>0,limit:2});
+  trace.gateway({name:'session.config',at_ms:0,fields:{synthetic:true}});
+  trace.gateway({name:'session.ready',at_ms:1,fields:{provider_ready:true}});
+  for(let i=0;i<4;i++)trace.record('caption.revealed',{response_id:'reply',visible_chars:i},'browser',i);
+  const report=trace.snapshot({caseId:'bad private case',outcome:'invented'});
+  assert.equal(report.kind,'synthetic');assert.equal(report.truncated,true);assert.equal(report.discarded_rows,4);
+  assert.equal(report.timeline.length,2);assert.equal(report.case_id,'unselected');assert.equal(report.operator_outcome,'not_run');
+  assert.deepEqual(report.timeline.map(r=>r.seq),[5,6]);
+});
+test('gateway diagnostics are opt-in, distinguish interruption source, count output and fence stale events',async t=>{
+  const {create,open}=await setup(t);const {ws,packets,provider}=await open(await(await create()).json());
+  provider.emit('session.ready');provider.emit('user.final',{text:'私密学生文本'},{turn_id:'student'});
+  await until(()=>packets.some(p=>p.event?.type==='user.final'));
+  assert.ok(!packets.some(p=>p.type==='diagnostics.event'));
+  ws.send(JSON.stringify({type:'diagnostics.enable'}));await until(()=>packets.some(p=>p.row?.name==='session.config'));
+  const ids={turn_id:'student',response_id:'reply'};
+  provider.emit('response.started',{},ids);provider.emit('response.text.delta',{text:'你好！'},ids);
+  provider.emit('response.audio.chunk',{byte_length:960,format:'pcm_s16le'},ids,{audio:Buffer.alloc(960).toString('base64'),sample_rate:24000});
+  provider.control('user.speech.started',{turn_id:'next-student'});
+  provider.emit('response.text.delta',{text:'迟到的私密文本'},ids);
+  provider.emit('response.cancelled',{},ids);
+  await until(()=>packets.some(p=>p.row?.name==='response.complete'));
+  const rows=packets.filter(p=>p.type==='diagnostics.event').map(p=>p.row),trace=new ExperienceTrace();rows.forEach(row=>trace.gateway(row));
+  const report=trace.snapshot();assert.equal(report.kind,'synthetic');
+  assert.equal(report.summary.responses[0].text_chars,3);assert.equal(report.summary.responses[0].received_pcm_ms,20);
+  assert.equal(report.summary.responses[0].state,'cancelled');assert.equal(report.summary.interruptions_by_source.provider_speech_start,1);
+  assert.equal(report.summary.gateway_dropped_events,1);assert.ok(report.summary.responses[0].cancel_ack_ms>=0);
+  assert.ok(!JSON.stringify(rows).includes('私密'));assert.ok(!JSON.stringify(rows).includes('base64'));
+  const next={turn_id:'next-student',response_id:'reply-two'};provider.emit('response.started',{},next);
+  ws.send(JSON.stringify({type:'response.cancel',response_id:'reply-two'}));await until(()=>provider.cancelled.length===2);
+  provider.emit('response.cancelled',{},next);await until(()=>packets.some(p=>p.row?.fields?.source==='manual'));
+  ws.send(Buffer.alloc(640));await until(()=>provider.frames.length===1);
+  ws.close();await once(ws,'close');
+});
+test('missing cancellation ACK is explained by source, pending state and terminal code',async t=>{
+  const {create,open}=await setup(t,{cancelTimeoutMs:30});const {ws,packets,provider}=await open(await(await create()).json());
+  ws.send(JSON.stringify({type:'diagnostics.enable'}));await until(()=>packets.some(p=>p.row?.name==='session.config'));
+  provider.emit('session.ready');provider.emit('response.started',{}, {turn_id:'t',response_id:'r'});
+  provider.control('user.speech.started');await once(ws,'close');
+  assert.ok(packets.some(p=>p.row?.name==='cancel.requested' && p.row.fields.source==='provider_speech_start'));
+  assert.ok(packets.some(p=>p.row?.name==='session.end' && p.row.fields.code==='CANCEL_ACK_TIMEOUT'));
+});
+test('caption metadata measures pending reveal, clearing and stale ownership without retaining text',()=>{
+  let tick;const observations=[],view=new Presentation({render:()=>{},play:()=>{},stopAudio:()=>{},schedule:f=>{tick=f;return 1;},unschedule:()=>{},onObserve:(name,fields)=>observations.push({name,fields})});
+  const text='一整段私密字幕，后半句也有私密内容。';
+  view.begin('r');view.append('r',text);assert.equal(observations.at(-1).fields.pending_chars,[...text].length);
+  view.done('r');
+  tick();assert.ok(observations.some(o=>o.name==='caption.revealed' && o.fields.visible_chars>0));
+  view.stop();assert.ok(observations.some(o=>o.name==='caption.cleared' && o.fields.pending_chars>0));
+  assert.equal(view.append('r','旧字幕'),false);assert.equal(observations.at(-1).name,'presentation.dropped');
+  assert.ok(!JSON.stringify(observations).includes('私密'));assert.ok(!JSON.stringify(observations).includes('旧字幕'));
+  const safe=new Presentation({render:()=>{},play:()=>{},stopAudio:()=>{},schedule:()=>1,onObserve:()=>{throw new Error('broken diagnostic sink');}});
+  safe.begin('safe');assert.equal(safe.append('safe','你好'),true);
+});
+test('fixed baseline cases cover pauses, echo, noise, bilingual, barge-in and summaries',async()=>{
+  const data=JSON.parse(await readFile(new URL('../apps/realtime-gateway/public/experience-cases.json',import.meta.url),'utf8'));
+  assert.equal(data.cases.length,9);assert.equal(new Set(data.cases.map(c=>c.id)).size,9);
+  for(const item of data.cases)assert.ok(item.action && item.check);
+});

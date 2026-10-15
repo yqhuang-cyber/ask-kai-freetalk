@@ -1,0 +1,42 @@
+{
+  "scope": "dynamic_initial_context_connection_only",
+  "input": "synthetic_mock_context",
+  "microphone_uploaded": false,
+  "voice_output_tested": false,
+  "browser_audio_tested": false,
+  "current_turn_generation_gate_verified": false,
+  "initial_plan_hash": "de81f3547c215ac8ede2ab38d6a33379ada2edd15fef48fe8bb7ad7428a5049f",
+  "context_hash": "342ae61debbe0a9dabc68147a34934f3780c6b3e881339c67e68b528825b3a36",
+  "source_profile_hash": "000d8d6799a1e66abc7f6568d07e47c310a7749c5ab73690175a45998f482386",
+  "initial_planner": "llm",
+  "degraded": false,
+  "accepted_before_connection_request": true,
+  "connection": {
+    "mode": "protocol_probe",
+    "endpoint": "wss://openspeech.bytedance.com/api/v3/duplex/realtime/dialogue",
+    "live_eligible": true,
+    "provider_connected": false,
+    "profile_reviewed": true,
+    "missing": [],
+    "profile_sha256": "ed8cf322fb4cefd203897e35a91baedaa406c8e54292121113470db30178f5fb",
+    "socket_open_observed": true,
+    "session_ready_observed": true,
+    "ended": "duration_limit",
+    "events": [
+      {
+        "time_ms": 436,
+        "type": "session.created",
+        "byte_length": 103,
+        "keys": [
+          "type",
+          "event_id",
+          "session"
+        ],
+        "identity_refs": {
+          "session.id": "1432d2d635d6efffb745a9c3"
+        }
+      }
+    ]
+  },
+  "quality_acceptance": false
+}

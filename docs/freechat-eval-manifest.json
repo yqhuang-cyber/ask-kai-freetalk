@@ -1,0 +1,124 @@
+{
+  "dataset_version": "freechat-v3.1-20261011",
+  "status": "prepared_not_executed",
+  "entry": "free",
+  "modality": "text",
+  "case_count": 40,
+  "turn_count": 244,
+  "source_sha256": "d2ded3632347e3788c6fda5d8d2fe7ba1ec198f4edaaef68d1fcf415d5219db0",
+  "case_ids": [
+    "ask-kai-v2-001",
+    "ask-kai-v2-002",
+    "ask-kai-v2-003",
+    "ask-kai-v2-004",
+    "ask-kai-v2-005",
+    "ask-kai-v2-006",
+    "ask-kai-v2-007",
+    "ask-kai-v2-008",
+    "ask-kai-v2-009",
+    "ask-kai-v2-010",
+    "ask-kai-v2-011",
+    "ask-kai-v2-012",
+    "ask-kai-v2-013",
+    "ask-kai-v2-014",
+    "ask-kai-v2-015",
+    "ask-kai-v2-016",
+    "ask-kai-v2-017",
+    "ask-kai-v2-018",
+    "ask-kai-v2-019",
+    "ask-kai-v2-020",
+    "ask-kai-v2-021",
+    "ask-kai-v2-022",
+    "ask-kai-v2-023",
+    "ask-kai-v2-024",
+    "ask-kai-v2-025",
+    "ask-kai-v2-026",
+    "ask-kai-v2-027",
+    "ask-kai-v2-028",
+    "ask-kai-v2-029",
+    "ask-kai-v2-030",
+    "ask-kai-v2-031",
+    "ask-kai-v2-032",
+    "ask-kai-v2-033",
+    "ask-kai-v2-034",
+    "ask-kai-v2-035",
+    "ask-kai-v2-036",
+    "ask-kai-v2-037",
+    "ask-kai-v2-038",
+    "ask-kai-v2-039",
+    "ask-kai-v2-040"
+  ],
+  "proactive_utterance_count": 34,
+  "initial_profile_assumption_cases": [
+    "ask-kai-v2-007",
+    "ask-kai-v2-015",
+    "ask-kai-v2-016"
+  ],
+  "reference_issue_counts": {
+    "初始信息缺失": 40,
+    "参考语言表面提示": 62,
+    "口头总结与现有范围冲突": 40,
+    "参考长度超预算": 27,
+    "参考问题数提示": 5,
+    "初始场景假设": 3,
+    "五维N/A与十维不一致": 9,
+    "逐轮要求修订": 9,
+    "缺少省英文依据": 9
+  },
+  "rule_versions": {
+    "rubric_version": "kai-content-v3",
+    "language_policy_version": "kai-language-v1",
+    "reply_policy_version": "kai-reply-v2"
+  },
+  "provider_runs": 0,
+  "judge_runs": 0,
+  "full_dialogues_committed": true,
+  "prepared_format_version": 2,
+  "independent_language_turns": 244,
+  "score_anchor_turns": 244,
+  "candidate_reference_turns": 244,
+  "case_specific_summary_contracts": 40,
+  "key_turn_calibrations": 33,
+  "language_scenario_count": 8,
+  "language_scenario_turn_count": 11,
+  "gold_mode_counts": {
+    "required": 239,
+    "adaptive": 4,
+    "off": 1
+  },
+  "language_scenario_mode_counts": {
+    "required": 6,
+    "adaptive": 2,
+    "off": 3
+  },
+  "runtime_mode_disagreements": 15,
+  "diagnostic_is_gold": false,
+  "candidate_budget_notices": 0,
+  "publication": {
+    "date": "2026-10-11",
+    "directory": "docs/eval-datasets/freechat-v3.1",
+    "data_kind": "fixed_student_scripts_and_review_annotations",
+    "artifacts": {
+      "ask-kai-freechat-eval-v3.1.xlsx": {
+        "path": "docs/eval-datasets/freechat-v3.1/ask-kai-freechat-eval-v3.1.xlsx",
+        "bytes": 257051,
+        "sha256": "067ff0e5da834a65f073de680ff13f8647cdd599f63f41fdd49812796dfeeed4"
+      },
+      "ask-kai-freechat-eval-v3.1.json": {
+        "path": "docs/eval-datasets/freechat-v3.1/ask-kai-freechat-eval-v3.1.json",
+        "bytes": 5366145,
+        "sha256": "8d32f2b2729fcc5a01875781ab1f28db12d8c07e5cd2ecf0d8848f959542406a"
+      },
+      "ask-kai-freechat-eval-v3.1.csv": {
+        "path": "docs/eval-datasets/freechat-v3.1/ask-kai-freechat-eval-v3.1.csv",
+        "bytes": 3266990,
+        "sha256": "2ffc7c5ae93e18213df6b81599662cdf41aad657e1ca184a428a783a8ca68678"
+      },
+      "review.md": {
+        "path": "docs/eval-datasets/freechat-v3.1/review.md",
+        "bytes": 4590,
+        "sha256": "7269faa4c9a05a91b2af04ce0c9c4f64926027296c5034324920fc765a815a15"
+      }
+    }
+  }
+}

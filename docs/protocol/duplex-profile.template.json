@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "reviewed": false,
+  "endpoint": "wss://openspeech.bytedance.com/api/v3/duplex/realtime/dialogue",
+  "evidence_source": "https://docs.volcengine.com/docs/6561/2556358",
+  "auth": null,
+  "ready": null,
+  "observed_event_types": [],
+  "identity_paths": [],
+  "session_create": {
+    "type": "session.create",
+    "session": {}
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "kind": "ask_kai_root_cause_diagnostic",
+  "request_id": "root-cause-2026-10-12-01",
+  "agent_revision": "6661d7ba3ecf7f3eef8f23f74c5d625cb8f457e2",
+  "dataset_sha256": "8d32f2b2729fcc5a01875781ab1f28db12d8c07e5cd2ecf0d8848f959542406a",
+  "profile_sha256": "dc1a5bbd61c67969313f85286af1b872591a732225d55487302e3bc561bfafc0",
+  "plan_version": "kai-root-cause-v1",
+  "duration_ms": 1200000,
+  "source_fixture_run": 38196302477,
+  "source_fixture_artifact_id": 11722999569,
+  "source_manifest_hashes": {
+    "ask-kai-language-08": "bb0bb8615b7977c1ebed136921fbc707658f8e814aef13d0dca97a7c2da0a291",
+    "ask-kai-v2-040": "c9dd1bdf5b0b9695a666ff2c9ccbb747b84421f31a464dad123bf3e7006b5c85",
+    "ask-kai-v2-036": "9ffa4ae78550ed92431d83e687f4f0d40533d1dab92c6a0b29cd516d763b3031",
+    "ask-kai-v2-011": "ef0afff0fe1e9dc3bdd0eaa504d7d98114fd7d017f658f8bea2f7e2e8ac795cd"
+  }
+}

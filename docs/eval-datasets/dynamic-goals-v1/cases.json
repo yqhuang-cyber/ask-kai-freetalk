@@ -1,0 +1,18 @@
+{
+  "schema_version": "dynamic-goal-cases-v1",
+  "source": "authored_synthetic_behavior_constraints",
+  "cases": [
+    {"id":"initial-a","mode":"sports","fixture":"a","initial_goals":["express-likes"],"turns":[{"text":"我喜欢篮球。","expect":{"goal":"express-likes","status":"active","actions":["RESPOND","FOLLOW_UP"],"new_points":0}}]},
+    {"id":"initial-b","mode":"sports","fixture":"b","initial_goals":["express-time"],"turns":[{"text":"我下午打篮球。","expect":{"goal":"express-time","status":"active","actions":["RESPOND","FOLLOW_UP"],"new_points":0}}]},
+    {"id":"mission-b","mode":"mission","fixture":"b","initial_goals":["express-time"],"turns":[{"text":"我下午打篮球。","expect":{"goal":"express-time","status":"active","actions":["RESPOND","FOLLOW_UP"],"new_points":0}}]},
+    {"id":"free-local","mode":"free","fixture":"a","initial_goals":[null],"turns":[{"text":"planet 中文怎么说？","expect":{"goal":null,"actions":["RESPOND","SCAFFOLD"],"local_help":true}},{"text":"我们继续聊宇宙。","expect":{"goal":null,"actions":["RESPOND","FOLLOW_UP"],"local_help":false,"new_points":0}}]},
+    {"id":"free-practice","mode":"free","fixture":"a","initial_goals":[null],"turns":[{"text":"我想练习喜好表达。","expect":{"goal":"express-likes","status":"active"}},{"text":"我喜欢跑步。","expect":{"goal":"express-likes","actions":["RESPOND","FOLLOW_UP"],"new_points":0}}]},
+    {"id":"refusal","mode":"sports","fixture":"a","initial_goals":["express-likes"],"turns":[{"text":"我不想练习了，只想聊比赛。","expect":{"goal":"express-likes","status":"paused","actions":["RESPOND","FOLLOW_UP"],"new_points":0}},{"text":"我喜欢篮球。","expect":{"goal":"express-likes","status":"paused","actions":["RESPOND","FOLLOW_UP"],"new_points":0}}]},
+    {"id":"switch","mode":"sports","fixture":"b","initial_goals":["express-time"],"turns":[{"text":"我想练习喜好表达。","expect":{"goal":"express-likes","status":"active"}},{"text":"我喜欢跑步。","expect":{"goal":"express-likes","actions":["RESPOND","FOLLOW_UP"],"new_points":0}}]},
+    {"id":"difficulty","mode":"sports","fixture":"b","initial_goals":["express-time"],"turns":[{"text":"这个练习太难了。","expect":{"goal":"express-time","status":"active"}},{"text":"这个练习我还是不会。","expect":{"goals":["express-likes","express-time"],"status":"active","new_points":0}}]},
+    {"id":"retire","mode":"sports","fixture":"b","initial_goals":["express-time"],"turns":[{"text":"取消这个目标。","expect":{"goal":null,"status":"retired","new_points":0}},{"text":"我下午打篮球。","expect":{"goal":null,"status":"retired","new_points":0}}]},
+    {"id":"prerequisite","mode":"free","fixture":"a","initial_goals":[null],"turns":[{"text":"我想练习时间表达。","expect":{"goal":null}}]},
+    {"id":"unknown","mode":"sports","fixture":"d","initial_goals":["express-likes"],"turns":[{"text":"basketball","expect":{"goal":"express-likes","status":"active"}}]},
+    {"id":"declined","mode":"sports","fixture":"e","initial_goals":[null],"turns":[{"text":"我喜欢篮球。","expect":{"goal":null,"new_points":0}}]}
+  ]
+}

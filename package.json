@@ -1,0 +1,50 @@
+{
+  "name": "ask-kai-freetalk",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env apps/realtime-gateway/src/main.js",
+    "poc": "node --env-file-if-exists=.env apps/realtime-gateway/src/main.js --poc",
+    "test": "node --test",
+    "check": "node scripts/check.js",
+    "verify": "npm run check && npm test",
+    "verify:p0": "npm run verify && npm run replay && npm run eval:p0:demo",
+    "replay": "node apps/eval-runner/src/replay.js",
+    "baseline:demo": "node scripts/experience-baseline.js",
+    "probe:preflight": "node --env-file-if-exists=.env scripts/duplex-probe.js",
+    "probe:live": "node --env-file-if-exists=.env scripts/duplex-probe.js --live",
+    "eval:content": "node --env-file-if-exists=.env scripts/content-eval.js",
+    "eval:dataset:check": "node scripts/check-prepared-dataset.js",
+    "eval:multiturn": "node --env-file-if-exists=.env scripts/multiturn-eval.js",
+    "eval:demo": "node scripts/content-eval.js --demo",
+    "eval:p0": "node --env-file-if-exists=.env scripts/p0-eval.js",
+    "eval:p0:demo": "node scripts/p0-eval.js --demo",
+    "release:status": "node scripts/release-check.js",
+    "release:check": "node scripts/release-check.js --require-ready",
+    "test:browser": "node scripts/browser-check.js",
+    "eval:recorded": "node --env-file-if-exists=.env scripts/recorded-score.js",
+    "eval:report": "node scripts/evaluation-report.js",
+    "eval:review:compare": "node scripts/compare-recorded-reviews.js",
+    "eval:candidate": "node scripts/eval-candidate.js",
+    "eval:planning": "node --env-file-if-exists=.env scripts/planning-eval.js",
+    "probe:planning:voice": "node --env-file-if-exists=.env scripts/planning-voice-probe.js",
+    "eval:goals": "node --env-file-if-exists=.env scripts/goal-eval.js",
+    "prepare:planning:fc": "node scripts/prepare-fc-probe-inputs.js",
+    "probe:planning:fc": "node --env-file-if-exists=.env scripts/fc-planning-probe.js",
+    "eval:agent": "node --env-file-if-exists=.env scripts/agent-eval.js",
+    "review:planning": "node --env-file-if-exists=.env scripts/review-planning.js",
+    "eval:agent:long": "node scripts/long-session-eval.js"
+  },
+  "dependencies": {
+    "@langchain/core": "1.2.14",
+    "@langchain/openai": "1.6.2",
+    "ws": "8.21.0"
+  },
+  "devDependencies": {
+    "playwright": "1.61.1"
+  }
+}

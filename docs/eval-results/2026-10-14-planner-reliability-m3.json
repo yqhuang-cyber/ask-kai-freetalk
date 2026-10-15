@@ -1,0 +1,4792 @@
+{
+  "date": "2026-10-14",
+  "comparison_scope": "same independent 12 cases / 18 turns; individual batches, not statistical significance",
+  "base_commit": "88c98f7",
+  "budgets_ms": {
+    "initial": 10000,
+    "turn": 5000
+  },
+  "generation_max_tokens": 1600,
+  "default_retains_full_contract_v3": true,
+  "reliability_improvement_accepted": false,
+  "batches": {
+    "legacy": {
+      "schema_version": "goal-eval-v1",
+      "dataset_sha256": "ff32faffb09359bc55235caff84fe143b18a5eeaa27900c4a621ba14ce4a45de",
+      "source_hashes": {
+        "packages/agent-core/context-snapshot.js": "551b6e3c4c9f8fbd24f3472c8591c221cd555ae6181f5e3c4138076b10f5266a",
+        "packages/agent-core/conversation-initializer.js": "c9c2193bd3600a4f31a23ad978c6db8d8ebd28be24e292f4d02720b5a7b66400",
+        "packages/agent-core/goal-lifecycle.js": "01bed6259243c322cf29b76451bc3c27a86d637eb0be5f59b5d11d98eb8c9f34",
+        "packages/agent-core/language-support.js": "e730ad196816aa43a4a8c485eb731e60a739153687cba5aaf31d52d49eea4faf",
+        "packages/agent-core/learning-summary.js": "5f2611cc28e9a5ec068316c4b9aa7b29d96c9b7e8153a2713e56e59d4909a083",
+        "packages/agent-core/lessons.js": "852d4579c31a725a62e4586f6f1c67084c0a8f34917a647598660c00eb9cceb8",
+        "packages/agent-core/natural-teaching.js": "94d6b228bae075028c733ae8c84fa1212ff428f6f1126f39cc583d4320ac2a96",
+        "packages/agent-core/plan-validator.js": "12dfe983ef3b94f0c7f6af650c7cd2ea4a74691881dd3eecd422ddcfddb51c4a",
+        "packages/agent-core/planner-draft.js": "4355d6c5f40351e017a91242b58f978266979e26d7535812fae84a62751b851c",
+        "packages/agent-core/planner-port.js": "5942a0cfa5b397736361f43d3c39bf6b95c94e2b7288a32c6649ab69921e06d1",
+        "packages/agent-core/planning-observations.js": "0677f69f685e6acdf47a306f89693209889df43f552c6100f78b288456daab4b",
+        "packages/agent-core/planning-state.js": "09b74f351c50a77cf3ef9b7a346fdc79b58312a3b4b6306831ac13b6d0990502",
+        "packages/agent-core/reply-policy.js": "21b254fa24b871f357159dab9a675ef357dd7be1476444663eb2db2386349b2a",
+        "packages/agent-core/session.js": "0775f7033e41bc27e74b245435045c8289d94403e48501b41c3dd3687a6dac0c",
+        "packages/agent-core/speech.js": "8bb5cb6ffa4a8407f71a86852ec7673f4a06c7233a102844de5ab87799aa2522",
+        "packages/agent-core/summary-directory.js": "f4e22da20bd13ba4c9f8955b889465f18ea6b10d94a215069cc7dc84a0b77c81",
+        "packages/agent-core/teaching.js": "da4a97fafcf1a15bff4473604cfc481edd8bb28fcceff5061fa1109e33aa9d20",
+        "packages/agent-core/turn-taking.js": "8d67d1855d684b1a5e2e79434f725b5ff1cbb04c4b2ceea02731fdd69f5933ef",
+        "packages/contracts/events.js": "f3f7bd240d7d7912b74111c711ded54e28a807a98fb6462f5bd7c927e5dbb90f",
+        "packages/contracts/planning.js": "59bfcdec6ae9ab71973631c1d356e14cf5f634dadb712daf3d95f9e261d8361b",
+        "packages/hskai-bridge/endpoint.js": "d8e696c0fb5eb5cb17b8604ad531e05c6dc12188431c0589238215e01784ef2d",
+        "packages/hskai-bridge/identity.js": "c4d557dc76e275c9894fb7fe655d2caaff5b6d8e6ab96224df72411612ec951d",
+        "packages/hskai-bridge/memory.js": "b89057d134348706350489d585fe7306dd31e7083409ad524acf26f1ca4cac1f",
+        "packages/hskai-bridge/planning-port.js": "9b8df153b7b0d7250734d6947f6f4d3fd6d90576bd7b54df9e8f139bd0b3bbf8",
+        "packages/hskai-bridge/privacy.js": "4169921b9d58d41364d88c93677e151a3be337f509c475db4091c37165f5d4a7",
+        "packages/hskai-bridge/safeguarding.js": "0735343aad2485ae6b1d55e6946e60b71ae8ccb5f1eae908af83250102b8ff93",
+        "packages/policy/metrics.js": "a0a38f5e7a8b77d2bd3e622b84954a449d12ef07777e7d559e6d518176cf6eb3",
+        "packages/policy/release.js": "c57c56587ef96b7e5277178473d01691c4c87d4acaeb589c339dbe7c0537f2f4",
+        "packages/policy/safety.js": "23ff35b26ac73f236de7322c9c0c09f9426b023b4d8cbe9d530fda0a9bfa2d5b",
+        "packages/provider-doubao/adapter-probe.js": "239c233188db1506f4c3e7e52fed888cf6539df66b6b056b51e0f79587079c82",
+        "packages/provider-doubao/index.js": "2d84d66234e0d18ea80f9ae0f0659d70a307f29d3106a28f130a881a60dfc691",
+        "packages/provider-doubao/output-probe.js": "2da257b348708b4ac39b30d4cc65b7798fc0190a3d1e81df43568ff9efeac486",
+        "packages/provider-doubao/probe.js": "1070f7f9c3ad8645ea31d502b85e8688a3dcb6f21cd497283eac431f330561d5",
+        "packages/provider-doubao/realtime.js": "b139037ce67d302340c5efc5f543f40ccc0e3ead835d1f4525ffc6c624a74a67",
+        "packages/provider-doubao/seeduplex.js": "c6eb06150fb76fa7025fadb801553e337f4882968fb60d05dd22fc2a7eaef723",
+        "packages/provider-minimax/planner.js": "2e22d4598bc4a1fa2b986af14fda315a1d782b15e7750fe9072f8bdb63293461",
+        "packages/provider-replay/index.js": "fb981e5ae882bed864818a8774f2161350b64db6c10e49122ade9fbe4e2bd874",
+        "apps/eval-runner/src/actions-multiturn.js": "4f28b07c3806027cbfd65976dfe4dbb9df767d3a13349a3b84f8c7878b23ea7c",
+        "apps/eval-runner/src/agent-harness.js": "442bd2342cf57ec0ae6aa144a13a042913a9268c12d80f9f8c5ad09c7e5d1777",
+        "apps/eval-runner/src/collection-diagnostic.js": "6ce15d2d00d1a4dc600643ae60ff76c2c8b9fe450e9a0a3e68b90c3fdf251641",
+        "apps/eval-runner/src/collection-evidence.js": "df4497e77de7dba3c3341effef471e7b33adcb51482f9005ff291aba7da68c80",
+        "apps/eval-runner/src/content.js": "1e800668bbf4fb35884f3b090a0c8584f75db7dc73ec35421db3f4e0952542ab",
+        "apps/eval-runner/src/eval-baseline.js": "b83577a407fa93453c2811bc124641c4e9580a7ef6f8e976099f03fe04b8c11a",
+        "apps/eval-runner/src/eval-candidate.js": "2ab6b0fa44121523a9c2c9a44fc32c6862f24800d29ff9a2204e1c9f5c9207f8",
+        "apps/eval-runner/src/evaluation-batch.js": "dd05e08afb7fa13c45fca2bd9c6cd00e4809a959d6a0eb1620934c2132040cfc",
+        "apps/eval-runner/src/evaluation-language-v3.js": "f603909bfb472b96ef29276986194f48ca3ff98b8c5876d2e95e83f5f7de5dab",
+        "apps/eval-runner/src/evaluation-reply-v3.js": "41f00e745c9a09c6f1196e1bc48c93526ef77674030b535b6e3631bc6358010d",
+        "apps/eval-runner/src/evaluation-report.js": "0d9d8e6c815de92bde5161fa52f66a90175c0d5999b1e49c1ed4c304073809ab",
+        "apps/eval-runner/src/input-audio.js": "1e05e52adef690536dd285789ecd934a082d30078989a05ae0a129c981cde597",
+        "apps/eval-runner/src/langchain-judge.js": "9b36e6674bf6a937b0ce4d938e3c342023f0a069c2867963426f4d8a73244d1d",
+        "apps/eval-runner/src/langfuse.js": "8167873bf194c5602bcf5032eb2076eff23b20da7739002083e3ee96c010453f",
+        "apps/eval-runner/src/language-context.js": "18b81f8f1c2faf73a0552b05ffe43a6a15d1e37d6f9b3d9f72ef66d0719cc1b9",
+        "apps/eval-runner/src/legacy-planner-v3.js": "5a3b87e37717bb1eb4e642c3f0e2a2c1b5623ec969ff940ed42b285587655778",
+        "apps/eval-runner/src/multiturn-plan.js": "64c56f2ea19ccb29ce860736843ca9ea9283373c56a67202120441937a3c872f",
+        "apps/eval-runner/src/multiturn.js": "82557be5ae2076fbf164b526f99d024ea069f4a62687c9d7cc9136efa1aeaedd",
+        "apps/eval-runner/src/p0-demo.js": "5faad25d8df9e383f6f4cecf6f76867af389cda0d149b177c7d25e4cfbcedf72",
+        "apps/eval-runner/src/p0-rubric.js": "d0a036f7df2e0641b1752ef500ec9c99ef9c67325561cce86df694addb41aba0",
+        "apps/eval-runner/src/p0.js": "a8e1f21b5539b64157755b8db7c1f18afd1ec6abe471a65be745e26bbd36ed85",
+        "apps/eval-runner/src/planning-semantics.js": "410b1d2f85cd35fb7ddc985d8931cddc0195ccfca90406080d7b1f21f93ceb4a",
+        "apps/eval-runner/src/prepared-dataset.js": "1956dc5fdec6b69d8c03736170a516f6b5e9dad4c1bc79a146ea419fe468d2f4",
+        "apps/eval-runner/src/private-artifacts.js": "0942d0e1a7d4c31732c867f7d9ff8d3c56f6d53f8c321c02f221ef6d3c42c158",
+        "apps/eval-runner/src/recorded-judge.js": "51736669d23b872b366331e821b9221be9157bd5452035cd23a4534ed53a87c3",
+        "apps/eval-runner/src/recorded-scoring.js": "2bc924e8954a04f880d149154182e821fecf3e6146aa45ac99adf778814cbaca",
+        "apps/eval-runner/src/replay.js": "d9e02faee6974c54ca71038558eff5e3cb5e7547c680e043b90122dc2d5784f3",
+        "apps/eval-runner/src/review-calibration.js": "3bfe4790b3711671614967eba2f947ad92a2c4ca74c2a14fba7eb2fd990570bb",
+        "apps/eval-runner/src/review-comparison.js": "4d2c5c551f890bf5c7bf989e5f74f3af824974792dfd4f226d04cf7f8ce4b900",
+        "apps/eval-runner/src/root-cause-plan.js": "c9304277f0db5184ffa9f41ea073069c57df383dc8dfa8409a65609af3456795",
+        "apps/eval-runner/src/root-cause-report.js": "dfd83d7e7f141967ea725e6389b99dca81c837f2b4ca980667d064ed4cd44344",
+        "apps/hskai-mock/src/backend.js": "d87b9be7cbffde9536a2f0c9f05561593653be5baa143b5beba86cc4b656ff50",
+        "apps/hskai-mock/src/planning-fixtures.js": "1223f36a7aa64c3a9779e9cc01e865688aae50477eb21acdd7dc1634c2fb723d",
+        "apps/hskai-mock/src/server.js": "03a0bbc47e10b945f551d5f9a0b8e46b8b3dc4f4d1c1864c439fec5d69e1b1b1",
+        "apps/realtime-gateway/public/app.js": "b6b4613012d97f5cebffb39ce11e22b034bfc229fe9a827362fa4b33a5de9b00",
+        "apps/realtime-gateway/public/audio.js": "c3021ed22fe895b09b44ea07397b7fcb0d56f371c97272110986988ae0e5e326",
+        "apps/realtime-gateway/public/caption-phrases.js": "050c7a4ff9de152c8e409a39c4eea0e8d7aaec34772d9092781e009732bd2796",
+        "apps/realtime-gateway/public/capture-worklet.js": "e05a3ad9841360790449c40250242386d6c77a5af11c33ec206cd5f7742332c7",
+        "apps/realtime-gateway/public/diagnostics.js": "dbc051982b55969965f0bfb805630d0aece60cd54ee70fdf524856bce3312b57",
+        "apps/realtime-gateway/public/preparation-client.js": "833bc748e12a39e5880795226e84e1786d88ac55ca7ef15154eff72b5c552f0c",
+        "apps/realtime-gateway/public/presentation.js": "bd7ba56ca69031f4b8d6f5a8cae5250964520d1600a68555a2a3d8741daf40cb",
+        "apps/realtime-gateway/public/summary-cards.js": "6526b109d575f8c868770bb4ee7456af2ed1dcb373e9db33499a642881933954",
+        "apps/realtime-gateway/public/web.js": "e6f33d5c6996d3dc02de6ef73b97836bebfe356e2f618263c6b41073d12e2030",
+        "apps/realtime-gateway/src/config.js": "198082abafe8fec556cb4648bb1d973c0aa2a1d6799faee4c2ed6f0b46f48dac",
+        "apps/realtime-gateway/src/main.js": "80ec88e9f5265d53ea449d01f603fafa9a74f521bbca7fafe2dcae811c493f00",
+        "apps/realtime-gateway/src/output-gate.js": "7e202fb1940ac95595b40f951ca283aec8e4e48970c601ffad8709446854717d",
+        "apps/realtime-gateway/src/preparations.js": "45fe25db82ba3ab27660f68791725f47fa72b565fca29ea46d6a0c9e2b983be1",
+        "apps/realtime-gateway/src/realtime.js": "a23537b5b89d40232ec89969a08494d70e3cfe9a87e7890bcf4e100a67c9ac9f",
+        "apps/realtime-gateway/src/reply-executor.js": "4157ad93e5e6cc703451aa06eee942f54552028221754e78f782569143f7dcbe",
+        "apps/realtime-gateway/src/server.js": "037c8bc1b2ba7193b4e7fc87f32e0a0880a6ea6b7f44b481f9aad504e52a6689",
+        "scripts/actions-candidate-evaluation.js": "05670608652336c58caeaf2cb4e33650108f623b276c939f0c933940c8de91bf",
+        "scripts/actions-collection-diagnostic.js": "d3b940561944d2da97919c8294b7e145f726e73a2ae9eefdb85a404c75356698",
+        "scripts/actions-doubao-adapter.js": "bca344974538883b4a24badb604a08b69b0ebe892eed2954592e34eae498aeaa",
+        "scripts/actions-doubao-multiturn.js": "f520fb0b7478149f239edf5697b46f9bf5f480c9143c682792fdfc441d95fd43",
+        "scripts/actions-doubao-output.js": "0b4a08a8bbb4cda229cef9650b8537fffe471fd6bcec5c110f5b936cad784f6e",
+        "scripts/actions-doubao-probe.js": "db317053d7a9e65ca5941ebfb11fdd1cc5a27f8f4295f0509b6f5e854ab8ac18",
+        "scripts/actions-evaluation-batch.js": "e5a7ed57617cfb6e7aadc38409f875a2ed12a2d4a4740730123c7317917e6e67",
+        "scripts/actions-root-cause.js": "fc7b31cb3735f42334a3997546614bb55f79cd6b59d5bceefab7500fdc468c55",
+        "scripts/browser-check.js": "c0945cb6ccfaf4a1fcd9abe47c9287be918024fc50fd42cb57dcca388005a4fc",
+        "scripts/check-prepared-dataset.js": "2f29a466a2054706c70b215fc4d110f3e551ccb0ba2189e5b620b4fced1e6f9c",
+        "scripts/check.js": "9805116878961e669a6c885816f55ddd2d7be4e87e3cf40ab1da72c160c4d28a",
+        "scripts/compare-recorded-reviews.js": "2b6fd514cdc05d8ff06589b5fb3e10a5dab19200001972e74bf4b7861a7b06bc",
+        "scripts/content-eval.js": "b140a380e5aa692e53bea1eb0750fa867d2c4adf0912978870d4c62810168e52",
+        "scripts/duplex-probe.js": "7d0d15797f9dc0d8bb10dc665d79e001c4a4ae0cc18b712d3ada2c5060a148fe",
+        "scripts/eval-candidate.js": "457c60d8bfe786a877087964934cdef82fcee0053e7e700f3e5bd2e0206d52a1",
+        "scripts/evaluation-report.js": "26b37d2dfdc401bf5fdc9bc523de2b148084014817b4876159c47718f58c8409",
+        "scripts/experience-baseline.js": "909816d1a4562af516f59ec97f45dd60956f9c308ab47ecc000ce40032811aed",
+        "scripts/goal-eval.js": "d69257d801ee83e2eb282b26622a9ae74235fdbe4c4cdb4031ae73b070874e1c",
+        "scripts/multiturn-eval.js": "38f8bc118314f0ce94bf2ada4cd6df45fcc17b668dc52cd322f78022ce0c7d15",
+        "scripts/p0-eval.js": "586fd67158ccfb67a27e5846b6ac55a57154038570fac36471bfa16c025fd478",
+        "scripts/planning-eval.js": "282e16ea1d435b759d832a7446468b257282acc17f9c5a32300548158f70e681",
+        "scripts/planning-voice-probe.js": "23e7d458941a8403f443eccc508d8e75178ed8ba236009b949e11df6cb9e06d5",
+        "scripts/recorded-score.js": "a1e21b2b68fc967cceeeb659baf4131dbecc9ca2ebfbc557e048dbef6f8cd225",
+        "scripts/release-check.js": "2480be024abf1dfaf440f1d431937e193efdece60b32aa5c8496f3fa4ef4fb95"
+      },
+      "candidate": {
+        "provider": "minimax",
+        "model": "MiniMax-M3",
+        "output_format": "json_prompt",
+        "draft": "full_contract_v3",
+        "prompt": "kai-planner-v3",
+        "contract": "dynamic-planning-v2",
+        "goal_policy": "kai-goal-lifecycle-v1",
+        "path": "next_turn_advisory"
+      },
+      "synthetic_inputs": true,
+      "model_calls_enabled": true,
+      "real_voice_connected": false,
+      "browser_audio_tested": false,
+      "contains_transcripts": false,
+      "transport": [
+        {
+          "kind": "conversation",
+          "elapsed_ms": 2744,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 2752,
+          "state": "body_received",
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1087,
+          "completion_tokens": 160
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4955,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 2274,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 2275,
+          "state": "body_received",
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1223,
+          "completion_tokens": 133
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4574,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4575,
+          "state": "body_received",
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2274,
+          "completion_tokens": 174
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4221,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4223,
+          "state": "body_received",
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1236,
+          "completion_tokens": 143
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 5731,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4846,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4848,
+          "state": "body_received",
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2277,
+          "completion_tokens": 184
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 104,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 2101,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 2106,
+          "state": "body_received",
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 789,
+          "completion_tokens": 130
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 1884,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 1885,
+          "state": "body_received",
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 809,
+          "completion_tokens": 91
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3476,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3477,
+          "state": "body_received",
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1709,
+          "completion_tokens": 156
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 1476,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4954,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 3042,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 3046,
+          "state": "body_received",
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 789,
+          "completion_tokens": 120
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 2605,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 2606,
+          "state": "body_received",
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 809,
+          "completion_tokens": 107
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3215,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3215,
+          "state": "body_received",
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2146,
+          "completion_tokens": 167
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 1738,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4534,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4536,
+          "state": "body_received",
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2200,
+          "completion_tokens": 183
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4302,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4303,
+          "state": "body_received",
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1087,
+          "completion_tokens": 131
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4953,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4955,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 7597,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 7598,
+          "state": "body_received",
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1223,
+          "completion_tokens": 162
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4146,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4148,
+          "state": "body_received",
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2267,
+          "completion_tokens": 188
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4953,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4991,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4993,
+          "state": "body_received",
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1223,
+          "completion_tokens": 208
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4404,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4409,
+          "state": "body_received",
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1244,
+          "completion_tokens": 168
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 2331,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 2332,
+          "state": "body_received",
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2253,
+          "completion_tokens": 163
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3403,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3404,
+          "state": "body_received",
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2281,
+          "completion_tokens": 221
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 1550,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 9951,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4952,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4952,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 9951,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4951,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 9953,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4952,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 9953,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4745,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4752,
+          "state": "body_received",
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1955,
+          "completion_tokens": 150
+        }
+      ],
+      "denominators": {
+        "cases": 12,
+        "initial_llm": 4,
+        "initial_rule": 8,
+        "initial_failed": 0,
+        "turns": 18,
+        "llm_turns": 5,
+        "rule_turns": 13,
+        "unaccepted_turns": 0,
+        "llm_behavior_pass": 5,
+        "host_behavior_pass": 18
+      },
+      "cases": [
+        {
+          "id": "initial-a",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-likes",
+            "planner": "llm",
+            "degraded_reason": null,
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "accepted",
+                "elapsed_ms": 2753
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-likes",
+              "status": "active",
+              "action": "FOLLOW_UP",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4980,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 7742
+        },
+        {
+          "id": "initial-b",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-time",
+            "planner": "llm",
+            "degraded_reason": null,
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "accepted",
+                "elapsed_ms": 2285
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-time",
+              "status": "active",
+              "action": "FOLLOW_UP",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "llm",
+              "degraded_reason": null,
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "accepted",
+                  "elapsed_ms": 4576
+                }
+              ],
+              "elapsed_ms": 4592,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 6879
+        },
+        {
+          "id": "mission-b",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-time",
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "rejected",
+                "phase": "validation",
+                "elapsed_ms": 4223,
+                "code": "GOAL_KP_MISMATCH"
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-time",
+              "status": "active",
+              "action": "FOLLOW_UP",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "rejected",
+                  "phase": "validation",
+                  "elapsed_ms": 4848,
+                  "code": "INVALID_TURN_PROPOSAL"
+                }
+              ],
+              "elapsed_ms": 4958,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 14914
+        },
+        {
+          "id": "free-local",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": null,
+            "planner": "rule",
+            "degraded_reason": "planner_validation_failed",
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "rejected",
+                "phase": "validation",
+                "elapsed_ms": 2106,
+                "code": "INVALID_SELECTION_BASIS"
+              },
+              {
+                "attempt": 2,
+                "state": "rejected",
+                "phase": "validation",
+                "elapsed_ms": 1885,
+                "code": "INVALID_CONVERSATION_PROPOSAL"
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": null,
+              "status": "unverified",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": true,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "rejected",
+                  "phase": "request",
+                  "elapsed_ms": 3478,
+                  "code": "PLANNER_INVALID_JSON"
+                }
+              ],
+              "elapsed_ms": 4955,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "local_help_scope",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            },
+            {
+              "index": 1,
+              "goal": null,
+              "status": "unverified",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4956,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                },
+                {
+                  "name": "local_help_scope",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 13904
+        },
+        {
+          "id": "free-practice",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": null,
+            "planner": "rule",
+            "degraded_reason": "planner_validation_failed",
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "rejected",
+                "phase": "validation",
+                "elapsed_ms": 3047,
+                "code": "INVALID_PLAN_RESOURCE_REFERENCE"
+              },
+              {
+                "attempt": 2,
+                "state": "rejected",
+                "phase": "validation",
+                "elapsed_ms": 2606,
+                "code": "INVALID_PLAN_RESOURCE_REFERENCE"
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-likes",
+              "status": "active",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "rejected",
+                  "phase": "request",
+                  "elapsed_ms": 3215,
+                  "code": "PLANNER_INVALID_JSON"
+                }
+              ],
+              "elapsed_ms": 4956,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            },
+            {
+              "index": 1,
+              "goal": "express-likes",
+              "status": "active",
+              "action": "FOLLOW_UP",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "llm",
+              "degraded_reason": null,
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "accepted",
+                  "elapsed_ms": 4536
+                }
+              ],
+              "elapsed_ms": 4539,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 15150
+        },
+        {
+          "id": "refusal",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-likes",
+            "planner": "llm",
+            "degraded_reason": null,
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "accepted",
+                "elapsed_ms": 4304
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-likes",
+              "status": "paused",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4955,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            },
+            {
+              "index": 1,
+              "goal": "express-likes",
+              "status": "paused",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4956,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 14216
+        },
+        {
+          "id": "switch",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-time",
+            "planner": "llm",
+            "degraded_reason": null,
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "accepted",
+                "elapsed_ms": 7598
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-likes",
+              "status": "active",
+              "action": "INVITE_PRACTICE",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "llm",
+              "degraded_reason": null,
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "accepted",
+                  "elapsed_ms": 4148
+                }
+              ],
+              "elapsed_ms": 4149,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            },
+            {
+              "index": 1,
+              "goal": "express-likes",
+              "status": "active",
+              "action": "FOLLOW_UP",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4955,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 16703
+        },
+        {
+          "id": "difficulty",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-time",
+            "planner": "rule",
+            "degraded_reason": "planner_validation_failed",
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "rejected",
+                "phase": "validation",
+                "elapsed_ms": 4993,
+                "code": "GOAL_KP_MISMATCH"
+              },
+              {
+                "attempt": 2,
+                "state": "rejected",
+                "phase": "validation",
+                "elapsed_ms": 4412,
+                "code": "GOAL_KP_MISMATCH"
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-time",
+              "status": "active",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "llm",
+              "degraded_reason": null,
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "accepted",
+                  "elapsed_ms": 2332
+                }
+              ],
+              "elapsed_ms": 2334,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            },
+            {
+              "index": 1,
+              "goal": "express-likes",
+              "status": "active",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "rejected",
+                  "phase": "request",
+                  "elapsed_ms": 3404,
+                  "code": "PLANNER_INVALID_JSON"
+                }
+              ],
+              "elapsed_ms": 4955,
+              "checks": [
+                {
+                  "name": "eligible_goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 16703
+        },
+        {
+          "id": "retire",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-time",
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": null,
+              "status": "retired",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4954,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            },
+            {
+              "index": 1,
+              "goal": null,
+              "status": "retired",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4953,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 19860
+        },
+        {
+          "id": "prerequisite",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": null,
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": null,
+              "status": "unverified",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4954,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 14908
+        },
+        {
+          "id": "unknown",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-likes",
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-likes",
+              "status": "active",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4962,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 14917
+        },
+        {
+          "id": "declined",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": null,
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": null,
+              "status": "unverified",
+              "action": "FOLLOW_UP",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "llm",
+              "degraded_reason": null,
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "accepted",
+                  "elapsed_ms": 4753
+                }
+              ],
+              "elapsed_ms": 4754,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 14708
+        }
+      ],
+      "semantic_quality_accepted": false,
+      "independent_judge_calls": 0,
+      "human_calibrated": false,
+      "current_turn_control_verified": false
+    },
+    "draft": {
+      "schema_version": "goal-eval-v1",
+      "dataset_sha256": "ff32faffb09359bc55235caff84fe143b18a5eeaa27900c4a621ba14ce4a45de",
+      "source_hashes": {
+        "packages/agent-core/context-snapshot.js": "551b6e3c4c9f8fbd24f3472c8591c221cd555ae6181f5e3c4138076b10f5266a",
+        "packages/agent-core/conversation-initializer.js": "c9c2193bd3600a4f31a23ad978c6db8d8ebd28be24e292f4d02720b5a7b66400",
+        "packages/agent-core/goal-lifecycle.js": "01bed6259243c322cf29b76451bc3c27a86d637eb0be5f59b5d11d98eb8c9f34",
+        "packages/agent-core/language-support.js": "e730ad196816aa43a4a8c485eb731e60a739153687cba5aaf31d52d49eea4faf",
+        "packages/agent-core/learning-summary.js": "5f2611cc28e9a5ec068316c4b9aa7b29d96c9b7e8153a2713e56e59d4909a083",
+        "packages/agent-core/lessons.js": "852d4579c31a725a62e4586f6f1c67084c0a8f34917a647598660c00eb9cceb8",
+        "packages/agent-core/natural-teaching.js": "94d6b228bae075028c733ae8c84fa1212ff428f6f1126f39cc583d4320ac2a96",
+        "packages/agent-core/plan-validator.js": "12dfe983ef3b94f0c7f6af650c7cd2ea4a74691881dd3eecd422ddcfddb51c4a",
+        "packages/agent-core/planner-draft.js": "4355d6c5f40351e017a91242b58f978266979e26d7535812fae84a62751b851c",
+        "packages/agent-core/planner-port.js": "5942a0cfa5b397736361f43d3c39bf6b95c94e2b7288a32c6649ab69921e06d1",
+        "packages/agent-core/planning-observations.js": "0677f69f685e6acdf47a306f89693209889df43f552c6100f78b288456daab4b",
+        "packages/agent-core/planning-state.js": "09b74f351c50a77cf3ef9b7a346fdc79b58312a3b4b6306831ac13b6d0990502",
+        "packages/agent-core/reply-policy.js": "21b254fa24b871f357159dab9a675ef357dd7be1476444663eb2db2386349b2a",
+        "packages/agent-core/session.js": "0775f7033e41bc27e74b245435045c8289d94403e48501b41c3dd3687a6dac0c",
+        "packages/agent-core/speech.js": "8bb5cb6ffa4a8407f71a86852ec7673f4a06c7233a102844de5ab87799aa2522",
+        "packages/agent-core/summary-directory.js": "f4e22da20bd13ba4c9f8955b889465f18ea6b10d94a215069cc7dc84a0b77c81",
+        "packages/agent-core/teaching.js": "da4a97fafcf1a15bff4473604cfc481edd8bb28fcceff5061fa1109e33aa9d20",
+        "packages/agent-core/turn-taking.js": "8d67d1855d684b1a5e2e79434f725b5ff1cbb04c4b2ceea02731fdd69f5933ef",
+        "packages/contracts/events.js": "f3f7bd240d7d7912b74111c711ded54e28a807a98fb6462f5bd7c927e5dbb90f",
+        "packages/contracts/planning.js": "59bfcdec6ae9ab71973631c1d356e14cf5f634dadb712daf3d95f9e261d8361b",
+        "packages/hskai-bridge/endpoint.js": "d8e696c0fb5eb5cb17b8604ad531e05c6dc12188431c0589238215e01784ef2d",
+        "packages/hskai-bridge/identity.js": "c4d557dc76e275c9894fb7fe655d2caaff5b6d8e6ab96224df72411612ec951d",
+        "packages/hskai-bridge/memory.js": "b89057d134348706350489d585fe7306dd31e7083409ad524acf26f1ca4cac1f",
+        "packages/hskai-bridge/planning-port.js": "9b8df153b7b0d7250734d6947f6f4d3fd6d90576bd7b54df9e8f139bd0b3bbf8",
+        "packages/hskai-bridge/privacy.js": "4169921b9d58d41364d88c93677e151a3be337f509c475db4091c37165f5d4a7",
+        "packages/hskai-bridge/safeguarding.js": "0735343aad2485ae6b1d55e6946e60b71ae8ccb5f1eae908af83250102b8ff93",
+        "packages/policy/metrics.js": "a0a38f5e7a8b77d2bd3e622b84954a449d12ef07777e7d559e6d518176cf6eb3",
+        "packages/policy/release.js": "c57c56587ef96b7e5277178473d01691c4c87d4acaeb589c339dbe7c0537f2f4",
+        "packages/policy/safety.js": "23ff35b26ac73f236de7322c9c0c09f9426b023b4d8cbe9d530fda0a9bfa2d5b",
+        "packages/provider-doubao/adapter-probe.js": "239c233188db1506f4c3e7e52fed888cf6539df66b6b056b51e0f79587079c82",
+        "packages/provider-doubao/fc-planning-probe.js": "9d6408456b57d22d82fa85be723b148735ccc2bf6e8ebda1680ec25ff265bd5a",
+        "packages/provider-doubao/index.js": "2d84d66234e0d18ea80f9ae0f0659d70a307f29d3106a28f130a881a60dfc691",
+        "packages/provider-doubao/output-probe.js": "2da257b348708b4ac39b30d4cc65b7798fc0190a3d1e81df43568ff9efeac486",
+        "packages/provider-doubao/probe.js": "1070f7f9c3ad8645ea31d502b85e8688a3dcb6f21cd497283eac431f330561d5",
+        "packages/provider-doubao/realtime.js": "b139037ce67d302340c5efc5f543f40ccc0e3ead835d1f4525ffc6c624a74a67",
+        "packages/provider-doubao/seeduplex.js": "c6eb06150fb76fa7025fadb801553e337f4882968fb60d05dd22fc2a7eaef723",
+        "packages/provider-minimax/planner.js": "2e22d4598bc4a1fa2b986af14fda315a1d782b15e7750fe9072f8bdb63293461",
+        "packages/provider-replay/index.js": "fb981e5ae882bed864818a8774f2161350b64db6c10e49122ade9fbe4e2bd874",
+        "apps/eval-runner/src/actions-multiturn.js": "4f28b07c3806027cbfd65976dfe4dbb9df767d3a13349a3b84f8c7878b23ea7c",
+        "apps/eval-runner/src/agent-harness.js": "442bd2342cf57ec0ae6aa144a13a042913a9268c12d80f9f8c5ad09c7e5d1777",
+        "apps/eval-runner/src/collection-diagnostic.js": "6ce15d2d00d1a4dc600643ae60ff76c2c8b9fe450e9a0a3e68b90c3fdf251641",
+        "apps/eval-runner/src/collection-evidence.js": "df4497e77de7dba3c3341effef471e7b33adcb51482f9005ff291aba7da68c80",
+        "apps/eval-runner/src/content.js": "1e800668bbf4fb35884f3b090a0c8584f75db7dc73ec35421db3f4e0952542ab",
+        "apps/eval-runner/src/eval-baseline.js": "b83577a407fa93453c2811bc124641c4e9580a7ef6f8e976099f03fe04b8c11a",
+        "apps/eval-runner/src/eval-candidate.js": "2ab6b0fa44121523a9c2c9a44fc32c6862f24800d29ff9a2204e1c9f5c9207f8",
+        "apps/eval-runner/src/evaluation-batch.js": "dd05e08afb7fa13c45fca2bd9c6cd00e4809a959d6a0eb1620934c2132040cfc",
+        "apps/eval-runner/src/evaluation-language-v3.js": "f603909bfb472b96ef29276986194f48ca3ff98b8c5876d2e95e83f5f7de5dab",
+        "apps/eval-runner/src/evaluation-reply-v3.js": "41f00e745c9a09c6f1196e1bc48c93526ef77674030b535b6e3631bc6358010d",
+        "apps/eval-runner/src/evaluation-report.js": "0d9d8e6c815de92bde5161fa52f66a90175c0d5999b1e49c1ed4c304073809ab",
+        "apps/eval-runner/src/input-audio.js": "1e05e52adef690536dd285789ecd934a082d30078989a05ae0a129c981cde597",
+        "apps/eval-runner/src/langchain-judge.js": "9b36e6674bf6a937b0ce4d938e3c342023f0a069c2867963426f4d8a73244d1d",
+        "apps/eval-runner/src/langfuse.js": "8167873bf194c5602bcf5032eb2076eff23b20da7739002083e3ee96c010453f",
+        "apps/eval-runner/src/language-context.js": "18b81f8f1c2faf73a0552b05ffe43a6a15d1e37d6f9b3d9f72ef66d0719cc1b9",
+        "apps/eval-runner/src/legacy-planner-v3.js": "5a3b87e37717bb1eb4e642c3f0e2a2c1b5623ec969ff940ed42b285587655778",
+        "apps/eval-runner/src/multiturn-plan.js": "64c56f2ea19ccb29ce860736843ca9ea9283373c56a67202120441937a3c872f",
+        "apps/eval-runner/src/multiturn.js": "82557be5ae2076fbf164b526f99d024ea069f4a62687c9d7cc9136efa1aeaedd",
+        "apps/eval-runner/src/p0-demo.js": "5faad25d8df9e383f6f4cecf6f76867af389cda0d149b177c7d25e4cfbcedf72",
+        "apps/eval-runner/src/p0-rubric.js": "d0a036f7df2e0641b1752ef500ec9c99ef9c67325561cce86df694addb41aba0",
+        "apps/eval-runner/src/p0.js": "a8e1f21b5539b64157755b8db7c1f18afd1ec6abe471a65be745e26bbd36ed85",
+        "apps/eval-runner/src/planning-semantics.js": "410b1d2f85cd35fb7ddc985d8931cddc0195ccfca90406080d7b1f21f93ceb4a",
+        "apps/eval-runner/src/prepared-dataset.js": "1956dc5fdec6b69d8c03736170a516f6b5e9dad4c1bc79a146ea419fe468d2f4",
+        "apps/eval-runner/src/private-artifacts.js": "0942d0e1a7d4c31732c867f7d9ff8d3c56f6d53f8c321c02f221ef6d3c42c158",
+        "apps/eval-runner/src/recorded-judge.js": "51736669d23b872b366331e821b9221be9157bd5452035cd23a4534ed53a87c3",
+        "apps/eval-runner/src/recorded-scoring.js": "2bc924e8954a04f880d149154182e821fecf3e6146aa45ac99adf778814cbaca",
+        "apps/eval-runner/src/replay.js": "d9e02faee6974c54ca71038558eff5e3cb5e7547c680e043b90122dc2d5784f3",
+        "apps/eval-runner/src/review-calibration.js": "3bfe4790b3711671614967eba2f947ad92a2c4ca74c2a14fba7eb2fd990570bb",
+        "apps/eval-runner/src/review-comparison.js": "4d2c5c551f890bf5c7bf989e5f74f3af824974792dfd4f226d04cf7f8ce4b900",
+        "apps/eval-runner/src/root-cause-plan.js": "c9304277f0db5184ffa9f41ea073069c57df383dc8dfa8409a65609af3456795",
+        "apps/eval-runner/src/root-cause-report.js": "dfd83d7e7f141967ea725e6389b99dca81c837f2b4ca980667d064ed4cd44344",
+        "apps/hskai-mock/src/backend.js": "d87b9be7cbffde9536a2f0c9f05561593653be5baa143b5beba86cc4b656ff50",
+        "apps/hskai-mock/src/planning-fixtures.js": "1223f36a7aa64c3a9779e9cc01e865688aae50477eb21acdd7dc1634c2fb723d",
+        "apps/hskai-mock/src/server.js": "03a0bbc47e10b945f551d5f9a0b8e46b8b3dc4f4d1c1864c439fec5d69e1b1b1",
+        "apps/realtime-gateway/public/app.js": "b6b4613012d97f5cebffb39ce11e22b034bfc229fe9a827362fa4b33a5de9b00",
+        "apps/realtime-gateway/public/audio.js": "c3021ed22fe895b09b44ea07397b7fcb0d56f371c97272110986988ae0e5e326",
+        "apps/realtime-gateway/public/caption-phrases.js": "050c7a4ff9de152c8e409a39c4eea0e8d7aaec34772d9092781e009732bd2796",
+        "apps/realtime-gateway/public/capture-worklet.js": "e05a3ad9841360790449c40250242386d6c77a5af11c33ec206cd5f7742332c7",
+        "apps/realtime-gateway/public/diagnostics.js": "dbc051982b55969965f0bfb805630d0aece60cd54ee70fdf524856bce3312b57",
+        "apps/realtime-gateway/public/preparation-client.js": "833bc748e12a39e5880795226e84e1786d88ac55ca7ef15154eff72b5c552f0c",
+        "apps/realtime-gateway/public/presentation.js": "bd7ba56ca69031f4b8d6f5a8cae5250964520d1600a68555a2a3d8741daf40cb",
+        "apps/realtime-gateway/public/summary-cards.js": "6526b109d575f8c868770bb4ee7456af2ed1dcb373e9db33499a642881933954",
+        "apps/realtime-gateway/public/web.js": "e6f33d5c6996d3dc02de6ef73b97836bebfe356e2f618263c6b41073d12e2030",
+        "apps/realtime-gateway/src/config.js": "198082abafe8fec556cb4648bb1d973c0aa2a1d6799faee4c2ed6f0b46f48dac",
+        "apps/realtime-gateway/src/main.js": "80ec88e9f5265d53ea449d01f603fafa9a74f521bbca7fafe2dcae811c493f00",
+        "apps/realtime-gateway/src/output-gate.js": "7e202fb1940ac95595b40f951ca283aec8e4e48970c601ffad8709446854717d",
+        "apps/realtime-gateway/src/preparations.js": "45fe25db82ba3ab27660f68791725f47fa72b565fca29ea46d6a0c9e2b983be1",
+        "apps/realtime-gateway/src/realtime.js": "a23537b5b89d40232ec89969a08494d70e3cfe9a87e7890bcf4e100a67c9ac9f",
+        "apps/realtime-gateway/src/reply-executor.js": "4157ad93e5e6cc703451aa06eee942f54552028221754e78f782569143f7dcbe",
+        "apps/realtime-gateway/src/server.js": "037c8bc1b2ba7193b4e7fc87f32e0a0880a6ea6b7f44b481f9aad504e52a6689",
+        "scripts/actions-candidate-evaluation.js": "05670608652336c58caeaf2cb4e33650108f623b276c939f0c933940c8de91bf",
+        "scripts/actions-collection-diagnostic.js": "d3b940561944d2da97919c8294b7e145f726e73a2ae9eefdb85a404c75356698",
+        "scripts/actions-doubao-adapter.js": "bca344974538883b4a24badb604a08b69b0ebe892eed2954592e34eae498aeaa",
+        "scripts/actions-doubao-multiturn.js": "f520fb0b7478149f239edf5697b46f9bf5f480c9143c682792fdfc441d95fd43",
+        "scripts/actions-doubao-output.js": "0b4a08a8bbb4cda229cef9650b8537fffe471fd6bcec5c110f5b936cad784f6e",
+        "scripts/actions-doubao-probe.js": "db317053d7a9e65ca5941ebfb11fdd1cc5a27f8f4295f0509b6f5e854ab8ac18",
+        "scripts/actions-evaluation-batch.js": "e5a7ed57617cfb6e7aadc38409f875a2ed12a2d4a4740730123c7317917e6e67",
+        "scripts/actions-root-cause.js": "fc7b31cb3735f42334a3997546614bb55f79cd6b59d5bceefab7500fdc468c55",
+        "scripts/browser-check.js": "c0945cb6ccfaf4a1fcd9abe47c9287be918024fc50fd42cb57dcca388005a4fc",
+        "scripts/check-prepared-dataset.js": "2f29a466a2054706c70b215fc4d110f3e551ccb0ba2189e5b620b4fced1e6f9c",
+        "scripts/check.js": "9805116878961e669a6c885816f55ddd2d7be4e87e3cf40ab1da72c160c4d28a",
+        "scripts/compare-recorded-reviews.js": "2b6fd514cdc05d8ff06589b5fb3e10a5dab19200001972e74bf4b7861a7b06bc",
+        "scripts/content-eval.js": "b140a380e5aa692e53bea1eb0750fa867d2c4adf0912978870d4c62810168e52",
+        "scripts/duplex-probe.js": "7d0d15797f9dc0d8bb10dc665d79e001c4a4ae0cc18b712d3ada2c5060a148fe",
+        "scripts/eval-candidate.js": "457c60d8bfe786a877087964934cdef82fcee0053e7e700f3e5bd2e0206d52a1",
+        "scripts/evaluation-report.js": "26b37d2dfdc401bf5fdc9bc523de2b148084014817b4876159c47718f58c8409",
+        "scripts/experience-baseline.js": "909816d1a4562af516f59ec97f45dd60956f9c308ab47ecc000ce40032811aed",
+        "scripts/goal-eval.js": "d69257d801ee83e2eb282b26622a9ae74235fdbe4c4cdb4031ae73b070874e1c",
+        "scripts/multiturn-eval.js": "38f8bc118314f0ce94bf2ada4cd6df45fcc17b668dc52cd322f78022ce0c7d15",
+        "scripts/p0-eval.js": "586fd67158ccfb67a27e5846b6ac55a57154038570fac36471bfa16c025fd478",
+        "scripts/planning-eval.js": "282e16ea1d435b759d832a7446468b257282acc17f9c5a32300548158f70e681",
+        "scripts/planning-voice-probe.js": "23e7d458941a8403f443eccc508d8e75178ed8ba236009b949e11df6cb9e06d5",
+        "scripts/recorded-score.js": "a1e21b2b68fc967cceeeb659baf4131dbecc9ca2ebfbc557e048dbef6f8cd225",
+        "scripts/release-check.js": "2480be024abf1dfaf440f1d431937e193efdece60b32aa5c8496f3fa4ef4fb95"
+      },
+      "candidate": {
+        "provider": "minimax",
+        "model": "MiniMax-M3",
+        "output_format": "json_prompt",
+        "draft": "kai-proposal-draft-v1",
+        "prompt": "kai-planner-v4",
+        "contract": "dynamic-planning-v2",
+        "goal_policy": "kai-goal-lifecycle-v1",
+        "path": "next_turn_advisory"
+      },
+      "synthetic_inputs": true,
+      "model_calls_enabled": true,
+      "real_voice_connected": false,
+      "browser_audio_tested": false,
+      "contains_transcripts": false,
+      "transport": [
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 5212
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4158,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4160,
+          "state": "body_received",
+          "response_bytes": 1346,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1237,
+          "completion_tokens": 160
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4160,
+          "state": "output_shape",
+          "content_bytes": 743,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 5332
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 5796,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10021
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4952,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 5800
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 3266,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 3268,
+          "state": "body_received",
+          "response_bytes": 1210,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1373,
+          "completion_tokens": 130
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 3268,
+          "state": "output_shape",
+          "content_bytes": 619,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 5920
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 6088,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 6091,
+          "state": "body_received",
+          "response_bytes": 1535,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1400,
+          "completion_tokens": 192
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 6091,
+          "state": "output_shape",
+          "content_bytes": 924,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10763
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3673,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3677,
+          "state": "body_received",
+          "response_bytes": 1315,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2506,
+          "completion_tokens": 158
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3677,
+          "state": "output_shape",
+          "content_bytes": 702,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10881
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 1274,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 5868
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 9953,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10562
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4953,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 3777
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 9952,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 7795
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4953,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 7892
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4952,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 3777
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 9952,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 9982
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4952,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10157
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4951,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 5212
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 9959,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 9917
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3756,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3762,
+          "state": "body_received",
+          "response_bytes": 1154,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2302,
+          "completion_tokens": 124
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3762,
+          "state": "output_shape",
+          "content_bytes": 524,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10033
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4035,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4036,
+          "state": "body_received",
+          "response_bytes": 1466,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2330,
+          "completion_tokens": 217
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4036,
+          "state": "output_shape",
+          "content_bytes": 835,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10151
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 918,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 5800
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 5825,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 5827,
+          "state": "body_received",
+          "response_bytes": 1379,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1373,
+          "completion_tokens": 159
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 5827,
+          "state": "output_shape",
+          "content_bytes": 776,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 5920
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4131,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10680
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4954,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10825
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4952,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 5800
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 5424,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 5450,
+          "state": "body_received",
+          "response_bytes": 1395,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1373,
+          "completion_tokens": 149
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 5450,
+          "state": "output_shape",
+          "content_bytes": 747,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 5920
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4502,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10576
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4954,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10708
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4952,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 5800
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 5052,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 5053,
+          "state": "body_received",
+          "response_bytes": 1669,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1373,
+          "completion_tokens": 208
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 5053,
+          "state": "output_shape",
+          "content_bytes": 1063,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 5917
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4899,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10063
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4954,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10179
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4273,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4275,
+          "state": "body_received",
+          "response_bytes": 1250,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2397,
+          "completion_tokens": 138
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4275,
+          "state": "output_shape",
+          "content_bytes": 596,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10297
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 679,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 3777
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4807,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4809,
+          "state": "body_received",
+          "response_bytes": 1434,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 939,
+          "completion_tokens": 163
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4809,
+          "state": "output_shape",
+          "content_bytes": 791,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 3897
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 2954,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 2955,
+          "state": "body_received",
+          "response_bytes": 1223,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 966,
+          "completion_tokens": 135
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 2955,
+          "state": "output_shape",
+          "content_bytes": 629,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 9498
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3036,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3037,
+          "state": "body_received",
+          "response_bytes": 1415,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2229,
+          "completion_tokens": 175
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3037,
+          "state": "output_shape",
+          "content_bytes": 802,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 9616
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 1913,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 4625
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 6169,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 6174,
+          "state": "body_received",
+          "response_bytes": 1590,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1097,
+          "completion_tokens": 188
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 6174,
+          "state": "output_shape",
+          "content_bytes": 942,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 4744
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 3777,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 9368
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4954,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 5229
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4314,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4319,
+          "state": "body_received",
+          "response_bytes": 1497,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1239,
+          "completion_tokens": 195
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4319,
+          "state": "output_shape",
+          "content_bytes": 882,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 5349
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 3144,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 3145,
+          "state": "body_received",
+          "response_bytes": 1221,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1268,
+          "completion_tokens": 131
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 3145,
+          "state": "output_shape",
+          "content_bytes": 626,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 9532
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3681,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3681,
+          "state": "body_received",
+          "response_bytes": 1294,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2245,
+          "completion_tokens": 166
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3681,
+          "state": "output_shape",
+          "content_bytes": 683,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 9650
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 1271,
+          "state": "cancelled"
+        }
+      ],
+      "denominators": {
+        "cases": 12,
+        "initial_llm": 0,
+        "initial_rule": 12,
+        "initial_failed": 0,
+        "turns": 18,
+        "llm_turns": 1,
+        "rule_turns": 17,
+        "unaccepted_turns": 0,
+        "llm_behavior_pass": 1,
+        "host_behavior_pass": 18
+      },
+      "cases": [
+        {
+          "id": "initial-a",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-likes",
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "rejected",
+                "invalid_fields": [],
+                "phase": "validation",
+                "elapsed_ms": 4161,
+                "code": "INVALID_SELECTION_BASIS"
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-likes",
+              "status": "active",
+              "action": "FOLLOW_UP",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4973,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 14933
+        },
+        {
+          "id": "initial-b",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-time",
+            "planner": "rule",
+            "degraded_reason": "planner_validation_failed",
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "rejected",
+                "invalid_fields": [],
+                "phase": "validation",
+                "elapsed_ms": 3268,
+                "code": "INVALID_SELECTION_BASIS"
+              },
+              {
+                "attempt": 2,
+                "state": "rejected",
+                "invalid_fields": [],
+                "phase": "validation",
+                "elapsed_ms": 6092,
+                "code": "INVALID_SELECTION_BASIS"
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-time",
+              "status": "active",
+              "action": "FOLLOW_UP",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "rejected",
+                  "invalid_fields": [],
+                  "phase": "validation",
+                  "elapsed_ms": 3678,
+                  "code": "INVALID_TURN_PROPOSAL"
+                }
+              ],
+              "elapsed_ms": 4961,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 14322
+        },
+        {
+          "id": "mission-b",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-time",
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-time",
+              "status": "active",
+              "action": "FOLLOW_UP",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4954,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 14911
+        },
+        {
+          "id": "free-local",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": null,
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": null,
+              "status": "unverified",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": true,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4954,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "local_help_scope",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            },
+            {
+              "index": 1,
+              "goal": null,
+              "status": "unverified",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4954,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                },
+                {
+                  "name": "local_help_scope",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 19862
+        },
+        {
+          "id": "free-practice",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": null,
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-likes",
+              "status": "active",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4954,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            },
+            {
+              "index": 1,
+              "goal": "express-likes",
+              "status": "active",
+              "action": "FOLLOW_UP",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4952,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 19861
+        },
+        {
+          "id": "refusal",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-likes",
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-likes",
+              "status": "paused",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "llm",
+              "degraded_reason": null,
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "accepted",
+                  "elapsed_ms": 3762
+                }
+              ],
+              "elapsed_ms": 3764,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            },
+            {
+              "index": 1,
+              "goal": "express-likes",
+              "status": "paused",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "rejected",
+                  "invalid_fields": [],
+                  "phase": "validation",
+                  "elapsed_ms": 4036,
+                  "code": "INVALID_TURN_PROPOSAL"
+                }
+              ],
+              "elapsed_ms": 4955,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 18680
+        },
+        {
+          "id": "switch",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-time",
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "rejected",
+                "invalid_fields": [],
+                "phase": "validation",
+                "elapsed_ms": 5828,
+                "code": "INVALID_SELECTION_BASIS"
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-likes",
+              "status": "active",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4956,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            },
+            {
+              "index": 1,
+              "goal": "express-likes",
+              "status": "active",
+              "action": "FOLLOW_UP",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4954,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 19871
+        },
+        {
+          "id": "difficulty",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-time",
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "rejected",
+                "invalid_fields": [],
+                "phase": "validation",
+                "elapsed_ms": 5451,
+                "code": "INVALID_SELECTION_BASIS"
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-time",
+              "status": "active",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4957,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            },
+            {
+              "index": 1,
+              "goal": "express-likes",
+              "status": "active",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4955,
+              "checks": [
+                {
+                  "name": "eligible_goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 19867
+        },
+        {
+          "id": "retire",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-time",
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "rejected",
+                "invalid_fields": [],
+                "phase": "request",
+                "elapsed_ms": 5053,
+                "code": "PLANNER_INVALID_JSON"
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": null,
+              "status": "retired",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4955,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            },
+            {
+              "index": 1,
+              "goal": null,
+              "status": "retired",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "rejected",
+                  "invalid_fields": [],
+                  "phase": "validation",
+                  "elapsed_ms": 4276,
+                  "code": "INVALID_TURN_PROPOSAL"
+                }
+              ],
+              "elapsed_ms": 4955,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 19864
+        },
+        {
+          "id": "prerequisite",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": null,
+            "planner": "rule",
+            "degraded_reason": "planner_validation_failed",
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "rejected",
+                "invalid_fields": [],
+                "phase": "validation",
+                "elapsed_ms": 4809,
+                "code": "INVALID_SELECTION_BASIS"
+              },
+              {
+                "attempt": 2,
+                "state": "rejected",
+                "invalid_fields": [],
+                "phase": "validation",
+                "elapsed_ms": 2961,
+                "code": "INVALID_SELECTION_BASIS"
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": null,
+              "status": "unverified",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "rejected",
+                  "invalid_fields": [],
+                  "phase": "validation",
+                  "elapsed_ms": 3038,
+                  "code": "INVALID_TURN_PROPOSAL"
+                }
+              ],
+              "elapsed_ms": 4952,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 12724
+        },
+        {
+          "id": "unknown",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-likes",
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "rejected",
+                "invalid_fields": [],
+                "phase": "validation",
+                "elapsed_ms": 6174,
+                "code": "RESOURCE_GOAL_REQUIRED"
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-likes",
+              "status": "active",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4963,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 14915
+        },
+        {
+          "id": "declined",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": null,
+            "planner": "rule",
+            "degraded_reason": "planner_validation_failed",
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "rejected",
+                "invalid_fields": [],
+                "phase": "validation",
+                "elapsed_ms": 4320,
+                "code": "PREREQUISITE_UNVERIFIED"
+              },
+              {
+                "attempt": 2,
+                "state": "rejected",
+                "invalid_fields": [],
+                "phase": "validation",
+                "elapsed_ms": 3146,
+                "code": "DECLINED_INITIAL_GOAL"
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": null,
+              "status": "unverified",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "rejected",
+                  "invalid_fields": [],
+                  "phase": "validation",
+                  "elapsed_ms": 3682,
+                  "code": "INVALID_TURN_PROPOSAL"
+                }
+              ],
+              "elapsed_ms": 4954,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 12421
+        }
+      ],
+      "semantic_quality_accepted": false,
+      "independent_judge_calls": 0,
+      "human_calibrated": false,
+      "current_turn_control_verified": false
+    },
+    "draft-v5": {
+      "schema_version": "goal-eval-v1",
+      "dataset_sha256": "ff32faffb09359bc55235caff84fe143b18a5eeaa27900c4a621ba14ce4a45de",
+      "source_hashes": {
+        "packages/agent-core/context-snapshot.js": "551b6e3c4c9f8fbd24f3472c8591c221cd555ae6181f5e3c4138076b10f5266a",
+        "packages/agent-core/conversation-initializer.js": "c9c2193bd3600a4f31a23ad978c6db8d8ebd28be24e292f4d02720b5a7b66400",
+        "packages/agent-core/goal-lifecycle.js": "01bed6259243c322cf29b76451bc3c27a86d637eb0be5f59b5d11d98eb8c9f34",
+        "packages/agent-core/language-support.js": "e730ad196816aa43a4a8c485eb731e60a739153687cba5aaf31d52d49eea4faf",
+        "packages/agent-core/learning-summary.js": "5f2611cc28e9a5ec068316c4b9aa7b29d96c9b7e8153a2713e56e59d4909a083",
+        "packages/agent-core/lessons.js": "852d4579c31a725a62e4586f6f1c67084c0a8f34917a647598660c00eb9cceb8",
+        "packages/agent-core/natural-teaching.js": "94d6b228bae075028c733ae8c84fa1212ff428f6f1126f39cc583d4320ac2a96",
+        "packages/agent-core/plan-validator.js": "1276a6a3d5d68c899d732526a78936aab6a0d351c3ae63263e6d0a2d437c4f7a",
+        "packages/agent-core/planner-draft.js": "f29bc2f40100bde425bc897c107e9993c9d45a32a44fe46ae9fe858cd5e04b08",
+        "packages/agent-core/planner-port.js": "fcf7bee00bd41cf8e5d0bb28d76162d9fa4a06d570ab7ded5a7ef78be90af64f",
+        "packages/agent-core/planning-observations.js": "0677f69f685e6acdf47a306f89693209889df43f552c6100f78b288456daab4b",
+        "packages/agent-core/planning-state.js": "09b74f351c50a77cf3ef9b7a346fdc79b58312a3b4b6306831ac13b6d0990502",
+        "packages/agent-core/reply-policy.js": "21b254fa24b871f357159dab9a675ef357dd7be1476444663eb2db2386349b2a",
+        "packages/agent-core/session.js": "0775f7033e41bc27e74b245435045c8289d94403e48501b41c3dd3687a6dac0c",
+        "packages/agent-core/speech.js": "8bb5cb6ffa4a8407f71a86852ec7673f4a06c7233a102844de5ab87799aa2522",
+        "packages/agent-core/summary-directory.js": "f4e22da20bd13ba4c9f8955b889465f18ea6b10d94a215069cc7dc84a0b77c81",
+        "packages/agent-core/teaching.js": "da4a97fafcf1a15bff4473604cfc481edd8bb28fcceff5061fa1109e33aa9d20",
+        "packages/agent-core/turn-taking.js": "8d67d1855d684b1a5e2e79434f725b5ff1cbb04c4b2ceea02731fdd69f5933ef",
+        "packages/contracts/events.js": "f3f7bd240d7d7912b74111c711ded54e28a807a98fb6462f5bd7c927e5dbb90f",
+        "packages/contracts/planning.js": "59bfcdec6ae9ab71973631c1d356e14cf5f634dadb712daf3d95f9e261d8361b",
+        "packages/hskai-bridge/endpoint.js": "d8e696c0fb5eb5cb17b8604ad531e05c6dc12188431c0589238215e01784ef2d",
+        "packages/hskai-bridge/identity.js": "c4d557dc76e275c9894fb7fe655d2caaff5b6d8e6ab96224df72411612ec951d",
+        "packages/hskai-bridge/memory.js": "b89057d134348706350489d585fe7306dd31e7083409ad524acf26f1ca4cac1f",
+        "packages/hskai-bridge/planning-port.js": "9b8df153b7b0d7250734d6947f6f4d3fd6d90576bd7b54df9e8f139bd0b3bbf8",
+        "packages/hskai-bridge/privacy.js": "4169921b9d58d41364d88c93677e151a3be337f509c475db4091c37165f5d4a7",
+        "packages/hskai-bridge/safeguarding.js": "0735343aad2485ae6b1d55e6946e60b71ae8ccb5f1eae908af83250102b8ff93",
+        "packages/policy/metrics.js": "a0a38f5e7a8b77d2bd3e622b84954a449d12ef07777e7d559e6d518176cf6eb3",
+        "packages/policy/release.js": "c57c56587ef96b7e5277178473d01691c4c87d4acaeb589c339dbe7c0537f2f4",
+        "packages/policy/safety.js": "23ff35b26ac73f236de7322c9c0c09f9426b023b4d8cbe9d530fda0a9bfa2d5b",
+        "packages/provider-doubao/adapter-probe.js": "239c233188db1506f4c3e7e52fed888cf6539df66b6b056b51e0f79587079c82",
+        "packages/provider-doubao/fc-planning-probe.js": "9d6408456b57d22d82fa85be723b148735ccc2bf6e8ebda1680ec25ff265bd5a",
+        "packages/provider-doubao/index.js": "2d84d66234e0d18ea80f9ae0f0659d70a307f29d3106a28f130a881a60dfc691",
+        "packages/provider-doubao/output-probe.js": "2da257b348708b4ac39b30d4cc65b7798fc0190a3d1e81df43568ff9efeac486",
+        "packages/provider-doubao/probe.js": "1070f7f9c3ad8645ea31d502b85e8688a3dcb6f21cd497283eac431f330561d5",
+        "packages/provider-doubao/realtime.js": "b139037ce67d302340c5efc5f543f40ccc0e3ead835d1f4525ffc6c624a74a67",
+        "packages/provider-doubao/seeduplex.js": "c6eb06150fb76fa7025fadb801553e337f4882968fb60d05dd22fc2a7eaef723",
+        "packages/provider-minimax/planner.js": "2e22d4598bc4a1fa2b986af14fda315a1d782b15e7750fe9072f8bdb63293461",
+        "packages/provider-replay/index.js": "fb981e5ae882bed864818a8774f2161350b64db6c10e49122ade9fbe4e2bd874",
+        "apps/eval-runner/src/actions-multiturn.js": "4f28b07c3806027cbfd65976dfe4dbb9df767d3a13349a3b84f8c7878b23ea7c",
+        "apps/eval-runner/src/agent-harness.js": "442bd2342cf57ec0ae6aa144a13a042913a9268c12d80f9f8c5ad09c7e5d1777",
+        "apps/eval-runner/src/collection-diagnostic.js": "6ce15d2d00d1a4dc600643ae60ff76c2c8b9fe450e9a0a3e68b90c3fdf251641",
+        "apps/eval-runner/src/collection-evidence.js": "df4497e77de7dba3c3341effef471e7b33adcb51482f9005ff291aba7da68c80",
+        "apps/eval-runner/src/content.js": "1e800668bbf4fb35884f3b090a0c8584f75db7dc73ec35421db3f4e0952542ab",
+        "apps/eval-runner/src/eval-baseline.js": "b83577a407fa93453c2811bc124641c4e9580a7ef6f8e976099f03fe04b8c11a",
+        "apps/eval-runner/src/eval-candidate.js": "2ab6b0fa44121523a9c2c9a44fc32c6862f24800d29ff9a2204e1c9f5c9207f8",
+        "apps/eval-runner/src/evaluation-batch.js": "dd05e08afb7fa13c45fca2bd9c6cd00e4809a959d6a0eb1620934c2132040cfc",
+        "apps/eval-runner/src/evaluation-language-v3.js": "f603909bfb472b96ef29276986194f48ca3ff98b8c5876d2e95e83f5f7de5dab",
+        "apps/eval-runner/src/evaluation-reply-v3.js": "41f00e745c9a09c6f1196e1bc48c93526ef77674030b535b6e3631bc6358010d",
+        "apps/eval-runner/src/evaluation-report.js": "0d9d8e6c815de92bde5161fa52f66a90175c0d5999b1e49c1ed4c304073809ab",
+        "apps/eval-runner/src/input-audio.js": "1e05e52adef690536dd285789ecd934a082d30078989a05ae0a129c981cde597",
+        "apps/eval-runner/src/langchain-judge.js": "9b36e6674bf6a937b0ce4d938e3c342023f0a069c2867963426f4d8a73244d1d",
+        "apps/eval-runner/src/langfuse.js": "8167873bf194c5602bcf5032eb2076eff23b20da7739002083e3ee96c010453f",
+        "apps/eval-runner/src/language-context.js": "18b81f8f1c2faf73a0552b05ffe43a6a15d1e37d6f9b3d9f72ef66d0719cc1b9",
+        "apps/eval-runner/src/legacy-planner-v3.js": "5a3b87e37717bb1eb4e642c3f0e2a2c1b5623ec969ff940ed42b285587655778",
+        "apps/eval-runner/src/multiturn-plan.js": "64c56f2ea19ccb29ce860736843ca9ea9283373c56a67202120441937a3c872f",
+        "apps/eval-runner/src/multiturn.js": "82557be5ae2076fbf164b526f99d024ea069f4a62687c9d7cc9136efa1aeaedd",
+        "apps/eval-runner/src/p0-demo.js": "5faad25d8df9e383f6f4cecf6f76867af389cda0d149b177c7d25e4cfbcedf72",
+        "apps/eval-runner/src/p0-rubric.js": "d0a036f7df2e0641b1752ef500ec9c99ef9c67325561cce86df694addb41aba0",
+        "apps/eval-runner/src/p0.js": "a8e1f21b5539b64157755b8db7c1f18afd1ec6abe471a65be745e26bbd36ed85",
+        "apps/eval-runner/src/planning-semantics.js": "410b1d2f85cd35fb7ddc985d8931cddc0195ccfca90406080d7b1f21f93ceb4a",
+        "apps/eval-runner/src/prepared-dataset.js": "1956dc5fdec6b69d8c03736170a516f6b5e9dad4c1bc79a146ea419fe468d2f4",
+        "apps/eval-runner/src/private-artifacts.js": "0942d0e1a7d4c31732c867f7d9ff8d3c56f6d53f8c321c02f221ef6d3c42c158",
+        "apps/eval-runner/src/recorded-judge.js": "51736669d23b872b366331e821b9221be9157bd5452035cd23a4534ed53a87c3",
+        "apps/eval-runner/src/recorded-scoring.js": "2bc924e8954a04f880d149154182e821fecf3e6146aa45ac99adf778814cbaca",
+        "apps/eval-runner/src/replay.js": "d9e02faee6974c54ca71038558eff5e3cb5e7547c680e043b90122dc2d5784f3",
+        "apps/eval-runner/src/review-calibration.js": "3bfe4790b3711671614967eba2f947ad92a2c4ca74c2a14fba7eb2fd990570bb",
+        "apps/eval-runner/src/review-comparison.js": "4d2c5c551f890bf5c7bf989e5f74f3af824974792dfd4f226d04cf7f8ce4b900",
+        "apps/eval-runner/src/root-cause-plan.js": "c9304277f0db5184ffa9f41ea073069c57df383dc8dfa8409a65609af3456795",
+        "apps/eval-runner/src/root-cause-report.js": "dfd83d7e7f141967ea725e6389b99dca81c837f2b4ca980667d064ed4cd44344",
+        "apps/hskai-mock/src/backend.js": "d87b9be7cbffde9536a2f0c9f05561593653be5baa143b5beba86cc4b656ff50",
+        "apps/hskai-mock/src/planning-fixtures.js": "1223f36a7aa64c3a9779e9cc01e865688aae50477eb21acdd7dc1634c2fb723d",
+        "apps/hskai-mock/src/server.js": "03a0bbc47e10b945f551d5f9a0b8e46b8b3dc4f4d1c1864c439fec5d69e1b1b1",
+        "apps/realtime-gateway/public/app.js": "b6b4613012d97f5cebffb39ce11e22b034bfc229fe9a827362fa4b33a5de9b00",
+        "apps/realtime-gateway/public/audio.js": "c3021ed22fe895b09b44ea07397b7fcb0d56f371c97272110986988ae0e5e326",
+        "apps/realtime-gateway/public/caption-phrases.js": "050c7a4ff9de152c8e409a39c4eea0e8d7aaec34772d9092781e009732bd2796",
+        "apps/realtime-gateway/public/capture-worklet.js": "e05a3ad9841360790449c40250242386d6c77a5af11c33ec206cd5f7742332c7",
+        "apps/realtime-gateway/public/diagnostics.js": "fc544bbee86d50dd5cfcfb4e0e1f36f958335541100a2a31c244c7355f753694",
+        "apps/realtime-gateway/public/preparation-client.js": "833bc748e12a39e5880795226e84e1786d88ac55ca7ef15154eff72b5c552f0c",
+        "apps/realtime-gateway/public/presentation.js": "bd7ba56ca69031f4b8d6f5a8cae5250964520d1600a68555a2a3d8741daf40cb",
+        "apps/realtime-gateway/public/summary-cards.js": "6526b109d575f8c868770bb4ee7456af2ed1dcb373e9db33499a642881933954",
+        "apps/realtime-gateway/public/web.js": "e6f33d5c6996d3dc02de6ef73b97836bebfe356e2f618263c6b41073d12e2030",
+        "apps/realtime-gateway/src/config.js": "198082abafe8fec556cb4648bb1d973c0aa2a1d6799faee4c2ed6f0b46f48dac",
+        "apps/realtime-gateway/src/main.js": "80ec88e9f5265d53ea449d01f603fafa9a74f521bbca7fafe2dcae811c493f00",
+        "apps/realtime-gateway/src/output-gate.js": "7e202fb1940ac95595b40f951ca283aec8e4e48970c601ffad8709446854717d",
+        "apps/realtime-gateway/src/preparations.js": "45fe25db82ba3ab27660f68791725f47fa72b565fca29ea46d6a0c9e2b983be1",
+        "apps/realtime-gateway/src/realtime.js": "a23537b5b89d40232ec89969a08494d70e3cfe9a87e7890bcf4e100a67c9ac9f",
+        "apps/realtime-gateway/src/reply-executor.js": "4157ad93e5e6cc703451aa06eee942f54552028221754e78f782569143f7dcbe",
+        "apps/realtime-gateway/src/server.js": "037c8bc1b2ba7193b4e7fc87f32e0a0880a6ea6b7f44b481f9aad504e52a6689",
+        "scripts/actions-candidate-evaluation.js": "05670608652336c58caeaf2cb4e33650108f623b276c939f0c933940c8de91bf",
+        "scripts/actions-collection-diagnostic.js": "d3b940561944d2da97919c8294b7e145f726e73a2ae9eefdb85a404c75356698",
+        "scripts/actions-doubao-adapter.js": "bca344974538883b4a24badb604a08b69b0ebe892eed2954592e34eae498aeaa",
+        "scripts/actions-doubao-multiturn.js": "f520fb0b7478149f239edf5697b46f9bf5f480c9143c682792fdfc441d95fd43",
+        "scripts/actions-doubao-output.js": "0b4a08a8bbb4cda229cef9650b8537fffe471fd6bcec5c110f5b936cad784f6e",
+        "scripts/actions-doubao-probe.js": "db317053d7a9e65ca5941ebfb11fdd1cc5a27f8f4295f0509b6f5e854ab8ac18",
+        "scripts/actions-evaluation-batch.js": "e5a7ed57617cfb6e7aadc38409f875a2ed12a2d4a4740730123c7317917e6e67",
+        "scripts/actions-root-cause.js": "fc7b31cb3735f42334a3997546614bb55f79cd6b59d5bceefab7500fdc468c55",
+        "scripts/browser-check.js": "c0945cb6ccfaf4a1fcd9abe47c9287be918024fc50fd42cb57dcca388005a4fc",
+        "scripts/check-prepared-dataset.js": "2f29a466a2054706c70b215fc4d110f3e551ccb0ba2189e5b620b4fced1e6f9c",
+        "scripts/check.js": "9805116878961e669a6c885816f55ddd2d7be4e87e3cf40ab1da72c160c4d28a",
+        "scripts/compare-recorded-reviews.js": "2b6fd514cdc05d8ff06589b5fb3e10a5dab19200001972e74bf4b7861a7b06bc",
+        "scripts/content-eval.js": "b140a380e5aa692e53bea1eb0750fa867d2c4adf0912978870d4c62810168e52",
+        "scripts/duplex-probe.js": "7d0d15797f9dc0d8bb10dc665d79e001c4a4ae0cc18b712d3ada2c5060a148fe",
+        "scripts/eval-candidate.js": "457c60d8bfe786a877087964934cdef82fcee0053e7e700f3e5bd2e0206d52a1",
+        "scripts/evaluation-report.js": "26b37d2dfdc401bf5fdc9bc523de2b148084014817b4876159c47718f58c8409",
+        "scripts/experience-baseline.js": "909816d1a4562af516f59ec97f45dd60956f9c308ab47ecc000ce40032811aed",
+        "scripts/fc-planning-probe.js": "6989c4620c698d23ec88a30d9e36c2b2500f9952c661281c3c6e76f9ab4e4bf5",
+        "scripts/goal-eval.js": "d69257d801ee83e2eb282b26622a9ae74235fdbe4c4cdb4031ae73b070874e1c",
+        "scripts/multiturn-eval.js": "38f8bc118314f0ce94bf2ada4cd6df45fcc17b668dc52cd322f78022ce0c7d15",
+        "scripts/p0-eval.js": "586fd67158ccfb67a27e5846b6ac55a57154038570fac36471bfa16c025fd478",
+        "scripts/planning-eval.js": "282e16ea1d435b759d832a7446468b257282acc17f9c5a32300548158f70e681",
+        "scripts/planning-voice-probe.js": "23e7d458941a8403f443eccc508d8e75178ed8ba236009b949e11df6cb9e06d5",
+        "scripts/prepare-fc-probe-inputs.js": "e1ee2f7be05fcfbcdb43dd71e6a7282bcc0336cb2c44d530cbf04bba6626349d",
+        "scripts/recorded-score.js": "a1e21b2b68fc967cceeeb659baf4131dbecc9ca2ebfbc557e048dbef6f8cd225",
+        "scripts/release-check.js": "2480be024abf1dfaf440f1d431937e193efdece60b32aa5c8496f3fa4ef4fb95"
+      },
+      "candidate": {
+        "provider": "minimax",
+        "model": "MiniMax-M3",
+        "output_format": "json_prompt",
+        "draft": "kai-proposal-draft-v1",
+        "prompt": "kai-planner-v5",
+        "contract": "dynamic-planning-v2",
+        "goal_policy": "kai-goal-lifecycle-v1",
+        "path": "next_turn_advisory"
+      },
+      "synthetic_inputs": true,
+      "model_calls_enabled": true,
+      "real_voice_connected": false,
+      "browser_audio_tested": false,
+      "contains_transcripts": false,
+      "transport": [
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 5961
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4892,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4895,
+          "state": "body_received",
+          "response_bytes": 1198,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1395,
+          "completion_tokens": 126
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4895,
+          "state": "output_shape",
+          "content_bytes": 544,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10980
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4921,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4923,
+          "state": "body_received",
+          "response_bytes": 1497,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2559,
+          "completion_tokens": 237
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4923,
+          "state": "output_shape",
+          "content_bytes": 882,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 6593
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 3794,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 3795,
+          "state": "body_received",
+          "response_bytes": 1318,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1541,
+          "completion_tokens": 152
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 3795,
+          "state": "output_shape",
+          "content_bytes": 652,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 11734
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4958,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 6673
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 9960,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 11431
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4952,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 4086
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 9953,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 8128
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4954,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 8248
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4952,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 4086
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 9954,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10758
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4951,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 11000
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4954,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 5961
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 9963,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10687
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 2897,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 2901,
+          "state": "body_received",
+          "response_bytes": 1246,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2464,
+          "completion_tokens": 153
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 2901,
+          "state": "output_shape",
+          "content_bytes": 637,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10808
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 2052,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10823
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4952,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 6593
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4626,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4629,
+          "state": "body_received",
+          "response_bytes": 1249,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1541,
+          "completion_tokens": 147
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 4629,
+          "state": "output_shape",
+          "content_bytes": 634,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 11516
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4440,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4441,
+          "state": "body_received",
+          "response_bytes": 1316,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2638,
+          "completion_tokens": 150
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4441,
+          "state": "output_shape",
+          "content_bytes": 652,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 11633
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 516,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 11721
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4956,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 6593
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 9953,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 11251
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4223,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4225,
+          "state": "body_received",
+          "response_bytes": 1352,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2588,
+          "completion_tokens": 150
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4225,
+          "state": "output_shape",
+          "content_bytes": 690,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 11406
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3126,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3127,
+          "state": "body_received",
+          "response_bytes": 1353,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2622,
+          "completion_tokens": 165
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 3127,
+          "state": "output_shape",
+          "content_bytes": 736,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 6593
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 5395,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 5396,
+          "state": "body_received",
+          "response_bytes": 1398,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1541,
+          "completion_tokens": 170
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 5396,
+          "state": "output_shape",
+          "content_bytes": 781,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 6717
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 3009,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 3012,
+          "state": "body_received",
+          "response_bytes": 1239,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1567,
+          "completion_tokens": 135
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 3012,
+          "state": "output_shape",
+          "content_bytes": 637,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 11033
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 2831,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 2832,
+          "state": "body_received",
+          "response_bytes": 1302,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2569,
+          "completion_tokens": 165
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 2832,
+          "state": "output_shape",
+          "content_bytes": 683,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 11151
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 2124,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 11168
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4954,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 4086
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 3735,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 3739,
+          "state": "body_received",
+          "response_bytes": 1217,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1005,
+          "completion_tokens": 129
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 3739,
+          "state": "output_shape",
+          "content_bytes": 575,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10338
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4204,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4205,
+          "state": "body_received",
+          "response_bytes": 1502,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 2395,
+          "completion_tokens": 197
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4205,
+          "state": "output_shape",
+          "content_bytes": 867,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 5333
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 9957,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 9956
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4960,
+          "state": "cancelled"
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 5979
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 8332,
+          "state": "http_response",
+          "http_status": 200
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 8335,
+          "state": "body_received",
+          "response_bytes": 1156,
+          "provider_status_code": 0,
+          "finish_reason": "stop",
+          "prompt_tokens": 1397,
+          "completion_tokens": 126
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 8335,
+          "state": "output_shape",
+          "content_bytes": 559,
+          "json_prefix": true,
+          "reasoning_present": false
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 6097
+        },
+        {
+          "kind": "conversation",
+          "elapsed_ms": 1618,
+          "state": "cancelled"
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 0,
+          "state": "request_started",
+          "input_bytes": 10151
+        },
+        {
+          "kind": "turn",
+          "elapsed_ms": 4953,
+          "state": "cancelled"
+        }
+      ],
+      "denominators": {
+        "cases": 12,
+        "initial_llm": 4,
+        "initial_rule": 8,
+        "initial_failed": 0,
+        "turns": 18,
+        "llm_turns": 4,
+        "rule_turns": 14,
+        "unaccepted_turns": 0,
+        "llm_behavior_pass": 4,
+        "host_behavior_pass": 18
+      },
+      "cases": [
+        {
+          "id": "initial-a",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-likes",
+            "planner": "llm",
+            "degraded_reason": null,
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "accepted",
+                "elapsed_ms": 4896
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-likes",
+              "status": "active",
+              "action": "FOLLOW_UP",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "llm",
+              "degraded_reason": null,
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "accepted",
+                  "elapsed_ms": 4927
+                }
+              ],
+              "elapsed_ms": 4945,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 9846
+        },
+        {
+          "id": "initial-b",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-time",
+            "planner": "llm",
+            "degraded_reason": null,
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "accepted",
+                "elapsed_ms": 3797
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-time",
+              "status": "active",
+              "action": "FOLLOW_UP",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4972,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 8770
+        },
+        {
+          "id": "mission-b",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-time",
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-time",
+              "status": "active",
+              "action": "FOLLOW_UP",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4958,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 14922
+        },
+        {
+          "id": "free-local",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": null,
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": null,
+              "status": "unverified",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": true,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4956,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "local_help_scope",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            },
+            {
+              "index": 1,
+              "goal": null,
+              "status": "unverified",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4954,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                },
+                {
+                  "name": "local_help_scope",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 19865
+        },
+        {
+          "id": "free-practice",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": null,
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-likes",
+              "status": "active",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4954,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            },
+            {
+              "index": 1,
+              "goal": "express-likes",
+              "status": "active",
+              "action": "FOLLOW_UP",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4958,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 19868
+        },
+        {
+          "id": "refusal",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-likes",
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-likes",
+              "status": "paused",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "rejected",
+                  "invalid_fields": [],
+                  "phase": "validation",
+                  "elapsed_ms": 2902,
+                  "code": "INACTIVE_GOAL_ASSESSMENT"
+                }
+              ],
+              "elapsed_ms": 4956,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            },
+            {
+              "index": 1,
+              "goal": "express-likes",
+              "status": "paused",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4956,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 19879
+        },
+        {
+          "id": "switch",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-time",
+            "planner": "llm",
+            "degraded_reason": null,
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "accepted",
+                "elapsed_ms": 4629
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-likes",
+              "status": "active",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "rejected",
+                  "invalid_fields": [],
+                  "phase": "validation",
+                  "elapsed_ms": 4441,
+                  "code": "PLAN_POLICY_CONFLICT"
+                }
+              ],
+              "elapsed_ms": 4959,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            },
+            {
+              "index": 1,
+              "goal": "express-likes",
+              "status": "active",
+              "action": "FOLLOW_UP",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4959,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "next_action",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 14551
+        },
+        {
+          "id": "difficulty",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-time",
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-time",
+              "status": "active",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": true,
+              "planner": "llm",
+              "degraded_reason": null,
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "accepted",
+                  "elapsed_ms": 4225
+                }
+              ],
+              "elapsed_ms": 4226,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            },
+            {
+              "index": 1,
+              "goal": "express-time",
+              "status": "active",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": true,
+              "planner": "llm",
+              "degraded_reason": null,
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "accepted",
+                  "elapsed_ms": 3128
+                }
+              ],
+              "elapsed_ms": 3129,
+              "checks": [
+                {
+                  "name": "eligible_goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 17311
+        },
+        {
+          "id": "retire",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-time",
+            "planner": "rule",
+            "degraded_reason": "planner_validation_failed",
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "rejected",
+                "invalid_fields": [],
+                "phase": "validation",
+                "elapsed_ms": 5397,
+                "code": "INVALID_SELECTION_REFERENCE"
+              },
+              {
+                "attempt": 2,
+                "state": "rejected",
+                "invalid_fields": [],
+                "phase": "request",
+                "elapsed_ms": 3013,
+                "code": "PLANNER_INVALID_JSON"
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": null,
+              "status": "retired",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "rejected",
+                  "invalid_fields": [],
+                  "phase": "validation",
+                  "elapsed_ms": 2832,
+                  "code": "INVALID_TURN_PROPOSAL"
+                }
+              ],
+              "elapsed_ms": 4958,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            },
+            {
+              "index": 1,
+              "goal": null,
+              "status": "retired",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4956,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 18329
+        },
+        {
+          "id": "prerequisite",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": null,
+            "planner": "llm",
+            "degraded_reason": null,
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "accepted",
+                "elapsed_ms": 3740
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": null,
+              "status": "unverified",
+              "action": "CLARIFY",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "llm",
+              "degraded_reason": null,
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "state": "accepted",
+                  "elapsed_ms": 4206
+                }
+              ],
+              "elapsed_ms": 4208,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 7950
+        },
+        {
+          "id": "unknown",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": "express-likes",
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": "express-likes",
+              "status": "active",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4973,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "goal_status",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 14933
+        },
+        {
+          "id": "declined",
+          "status": "completed",
+          "initial_accepted": true,
+          "initial": {
+            "goal": null,
+            "planner": "rule",
+            "degraded_reason": "planner_timeout",
+            "attempts": [
+              {
+                "attempt": 1,
+                "state": "rejected",
+                "invalid_fields": [],
+                "phase": "validation",
+                "elapsed_ms": 8335,
+                "code": "DECLINED_INITIAL_GOAL"
+              }
+            ],
+            "passed": true
+          },
+          "turns": [
+            {
+              "index": 0,
+              "goal": null,
+              "status": "unverified",
+              "action": "RESPOND",
+              "new_points": 0,
+              "local_help": false,
+              "planner": "rule",
+              "degraded_reason": "planner_timeout",
+              "attempts": [],
+              "elapsed_ms": 4954,
+              "checks": [
+                {
+                  "name": "goal_selection",
+                  "passed": true
+                },
+                {
+                  "name": "teaching_density",
+                  "passed": true
+                }
+              ],
+              "passed": true,
+              "semantic_review": "pending",
+              "provider_compliance": "not_tested"
+            }
+          ],
+          "elapsed_ms": 14907
+        }
+      ],
+      "semantic_quality_accepted": false,
+      "independent_judge_calls": 0,
+      "human_calibrated": false,
+      "current_turn_control_verified": false
+    }
+  }
+}

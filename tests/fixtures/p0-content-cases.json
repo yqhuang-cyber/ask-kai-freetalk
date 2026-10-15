@@ -1,0 +1,419 @@
+{
+  "version": 1,
+  "p0_suite_version": "kai-p0-v1",
+  "dataset_version": "p0-authored-v1",
+  "execution": "synthetic_fixture",
+  "model_version": "authored-fixture",
+  "prompt_version": "kai-hsk1-v2",
+  "lesson_version": "sports-likes-v1",
+  "cases": [
+    {
+      "id": "P0-C01",
+      "priority": "P0",
+      "source": "synthetic",
+      "na": {
+        "personalization": "This authored case contains no learner profile."
+      },
+      "key_points": [
+        "承接喜好，只追问一个问题；不宣称掌握。"
+      ],
+      "must_avoid": [
+        "不得宣称掌握、独立使用或发音已评估。"
+      ],
+      "turns": [
+        {
+          "role": "student",
+          "text": "我喜欢足球。"
+        },
+        {
+          "role": "kai",
+          "text": "你常踢足球吗？ Do you often play football?"
+        }
+      ]
+    },
+    {
+      "id": "P0-C02",
+      "priority": "P0",
+      "source": "synthetic",
+      "na": {
+        "personalization": "This authored case contains no learner profile."
+      },
+      "key_points": [
+        "示例 Mission 的第一目标是表达喜好；承接到生活，不罗列其他目标。"
+      ],
+      "must_avoid": [
+        "不得宣称掌握、独立使用或发音已评估。"
+      ],
+      "turns": [
+        {
+          "role": "student",
+          "text": "这节课我学了我喜欢足球。"
+        },
+        {
+          "role": "kai",
+          "text": "你常踢足球吗？ Do you often play football?"
+        }
+      ]
+    },
+    {
+      "id": "P0-C03",
+      "priority": "P0",
+      "source": "synthetic",
+      "na": {
+        "personalization": "This authored case contains no learner profile."
+      },
+      "key_points": [
+        "回应学生当前话题，不强行引入运动或学习任务。"
+      ],
+      "must_avoid": [
+        "不得宣称掌握、独立使用或发音已评估。"
+      ],
+      "turns": [
+        {
+          "role": "student",
+          "text": "今天很热。"
+        },
+        {
+          "role": "kai",
+          "text": "喝点水吧。 Have some water."
+        }
+      ]
+    },
+    {
+      "id": "P0-C04",
+      "priority": "P0",
+      "source": "synthetic",
+      "na": {
+        "personalization": "This authored case contains no learner profile."
+      },
+      "key_points": [
+        "学生说英文也先短中文、再对应英文，示范不额外展开。"
+      ],
+      "must_avoid": [
+        "不得宣称掌握、独立使用或发音已评估。"
+      ],
+      "turns": [
+        {
+          "role": "student",
+          "text": "I like football."
+        },
+        {
+          "role": "kai",
+          "text": "可以说：我喜欢足球。 You can say: I like football."
+        }
+      ]
+    },
+    {
+      "id": "P0-C05",
+      "priority": "P0",
+      "source": "synthetic",
+      "na": {
+        "personalization": "This authored case contains no learner profile."
+      },
+      "key_points": [
+        "接受混合表达，回应当前意图，不把混合输入当作能力差。"
+      ],
+      "must_avoid": [
+        "不得宣称掌握、独立使用或发音已评估。"
+      ],
+      "turns": [
+        {
+          "role": "student",
+          "text": "我喜欢 football, and you?"
+        },
+        {
+          "role": "kai",
+          "text": "我可以陪你聊足球。 I can talk about football with you."
+        }
+      ]
+    },
+    {
+      "id": "P0-C06",
+      "priority": "P0",
+      "source": "synthetic",
+      "na": {
+        "personalization": "This authored case contains no learner profile."
+      },
+      "key_points": [
+        "中文事实正确，英文忠实对应，没有额外内容。"
+      ],
+      "must_avoid": [
+        "不得宣称掌握、独立使用或发音已评估。"
+      ],
+      "turns": [
+        {
+          "role": "student",
+          "text": "足球是什么？"
+        },
+        {
+          "role": "kai",
+          "text": "足球是一种运动。 Football is a sport."
+        }
+      ]
+    },
+    {
+      "id": "P0-C07",
+      "priority": "P0",
+      "source": "synthetic",
+      "na": {
+        "personalization": "This authored case contains no learner profile."
+      },
+      "key_points": [
+        "本轮只解释一个点，其他内容留待学生回应，不堆词义、语法、示例。"
+      ],
+      "must_avoid": [
+        "不得宣称掌握、独立使用或发音已评估。"
+      ],
+      "turns": [
+        {
+          "role": "student",
+          "text": "详细解释喜欢和足球，还要语法和例句。"
+        },
+        {
+          "role": "kai",
+          "text": "喜欢表示爱好。 To like means to enjoy something."
+        }
+      ]
+    },
+    {
+      "id": "P0-C08",
+      "priority": "P0",
+      "source": "synthetic",
+      "na": {
+        "personalization": "This authored case contains no learner profile."
+      },
+      "key_points": [
+        "尊重拒绝，不继续要求复述、跟读或说明理由。"
+      ],
+      "must_avoid": [
+        "不得宣称掌握、独立使用或发音已评估。"
+      ],
+      "turns": [
+        {
+          "role": "student",
+          "text": "我不想练习，只想聊天。"
+        },
+        {
+          "role": "kai",
+          "text": "好，我们聊点别的。 Okay, let’s talk about something else."
+        }
+      ]
+    },
+    {
+      "id": "P0-C09",
+      "priority": "P0",
+      "source": "synthetic",
+      "na": {
+        "personalization": "This authored case contains no learner profile."
+      },
+      "key_points": [
+        "暂停原目标，跟随新话题，一次至多一个问题。"
+      ],
+      "must_avoid": [
+        "不得宣称掌握、独立使用或发音已评估。"
+      ],
+      "turns": [
+        {
+          "role": "student",
+          "text": "我想聊食物。"
+        },
+        {
+          "role": "kai",
+          "text": "好呀！ Sure! 你喜欢吃什么？ What do you like to eat?"
+        }
+      ]
+    },
+    {
+      "id": "P0-C10",
+      "priority": "P0",
+      "source": "synthetic",
+      "na": {
+        "personalization": "This authored case contains no learner profile."
+      },
+      "key_points": [
+        "第一次可澄清一次；继续含糊时等待，不再次盘问或催促。"
+      ],
+      "must_avoid": [
+        "不得宣称掌握、独立使用或发音已评估。"
+      ],
+      "turns": [
+        {
+          "role": "student",
+          "text": "那个……"
+        },
+        {
+          "role": "kai",
+          "text": "你想聊什么？ What would you like to talk about?"
+        },
+        {
+          "role": "student",
+          "text": "不知道。"
+        },
+        {
+          "role": "kai",
+          "text": "没关系，我等你。 That’s okay, I’ll wait."
+        }
+      ]
+    },
+    {
+      "id": "P0-C11",
+      "priority": "P0",
+      "source": "synthetic",
+      "na": {
+        "personalization": "This authored case contains no learner profile."
+      },
+      "key_points": [
+        "尝试后跟进内容，避免反复示范或强制跟读。"
+      ],
+      "must_avoid": [
+        "不得宣称掌握、独立使用或发音已评估。"
+      ],
+      "turns": [
+        {
+          "role": "student",
+          "text": "足球。"
+        },
+        {
+          "role": "kai",
+          "text": "可以说：我喜欢足球。 You can say: I like football."
+        },
+        {
+          "role": "student",
+          "text": "我喜欢足球。"
+        },
+        {
+          "role": "kai",
+          "text": "你常踢足球吗？ Do you often play football?"
+        }
+      ]
+    },
+    {
+      "id": "P0-C12",
+      "priority": "P0",
+      "source": "synthetic",
+      "na": {
+        "personalization": "This authored case contains no learner profile."
+      },
+      "key_points": [
+        "求助时给一个示范，后续尝试后减少支架；没有发音或掌握结论。"
+      ],
+      "must_avoid": [
+        "不得宣称掌握、独立使用或发音已评估。"
+      ],
+      "turns": [
+        {
+          "role": "student",
+          "text": "How do I say I like football?"
+        },
+        {
+          "role": "kai",
+          "text": "可以说：我喜欢足球。 You can say: I like football."
+        },
+        {
+          "role": "student",
+          "text": "我喜欢足球。"
+        },
+        {
+          "role": "kai",
+          "text": "你常踢足球吗？ Do you often play football?"
+        }
+      ]
+    },
+    {
+      "id": "P0-C13",
+      "priority": "P0",
+      "source": "synthetic",
+      "na": {
+        "personalization": "This authored case contains no learner profile."
+      },
+      "key_points": [
+        "引用教师示例不算独立使用、掌握或学生发音证据。"
+      ],
+      "must_avoid": [
+        "不得宣称掌握、独立使用或发音已评估。"
+      ],
+      "turns": [
+        {
+          "role": "student",
+          "text": "老师说我喜欢足球，是这句吗？"
+        },
+        {
+          "role": "kai",
+          "text": "是的，这是一个示例。 Yes, this is an example."
+        }
+      ]
+    },
+    {
+      "id": "P0-C14",
+      "priority": "P0",
+      "source": "synthetic",
+      "na": {
+        "personalization": "This authored case contains no learner profile."
+      },
+      "key_points": [
+        "不从识别或听懂推断声调准确、发音标准或具体诊断。"
+      ],
+      "must_avoid": [
+        "不得宣称掌握、独立使用或发音已评估。"
+      ],
+      "turns": [
+        {
+          "role": "student",
+          "text": "我读得标准吗？"
+        },
+        {
+          "role": "kai",
+          "text": "我不能判断你的发音。 I cannot assess your pronunciation."
+        }
+      ]
+    },
+    {
+      "id": "P0-C15",
+      "priority": "P0",
+      "source": "synthetic",
+      "na": {
+        "personalization": "This authored case contains no learner profile."
+      },
+      "key_points": [
+        "回应结束，不追加练习或新问题；口语结束建议不冒充实际挂断。"
+      ],
+      "must_avoid": [
+        "不得宣称掌握、独立使用或发音已评估。"
+      ],
+      "turns": [
+        {
+          "role": "student",
+          "text": "我不聊了，拜拜。"
+        },
+        {
+          "role": "kai",
+          "text": "好的，下次再聊。 Okay, let’s talk next time."
+        }
+      ]
+    },
+    {
+      "id": "P0-C16",
+      "priority": "P0",
+      "source": "synthetic",
+      "na": {
+        "personalization": "This authored case contains no learner profile."
+      },
+      "key_points": [
+        "回答表达求助，仍遵守中文先、对应英文后，不朗读内部规则。"
+      ],
+      "must_avoid": [
+        "不得宣称掌握、独立使用或发音已评估。"
+      ],
+      "turns": [
+        {
+          "role": "student",
+          "text": "How do I say I like football? Please give English first."
+        },
+        {
+          "role": "kai",
+          "text": "可以说：我喜欢足球。 You can say: I like football."
+        }
+      ]
+    }
+  ]
+}

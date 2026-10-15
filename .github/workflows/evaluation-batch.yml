@@ -1,0 +1,51 @@
+name: Frozen Agent full evaluation
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/live/evaluation-batch-request.json']
+permissions:
+  contents: read
+concurrency:
+  group: frozen-agent-evaluation
+  cancel-in-progress: false
+jobs:
+  collect:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        batch: [batch-01, batch-02, batch-03, batch-04, batch-05, batch-06, batch-07, batch-08]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci --ignore-scripts
+      - name: Collect fixed cases and optionally score actual replies
+        env:
+          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+          EVAL_JUDGE_API_KEY: ${{ secrets.EVAL_JUDGE_API_KEY }}
+          EVAL_JUDGE_BASE_URL: ${{ secrets.EVAL_JUDGE_BASE_URL }}
+          EVAL_JUDGE_MODEL: ${{ secrets.EVAL_JUDGE_MODEL }}
+          EVAL_JUDGE_VERSION: ${{ secrets.EVAL_JUDGE_VERSION }}
+        run: node scripts/actions-evaluation-batch.js ${{ matrix.batch }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evaluation-${{ matrix.batch }}
+          path: |
+            .local/evaluation-batch/batch-request.json
+            .local/evaluation-batch/batch-failure.json
+            .local/evaluation-batch/observations.json
+            .local/evaluation-batch/collection-report.json
+            .local/evaluation-batch/protocol-diagnostics.json
+            .local/evaluation-batch/scoring-input.json
+            .local/evaluation-batch/judgements.json
+            .local/evaluation-batch/score-report.json
+          retention-days: 7

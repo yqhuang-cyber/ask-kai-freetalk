@@ -1,0 +1,3551 @@
+{
+  "kind": "ask-kai-collection-diagnostic-report",
+  "version": 1,
+  "collection_evidence_version": "kai-collection-evidence-v1",
+  "run_id": "batch-3878f655-c6b5-4db7-9b0b-bfd0c25cfe50",
+  "runner_revision": "36469bb84b7f04f69e87ed877ae17eb0cae0579e",
+  "agent_revision": "6661d7ba3ecf7f3eef8f23f74c5d625cb8f457e2",
+  "runtime_digest": "e81fb28f2c1fa0083281cb2d99a44cd20eecd8ffa766e3f949afec03fceb6dde",
+  "dataset_sha256": "8d32f2b2729fcc5a01875781ab1f28db12d8c07e5cd2ecf0d8848f959542406a",
+  "profile_sha256": "16f3847dc535be2b7ea51365dd6e81f3d08543c4a36fc2c1c670d91660617f94",
+  "execution": "recorded_real_model",
+  "observation_scope": "task02_independent_diagnostic",
+  "historical_baseline_replaced": false,
+  "input_pcm_scope": "authored_tts_fixtures_only",
+  "pacing_changed": false,
+  "turn_timeout_ms": 45000,
+  "judge_calls": 0,
+  "content_scored": false,
+  "selected_cases": 5,
+  "expected_turns": 32,
+  "collected_turns": 29,
+  "raw_reported_reply_complete": 30,
+  "measured_input_turns": 30,
+  "early_provider_finals": [
+    "ask-kai-v2-040-t02"
+  ],
+  "partial_turns": 1,
+  "internal_memory_audit_covered": false,
+  "playback_measured": false,
+  "analysis_version": "kai-task02-evidence-review-v1",
+  "raw_report_sha256": "bb5d95ca2d97c59488b837ebe490595e56de1a8b65120b7e9040ee9eae986283",
+  "raw_observations_sha256": "833ab2bb4e301a20a1217a55eb6dcacec39baf953d0a8f7b49f578d6398b0f41",
+  "eligibility_correction": "Exclude state partial / failed fragments even when model reply completed; immutable originals retained",
+  "actions_run_id": 38196302477,
+  "baseline_artifact_sha256": "cb4e93765511348cfdc232779058be8d1e4feb2c436b784cedf68295895c2f73",
+  "cases": [
+    {
+      "case_id": "ask-kai-v2-007",
+      "status": "collected",
+      "failure": null,
+      "expected_turns": 4,
+      "session_terminal": "session.closed",
+      "memory_port": {
+        "scope": "authorized_mock_memory_port_calls_only",
+        "truncated": false,
+        "internal_session_memory_observed": false,
+        "added_port_calls": 0,
+        "write_calls": 0,
+        "delete_calls": 0,
+        "read_calls": 1,
+        "all_owner_matches": true
+      },
+      "turns": [
+        {
+          "turn": 1,
+          "failure": null,
+          "input_audio_sha256": "eb899aaad57a521b3117d39963ec9060733362e91f5a364d67229da23097de5f",
+          "asr_surface_match": true,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 1621.670744000001,
+          "first_audio_enqueue_at_ms": 1743.226552,
+          "last_audio_enqueue_at_ms": 7833.417648999999,
+          "transport_flushed_at_ms": 7833.5227159999995,
+          "enqueued_bytes": 191024,
+          "flushed_bytes": 191024,
+          "enqueued_sha256": "eb899aaad57a521b3117d39963ec9060733362e91f5a364d67229da23097de5f",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 191024,
+            "duration_ms": 5969.5,
+            "rms": 2495.3379047702465,
+            "peak": 12738,
+            "nonzero_samples": 94569,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 232,
+            "first_active_ms": 140,
+            "last_active_ms": 5969.5,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 2828.431732000001,
+              "last_at_ms": 2828.431732000001
+            },
+            "provider_adapter:user.partial": {
+              "count": 25,
+              "first_at_ms": 2832.201393000001,
+              "last_at_ms": 9218.983207000001
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 9222.024014999999,
+              "last_at_ms": 9222.024014999999
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 9246.800447000001,
+              "last_at_ms": 9246.800447000001
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 11009.50803,
+              "last_at_ms": 11009.50803
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 11262.805543000002,
+              "last_at_ms": 11262.805543000002
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 2828.431732000001,
+              "remaining_input_bytes": 156464
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 9222.024014999999,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 9228.818996000002,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 9246.800447000001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 9571.509287,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 11009.50803,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 11014.223936000002,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 2,
+          "failure": null,
+          "input_audio_sha256": "ac88573dd925d71fbe77c883cb23e7f74bc231c0761f30a366532f630aba01da",
+          "asr_surface_match": true,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 11265.292974,
+          "first_audio_enqueue_at_ms": 11373.000640999999,
+          "last_audio_enqueue_at_ms": 12865.387032999999,
+          "transport_flushed_at_ms": 12865.452516000001,
+          "enqueued_bytes": 47002,
+          "flushed_bytes": 47002,
+          "enqueued_sha256": "ac88573dd925d71fbe77c883cb23e7f74bc231c0761f30a366532f630aba01da",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 47002,
+            "duration_ms": 1468.8125,
+            "rms": 2248.0813074134853,
+            "peak": 11044,
+            "nonzero_samples": 23383,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 51,
+            "first_active_ms": 140,
+            "last_active_ms": 1280,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 12409.548669,
+              "last_at_ms": 12409.548669
+            },
+            "provider_adapter:user.partial": {
+              "count": 7,
+              "first_at_ms": 12573.611827,
+              "last_at_ms": 14029.273386
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 14036.222216000002,
+              "last_at_ms": 14036.222216000002
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 14079.850189,
+              "last_at_ms": 14079.850189
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 15229.069277999999,
+              "last_at_ms": 15229.069277999999
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 15478.257996,
+              "last_at_ms": 15478.257996
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 12409.548669,
+              "remaining_input_bytes": 14362
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 14036.222216000002,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 14037.625535,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 14079.850189,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 14386.032991,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 15229.069277999999,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 15229.914144999999,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 3,
+          "failure": null,
+          "input_audio_sha256": "705c6d1ad370f835dcfcfe2c0b1201dd02306a16ffd305d51221361de345e4fa",
+          "asr_surface_match": true,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 15480.485270000001,
+          "first_audio_enqueue_at_ms": 15582.125060999999,
+          "last_audio_enqueue_at_ms": 22184.172043,
+          "transport_flushed_at_ms": 22184.233398999997,
+          "enqueued_bytes": 207154,
+          "flushed_bytes": 207154,
+          "enqueued_sha256": "705c6d1ad370f835dcfcfe2c0b1201dd02306a16ffd305d51221361de345e4fa",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 207154,
+            "duration_ms": 6473.5625,
+            "rms": 2649.7898177644583,
+            "peak": 10727,
+            "nonzero_samples": 102927,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 246,
+            "first_active_ms": 160,
+            "last_active_ms": 6473.5625,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 16683.395283,
+              "last_at_ms": 16683.395283
+            },
+            "provider_adapter:user.partial": {
+              "count": 23,
+              "first_at_ms": 16882.404356,
+              "last_at_ms": 23287.663196
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 23291.152402,
+              "last_at_ms": 23291.152402
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 23367.999165,
+              "last_at_ms": 23367.999165
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 23631.278296000004,
+              "last_at_ms": 23631.278296000004
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 23878.174101999997,
+              "last_at_ms": 23878.174101999997
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 16683.395283,
+              "remaining_input_bytes": 172594
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 23291.152402,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 23291.742850000002,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 23367.999165,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 23631.278296000004,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 23640.941886,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 23641.146980999998,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 4,
+          "failure": null,
+          "input_audio_sha256": "56afdb9ad1344dcf65e3b02a2a96eac2180c26c86d0e3fe8c0d71fe598d88fc1",
+          "asr_surface_match": false,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 23880.803635000004,
+          "first_audio_enqueue_at_ms": 24002.273203999997,
+          "last_audio_enqueue_at_ms": 32638.996502,
+          "transport_flushed_at_ms": 32639.052257000003,
+          "enqueued_bytes": 271438,
+          "flushed_bytes": 271438,
+          "enqueued_sha256": "56afdb9ad1344dcf65e3b02a2a96eac2180c26c86d0e3fe8c0d71fe598d88fc1",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 271438,
+            "duration_ms": 8482.4375,
+            "rms": 2403.231558140999,
+            "peak": 12641,
+            "nonzero_samples": 134951,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 326,
+            "first_active_ms": 160,
+            "last_active_ms": 8300,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 24893.222636,
+              "last_at_ms": 24893.222636
+            },
+            "provider_adapter:user.partial": {
+              "count": 28,
+              "first_at_ms": 25346.431879000003,
+              "last_at_ms": 33721.023231
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 33727.373176,
+              "last_at_ms": 33727.373176
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 33739.28229,
+              "last_at_ms": 33739.28229
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 36061.745632,
+              "last_at_ms": 36061.745632
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 36307.173922,
+              "last_at_ms": 36307.173922
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 24893.222636,
+              "remaining_input_bytes": 243278
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 33727.373176,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 33728.893378,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 33739.28229,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 34076.298481,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 36061.745632,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 36062.77274,
+              "remaining_input_bytes": 0
+            }
+          ]
+        }
+      ],
+      "asr_owner_spanning_collector_inputs": 0,
+      "unassigned_asr_events": 0
+    },
+    {
+      "case_id": "ask-kai-v2-011",
+      "status": "collected",
+      "failure": null,
+      "expected_turns": 16,
+      "session_terminal": "session.closed",
+      "memory_port": {
+        "scope": "authorized_mock_memory_port_calls_only",
+        "truncated": false,
+        "internal_session_memory_observed": false,
+        "added_port_calls": 0,
+        "write_calls": 0,
+        "delete_calls": 0,
+        "read_calls": 1,
+        "all_owner_matches": true
+      },
+      "turns": [
+        {
+          "turn": 1,
+          "failure": null,
+          "input_audio_sha256": "b59b05490e093395bc690fadf2e5b11cfda3facdbd8ada30e107e0c8c91e79ab",
+          "asr_surface_match": true,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 1280.2986879999953,
+          "first_audio_enqueue_at_ms": 1403.1028400000068,
+          "last_audio_enqueue_at_ms": 7521.518920000002,
+          "transport_flushed_at_ms": 7521.553484999997,
+          "enqueued_bytes": 191396,
+          "flushed_bytes": 191396,
+          "enqueued_sha256": "b59b05490e093395bc690fadf2e5b11cfda3facdbd8ada30e107e0c8c91e79ab",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 191396,
+            "duration_ms": 5981.125,
+            "rms": 2526.3861925488845,
+            "peak": 10734,
+            "nonzero_samples": 95098,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 224,
+            "first_active_ms": 160,
+            "last_active_ms": 5800,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 2713.6127220000053,
+              "last_at_ms": 2713.6127220000053
+            },
+            "provider_adapter:user.partial": {
+              "count": 20,
+              "first_at_ms": 2721.283421,
+              "last_at_ms": 8903.734767000002
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 8909.424023,
+              "last_at_ms": 8909.424023
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 8910.769157000002,
+              "last_at_ms": 8910.769157000002
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 10721.982688000004,
+              "last_at_ms": 10721.982688000004
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 10973.829033000002,
+              "last_at_ms": 10973.829033000002
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 2713.6127220000053,
+              "remaining_input_bytes": 149796
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 8909.424023,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 8910.769157000002,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 8911.169428000008,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 9259.376466000002,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 10721.982688000004,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 10723.640499000001,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 2,
+          "failure": null,
+          "input_audio_sha256": "b89657f8871a3258370971e6b0fc53c034e904c7d51ca3c9a10f642d0f518b59",
+          "asr_surface_match": false,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 10977.409001000007,
+          "first_audio_enqueue_at_ms": 11084.117503999994,
+          "last_audio_enqueue_at_ms": 16921.366674000004,
+          "transport_flushed_at_ms": 16921.459658000007,
+          "enqueued_bytes": 183572,
+          "flushed_bytes": 183572,
+          "enqueued_sha256": "b89657f8871a3258370971e6b0fc53c034e904c7d51ca3c9a10f642d0f518b59",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 183572,
+            "duration_ms": 5736.625,
+            "rms": 2499.3635802495096,
+            "peak": 11340,
+            "nonzero_samples": 91181,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 209,
+            "first_active_ms": 140,
+            "last_active_ms": 5320,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 12072.219874000002,
+              "last_at_ms": 12072.219874000002
+            },
+            "provider_adapter:user.partial": {
+              "count": 20,
+              "first_at_ms": 12385.523019,
+              "last_at_ms": 18062.843553
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 18067.912121999994,
+              "last_at_ms": 18067.912121999994
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 18068.794867999997,
+              "last_at_ms": 18068.794867999997
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 19591.77295700001,
+              "last_at_ms": 19591.77295700001
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 19844.284092999995,
+              "last_at_ms": 19844.284092999995
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 12072.219874000002,
+              "remaining_input_bytes": 152212
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 18067.912121999994,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 18068.502991,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 18068.794867999997,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 18418.664977000008,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 19591.77295700001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 19592.55427200001,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 3,
+          "failure": null,
+          "input_audio_sha256": "22d8db9eebcb10223587cac42f95e0e7627d615baf7fc39db97ba3aecf36aa65",
+          "asr_surface_match": true,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 19847.811459999997,
+          "first_audio_enqueue_at_ms": 19963.581149000005,
+          "last_audio_enqueue_at_ms": 25335.003778,
+          "transport_flushed_at_ms": 25335.05622700001,
+          "enqueued_bytes": 168688,
+          "flushed_bytes": 168688,
+          "enqueued_sha256": "22d8db9eebcb10223587cac42f95e0e7627d615baf7fc39db97ba3aecf36aa65",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 168688,
+            "duration_ms": 5271.5,
+            "rms": 2330.806860925422,
+            "peak": 12853,
+            "nonzero_samples": 83674,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 184,
+            "first_active_ms": 140,
+            "last_active_ms": 5000,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 20893.522941000003,
+              "last_at_ms": 20893.522941000003
+            },
+            "provider_adapter:user.partial": {
+              "count": 21,
+              "first_at_ms": 21260.168359999996,
+              "last_at_ms": 26518.200761
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 26525.776362000004,
+              "last_at_ms": 26525.776362000004
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 26551.239761999997,
+              "last_at_ms": 26551.239761999997
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 28057.114520000003,
+              "last_at_ms": 28057.114520000003
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 28309.108672999995,
+              "last_at_ms": 28309.108672999995
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 20893.522941000003,
+              "remaining_input_bytes": 139248
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 26525.776362000004,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 26527.064559000006,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 26551.239761999997,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 26875.975332999995,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 28057.114520000003,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 28057.821085000003,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 4,
+          "failure": null,
+          "input_audio_sha256": "9236b19b617b24ff07907bf8ad0fc4be97e0a12fd3767c956fcb56f929fda6aa",
+          "asr_surface_match": true,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 28312.883434999996,
+          "first_audio_enqueue_at_ms": 28420.955673000004,
+          "last_audio_enqueue_at_ms": 35489.75288100001,
+          "transport_flushed_at_ms": 35489.790301,
+          "enqueued_bytes": 222748,
+          "flushed_bytes": 222748,
+          "enqueued_sha256": "9236b19b617b24ff07907bf8ad0fc4be97e0a12fd3767c956fcb56f929fda6aa",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 222748,
+            "duration_ms": 6960.875,
+            "rms": 2355.3362537859366,
+            "peak": 10730,
+            "nonzero_samples": 110784,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 264,
+            "first_active_ms": 140,
+            "last_active_ms": 6800,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 29446.16356,
+              "last_at_ms": 29446.16356
+            },
+            "provider_adapter:user.partial": {
+              "count": 27,
+              "first_at_ms": 29748.139080000008,
+              "last_at_ms": 36583.353143
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 36588.977895,
+              "last_at_ms": 36588.977895
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 36652.673672000004,
+              "last_at_ms": 36652.673672000004
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 38280.866773,
+              "last_at_ms": 38280.866773
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 38532.812814000004,
+              "last_at_ms": 38532.812814000004
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 29446.16356,
+              "remaining_input_bytes": 190108
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 36588.977895,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 36589.419764000006,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 36652.673672000004,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 36938.595495,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 38280.866773,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 38281.91527,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 5,
+          "failure": null,
+          "input_audio_sha256": "3871d0f31322e0e6cacafcd9bb759879a4beec522744752f9bdaf8f9b417234d",
+          "asr_surface_match": true,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 38536.386058000004,
+          "first_audio_enqueue_at_ms": 38654.423843,
+          "last_audio_enqueue_at_ms": 44219.953712999995,
+          "transport_flushed_at_ms": 44220.02087899999,
+          "enqueued_bytes": 175324,
+          "flushed_bytes": 175324,
+          "enqueued_sha256": "3871d0f31322e0e6cacafcd9bb759879a4beec522744752f9bdaf8f9b417234d",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 175324,
+            "duration_ms": 5478.875,
+            "rms": 2393.3764905931125,
+            "peak": 13473,
+            "nonzero_samples": 87040,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 188,
+            "first_active_ms": 140,
+            "last_active_ms": 5478.875,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 39425.574326,
+              "last_at_ms": 39425.574326
+            },
+            "provider_adapter:user.partial": {
+              "count": 17,
+              "first_at_ms": 39880.663459,
+              "last_at_ms": 45372.97756
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 45378.36788199999,
+              "last_at_ms": 45378.36788199999
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 45406.661412999994,
+              "last_at_ms": 45406.661412999994
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 46922.25405700001,
+              "last_at_ms": 46922.25405700001
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 47174.43790799999,
+              "last_at_ms": 47174.43790799999
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 39425.574326,
+              "remaining_input_bytes": 151004
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 45378.36788199999,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 45378.914097,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 45406.661412999994,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 45727.671325,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 46922.25405700001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 46923.35865899999,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 6,
+          "failure": null,
+          "input_audio_sha256": "9ab9d411028a89719261e331b445ae5db9f181b564f9408e8bc73f73b8d81e4a",
+          "asr_surface_match": false,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 47178.18700100001,
+          "first_audio_enqueue_at_ms": 47287.140694,
+          "last_audio_enqueue_at_ms": 49561.71829799999,
+          "transport_flushed_at_ms": 49561.75980599999,
+          "enqueued_bytes": 72102,
+          "flushed_bytes": 72102,
+          "enqueued_sha256": "9ab9d411028a89719261e331b445ae5db9f181b564f9408e8bc73f73b8d81e4a",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 72102,
+            "duration_ms": 2253.1875,
+            "rms": 2340.9781253679457,
+            "peak": 10957,
+            "nonzero_samples": 35814,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 86,
+            "first_active_ms": 140,
+            "last_active_ms": 2253.1875,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 48549.28684300001,
+              "last_at_ms": 48549.28684300001
+            },
+            "provider_adapter:user.partial": {
+              "count": 4,
+              "first_at_ms": 49072.29887299999,
+              "last_at_ms": 50552.662178
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 50558.117413,
+              "last_at_ms": 50558.117413
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 50608.855731999996,
+              "last_at_ms": 50608.855731999996
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 51904.815961000015,
+              "last_at_ms": 51904.815961000015
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 52156.422047,
+              "last_at_ms": 52156.422047
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 48549.28684300001,
+              "remaining_input_bytes": 31782
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 50558.117413,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 50558.64321099999,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 50608.855731999996,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 50908.52992900001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 51904.815961000015,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 51905.562944000005,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 7,
+          "failure": null,
+          "input_audio_sha256": "9f1328d9250ca272140c5ca2f65a9155f114eb5555f407ed52c72b50c1c54d24",
+          "asr_surface_match": false,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 52160.52516300001,
+          "first_audio_enqueue_at_ms": 52281.201615,
+          "last_audio_enqueue_at_ms": 57597.120395000005,
+          "transport_flushed_at_ms": 57597.165750000015,
+          "enqueued_bytes": 167960,
+          "flushed_bytes": 167960,
+          "enqueued_sha256": "9f1328d9250ca272140c5ca2f65a9155f114eb5555f407ed52c72b50c1c54d24",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 167960,
+            "duration_ms": 5248.75,
+            "rms": 2227.490227912157,
+            "peak": 12925,
+            "nonzero_samples": 83332,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 200,
+            "first_active_ms": 180,
+            "last_active_ms": 5040,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 53128.491907999996,
+              "last_at_ms": 53128.491907999996
+            },
+            "provider_adapter:user.partial": {
+              "count": 21,
+              "first_at_ms": 53464.74038,
+              "last_at_ms": 58735.10338300001
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 58740.55702400001,
+              "last_at_ms": 58740.55702400001
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 58835.081894,
+              "last_at_ms": 58835.081894
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 60674.250146000006,
+              "last_at_ms": 60674.250146000006
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 60927.57284400001,
+              "last_at_ms": 60927.57284400001
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 53128.491907999996,
+              "remaining_input_bytes": 141080
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 58740.55702400001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 58740.93564400001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 58835.081894,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 59090.073413000006,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 60674.250146000006,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 60674.896469,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 8,
+          "failure": null,
+          "input_audio_sha256": "1679a1a139db116d2969fa0d5fd649e0f0aedf849173a459ee740307089ef6df",
+          "asr_surface_match": true,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 60931.84161199999,
+          "first_audio_enqueue_at_ms": 61039.05340199999,
+          "last_audio_enqueue_at_ms": 66039.46687999999,
+          "transport_flushed_at_ms": 66039.51923800001,
+          "enqueued_bytes": 158500,
+          "flushed_bytes": 158500,
+          "enqueued_sha256": "1679a1a139db116d2969fa0d5fd649e0f0aedf849173a459ee740307089ef6df",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 158500,
+            "duration_ms": 4953.125,
+            "rms": 2201.3144252443003,
+            "peak": 10907,
+            "nonzero_samples": 78807,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 187,
+            "first_active_ms": 140,
+            "last_active_ms": 4660,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 61955.95069299999,
+              "last_at_ms": 61955.95069299999
+            },
+            "provider_adapter:user.partial": {
+              "count": 18,
+              "first_at_ms": 62249.808196,
+              "last_at_ms": 67098.43664100001
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 67106.570251,
+              "last_at_ms": 67106.570251
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 67168.964966,
+              "last_at_ms": 67168.964966
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 69113.60629600001,
+              "last_at_ms": 69113.60629600001
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 69364.89106699999,
+              "last_at_ms": 69364.89106699999
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 61955.95069299999,
+              "remaining_input_bytes": 129060
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 67106.570251,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 67106.984879,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 67168.964966,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 67456.551496,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 69113.60629600001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 69114.058625,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 9,
+          "failure": null,
+          "input_audio_sha256": "839b4100d8eb53b6436c1ff468eed9164052aacc1bfe27aebd6fec3b2aca4b65",
+          "asr_surface_match": false,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 69369.621228,
+          "first_audio_enqueue_at_ms": 69474.77959700002,
+          "last_audio_enqueue_at_ms": 74485.31466500001,
+          "transport_flushed_at_ms": 74485.38730100001,
+          "enqueued_bytes": 159024,
+          "flushed_bytes": 159024,
+          "enqueued_sha256": "839b4100d8eb53b6436c1ff468eed9164052aacc1bfe27aebd6fec3b2aca4b65",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 159024,
+            "duration_ms": 4969.5,
+            "rms": 2484.9712190593427,
+            "peak": 13421,
+            "nonzero_samples": 79194,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 192,
+            "first_active_ms": 180,
+            "last_active_ms": 4620,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 70306.332903,
+              "last_at_ms": 70306.332903
+            },
+            "provider_adapter:user.partial": {
+              "count": 21,
+              "first_at_ms": 70709.91330000001,
+              "last_at_ms": 75554.53649299999
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 75560.09124499999,
+              "last_at_ms": 75560.09124499999
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 75573.542232,
+              "last_at_ms": 75573.542232
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 76868.14173500001,
+              "last_at_ms": 76868.14173500001
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 77121.25658000002,
+              "last_at_ms": 77121.25658000002
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 70306.332903,
+              "remaining_input_bytes": 132144
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 75560.09124499999,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 75560.485945,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 75573.542232,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 75910.21172200001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 76868.14173500001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 76868.736791,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 10,
+          "failure": null,
+          "input_audio_sha256": "f1cbb3877674889d38a664e4d5ca45a88e32dd98f8d10918452945952358cbc8",
+          "asr_surface_match": false,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 77125.802769,
+          "first_audio_enqueue_at_ms": 77227.725198,
+          "last_audio_enqueue_at_ms": 82542.17413500001,
+          "transport_flushed_at_ms": 82542.207818,
+          "enqueued_bytes": 168254,
+          "flushed_bytes": 168254,
+          "enqueued_sha256": "f1cbb3877674889d38a664e4d5ca45a88e32dd98f8d10918452945952358cbc8",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 168254,
+            "duration_ms": 5257.9375,
+            "rms": 2423.004653578235,
+            "peak": 14369,
+            "nonzero_samples": 83678,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 219,
+            "first_active_ms": 140,
+            "last_active_ms": 5240,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 78362.67848100001,
+              "last_at_ms": 78362.67848100001
+            },
+            "provider_adapter:user.partial": {
+              "count": 17,
+              "first_at_ms": 78543.96082499999,
+              "last_at_ms": 83612.48377600001
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 83615.59657600001,
+              "last_at_ms": 83615.59657600001
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 83652.00227600001,
+              "last_at_ms": 83652.00227600001
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 85602.570328,
+              "last_at_ms": 85602.570328
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 85856.07915900002,
+              "last_at_ms": 85856.07915900002
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 78362.67848100001,
+              "remaining_input_bytes": 131774
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 83615.59657600001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 83615.935723,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 83652.00227600001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 83965.24796499999,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 85602.570328,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 85603.07762,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 11,
+          "failure": null,
+          "input_audio_sha256": "5826236f026a023a2489eb6798b7d3c6235837de213870ed3e4fd7b130eff70a",
+          "asr_surface_match": false,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 85866.38229899999,
+          "first_audio_enqueue_at_ms": 85981.71881700002,
+          "last_audio_enqueue_at_ms": 90528.00936299999,
+          "transport_flushed_at_ms": 90528.069736,
+          "enqueued_bytes": 142752,
+          "flushed_bytes": 142752,
+          "enqueued_sha256": "5826236f026a023a2489eb6798b7d3c6235837de213870ed3e4fd7b130eff70a",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 142752,
+            "duration_ms": 4461,
+            "rms": 2129.0892490457923,
+            "peak": 12175,
+            "nonzero_samples": 70786,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 170,
+            "first_active_ms": 320,
+            "last_active_ms": 4180,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 87214.23809999999,
+              "last_at_ms": 87214.23809999999
+            },
+            "provider_adapter:user.partial": {
+              "count": 19,
+              "first_at_ms": 87274.39794299999,
+              "last_at_ms": 91404.86700999999
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 91412.60799300001,
+              "last_at_ms": 91412.60799300001
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 91496.509941,
+              "last_at_ms": 91496.509941
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 92851.431701,
+              "last_at_ms": 92851.431701
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 93104.289915,
+              "last_at_ms": 93104.289915
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 87214.23809999999,
+              "remaining_input_bytes": 103712
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 91412.60799300001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 91413.07626199999,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 91496.509941,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 91761.563162,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 92851.431701,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 92852.03109500001,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 12,
+          "failure": null,
+          "input_audio_sha256": "593c486c38e35c79ef6823e39381adb13d8e06a341e2ec39f3e8ac203b097511",
+          "asr_surface_match": true,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 93109.522634,
+          "first_audio_enqueue_at_ms": 93222.75575899999,
+          "last_audio_enqueue_at_ms": 96747.85822699999,
+          "transport_flushed_at_ms": 96747.898292,
+          "enqueued_bytes": 111192,
+          "flushed_bytes": 111192,
+          "enqueued_sha256": "593c486c38e35c79ef6823e39381adb13d8e06a341e2ec39f3e8ac203b097511",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 111192,
+            "duration_ms": 3474.75,
+            "rms": 2236.2375036976946,
+            "peak": 10733,
+            "nonzero_samples": 55183,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 132,
+            "first_active_ms": 140,
+            "last_active_ms": 3220,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 94314.71676899999,
+              "last_at_ms": 94314.71676899999
+            },
+            "provider_adapter:user.partial": {
+              "count": 13,
+              "first_at_ms": 94482.56057100001,
+              "last_at_ms": 97920.25138500001
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 97925.861692,
+              "last_at_ms": 97925.861692
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 97991.61610799999,
+              "last_at_ms": 97991.61610799999
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 99612.88248,
+              "last_at_ms": 99612.88248
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 99863.82987799999,
+              "last_at_ms": 99863.82987799999
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 94314.71676899999,
+              "remaining_input_bytes": 76632
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 97925.861692,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 97926.260059,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 97991.61610799999,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 98275.501361,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 99612.88248,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 99613.32449,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 13,
+          "failure": null,
+          "input_audio_sha256": "86584987b5c9fa57f71754d2dea6f216497c1d2513a22c951bf06348b6de8c7d",
+          "asr_surface_match": false,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 99868.919807,
+          "first_audio_enqueue_at_ms": 99970.58177399999,
+          "last_audio_enqueue_at_ms": 101739.293614,
+          "transport_flushed_at_ms": 101739.36976599999,
+          "enqueued_bytes": 56086,
+          "flushed_bytes": 56086,
+          "enqueued_sha256": "86584987b5c9fa57f71754d2dea6f216497c1d2513a22c951bf06348b6de8c7d",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 56086,
+            "duration_ms": 1752.6875,
+            "rms": 1872.3822498600507,
+            "peak": 10740,
+            "nonzero_samples": 27769,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 49,
+            "first_active_ms": 160,
+            "last_active_ms": 1752.6875,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 101169.947319,
+              "last_at_ms": 101169.947319
+            },
+            "provider_adapter:user.partial": {
+              "count": 4,
+              "first_at_ms": 101415.33910099999,
+              "last_at_ms": 102830.99116199999
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 102838.75286400001,
+              "last_at_ms": 102838.75286400001
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 102876.02535499999,
+              "last_at_ms": 102876.02535499999
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 105005.86137500001,
+              "last_at_ms": 105005.86137500001
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 105257.17992,
+              "last_at_ms": 105257.17992
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 101169.947319,
+              "remaining_input_bytes": 18326
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 102838.75286400001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 102839.14251500001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 102876.02535499999,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 103189.23055899999,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 105005.86137500001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 105006.29447699999,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 14,
+          "failure": null,
+          "input_audio_sha256": "a91e3c89633cf45c3e0f1a58b844f243630c4bd3adb1a7140543d7a46c288171",
+          "asr_surface_match": true,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 105262.49556400001,
+          "first_audio_enqueue_at_ms": 105382.41336500001,
+          "last_audio_enqueue_at_ms": 109941.09152700001,
+          "transport_flushed_at_ms": 109941.13175200002,
+          "enqueued_bytes": 143620,
+          "flushed_bytes": 143620,
+          "enqueued_sha256": "a91e3c89633cf45c3e0f1a58b844f243630c4bd3adb1a7140543d7a46c288171",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 143620,
+            "duration_ms": 4488.125,
+            "rms": 2411.871466738054,
+            "peak": 10726,
+            "nonzero_samples": 71414,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 162,
+            "first_active_ms": 140,
+            "last_active_ms": 4340,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 106360.26201500001,
+              "last_at_ms": 106360.26201500001
+            },
+            "provider_adapter:user.partial": {
+              "count": 20,
+              "first_at_ms": 106657.89381400001,
+              "last_at_ms": 110951.33411699999
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 110958.469434,
+              "last_at_ms": 110958.469434
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 111026.138476,
+              "last_at_ms": 111026.138476
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 112290.039261,
+              "last_at_ms": 112290.039261
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 112551.070041,
+              "last_at_ms": 112551.070041
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 106360.26201500001,
+              "remaining_input_bytes": 112260
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 110958.469434,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 110958.87236000001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 111026.138476,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 111308.67972300001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 112290.039261,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 112290.90974500001,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 15,
+          "failure": null,
+          "input_audio_sha256": "275033ca900d9b41b71d3deac3e4963f9724999b651d30be8d78bcd3fbed7cd4",
+          "asr_surface_match": true,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 112556.882587,
+          "first_audio_enqueue_at_ms": 112662.732716,
+          "last_audio_enqueue_at_ms": 117198.322656,
+          "transport_flushed_at_ms": 117198.403658,
+          "enqueued_bytes": 142860,
+          "flushed_bytes": 142860,
+          "enqueued_sha256": "275033ca900d9b41b71d3deac3e4963f9724999b651d30be8d78bcd3fbed7cd4",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 142860,
+            "duration_ms": 4464.375,
+            "rms": 2217.122718600622,
+            "peak": 11113,
+            "nonzero_samples": 70915,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 174,
+            "first_active_ms": 140,
+            "last_active_ms": 4460,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 113869.87802100001,
+              "last_at_ms": 113869.87802100001
+            },
+            "provider_adapter:user.partial": {
+              "count": 16,
+              "first_at_ms": 113869.971616,
+              "last_at_ms": 118181.945343
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 118189.15416900002,
+              "last_at_ms": 118189.15416900002
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 118263.173285,
+              "last_at_ms": 118263.173285
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 119563.94107900001,
+              "last_at_ms": 119563.94107900001
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 119818.62372999999,
+              "last_at_ms": 119818.62372999999
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 113869.87802100001,
+              "remaining_input_bytes": 104460
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 118189.15416900002,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 118189.61326000001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 118263.173285,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 118539.158414,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 119563.94107900001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 119564.41965699999,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 16,
+          "failure": null,
+          "input_audio_sha256": "3444487f62778e73746bad2255e9470374dc47444895f834ac2d6a46e1e82098",
+          "asr_surface_match": false,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 119824.10666700001,
+          "first_audio_enqueue_at_ms": 119939.64243499999,
+          "last_audio_enqueue_at_ms": 128847.46960000001,
+          "transport_flushed_at_ms": 128847.52685699999,
+          "enqueued_bytes": 280420,
+          "flushed_bytes": 280420,
+          "enqueued_sha256": "3444487f62778e73746bad2255e9470374dc47444895f834ac2d6a46e1e82098",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 280420,
+            "duration_ms": 8763.125,
+            "rms": 2309.885444220837,
+            "peak": 12038,
+            "nonzero_samples": 139253,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 324,
+            "first_active_ms": 140,
+            "last_active_ms": 8740,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 120359.64243800001,
+              "last_at_ms": 120359.64243800001
+            },
+            "provider_adapter:user.partial": {
+              "count": 27,
+              "first_at_ms": 121164.37796000001,
+              "last_at_ms": 129865.568068
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 129870.60068100001,
+              "last_at_ms": 129870.60068100001
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 129940.468403,
+              "last_at_ms": 129940.468403
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 133614.09534200002,
+              "last_at_ms": 133614.09534200002
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 133867.459043,
+              "last_at_ms": 133867.459043
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 120359.64243800001,
+              "remaining_input_bytes": 266980
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 129870.60068100001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 129871.017854,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 129940.468403,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 130220.048668,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 133614.09534200002,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 133614.741214,
+              "remaining_input_bytes": 0
+            }
+          ]
+        }
+      ],
+      "asr_owner_spanning_collector_inputs": 0,
+      "unassigned_asr_events": 0
+    },
+    {
+      "case_id": "ask-kai-v2-036",
+      "status": "collected",
+      "failure": null,
+      "expected_turns": 4,
+      "session_terminal": "session.closed",
+      "memory_port": {
+        "scope": "authorized_mock_memory_port_calls_only",
+        "truncated": false,
+        "internal_session_memory_observed": false,
+        "added_port_calls": 0,
+        "write_calls": 0,
+        "delete_calls": 0,
+        "read_calls": 1,
+        "all_owner_matches": true
+      },
+      "turns": [
+        {
+          "turn": 1,
+          "failure": null,
+          "input_audio_sha256": "418e6a0d3afb824edc5bb011e67026d68866cc66f1111425d44cccbd175aa62a",
+          "asr_surface_match": true,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 1194.3702059999923,
+          "first_audio_enqueue_at_ms": 1315.8229280000087,
+          "last_audio_enqueue_at_ms": 5843.576159000018,
+          "transport_flushed_at_ms": 5843.63073200002,
+          "enqueued_bytes": 143100,
+          "flushed_bytes": 143100,
+          "enqueued_sha256": "418e6a0d3afb824edc5bb011e67026d68866cc66f1111425d44cccbd175aa62a",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 143100,
+            "duration_ms": 4471.875,
+            "rms": 2337.575046310785,
+            "peak": 13493,
+            "nonzero_samples": 71037,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 163,
+            "first_active_ms": 140,
+            "last_active_ms": 4280,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 2556.1594650000043,
+              "last_at_ms": 2556.1594650000043
+            },
+            "provider_adapter:user.partial": {
+              "count": 17,
+              "first_at_ms": 2560.025708000001,
+              "last_at_ms": 6738.6270099999965
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 6744.961103000009,
+              "last_at_ms": 6744.961103000009
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 6805.200562000013,
+              "last_at_ms": 6805.200562000013
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 8439.152938999992,
+              "last_at_ms": 8439.152938999992
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 8691.266164,
+              "last_at_ms": 8691.266164
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 2556.1594650000043,
+              "remaining_input_bytes": 103420
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 6744.961103000009,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 6745.448147000017,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 6805.200562000013,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 7095.18083300002,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 8439.152938999992,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 8439.749408000003,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 2,
+          "failure": null,
+          "input_audio_sha256": "19d6872f339a4c3893da2f61c441f28786c4a209f7c9e8156b9e33b8145a5fbc",
+          "asr_surface_match": true,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 8698.607990999997,
+          "first_audio_enqueue_at_ms": 8804.799350999994,
+          "last_audio_enqueue_at_ms": 13627.16837,
+          "transport_flushed_at_ms": 13627.208975999994,
+          "enqueued_bytes": 152484,
+          "flushed_bytes": 152484,
+          "enqueued_sha256": "19d6872f339a4c3893da2f61c441f28786c4a209f7c9e8156b9e33b8145a5fbc",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 152484,
+            "duration_ms": 4765.125,
+            "rms": 2475.0924724833985,
+            "peak": 10735,
+            "nonzero_samples": 75554,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 182,
+            "first_active_ms": 140,
+            "last_active_ms": 4760,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 10324.038631000003,
+              "last_at_ms": 10324.038631000003
+            },
+            "provider_adapter:user.partial": {
+              "count": 16,
+              "first_at_ms": 10476.98855400001,
+              "last_at_ms": 14600.950803000014
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 14605.254348999995,
+              "last_at_ms": 14605.254348999995
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 14647.190834000008,
+              "last_at_ms": 14647.190834000008
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 16344.136387000006,
+              "last_at_ms": 16344.136387000006
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 16587.863496000005,
+              "last_at_ms": 16587.863496000005
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 10324.038631000003,
+              "remaining_input_bytes": 104484
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 14605.254348999995,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 14605.746562999993,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 14647.190834000008,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 14953.984289000015,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 16344.136387000006,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 16344.815321000002,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 3,
+          "failure": null,
+          "input_audio_sha256": "683f29add4419386d60265654fdca7c1e525ac7fee6f4ba44dac1de48704c695",
+          "asr_surface_match": true,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 16595.16389300002,
+          "first_audio_enqueue_at_ms": 16715.321006000013,
+          "last_audio_enqueue_at_ms": 21219.443992999993,
+          "transport_flushed_at_ms": 21219.518383000017,
+          "enqueued_bytes": 142874,
+          "flushed_bytes": 142874,
+          "enqueued_sha256": "683f29add4419386d60265654fdca7c1e525ac7fee6f4ba44dac1de48704c695",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 142874,
+            "duration_ms": 4464.8125,
+            "rms": 2477.9473969340766,
+            "peak": 10729,
+            "nonzero_samples": 70574,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 162,
+            "first_active_ms": 140,
+            "last_active_ms": 4240,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 17735.371746999997,
+              "last_at_ms": 17735.371746999997
+            },
+            "provider_adapter:user.partial": {
+              "count": 16,
+              "first_at_ms": 17891.171059999993,
+              "last_at_ms": 22308.932908000017
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 22314.722880999994,
+              "last_at_ms": 22314.722880999994
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 22349.494107000006,
+              "last_at_ms": 22349.494107000006
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 23885.178222000017,
+              "last_at_ms": 23885.178222000017
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 24128.65942500002,
+              "last_at_ms": 24128.65942500002
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 17735.371746999997,
+              "remaining_input_bytes": 110234
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 22314.722880999994,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 22315.12965400002,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 22349.494107000006,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 22665.498966999992,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 23885.178222000017,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 23885.786022999993,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 4,
+          "failure": null,
+          "input_audio_sha256": "5eaaf0f09a35fb09cb903bb7c7b6545cf35243b39e991bb1b33eb830eca76726",
+          "asr_surface_match": false,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 24136.019445000013,
+          "first_audio_enqueue_at_ms": 24239.295595000003,
+          "last_audio_enqueue_at_ms": 32825.17368399998,
+          "transport_flushed_at_ms": 32825.211855,
+          "enqueued_bytes": 271464,
+          "flushed_bytes": 271464,
+          "enqueued_sha256": "5eaaf0f09a35fb09cb903bb7c7b6545cf35243b39e991bb1b33eb830eca76726",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 271464,
+            "duration_ms": 8483.25,
+            "rms": 2662.714092980817,
+            "peak": 13334,
+            "nonzero_samples": 135066,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 325,
+            "first_active_ms": 140,
+            "last_active_ms": 8320,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 25204.150840000017,
+              "last_at_ms": 25204.150840000017
+            },
+            "provider_adapter:user.partial": {
+              "count": 22,
+              "first_at_ms": 25569.920507000003,
+              "last_at_ms": 33973.289917999995
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 33977.793678999995,
+              "last_at_ms": 33977.793678999995
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 33999.01654899999,
+              "last_at_ms": 33999.01654899999
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 37650.47019000002,
+              "last_at_ms": 37650.47019000002
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 37893.52038100001,
+              "last_at_ms": 37893.52038100001
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 25204.150840000017,
+              "remaining_input_bytes": 240744
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 33977.793678999995,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 33978.17703800002,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 33999.01654899999,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 34327.12542900001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 37650.47019000002,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 37651.12856600003,
+              "remaining_input_bytes": 0
+            }
+          ]
+        }
+      ],
+      "asr_owner_spanning_collector_inputs": 0,
+      "unassigned_asr_events": 0
+    },
+    {
+      "case_id": "ask-kai-v2-040",
+      "status": "failed",
+      "failure": "MULTIPLE_ASR_TURNS",
+      "expected_turns": 4,
+      "session_terminal": null,
+      "memory_port": {
+        "scope": "authorized_mock_memory_port_calls_only",
+        "truncated": false,
+        "internal_session_memory_observed": false,
+        "added_port_calls": 0,
+        "write_calls": 0,
+        "delete_calls": 0,
+        "read_calls": 1,
+        "all_owner_matches": true
+      },
+      "turns": [
+        {
+          "turn": 1,
+          "failure": null,
+          "input_audio_sha256": "89ca45e3711cdb9a257d8d196c818ca9f29136b877af47419d69b8d9f0634c37",
+          "asr_surface_match": true,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 1593.8511220000219,
+          "first_audio_enqueue_at_ms": 1715.5519610000192,
+          "last_audio_enqueue_at_ms": 14344.814621000027,
+          "transport_flushed_at_ms": 14344.858684000035,
+          "enqueued_bytes": 398720,
+          "flushed_bytes": 398720,
+          "enqueued_sha256": "89ca45e3711cdb9a257d8d196c818ca9f29136b877af47419d69b8d9f0634c37",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 398720,
+            "duration_ms": 12460,
+            "rms": 2424.3478537570163,
+            "peak": 12513,
+            "nonzero_samples": 198153,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 481,
+            "first_active_ms": 180,
+            "last_active_ms": 12460,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 3176.8684869999997,
+              "last_at_ms": 3176.8684869999997
+            },
+            "provider_adapter:user.partial": {
+              "count": 34,
+              "first_at_ms": 3178.641885000048,
+              "last_at_ms": 15307.30248100002
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 15309.815857000009,
+              "last_at_ms": 15309.815857000009
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 15320.722149000037,
+              "last_at_ms": 15320.722149000037
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 18093.574449000007,
+              "last_at_ms": 18093.574449000007
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 18329.563419000013,
+              "last_at_ms": 18329.563419000013
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 3176.8684869999997,
+              "remaining_input_bytes": 352000
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 15309.815857000009,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 15310.400644000038,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 15320.722149000037,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 15659.302375000028,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 18093.574449000007,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 18094.097170000023,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 2,
+          "failure": "MULTIPLE_ASR_TURNS",
+          "input_audio_sha256": "18375850b173ed8f57903bc02f2fc08b8f9978a797522862dd39768925e27b02",
+          "asr_surface_match": false,
+          "context_update_confirmed": null,
+          "model_reply_complete": true,
+          "reply_complete": false,
+          "queued_at_ms": 18337.617610000016,
+          "first_audio_enqueue_at_ms": 18457.753702000016,
+          "last_audio_enqueue_at_ms": 24711.514133000048,
+          "transport_flushed_at_ms": null,
+          "enqueued_bytes": 197760,
+          "flushed_bytes": 197760,
+          "enqueued_sha256": null,
+          "all_input_enqueued": false,
+          "all_input_transport_flushed": false,
+          "provider_final_before_input_end": true,
+          "provider_reply_before_input_end": true,
+          "truncated": false,
+          "input_hash_matches": null,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 270822,
+            "duration_ms": 8463.1875,
+            "rms": 2237.3145545860657,
+            "peak": 12209,
+            "nonzero_samples": 134363,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 302,
+            "first_active_ms": 400,
+            "last_active_ms": 8280,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 2,
+              "first_at_ms": 19777.287077000015,
+              "last_at_ms": 23030.25778700004
+            },
+            "provider_adapter:user.partial": {
+              "count": 13,
+              "first_at_ms": 19824.19772300002,
+              "last_at_ms": 24721.312808000017
+            },
+            "provider_adapter:user.final": {
+              "count": 2,
+              "first_at_ms": 21128.47729900002,
+              "last_at_ms": 24722.740617000032
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 21220.80659000005,
+              "last_at_ms": 21220.80659000005
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 22869.668995000015,
+              "last_at_ms": 22869.668995000015
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 23102.706688000006,
+              "last_at_ms": 23102.706688000006
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 19777.287077000015,
+              "remaining_input_bytes": 228582
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 21128.47729900002,
+              "remaining_input_bytes": 186342
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 21128.860057000013,
+              "remaining_input_bytes": 186342
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 21220.80659000005,
+              "remaining_input_bytes": 183142
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 21477.815608000034,
+              "remaining_input_bytes": 175462
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 22869.668995000015,
+              "remaining_input_bytes": 131302
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 22870.170617000025,
+              "remaining_input_bytes": 131302
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 23030.25778700004,
+              "remaining_input_bytes": 126182
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 24722.740617000032,
+              "remaining_input_bytes": 73062
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 24723.084031000035,
+              "remaining_input_bytes": 73062
+            }
+          ]
+        }
+      ],
+      "asr_owner_spanning_collector_inputs": 0,
+      "unassigned_asr_events": 0
+    },
+    {
+      "case_id": "ask-kai-language-08",
+      "status": "collected",
+      "failure": null,
+      "expected_turns": 4,
+      "session_terminal": "session.closed",
+      "memory_port": {
+        "scope": "authorized_mock_memory_port_calls_only",
+        "truncated": false,
+        "internal_session_memory_observed": false,
+        "added_port_calls": 0,
+        "write_calls": 0,
+        "delete_calls": 0,
+        "read_calls": 1,
+        "all_owner_matches": true
+      },
+      "turns": [
+        {
+          "turn": 1,
+          "failure": null,
+          "input_audio_sha256": "f1125e05375e8199fbaab06f09e2e7fd51dc7f6bba2535fa24c74eb7a2922e3d",
+          "asr_surface_match": true,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 906.6496339999721,
+          "first_audio_enqueue_at_ms": 1027.8751390000107,
+          "last_audio_enqueue_at_ms": 3807.9347660000203,
+          "transport_flushed_at_ms": 3807.9878460000036,
+          "enqueued_bytes": 88282,
+          "flushed_bytes": 88282,
+          "enqueued_sha256": "f1125e05375e8199fbaab06f09e2e7fd51dc7f6bba2535fa24c74eb7a2922e3d",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 88282,
+            "duration_ms": 2758.8125,
+            "rms": 2405.6952200863398,
+            "peak": 10733,
+            "nonzero_samples": 43744,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 111,
+            "first_active_ms": 140,
+            "last_active_ms": 2560,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 2297.761842000007,
+              "last_at_ms": 2297.761842000007
+            },
+            "provider_adapter:user.partial": {
+              "count": 7,
+              "first_at_ms": 2302.2090459999745,
+              "last_at_ms": 5190.145439999993
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 5197.565361000015,
+              "last_at_ms": 5197.565361000015
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 5233.104220999987,
+              "last_at_ms": 5233.104220999987
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 7053.3864680000115,
+              "last_at_ms": 7053.3864680000115
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 7282.803187999991,
+              "last_at_ms": 7282.803187999991
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 2297.761842000007,
+              "remaining_input_bytes": 47962
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 5197.565361000015,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 5198.036875999998,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 5233.104220999987,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 5548.642079000012,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 7053.3864680000115,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 7054.816751000006,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 2,
+          "failure": null,
+          "input_audio_sha256": "3677b423531f6e27fa5af6392e4dc1ab0ff7829ffa1d20bd23dffe1ce8b3bdbf",
+          "asr_surface_match": true,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 7292.216450000007,
+          "first_audio_enqueue_at_ms": 7400.148386999965,
+          "last_audio_enqueue_at_ms": 9897.715798999998,
+          "transport_flushed_at_ms": 9897.76176600001,
+          "enqueued_bytes": 78976,
+          "flushed_bytes": 78976,
+          "enqueued_sha256": "3677b423531f6e27fa5af6392e4dc1ab0ff7829ffa1d20bd23dffe1ce8b3bdbf",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 78976,
+            "duration_ms": 2468,
+            "rms": 2411.728285595483,
+            "peak": 10999,
+            "nonzero_samples": 39023,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 88,
+            "first_active_ms": 140,
+            "last_active_ms": 2080,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 9008.661413999973,
+              "last_at_ms": 9008.661413999973
+            },
+            "provider_adapter:user.partial": {
+              "count": 6,
+              "first_at_ms": 9146.470337999985,
+              "last_at_ms": 11292.666199999978
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 11298.513711999985,
+              "last_at_ms": 11298.513711999985
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 11306.13871899998,
+              "last_at_ms": 11306.13871899998
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 12954.729269000003,
+              "last_at_ms": 12954.729269000003
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 13185.398100999999,
+              "last_at_ms": 13185.398100999999
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 9008.661413999973,
+              "remaining_input_bytes": 27776
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 11298.513711999985,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 11298.883776000002,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 11306.13871899998,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 11648.308006000007,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 12954.729269000003,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 12955.291104000004,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 3,
+          "failure": null,
+          "input_audio_sha256": "8333dd59c8a34836ddeb852a68856e8138397122fc1d36ad9ff5cee13ef36007",
+          "asr_surface_match": true,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 13194.07693500002,
+          "first_audio_enqueue_at_ms": 13301.834919999994,
+          "last_audio_enqueue_at_ms": 15576.110042000015,
+          "transport_flushed_at_ms": 15576.152029999997,
+          "enqueued_bytes": 72024,
+          "flushed_bytes": 72024,
+          "enqueued_sha256": "8333dd59c8a34836ddeb852a68856e8138397122fc1d36ad9ff5cee13ef36007",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 72024,
+            "duration_ms": 2250.75,
+            "rms": 2196.2827050771275,
+            "peak": 12480,
+            "nonzero_samples": 35634,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 72,
+            "first_active_ms": 140,
+            "last_active_ms": 2040,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 14244.55425799999,
+              "last_at_ms": 14244.55425799999
+            },
+            "provider_adapter:user.partial": {
+              "count": 7,
+              "first_at_ms": 14421.86142500001,
+              "last_at_ms": 16539.10804600001
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 16545.147467000003,
+              "last_at_ms": 16545.147467000003
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 16593.430355999968,
+              "last_at_ms": 16593.430355999968
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 18054.587381999998,
+              "last_at_ms": 18054.587381999998
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 18283.526960999996,
+              "last_at_ms": 18283.526960999996
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 14244.55425799999,
+              "remaining_input_bytes": 41944
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 16545.147467000003,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 16545.63588299998,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 16593.430355999968,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 16895.55927899998,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 18054.587381999998,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 18055.188328999968,
+              "remaining_input_bytes": 0
+            }
+          ]
+        },
+        {
+          "turn": 4,
+          "failure": null,
+          "input_audio_sha256": "6dfd6ff5e8c0813930f2eda17fb0e1b6e99d51ea23d0e50ceb758a0c8fb09b69",
+          "asr_surface_match": true,
+          "context_update_confirmed": true,
+          "model_reply_complete": true,
+          "reply_complete": true,
+          "queued_at_ms": 18292.129200999974,
+          "first_audio_enqueue_at_ms": 18396.530302,
+          "last_audio_enqueue_at_ms": 20887.968296999985,
+          "transport_flushed_at_ms": 20888.012930999976,
+          "enqueued_bytes": 79032,
+          "flushed_bytes": 79032,
+          "enqueued_sha256": "6dfd6ff5e8c0813930f2eda17fb0e1b6e99d51ea23d0e50ceb758a0c8fb09b69",
+          "all_input_enqueued": true,
+          "all_input_transport_flushed": true,
+          "provider_final_before_input_end": false,
+          "provider_reply_before_input_end": false,
+          "truncated": false,
+          "input_hash_matches": true,
+          "audio": {
+            "format": "pcm_s16le",
+            "sample_rate": 16000,
+            "bytes": 79032,
+            "duration_ms": 2469.75,
+            "rms": 2233.5508246430823,
+            "peak": 10728,
+            "nonzero_samples": 39272,
+            "active_frame_threshold_rms": 256,
+            "frame_ms": 20,
+            "active_frames": 92,
+            "first_active_ms": 160,
+            "last_active_ms": 2320,
+            "speech_content_verified": false
+          },
+          "event_counts": {
+            "provider_adapter:user.speech.candidate": {
+              "count": 1,
+              "first_at_ms": 19395.280761,
+              "last_at_ms": 19395.280761
+            },
+            "provider_adapter:user.partial": {
+              "count": 9,
+              "first_at_ms": 19704.520579000004,
+              "last_at_ms": 22042.174081999983
+            },
+            "provider_adapter:user.final": {
+              "count": 1,
+              "first_at_ms": 22047.987611999968,
+              "last_at_ms": 22047.987611999968
+            },
+            "provider_adapter:response.started": {
+              "count": 1,
+              "first_at_ms": 22090.700931,
+              "last_at_ms": 22090.700931
+            },
+            "provider_adapter:response.done": {
+              "count": 1,
+              "first_at_ms": 22597.112286999996,
+              "last_at_ms": 22597.112286999996
+            },
+            "gateway_client:teaching.context.applied": {
+              "count": 1,
+              "first_at_ms": 22829.042925000016,
+              "last_at_ms": 22829.042925000016
+            }
+          },
+          "terminal_events": [
+            {
+              "site": "provider_adapter",
+              "name": "user.speech.candidate",
+              "at_ms": 19395.280761,
+              "remaining_input_bytes": 47032
+            },
+            {
+              "site": "provider_adapter",
+              "name": "user.final",
+              "at_ms": 22047.987611999968,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "user.final",
+              "at_ms": 22048.506174999988,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.started",
+              "at_ms": 22090.700931,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.started",
+              "at_ms": 22397.89566400001,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "provider_adapter",
+              "name": "response.done",
+              "at_ms": 22597.112286999996,
+              "remaining_input_bytes": 0
+            },
+            {
+              "site": "gateway_client",
+              "name": "response.done",
+              "at_ms": 22597.727772000013,
+              "remaining_input_bytes": 0
+            }
+          ]
+        }
+      ],
+      "asr_owner_spanning_collector_inputs": 0,
+      "unassigned_asr_events": 0
+    }
+  ]
+}

@@ -1,0 +1,4753 @@
+{
+  "version": "hsk-2025-syllabus-v1",
+  "source_url": "https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf",
+  "source_sha256": "ec74ce0439e837bbb15154be13e747ae798903b2fd3a331629df6c3b45504941",
+  "unit": "syllabus_table_detail",
+  "counts_by_level": {
+    "1": 70,
+    "2": 78,
+    "3": 96,
+    "4": 95,
+    "5": 70,
+    "6": 49,
+    "7-9": 134
+  },
+  "entries": [
+    {
+      "kp_id": "hsk2025-g1-001",
+      "introduced_level": "1",
+      "category": "语素",
+      "label": "小—、第—",
+      "source_page": 383,
+      "source_row": 1
+    },
+    {
+      "kp_id": "hsk2025-g1-002",
+      "introduced_level": "1",
+      "category": "语素",
+      "label": "—们、—边",
+      "source_page": 383,
+      "source_row": 2
+    },
+    {
+      "kp_id": "hsk2025-g1-003",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "上、下、里、外、前、后",
+      "source_page": 383,
+      "source_row": 3
+    },
+    {
+      "kp_id": "hsk2025-g1-004",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "会、能",
+      "source_page": 383,
+      "source_row": 4
+    },
+    {
+      "kp_id": "hsk2025-g1-005",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "想、要",
+      "source_page": 383,
+      "source_row": 5
+    },
+    {
+      "kp_id": "hsk2025-g1-006",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "可以",
+      "source_page": 383,
+      "source_row": 6
+    },
+    {
+      "kp_id": "hsk2025-g1-007",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "看病、睡觉、说话、上课、下课、上班、下班、生病",
+      "source_page": 383,
+      "source_row": 7
+    },
+    {
+      "kp_id": "hsk2025-g1-008",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "多、多少、几、哪、哪儿、哪里、哪些、什么、谁、怎么、怎么样",
+      "source_page": 383,
+      "source_row": 8
+    },
+    {
+      "kp_id": "hsk2025-g1-009",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "我、你、您、他、她、我们、你们、他们、她们、它、它们、大家",
+      "source_page": 383,
+      "source_row": 9
+    },
+    {
+      "kp_id": "hsk2025-g1-010",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "这、那、这儿、那儿、这里、那里、这些、那些、有的、这个、那个、有些",
+      "source_page": 383,
+      "source_row": 10
+    },
+    {
+      "kp_id": "hsk2025-g1-011",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "一、二/两、三、四、五、六、七、八、九、零、十、百、半、千",
+      "source_page": 383,
+      "source_row": 11
+    },
+    {
+      "kp_id": "hsk2025-g1-012",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "专用名量词：本、个、家、口、块、件、只、元",
+      "source_page": 383,
+      "source_row": 12
+    },
+    {
+      "kp_id": "hsk2025-g1-013",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "借用名量词：杯",
+      "source_page": 383,
+      "source_row": 13
+    },
+    {
+      "kp_id": "hsk2025-g1-014",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "日、号、岁、点、分、年、天",
+      "source_page": 383,
+      "source_row": 14
+    },
+    {
+      "kp_id": "hsk2025-g1-015",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "非常、很、太、真、有（一）点儿",
+      "source_page": 383,
+      "source_row": 15
+    },
+    {
+      "kp_id": "hsk2025-g1-016",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "都1",
+      "source_page": 383,
+      "source_row": 16
+    },
+    {
+      "kp_id": "hsk2025-g1-017",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "在、正在",
+      "source_page": 383,
+      "source_row": 17
+    },
+    {
+      "kp_id": "hsk2025-g1-018",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "再1",
+      "source_page": 383,
+      "source_row": 18
+    },
+    {
+      "kp_id": "hsk2025-g1-019",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "还1、也",
+      "source_page": 383,
+      "source_row": 19
+    },
+    {
+      "kp_id": "hsk2025-g1-020",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "不、没（有）、不要",
+      "source_page": 383,
+      "source_row": 20
+    },
+    {
+      "kp_id": "hsk2025-g1-021",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "在",
+      "source_page": 383,
+      "source_row": 21
+    },
+    {
+      "kp_id": "hsk2025-g1-022",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "和1、对",
+      "source_page": 383,
+      "source_row": 22
+    },
+    {
+      "kp_id": "hsk2025-g1-023",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "和2",
+      "source_page": 383,
+      "source_row": 23
+    },
+    {
+      "kp_id": "hsk2025-g1-024",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "的1",
+      "source_page": 383,
+      "source_row": 24
+    },
+    {
+      "kp_id": "hsk2025-g1-025",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "了1",
+      "source_page": 383,
+      "source_row": 25
+    },
+    {
+      "kp_id": "hsk2025-g1-026",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "吧1、了2、吗、呢1、呢2、呢3",
+      "source_page": 383,
+      "source_row": 26
+    },
+    {
+      "kp_id": "hsk2025-g1-027",
+      "introduced_level": "1",
+      "category": "词类",
+      "label": "喂",
+      "source_page": 383,
+      "source_row": 27
+    },
+    {
+      "kp_id": "hsk2025-g1-028",
+      "introduced_level": "1",
+      "category": "短语",
+      "label": "联合短语",
+      "source_page": 384,
+      "source_row": 28
+    },
+    {
+      "kp_id": "hsk2025-g1-029",
+      "introduced_level": "1",
+      "category": "短语",
+      "label": "偏正短语",
+      "source_page": 384,
+      "source_row": 29
+    },
+    {
+      "kp_id": "hsk2025-g1-030",
+      "introduced_level": "1",
+      "category": "短语",
+      "label": "动宾短语",
+      "source_page": 384,
+      "source_row": 30
+    },
+    {
+      "kp_id": "hsk2025-g1-031",
+      "introduced_level": "1",
+      "category": "短语",
+      "label": "主谓短语",
+      "source_page": 384,
+      "source_row": 31
+    },
+    {
+      "kp_id": "hsk2025-g1-032",
+      "introduced_level": "1",
+      "category": "短语",
+      "label": "数量短语",
+      "source_page": 384,
+      "source_row": 32
+    },
+    {
+      "kp_id": "hsk2025-g1-033",
+      "introduced_level": "1",
+      "category": "短语",
+      "label": "介宾短语",
+      "source_page": 384,
+      "source_row": 33
+    },
+    {
+      "kp_id": "hsk2025-g1-034",
+      "introduced_level": "1",
+      "category": "短语",
+      "label": "方位短语",
+      "source_page": 384,
+      "source_row": 34
+    },
+    {
+      "kp_id": "hsk2025-g1-035",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "名词、代词或名词性短语作主语",
+      "source_page": 384,
+      "source_row": 35
+    },
+    {
+      "kp_id": "hsk2025-g1-036",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "名词、代词、数词或数量短语作谓语",
+      "source_page": 384,
+      "source_row": 36
+    },
+    {
+      "kp_id": "hsk2025-g1-037",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "动词或动词性短语、形容词或形容词性短语作谓语",
+      "source_page": 384,
+      "source_row": 37
+    },
+    {
+      "kp_id": "hsk2025-g1-038",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "名词、代词或名词性短语作宾语",
+      "source_page": 384,
+      "source_row": 38
+    },
+    {
+      "kp_id": "hsk2025-g1-039",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "名词性词语、形容词性短语、数量短语作定语",
+      "source_page": 384,
+      "source_row": 39
+    },
+    {
+      "kp_id": "hsk2025-g1-040",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "副词、形容词作状语表示时间、处所的词语作状语",
+      "source_page": 384,
+      "source_row": 40
+    },
+    {
+      "kp_id": "hsk2025-g1-041",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "动词+动量补语",
+      "source_page": 384,
+      "source_row": 41
+    },
+    {
+      "kp_id": "hsk2025-g1-042",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "主谓句1：动词谓语句",
+      "source_page": 384,
+      "source_row": 42
+    },
+    {
+      "kp_id": "hsk2025-g1-043",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "主谓句2：形容词谓语句",
+      "source_page": 384,
+      "source_row": 43
+    },
+    {
+      "kp_id": "hsk2025-g1-044",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "主谓句3：名词谓语句",
+      "source_page": 384,
+      "source_row": 44
+    },
+    {
+      "kp_id": "hsk2025-g1-045",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "非主谓句",
+      "source_page": 384,
+      "source_row": 45
+    },
+    {
+      "kp_id": "hsk2025-g1-046",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "陈述句",
+      "source_page": 384,
+      "source_row": 46
+    },
+    {
+      "kp_id": "hsk2025-g1-047",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "是非问句",
+      "source_page": 384,
+      "source_row": 47
+    },
+    {
+      "kp_id": "hsk2025-g1-048",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "特指问句",
+      "source_page": 384,
+      "source_row": 48
+    },
+    {
+      "kp_id": "hsk2025-g1-049",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "正反问句",
+      "source_page": 384,
+      "source_row": 49
+    },
+    {
+      "kp_id": "hsk2025-g1-050",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "祈使句",
+      "source_page": 384,
+      "source_row": 50
+    },
+    {
+      "kp_id": "hsk2025-g1-051",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "感叹句",
+      "source_page": 384,
+      "source_row": 51
+    },
+    {
+      "kp_id": "hsk2025-g1-052",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "表示等同或类属",
+      "source_page": 384,
+      "source_row": 52
+    },
+    {
+      "kp_id": "hsk2025-g1-053",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "表示领有",
+      "source_page": 384,
+      "source_row": 53
+    },
+    {
+      "kp_id": "hsk2025-g1-054",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "所处+是+名词",
+      "source_page": 384,
+      "source_row": 54
+    },
+    {
+      "kp_id": "hsk2025-g1-055",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "处所+有+数量短语+名词",
+      "source_page": 384,
+      "source_row": 55
+    },
+    {
+      "kp_id": "hsk2025-g1-056",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "前后动作先后发生，后一动作是前一动作的目的",
+      "source_page": 384,
+      "source_row": 56
+    },
+    {
+      "kp_id": "hsk2025-g1-057",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "前一动作是后一动作的方式",
+      "source_page": 384,
+      "source_row": 57
+    },
+    {
+      "kp_id": "hsk2025-g1-058",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "主语+动词+宾语1+宾语2",
+      "source_page": 384,
+      "source_row": 58
+    },
+    {
+      "kp_id": "hsk2025-g1-059",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "不用关联词语的复句",
+      "source_page": 385,
+      "source_row": 59
+    },
+    {
+      "kp_id": "hsk2025-g1-060",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "……，也……",
+      "source_page": 385,
+      "source_row": 60
+    },
+    {
+      "kp_id": "hsk2025-g1-061",
+      "introduced_level": "1",
+      "category": "句子成分",
+      "label": "……，还……",
+      "source_page": 385,
+      "source_row": 61
+    },
+    {
+      "kp_id": "hsk2025-g1-062",
+      "introduced_level": "1",
+      "category": "动作的态",
+      "label": "用动态助词“了1”表示",
+      "source_page": 385,
+      "source_row": 62
+    },
+    {
+      "kp_id": "hsk2025-g1-063",
+      "introduced_level": "1",
+      "category": "动作的态",
+      "label": "用动态助词“了2”表示",
+      "source_page": 385,
+      "source_row": 63
+    },
+    {
+      "kp_id": "hsk2025-g1-064",
+      "introduced_level": "1",
+      "category": "动作的态",
+      "label": "……在/正在+动词",
+      "source_page": 385,
+      "source_row": 64
+    },
+    {
+      "kp_id": "hsk2025-g1-065",
+      "introduced_level": "1",
+      "category": "动作的态",
+      "label": "……在/正在+动词……+呢",
+      "source_page": 385,
+      "source_row": 65
+    },
+    {
+      "kp_id": "hsk2025-g1-066",
+      "introduced_level": "1",
+      "category": "动作的态",
+      "label": "……呢",
+      "source_page": 385,
+      "source_row": 66
+    },
+    {
+      "kp_id": "hsk2025-g1-067",
+      "introduced_level": "1",
+      "category": "特殊表达法",
+      "label": "钱数表示法",
+      "source_page": 385,
+      "source_row": 67
+    },
+    {
+      "kp_id": "hsk2025-g1-068",
+      "introduced_level": "1",
+      "category": "特殊表达法",
+      "label": "序数表达法1：第+数词",
+      "source_page": 385,
+      "source_row": 68
+    },
+    {
+      "kp_id": "hsk2025-g1-069",
+      "introduced_level": "1",
+      "category": "特殊表达法",
+      "label": "年、月、日、星期表示法",
+      "source_page": 385,
+      "source_row": 69
+    },
+    {
+      "kp_id": "hsk2025-g1-070",
+      "introduced_level": "1",
+      "category": "特殊表达法",
+      "label": "钟点表示法",
+      "source_page": 385,
+      "source_row": 70
+    },
+    {
+      "kp_id": "hsk2025-g2-001",
+      "introduced_level": "2",
+      "category": "语素",
+      "label": "面",
+      "source_page": 386,
+      "source_row": 1
+    },
+    {
+      "kp_id": "hsk2025-g2-002",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "左、右",
+      "source_page": 386,
+      "source_row": 2
+    },
+    {
+      "kp_id": "hsk2025-g2-003",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "AA、A一A、A了A、ABAB",
+      "source_page": 386,
+      "source_row": 3
+    },
+    {
+      "kp_id": "hsk2025-g2-004",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "可能",
+      "source_page": 386,
+      "source_row": 4
+    },
+    {
+      "kp_id": "hsk2025-g2-005",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "帮忙、游泳、跳舞、跑步",
+      "source_page": 386,
+      "source_row": 5
+    },
+    {
+      "kp_id": "hsk2025-g2-006",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "为什么",
+      "source_page": 386,
+      "source_row": 6
+    },
+    {
+      "kp_id": "hsk2025-g2-007",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "自己",
+      "source_page": 386,
+      "source_row": 7
+    },
+    {
+      "kp_id": "hsk2025-g2-008",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "那么、那样、这么、这样、每",
+      "source_page": 386,
+      "source_row": 8
+    },
+    {
+      "kp_id": "hsk2025-g2-009",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "AA、AABB",
+      "source_page": 386,
+      "source_row": 9
+    },
+    {
+      "kp_id": "hsk2025-g2-010",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "万、好多、多",
+      "source_page": 386,
+      "source_row": 10
+    },
+    {
+      "kp_id": "hsk2025-g2-011",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "专用名量词：条、位、间、名",
+      "source_page": 386,
+      "source_row": 11
+    },
+    {
+      "kp_id": "hsk2025-g2-012",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "借用名量词：包",
+      "source_page": 386,
+      "source_row": 12
+    },
+    {
+      "kp_id": "hsk2025-g2-013",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "次",
+      "source_page": 386,
+      "source_row": 13
+    },
+    {
+      "kp_id": "hsk2025-g2-014",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "多、好、最",
+      "source_page": 386,
+      "source_row": 14
+    },
+    {
+      "kp_id": "hsk2025-g2-015",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "一起",
+      "source_page": 386,
+      "source_row": 15
+    },
+    {
+      "kp_id": "hsk2025-g2-016",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "还2、已经、有时（候）、快、快要、正",
+      "source_page": 386,
+      "source_row": 16
+    },
+    {
+      "kp_id": "hsk2025-g2-017",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "常、经常",
+      "source_page": 386,
+      "source_row": 17
+    },
+    {
+      "kp_id": "hsk2025-g2-018",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "别",
+      "source_page": 386,
+      "source_row": 18
+    },
+    {
+      "kp_id": "hsk2025-g2-019",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "再2、就1",
+      "source_page": 386,
+      "source_row": 19
+    },
+    {
+      "kp_id": "hsk2025-g2-020",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "都2、就2、还是1",
+      "source_page": 386,
+      "source_row": 20
+    },
+    {
+      "kp_id": "hsk2025-g2-021",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "从1",
+      "source_page": 386,
+      "source_row": 21
+    },
+    {
+      "kp_id": "hsk2025-g2-022",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "往",
+      "source_page": 386,
+      "source_row": 22
+    },
+    {
+      "kp_id": "hsk2025-g2-023",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "从2",
+      "source_page": 386,
+      "source_row": 23
+    },
+    {
+      "kp_id": "hsk2025-g2-024",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "给",
+      "source_page": 386,
+      "source_row": 24
+    },
+    {
+      "kp_id": "hsk2025-g2-025",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "比",
+      "source_page": 386,
+      "source_row": 25
+    },
+    {
+      "kp_id": "hsk2025-g2-026",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "跟1",
+      "source_page": 386,
+      "source_row": 26
+    },
+    {
+      "kp_id": "hsk2025-g2-027",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "因为1",
+      "source_page": 386,
+      "source_row": 27
+    },
+    {
+      "kp_id": "hsk2025-g2-028",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "跟2",
+      "source_page": 386,
+      "source_row": 28
+    },
+    {
+      "kp_id": "hsk2025-g2-029",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "但、但是、那、虽然、还是2、因为2、所以",
+      "source_page": 386,
+      "source_row": 29
+    },
+    {
+      "kp_id": "hsk2025-g2-030",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "得、地",
+      "source_page": 386,
+      "source_row": 30
+    },
+    {
+      "kp_id": "hsk2025-g2-031",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "过",
+      "source_page": 386,
+      "source_row": 31
+    },
+    {
+      "kp_id": "hsk2025-g2-032",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "着",
+      "source_page": 386,
+      "source_row": 32
+    },
+    {
+      "kp_id": "hsk2025-g2-033",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "呢4、吧2、的2、啊1",
+      "source_page": 386,
+      "source_row": 33
+    },
+    {
+      "kp_id": "hsk2025-g2-034",
+      "introduced_level": "2",
+      "category": "词类",
+      "label": "动补短语1",
+      "source_page": 386,
+      "source_row": 34
+    },
+    {
+      "kp_id": "hsk2025-g2-035",
+      "introduced_level": "2",
+      "category": "短语",
+      "label": "“的”字短语",
+      "source_page": 387,
+      "source_row": 35
+    },
+    {
+      "kp_id": "hsk2025-g2-036",
+      "introduced_level": "2",
+      "category": "短语",
+      "label": "连谓短语",
+      "source_page": 387,
+      "source_row": 36
+    },
+    {
+      "kp_id": "hsk2025-g2-037",
+      "introduced_level": "2",
+      "category": "短语",
+      "label": "兼语短语",
+      "source_page": 387,
+      "source_row": 37
+    },
+    {
+      "kp_id": "hsk2025-g2-038",
+      "introduced_level": "2",
+      "category": "短语",
+      "label": "名词性短语",
+      "source_page": 387,
+      "source_row": 38
+    },
+    {
+      "kp_id": "hsk2025-g2-039",
+      "introduced_level": "2",
+      "category": "短语",
+      "label": "动词性短语",
+      "source_page": 387,
+      "source_row": 39
+    },
+    {
+      "kp_id": "hsk2025-g2-040",
+      "introduced_level": "2",
+      "category": "短语",
+      "label": "形容词性短语",
+      "source_page": 387,
+      "source_row": 40
+    },
+    {
+      "kp_id": "hsk2025-g2-041",
+      "introduced_level": "2",
+      "category": "短语",
+      "label": "什么的",
+      "source_page": 387,
+      "source_row": 41
+    },
+    {
+      "kp_id": "hsk2025-g2-042",
+      "introduced_level": "2",
+      "category": "固定格式",
+      "label": "还是……吧",
+      "source_page": 387,
+      "source_row": 42
+    },
+    {
+      "kp_id": "hsk2025-g2-043",
+      "introduced_level": "2",
+      "category": "固定格式",
+      "label": "要/快要/就要……了",
+      "source_page": 387,
+      "source_row": 43
+    },
+    {
+      "kp_id": "hsk2025-g2-044",
+      "introduced_level": "2",
+      "category": "固定格式",
+      "label": "都……了",
+      "source_page": 387,
+      "source_row": 44
+    },
+    {
+      "kp_id": "hsk2025-g2-045",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "受事主语",
+      "source_page": 387,
+      "source_row": 45
+    },
+    {
+      "kp_id": "hsk2025-g2-046",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "名词性短语作谓语",
+      "source_page": 387,
+      "source_row": 46
+    },
+    {
+      "kp_id": "hsk2025-g2-047",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "动词或动词性短语、主谓短语作定语",
+      "source_page": 387,
+      "source_row": 47
+    },
+    {
+      "kp_id": "hsk2025-g2-048",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "动词+错/懂/好/会/完",
+      "source_page": 387,
+      "source_row": 48
+    },
+    {
+      "kp_id": "hsk2025-g2-049",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "简单趋向补语的趋向意义用法：（1）动词+来/去",
+      "source_page": 387,
+      "source_row": 49
+    },
+    {
+      "kp_id": "hsk2025-g2-050",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "动词+上/下/进/出/过/回",
+      "source_page": 387,
+      "source_row": 50
+    },
+    {
+      "kp_id": "hsk2025-g2-051",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "复合趋向补语的趋向意义用法：动词+出来/出去/过来/过去/回来/回去/进来/进去/起来/上来/上去/下来/下去",
+      "source_page": 387,
+      "source_row": 51
+    },
+    {
+      "kp_id": "hsk2025-g2-052",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "动词+得+形容词性短语",
+      "source_page": 387,
+      "source_row": 52
+    },
+    {
+      "kp_id": "hsk2025-g2-053",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "表示动作持续的时间",
+      "source_page": 387,
+      "source_row": 53
+    },
+    {
+      "kp_id": "hsk2025-g2-054",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "形容词+数量补语",
+      "source_page": 387,
+      "source_row": 54
+    },
+    {
+      "kp_id": "hsk2025-g2-055",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "主谓句4：主谓谓语句",
+      "source_page": 387,
+      "source_row": 55
+    },
+    {
+      "kp_id": "hsk2025-g2-056",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "用“还是”连接的选择问句",
+      "source_page": 387,
+      "source_row": 56
+    },
+    {
+      "kp_id": "hsk2025-g2-057",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "用“别”的祈使句",
+      "source_page": 387,
+      "source_row": 57
+    },
+    {
+      "kp_id": "hsk2025-g2-058",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "表示说明或特征",
+      "source_page": 387,
+      "source_row": 58
+    },
+    {
+      "kp_id": "hsk2025-g2-059",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "表示达到",
+      "source_page": 387,
+      "source_row": 59
+    },
+    {
+      "kp_id": "hsk2025-g2-060",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "处所+动词+着(+数量短语)+名词",
+      "source_page": 387,
+      "source_row": 60
+    },
+    {
+      "kp_id": "hsk2025-g2-061",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "A比B+形容词",
+      "source_page": 387,
+      "source_row": 61
+    },
+    {
+      "kp_id": "hsk2025-g2-062",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "A比B+形容词+数量补语/程度补语",
+      "source_page": 387,
+      "source_row": 62
+    },
+    {
+      "kp_id": "hsk2025-g2-063",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "A有/没有B（+这么/那么）+形容词",
+      "source_page": 387,
+      "source_row": 63
+    },
+    {
+      "kp_id": "hsk2025-g2-064",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "A比B+动词+得+形容词/A+动词+得+比+B+形容词",
+      "source_page": 387,
+      "source_row": 64
+    },
+    {
+      "kp_id": "hsk2025-g2-065",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "强调时间、地点、方式、动作者",
+      "source_page": 387,
+      "source_row": 65
+    },
+    {
+      "kp_id": "hsk2025-g2-066",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "表使令：主语+请/叫/让……+宾语1+动词+宾语2",
+      "source_page": 388,
+      "source_row": 66
+    },
+    {
+      "kp_id": "hsk2025-g2-067",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "主语+动词+给+宾语1+宾语2",
+      "source_page": 388,
+      "source_row": 67
+    },
+    {
+      "kp_id": "hsk2025-g2-068",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "（是）……，还是……",
+      "source_page": 388,
+      "source_row": 68
+    },
+    {
+      "kp_id": "hsk2025-g2-069",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "虽然……，但是……",
+      "source_page": 388,
+      "source_row": 69
+    },
+    {
+      "kp_id": "hsk2025-g2-070",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "因为……，所以……",
+      "source_page": 388,
+      "source_row": 70
+    },
+    {
+      "kp_id": "hsk2025-g2-071",
+      "introduced_level": "2",
+      "category": "句子成分",
+      "label": "一……就……",
+      "source_page": 388,
+      "source_row": 71
+    },
+    {
+      "kp_id": "hsk2025-g2-072",
+      "introduced_level": "2",
+      "category": "动作的态",
+      "label": "动词+着：（1）表示状态的持续",
+      "source_page": 388,
+      "source_row": 72
+    },
+    {
+      "kp_id": "hsk2025-g2-073",
+      "introduced_level": "2",
+      "category": "动作的态",
+      "label": "表示动作的持续",
+      "source_page": 388,
+      "source_row": 73
+    },
+    {
+      "kp_id": "hsk2025-g2-074",
+      "introduced_level": "2",
+      "category": "动作的态",
+      "label": "用动态助词“过”表示",
+      "source_page": 388,
+      "source_row": 74
+    },
+    {
+      "kp_id": "hsk2025-g2-075",
+      "introduced_level": "2",
+      "category": "特殊表达法",
+      "label": "序数表示法2：数词+量词",
+      "source_page": 388,
+      "source_row": 75
+    },
+    {
+      "kp_id": "hsk2025-g2-076",
+      "introduced_level": "2",
+      "category": "特殊表达法",
+      "label": "概数表达法1：（1）用“几”表示概数",
+      "source_page": 388,
+      "source_row": 76
+    },
+    {
+      "kp_id": "hsk2025-g2-077",
+      "introduced_level": "2",
+      "category": "特殊表达法",
+      "label": "数词+多+量词",
+      "source_page": 388,
+      "source_row": 77
+    },
+    {
+      "kp_id": "hsk2025-g2-078",
+      "introduced_level": "2",
+      "category": "特殊表达法",
+      "label": "数词+量词+多",
+      "source_page": 388,
+      "source_row": 78
+    },
+    {
+      "kp_id": "hsk2025-g3-001",
+      "introduced_level": "3",
+      "category": "语素",
+      "label": "老—",
+      "source_page": 389,
+      "source_row": 1
+    },
+    {
+      "kp_id": "hsk2025-g3-002",
+      "introduced_level": "3",
+      "category": "语素",
+      "label": "—家、—子、—员",
+      "source_page": 389,
+      "source_row": 2
+    },
+    {
+      "kp_id": "hsk2025-g3-003",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "东、南、西、北、北方、东方、南方、西方、中间",
+      "source_page": 389,
+      "source_row": 3
+    },
+    {
+      "kp_id": "hsk2025-g3-004",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "需要、该、应该、愿意、得",
+      "source_page": 389,
+      "source_row": 4
+    },
+    {
+      "kp_id": "hsk2025-g3-005",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "动宾式离合词：放假、见面、结婚、洗澡",
+      "source_page": 389,
+      "source_row": 5
+    },
+    {
+      "kp_id": "hsk2025-g3-006",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "动补式离合词：离开、完成、分开",
+      "source_page": 389,
+      "source_row": 6
+    },
+    {
+      "kp_id": "hsk2025-g3-007",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "怎样",
+      "source_page": 389,
+      "source_row": 7
+    },
+    {
+      "kp_id": "hsk2025-g3-008",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "疑问代词的非疑问用法：（1）任指用法：①疑问代词+都……②疑问代词+疑问代词",
+      "source_page": 389,
+      "source_row": 8
+    },
+    {
+      "kp_id": "hsk2025-g3-009",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "不定指用法",
+      "source_page": 389,
+      "source_row": 9
+    },
+    {
+      "kp_id": "hsk2025-g3-010",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "别人、咱们",
+      "source_page": 389,
+      "source_row": 10
+    },
+    {
+      "kp_id": "hsk2025-g3-011",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "别的、其他",
+      "source_page": 389,
+      "source_row": 11
+    },
+    {
+      "kp_id": "hsk2025-g3-012",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "专用名量词：把、双、张、种、层、封、页、辆、节、所、班、段、头、句公斤、斤、角、毛、刻、米",
+      "source_page": 389,
+      "source_row": 12
+    },
+    {
+      "kp_id": "hsk2025-g3-013",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "借用名量词：碗、盘",
+      "source_page": 389,
+      "source_row": 13
+    },
+    {
+      "kp_id": "hsk2025-g3-014",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "口、回、遍、声",
+      "source_page": 389,
+      "source_row": 14
+    },
+    {
+      "kp_id": "hsk2025-g3-015",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "个个、张张",
+      "source_page": 389,
+      "source_row": 15
+    },
+    {
+      "kp_id": "hsk2025-g3-016",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "比较、还3、更、特别、挺、有些、越、极",
+      "source_page": 389,
+      "source_row": 16
+    },
+    {
+      "kp_id": "hsk2025-g3-017",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "就3、一块儿、一共、只、到处、只是",
+      "source_page": 389,
+      "source_row": 17
+    },
+    {
+      "kp_id": "hsk2025-g3-018",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "才1、马上、先、一会儿、刚、刚刚、一直",
+      "source_page": 389,
+      "source_row": 18
+    },
+    {
+      "kp_id": "hsk2025-g3-019",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "总、总是、又、常常",
+      "source_page": 389,
+      "source_row": 19
+    },
+    {
+      "kp_id": "hsk2025-g3-020",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "一边",
+      "source_page": 389,
+      "source_row": 20
+    },
+    {
+      "kp_id": "hsk2025-g3-021",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "大概、必须、差不多、一定、好像、几乎",
+      "source_page": 389,
+      "source_row": 21
+    },
+    {
+      "kp_id": "hsk2025-g3-022",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "当然、其实、终于、才2、才3、就4",
+      "source_page": 389,
+      "source_row": 22
+    },
+    {
+      "kp_id": "hsk2025-g3-023",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "不必、不用",
+      "source_page": 389,
+      "source_row": 23
+    },
+    {
+      "kp_id": "hsk2025-g3-024",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "为1、向1、关于",
+      "source_page": 389,
+      "source_row": 24
+    },
+    {
+      "kp_id": "hsk2025-g3-025",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "向2",
+      "source_page": 389,
+      "source_row": 25
+    },
+    {
+      "kp_id": "hsk2025-g3-026",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "为了、为2",
+      "source_page": 389,
+      "source_row": 26
+    },
+    {
+      "kp_id": "hsk2025-g3-027",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "把、被",
+      "source_page": 389,
+      "source_row": 27
+    },
+    {
+      "kp_id": "hsk2025-g3-028",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "根据",
+      "source_page": 389,
+      "source_row": 28
+    },
+    {
+      "kp_id": "hsk2025-g3-029",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "或、或者",
+      "source_page": 389,
+      "source_row": 29
+    },
+    {
+      "kp_id": "hsk2025-g3-030",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "只有、只要、不但、而且、如果、可1、可是、然后",
+      "source_page": 389,
+      "source_row": 30
+    },
+    {
+      "kp_id": "hsk2025-g3-031",
+      "introduced_level": "3",
+      "category": "词类",
+      "label": "的话",
+      "source_page": 389,
+      "source_row": 31
+    },
+    {
+      "kp_id": "hsk2025-g3-032",
+      "introduced_level": "3",
+      "category": "短语",
+      "label": "同位短语",
+      "source_page": 390,
+      "source_row": 32
+    },
+    {
+      "kp_id": "hsk2025-g3-033",
+      "introduced_level": "3",
+      "category": "短语",
+      "label": "动补短语2",
+      "source_page": 390,
+      "source_row": 33
+    },
+    {
+      "kp_id": "hsk2025-g3-034",
+      "introduced_level": "3",
+      "category": "短语",
+      "label": "数量重叠：数词+量词+数词+量词",
+      "source_page": 390,
+      "source_row": 34
+    },
+    {
+      "kp_id": "hsk2025-g3-035",
+      "introduced_level": "3",
+      "category": "短语",
+      "label": "不A不B",
+      "source_page": 390,
+      "source_row": 35
+    },
+    {
+      "kp_id": "hsk2025-g3-036",
+      "introduced_level": "3",
+      "category": "短语",
+      "label": "不一会儿",
+      "source_page": 390,
+      "source_row": 36
+    },
+    {
+      "kp_id": "hsk2025-g3-037",
+      "introduced_level": "3",
+      "category": "短语",
+      "label": "看来",
+      "source_page": 390,
+      "source_row": 37
+    },
+    {
+      "kp_id": "hsk2025-g3-038",
+      "introduced_level": "3",
+      "category": "短语",
+      "label": "在……看来",
+      "source_page": 390,
+      "source_row": 38
+    },
+    {
+      "kp_id": "hsk2025-g3-039",
+      "introduced_level": "3",
+      "category": "短语",
+      "label": "越来越",
+      "source_page": 390,
+      "source_row": 39
+    },
+    {
+      "kp_id": "hsk2025-g3-040",
+      "introduced_level": "3",
+      "category": "短语",
+      "label": "看起来",
+      "source_page": 390,
+      "source_row": 40
+    },
+    {
+      "kp_id": "hsk2025-g3-041",
+      "introduced_level": "3",
+      "category": "短语",
+      "label": "看上去",
+      "source_page": 390,
+      "source_row": 41
+    },
+    {
+      "kp_id": "hsk2025-g3-042",
+      "introduced_level": "3",
+      "category": "短语",
+      "label": "一般来说",
+      "source_page": 390,
+      "source_row": 42
+    },
+    {
+      "kp_id": "hsk2025-g3-043",
+      "introduced_level": "3",
+      "category": "短语",
+      "label": "不怎么样",
+      "source_page": 390,
+      "source_row": 43
+    },
+    {
+      "kp_id": "hsk2025-g3-044",
+      "introduced_level": "3",
+      "category": "固定格式",
+      "label": "除了……（以外），……还/也/都……",
+      "source_page": 390,
+      "source_row": 44
+    },
+    {
+      "kp_id": "hsk2025-g3-045",
+      "introduced_level": "3",
+      "category": "固定格式",
+      "label": "从……起",
+      "source_page": 390,
+      "source_row": 45
+    },
+    {
+      "kp_id": "hsk2025-g3-046",
+      "introduced_level": "3",
+      "category": "固定格式",
+      "label": "对……来说",
+      "source_page": 390,
+      "source_row": 46
+    },
+    {
+      "kp_id": "hsk2025-g3-047",
+      "introduced_level": "3",
+      "category": "固定格式",
+      "label": "一……也/都+不/没……",
+      "source_page": 390,
+      "source_row": 47
+    },
+    {
+      "kp_id": "hsk2025-g3-048",
+      "introduced_level": "3",
+      "category": "固定格式",
+      "label": "一点儿也不",
+      "source_page": 390,
+      "source_row": 48
+    },
+    {
+      "kp_id": "hsk2025-g3-049",
+      "introduced_level": "3",
+      "category": "固定格式",
+      "label": "越……越……",
+      "source_page": 390,
+      "source_row": 49
+    },
+    {
+      "kp_id": "hsk2025-g3-050",
+      "introduced_level": "3",
+      "category": "固定格式",
+      "label": "（在）……以前/以后/前/后",
+      "source_page": 390,
+      "source_row": 50
+    },
+    {
+      "kp_id": "hsk2025-g3-051",
+      "introduced_level": "3",
+      "category": "固定格式",
+      "label": "X什么（啊）",
+      "source_page": 390,
+      "source_row": 51
+    },
+    {
+      "kp_id": "hsk2025-g3-052",
+      "introduced_level": "3",
+      "category": "固定格式",
+      "label": "该……了",
+      "source_page": 390,
+      "source_row": 52
+    },
+    {
+      "kp_id": "hsk2025-g3-053",
+      "introduced_level": "3",
+      "category": "固定格式",
+      "label": "在……上/下/中",
+      "source_page": 390,
+      "source_row": 53
+    },
+    {
+      "kp_id": "hsk2025-g3-054",
+      "introduced_level": "3",
+      "category": "句子成分",
+      "label": "动词或动词性短语、形容词或形容词性短语作主语",
+      "source_page": 390,
+      "source_row": 54
+    },
+    {
+      "kp_id": "hsk2025-g3-055",
+      "introduced_level": "3",
+      "category": "句子成分",
+      "label": "主谓短语作主语",
+      "source_page": 390,
+      "source_row": 55
+    },
+    {
+      "kp_id": "hsk2025-g3-056",
+      "introduced_level": "3",
+      "category": "句子成分",
+      "label": "多项定语",
+      "source_page": 390,
+      "source_row": 56
+    },
+    {
+      "kp_id": "hsk2025-g3-057",
+      "introduced_level": "3",
+      "category": "句子成分",
+      "label": "动词+到/住/走/上",
+      "source_page": 390,
+      "source_row": 57
+    },
+    {
+      "kp_id": "hsk2025-g3-058",
+      "introduced_level": "3",
+      "category": "句子成分",
+      "label": "趋向补语的引申用法：（1）表示结果意义：动词+出/起/下",
+      "source_page": 390,
+      "source_row": 58
+    },
+    {
+      "kp_id": "hsk2025-g3-059",
+      "introduced_level": "3",
+      "category": "句子成分",
+      "label": "表示动作行为的开始：动词+上/起来",
+      "source_page": 390,
+      "source_row": 59
+    },
+    {
+      "kp_id": "hsk2025-g3-060",
+      "introduced_level": "3",
+      "category": "句子成分",
+      "label": "表示动作行为的持续：动词+下去/下来",
+      "source_page": 390,
+      "source_row": 60
+    },
+    {
+      "kp_id": "hsk2025-g3-061",
+      "introduced_level": "3",
+      "category": "句子成分",
+      "label": "动词+得/不+动词/形容词",
+      "source_page": 390,
+      "source_row": 61
+    },
+    {
+      "kp_id": "hsk2025-g3-062",
+      "introduced_level": "3",
+      "category": "句子成分",
+      "label": "形容词+得很",
+      "source_page": 390,
+      "source_row": 62
+    },
+    {
+      "kp_id": "hsk2025-g3-063",
+      "introduced_level": "3",
+      "category": "句子成分",
+      "label": "形容词/动词+极了/坏了",
+      "source_page": 390,
+      "source_row": 63
+    },
+    {
+      "kp_id": "hsk2025-g3-064",
+      "introduced_level": "3",
+      "category": "句子成分",
+      "label": "表示动作结束到某个时间点的间隔时间",
+      "source_page": 390,
+      "source_row": 64
+    },
+    {
+      "kp_id": "hsk2025-g3-065",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "“怎样+动词”的特指问句",
+      "source_page": 391,
+      "source_row": 65
+    },
+    {
+      "kp_id": "hsk2025-g3-066",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "用反问句表示强调：不是……吗？",
+      "source_page": 391,
+      "source_row": 66
+    },
+    {
+      "kp_id": "hsk2025-g3-067",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "主语+把+宾语+动词+在/到+处所",
+      "source_page": 391,
+      "source_row": 67
+    },
+    {
+      "kp_id": "hsk2025-g3-068",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "主语+把+宾语1+动词（+给）+宾语2",
+      "source_page": 391,
+      "source_row": 68
+    },
+    {
+      "kp_id": "hsk2025-g3-069",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "主语+把+宾语+动词+结果补语/趋向补语/状态补语",
+      "source_page": 391,
+      "source_row": 69
+    },
+    {
+      "kp_id": "hsk2025-g3-070",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "主语+被+宾语+动词+其他成分",
+      "source_page": 391,
+      "source_row": 70
+    },
+    {
+      "kp_id": "hsk2025-g3-071",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "主语+被+动词+其他成分",
+      "source_page": 391,
+      "source_row": 71
+    },
+    {
+      "kp_id": "hsk2025-g3-072",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "“着”表示动作的伴随：动词1+着+动词2",
+      "source_page": 391,
+      "source_row": 72
+    },
+    {
+      "kp_id": "hsk2025-g3-073",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "A比B+更/还+形容词",
+      "source_page": 391,
+      "source_row": 73
+    },
+    {
+      "kp_id": "hsk2025-g3-074",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "A跟B一样",
+      "source_page": 391,
+      "source_row": 74
+    },
+    {
+      "kp_id": "hsk2025-g3-075",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "A跟B一样+形容词",
+      "source_page": 391,
+      "source_row": 75
+    },
+    {
+      "kp_id": "hsk2025-g3-076",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "A不比B+形容词",
+      "source_page": 391,
+      "source_row": 76
+    },
+    {
+      "kp_id": "hsk2025-g3-077",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "A比B+多/少/早/晚+动词+数量短语",
+      "source_page": 391,
+      "source_row": 77
+    },
+    {
+      "kp_id": "hsk2025-g3-078",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "表示出现：处所词+动词+趋向补语/结果补语+动态助词（了）+数量短语+人/物",
+      "source_page": 391,
+      "source_row": 78
+    },
+    {
+      "kp_id": "hsk2025-g3-079",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "表示消失：处所词+动词+结果补语+动态助词（了）+数量短语+人/物",
+      "source_page": 391,
+      "source_row": 79
+    },
+    {
+      "kp_id": "hsk2025-g3-080",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "强调说话人的看法或态度",
+      "source_page": 391,
+      "source_row": 80
+    },
+    {
+      "kp_id": "hsk2025-g3-081",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "主语+动词+宾语+动词+补语",
+      "source_page": 391,
+      "source_row": 81
+    },
+    {
+      "kp_id": "hsk2025-g3-082",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "先……，再/然后……",
+      "source_page": 391,
+      "source_row": 82
+    },
+    {
+      "kp_id": "hsk2025-g3-083",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "或者……，或者……",
+      "source_page": 391,
+      "source_row": 83
+    },
+    {
+      "kp_id": "hsk2025-g3-084",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "一会儿……，一会儿……",
+      "source_page": 391,
+      "source_row": 84
+    },
+    {
+      "kp_id": "hsk2025-g3-085",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "又……，又……",
+      "source_page": 391,
+      "source_row": 85
+    },
+    {
+      "kp_id": "hsk2025-g3-086",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "一边……，一边……",
+      "source_page": 391,
+      "source_row": 86
+    },
+    {
+      "kp_id": "hsk2025-g3-087",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "不但……，而且……",
+      "source_page": 391,
+      "source_row": 87
+    },
+    {
+      "kp_id": "hsk2025-g3-088",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "虽然……，可是……",
+      "source_page": 391,
+      "source_row": 88
+    },
+    {
+      "kp_id": "hsk2025-g3-089",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "如果……，就……",
+      "source_page": 391,
+      "source_row": 89
+    },
+    {
+      "kp_id": "hsk2025-g3-090",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "……的话，就……",
+      "source_page": 391,
+      "source_row": 90
+    },
+    {
+      "kp_id": "hsk2025-g3-091",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "只有……，才……",
+      "source_page": 391,
+      "source_row": 91
+    },
+    {
+      "kp_id": "hsk2025-g3-092",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "只要……，就……",
+      "source_page": 391,
+      "source_row": 92
+    },
+    {
+      "kp_id": "hsk2025-g3-093",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "为了……，……",
+      "source_page": 391,
+      "source_row": 93
+    },
+    {
+      "kp_id": "hsk2025-g3-094",
+      "introduced_level": "3",
+      "category": "句子的类型",
+      "label": "……了……（就）……",
+      "source_page": 391,
+      "source_row": 94
+    },
+    {
+      "kp_id": "hsk2025-g3-095",
+      "introduced_level": "3",
+      "category": "特殊表达法",
+      "label": "概数表达法2：（1）用“大概”表示概数",
+      "source_page": 391,
+      "source_row": 95
+    },
+    {
+      "kp_id": "hsk2025-g3-096",
+      "introduced_level": "3",
+      "category": "特殊表达法",
+      "label": "相邻数词连用表示概数",
+      "source_page": 391,
+      "source_row": 96
+    },
+    {
+      "kp_id": "hsk2025-g4-001",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "敢",
+      "source_page": 392,
+      "source_row": 1
+    },
+    {
+      "kp_id": "hsk2025-g4-002",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "各、各位、各种、任何、此",
+      "source_page": 392,
+      "source_row": 2
+    },
+    {
+      "kp_id": "hsk2025-g4-003",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "专用名量词：打、袋、棵、台、幅",
+      "source_page": 392,
+      "source_row": 3
+    },
+    {
+      "kp_id": "hsk2025-g4-004",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "借用名量词：脸、手、盒、屋子、桌子",
+      "source_page": 392,
+      "source_row": 4
+    },
+    {
+      "kp_id": "hsk2025-g4-005",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "场、顿、趟",
+      "source_page": 392,
+      "source_row": 5
+    },
+    {
+      "kp_id": "hsk2025-g4-006",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "十分、更加、稍、稍微、尤其、多么",
+      "source_page": 392,
+      "source_row": 6
+    },
+    {
+      "kp_id": "hsk2025-g4-007",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "共、全、光、仅、仅仅、至少",
+      "source_page": 392,
+      "source_row": 7
+    },
+    {
+      "kp_id": "hsk2025-g4-008",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "按时、从来、赶紧、赶快、已、忽然、将、将要、从、本来",
+      "source_page": 392,
+      "source_row": 8
+    },
+    {
+      "kp_id": "hsk2025-g4-009",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "重新、往往、偶尔、再次、老",
+      "source_page": 392,
+      "source_row": 9
+    },
+    {
+      "kp_id": "hsk2025-g4-010",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "故意、互相、相互",
+      "source_page": 392,
+      "source_row": 10
+    },
+    {
+      "kp_id": "hsk2025-g4-011",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "却",
+      "source_page": 392,
+      "source_row": 11
+    },
+    {
+      "kp_id": "hsk2025-g4-012",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "也许、恐怕",
+      "source_page": 392,
+      "source_row": 12
+    },
+    {
+      "kp_id": "hsk2025-g4-013",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "才4、就5、并1、还4、竟然、究竟、正好、到底、难道、千万、确实、只好、差（一）点儿",
+      "source_page": 392,
+      "source_row": 13
+    },
+    {
+      "kp_id": "hsk2025-g4-014",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "自、当、由1、随着、等1",
+      "source_page": 392,
+      "source_row": 14
+    },
+    {
+      "kp_id": "hsk2025-g4-015",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "将、由2、叫、让",
+      "source_page": 392,
+      "source_row": 15
+    },
+    {
+      "kp_id": "hsk2025-g4-016",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "由于1",
+      "source_page": 392,
+      "source_row": 16
+    },
+    {
+      "kp_id": "hsk2025-g4-017",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "对于、与1",
+      "source_page": 392,
+      "source_row": 17
+    },
+    {
+      "kp_id": "hsk2025-g4-018",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "作为、按、按照",
+      "source_page": 392,
+      "source_row": 18
+    },
+    {
+      "kp_id": "hsk2025-g4-019",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "并2、而1、与2",
+      "source_page": 392,
+      "source_row": 19
+    },
+    {
+      "kp_id": "hsk2025-g4-020",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "此外、而2、既然、甚至、不过、并且",
+      "source_page": 392,
+      "source_row": 20
+    },
+    {
+      "kp_id": "hsk2025-g4-021",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "不光、不仅、另外、要是、因此、由于2、加上",
+      "source_page": 392,
+      "source_row": 21
+    },
+    {
+      "kp_id": "hsk2025-g4-022",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "等2、者、之、就是",
+      "source_page": 392,
+      "source_row": 22
+    },
+    {
+      "kp_id": "hsk2025-g4-023",
+      "introduced_level": "4",
+      "category": "词类",
+      "label": "啊、嗯",
+      "source_page": 392,
+      "source_row": 23
+    },
+    {
+      "kp_id": "hsk2025-g4-024",
+      "introduced_level": "4",
+      "category": "短语",
+      "label": "数词+形容词+量词",
+      "source_page": 392,
+      "source_row": 24
+    },
+    {
+      "kp_id": "hsk2025-g4-025",
+      "introduced_level": "4",
+      "category": "短语",
+      "label": "一A一B",
+      "source_page": 392,
+      "source_row": 25
+    },
+    {
+      "kp_id": "hsk2025-g4-026",
+      "introduced_level": "4",
+      "category": "短语",
+      "label": "无A无B",
+      "source_page": 392,
+      "source_row": 26
+    },
+    {
+      "kp_id": "hsk2025-g4-027",
+      "introduced_level": "4",
+      "category": "短语",
+      "label": "有A有B",
+      "source_page": 392,
+      "source_row": 27
+    },
+    {
+      "kp_id": "hsk2025-g4-028",
+      "introduced_level": "4",
+      "category": "短语",
+      "label": "来得及/来不及",
+      "source_page": 392,
+      "source_row": 28
+    },
+    {
+      "kp_id": "hsk2025-g4-029",
+      "introduced_level": "4",
+      "category": "短语",
+      "label": "有的是",
+      "source_page": 392,
+      "source_row": 29
+    },
+    {
+      "kp_id": "hsk2025-g4-030",
+      "introduced_level": "4",
+      "category": "短语",
+      "label": "说不定",
+      "source_page": 392,
+      "source_row": 30
+    },
+    {
+      "kp_id": "hsk2025-g4-031",
+      "introduced_level": "4",
+      "category": "短语",
+      "label": "不怎么",
+      "source_page": 392,
+      "source_row": 31
+    },
+    {
+      "kp_id": "hsk2025-g4-032",
+      "introduced_level": "4",
+      "category": "短语",
+      "label": "就是说/这就是说",
+      "source_page": 392,
+      "source_row": 32
+    },
+    {
+      "kp_id": "hsk2025-g4-033",
+      "introduced_level": "4",
+      "category": "固定格式",
+      "label": "一+量词+比+一+量词",
+      "source_page": 393,
+      "source_row": 33
+    },
+    {
+      "kp_id": "hsk2025-g4-034",
+      "introduced_level": "4",
+      "category": "固定格式",
+      "label": "在……方面",
+      "source_page": 393,
+      "source_row": 34
+    },
+    {
+      "kp_id": "hsk2025-g4-035",
+      "introduced_level": "4",
+      "category": "固定格式",
+      "label": "够……的",
+      "source_page": 393,
+      "source_row": 35
+    },
+    {
+      "kp_id": "hsk2025-g4-036",
+      "introduced_level": "4",
+      "category": "固定格式",
+      "label": "拿……来说",
+      "source_page": 393,
+      "source_row": 36
+    },
+    {
+      "kp_id": "hsk2025-g4-037",
+      "introduced_level": "4",
+      "category": "固定格式",
+      "label": "再也不/没……",
+      "source_page": 393,
+      "source_row": 37
+    },
+    {
+      "kp_id": "hsk2025-g4-038",
+      "introduced_level": "4",
+      "category": "固定格式",
+      "label": "怎么都/也+不/没……",
+      "source_page": 393,
+      "source_row": 38
+    },
+    {
+      "kp_id": "hsk2025-g4-039",
+      "introduced_level": "4",
+      "category": "固定格式",
+      "label": "为了……而……",
+      "source_page": 393,
+      "source_row": 39
+    },
+    {
+      "kp_id": "hsk2025-g4-040",
+      "introduced_level": "4",
+      "category": "固定格式",
+      "label": "动词+一X是一X",
+      "source_page": 393,
+      "source_row": 40
+    },
+    {
+      "kp_id": "hsk2025-g4-041",
+      "introduced_level": "4",
+      "category": "固定格式",
+      "label": "（没）有什么（好）X的",
+      "source_page": 393,
+      "source_row": 41
+    },
+    {
+      "kp_id": "hsk2025-g4-042",
+      "introduced_level": "4",
+      "category": "固定格式",
+      "label": "X是X，Y是Y",
+      "source_page": 393,
+      "source_row": 42
+    },
+    {
+      "kp_id": "hsk2025-g4-043",
+      "introduced_level": "4",
+      "category": "固定格式",
+      "label": "X也得X，不X也得X",
+      "source_page": 393,
+      "source_row": 43
+    },
+    {
+      "kp_id": "hsk2025-g4-044",
+      "introduced_level": "4",
+      "category": "固定格式",
+      "label": "X就是了",
+      "source_page": 393,
+      "source_row": 44
+    },
+    {
+      "kp_id": "hsk2025-g4-045",
+      "introduced_level": "4",
+      "category": "固定格式",
+      "label": "还X呢",
+      "source_page": 393,
+      "source_row": 45
+    },
+    {
+      "kp_id": "hsk2025-g4-046",
+      "introduced_level": "4",
+      "category": "固定格式",
+      "label": "你X你的吧",
+      "source_page": 393,
+      "source_row": 46
+    },
+    {
+      "kp_id": "hsk2025-g4-047",
+      "introduced_level": "4",
+      "category": "固定格式",
+      "label": "让/叫你X你就X",
+      "source_page": 393,
+      "source_row": 47
+    },
+    {
+      "kp_id": "hsk2025-g4-048",
+      "introduced_level": "4",
+      "category": "固定格式",
+      "label": "说什么/怎么（着）也得X",
+      "source_page": 393,
+      "source_row": 48
+    },
+    {
+      "kp_id": "hsk2025-g4-049",
+      "introduced_level": "4",
+      "category": "固定格式",
+      "label": "X就X（点儿）吧",
+      "source_page": 393,
+      "source_row": 49
+    },
+    {
+      "kp_id": "hsk2025-g4-050",
+      "introduced_level": "4",
+      "category": "固定格式",
+      "label": "X是X",
+      "source_page": 393,
+      "source_row": 50
+    },
+    {
+      "kp_id": "hsk2025-g4-051",
+      "introduced_level": "4",
+      "category": "句子成分",
+      "label": "形容词/心理动词+死了/厉害",
+      "source_page": 393,
+      "source_row": 51
+    },
+    {
+      "kp_id": "hsk2025-g4-052",
+      "introduced_level": "4",
+      "category": "句子成分",
+      "label": "动词+得/不+了",
+      "source_page": 393,
+      "source_row": 52
+    },
+    {
+      "kp_id": "hsk2025-g4-053",
+      "introduced_level": "4",
+      "category": "句子成分",
+      "label": "难道……吗？",
+      "source_page": 393,
+      "source_row": 53
+    },
+    {
+      "kp_id": "hsk2025-g4-054",
+      "introduced_level": "4",
+      "category": "句子成分",
+      "label": "由疑问代词构成的反问句",
+      "source_page": 393,
+      "source_row": 54
+    },
+    {
+      "kp_id": "hsk2025-g4-055",
+      "introduced_level": "4",
+      "category": "句子成分",
+      "label": "主语+把+宾语+动词（+一/了）+动词",
+      "source_page": 393,
+      "source_row": 55
+    },
+    {
+      "kp_id": "hsk2025-g4-056",
+      "introduced_level": "4",
+      "category": "句子成分",
+      "label": "主语+把+宾语+动词+了",
+      "source_page": 393,
+      "source_row": 56
+    },
+    {
+      "kp_id": "hsk2025-g4-057",
+      "introduced_level": "4",
+      "category": "句子成分",
+      "label": "主语+把+宾语+动词+动量补语/时量补语",
+      "source_page": 393,
+      "source_row": 57
+    },
+    {
+      "kp_id": "hsk2025-g4-058",
+      "introduced_level": "4",
+      "category": "句子成分",
+      "label": "主语+把+宾语+状语+动词",
+      "source_page": 393,
+      "source_row": 58
+    },
+    {
+      "kp_id": "hsk2025-g4-059",
+      "introduced_level": "4",
+      "category": "句子成分",
+      "label": "主语+叫/让+宾语+动词+其他成分",
+      "source_page": 393,
+      "source_row": 59
+    },
+    {
+      "kp_id": "hsk2025-g4-060",
+      "introduced_level": "4",
+      "category": "句子成分",
+      "label": "表爱憎义：主语+表扬/批评+宾语1+动词+宾语2",
+      "source_page": 393,
+      "source_row": 60
+    },
+    {
+      "kp_id": "hsk2025-g4-061",
+      "introduced_level": "4",
+      "category": "句子成分",
+      "label": "表称谓或认定义：主语+收/选+宾语1+做/当/为+宾语2",
+      "source_page": 393,
+      "source_row": 61
+    },
+    {
+      "kp_id": "hsk2025-g4-062",
+      "introduced_level": "4",
+      "category": "句子成分",
+      "label": "表致使：主语+使/让+人称代词+动词短语",
+      "source_page": 393,
+      "source_row": 62
+    },
+    {
+      "kp_id": "hsk2025-g4-063",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "A不如B（+形容词）",
+      "source_page": 394,
+      "source_row": 63
+    },
+    {
+      "kp_id": "hsk2025-g4-064",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "跟……相比",
+      "source_page": 394,
+      "source_row": 64
+    },
+    {
+      "kp_id": "hsk2025-g4-065",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "用双重否定表示强调",
+      "source_page": 394,
+      "source_row": 65
+    },
+    {
+      "kp_id": "hsk2025-g4-066",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "不是……，而是……",
+      "source_page": 394,
+      "source_row": 66
+    },
+    {
+      "kp_id": "hsk2025-g4-067",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "既……，又/也……",
+      "source_page": 394,
+      "source_row": 67
+    },
+    {
+      "kp_id": "hsk2025-g4-068",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "一方面……，另一方面……",
+      "source_page": 394,
+      "source_row": 68
+    },
+    {
+      "kp_id": "hsk2025-g4-069",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "首先……，其次……",
+      "source_page": 394,
+      "source_row": 69
+    },
+    {
+      "kp_id": "hsk2025-g4-070",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "首先……，然后……",
+      "source_page": 394,
+      "source_row": 70
+    },
+    {
+      "kp_id": "hsk2025-g4-071",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "……，于是……",
+      "source_page": 394,
+      "source_row": 71
+    },
+    {
+      "kp_id": "hsk2025-g4-072",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "……,甚至……",
+      "source_page": 394,
+      "source_row": 72
+    },
+    {
+      "kp_id": "hsk2025-g4-073",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "不仅/不光……，还/而且……",
+      "source_page": 394,
+      "source_row": 73
+    },
+    {
+      "kp_id": "hsk2025-g4-074",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "……，并且……",
+      "source_page": 394,
+      "source_row": 74
+    },
+    {
+      "kp_id": "hsk2025-g4-075",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "连……也/都……，……更……",
+      "source_page": 394,
+      "source_row": 75
+    },
+    {
+      "kp_id": "hsk2025-g4-076",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "不是……，就是……",
+      "source_page": 394,
+      "source_row": 76
+    },
+    {
+      "kp_id": "hsk2025-g4-077",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "尽管……，但是/可是……",
+      "source_page": 394,
+      "source_row": 77
+    },
+    {
+      "kp_id": "hsk2025-g4-078",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "……，然而……",
+      "source_page": 394,
+      "source_row": 78
+    },
+    {
+      "kp_id": "hsk2025-g4-079",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "……，不过……",
+      "source_page": 394,
+      "source_row": 79
+    },
+    {
+      "kp_id": "hsk2025-g4-080",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "……X是X，就是/不过……",
+      "source_page": 394,
+      "source_row": 80
+    },
+    {
+      "kp_id": "hsk2025-g4-081",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "……，否则……",
+      "source_page": 394,
+      "source_row": 81
+    },
+    {
+      "kp_id": "hsk2025-g4-082",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "要是……，就……",
+      "source_page": 394,
+      "source_row": 82
+    },
+    {
+      "kp_id": "hsk2025-g4-083",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "要是……，（就）……，否则……",
+      "source_page": 394,
+      "source_row": 83
+    },
+    {
+      "kp_id": "hsk2025-g4-084",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "不管……，都/也……",
+      "source_page": 394,
+      "source_row": 84
+    },
+    {
+      "kp_id": "hsk2025-g4-085",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "无论……，都/也……",
+      "source_page": 394,
+      "source_row": 85
+    },
+    {
+      "kp_id": "hsk2025-g4-086",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "既然……，就……",
+      "source_page": 394,
+      "source_row": 86
+    },
+    {
+      "kp_id": "hsk2025-g4-087",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "（由于）……，因此……",
+      "source_page": 394,
+      "source_row": 87
+    },
+    {
+      "kp_id": "hsk2025-g4-088",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "……，好……",
+      "source_page": 394,
+      "source_row": 88
+    },
+    {
+      "kp_id": "hsk2025-g4-089",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "即使……，也……",
+      "source_page": 394,
+      "source_row": 89
+    },
+    {
+      "kp_id": "hsk2025-g4-090",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "就是……，也……",
+      "source_page": 394,
+      "source_row": 90
+    },
+    {
+      "kp_id": "hsk2025-g4-091",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "无标记",
+      "source_page": 394,
+      "source_row": 91
+    },
+    {
+      "kp_id": "hsk2025-g4-092",
+      "introduced_level": "4",
+      "category": "句子的类型",
+      "label": "不……也……",
+      "source_page": 394,
+      "source_row": 92
+    },
+    {
+      "kp_id": "hsk2025-g4-093",
+      "introduced_level": "4",
+      "category": "特殊表达法",
+      "label": "概数表示法3：数词+来+量词",
+      "source_page": 394,
+      "source_row": 93
+    },
+    {
+      "kp_id": "hsk2025-g4-094",
+      "introduced_level": "4",
+      "category": "特殊表达法",
+      "label": "用“大约、左右、前后”表示概数",
+      "source_page": 394,
+      "source_row": 94
+    },
+    {
+      "kp_id": "hsk2025-g4-095",
+      "introduced_level": "4",
+      "category": "特殊表达法",
+      "label": "小数、分数、百分数、倍数的表示法",
+      "source_page": 394,
+      "source_row": 95
+    },
+    {
+      "kp_id": "hsk2025-g5-001",
+      "introduced_level": "5",
+      "category": "语素",
+      "label": "—头",
+      "source_page": 395,
+      "source_row": 1
+    },
+    {
+      "kp_id": "hsk2025-g5-002",
+      "introduced_level": "5",
+      "category": "词类",
+      "label": "彼此、如此、本",
+      "source_page": 395,
+      "source_row": 2
+    },
+    {
+      "kp_id": "hsk2025-g5-003",
+      "introduced_level": "5",
+      "category": "词类",
+      "label": "册、朵、届、颗、匹、行、架、群、支、根、批、束、副、集、周",
+      "source_page": 395,
+      "source_row": 3
+    },
+    {
+      "kp_id": "hsk2025-g5-004",
+      "introduced_level": "5",
+      "category": "词类",
+      "label": "眼",
+      "source_page": 395,
+      "source_row": 4
+    },
+    {
+      "kp_id": "hsk2025-g5-005",
+      "introduced_level": "5",
+      "category": "词类",
+      "label": "过于、相当、较1、可2、格外、极其",
+      "source_page": 395,
+      "source_row": 5
+    },
+    {
+      "kp_id": "hsk2025-g5-006",
+      "introduced_level": "5",
+      "category": "词类",
+      "label": "时刻、曾经、立刻、连忙、始终、早已、即将、急忙、渐渐、尽快、早晚",
+      "source_page": 395,
+      "source_row": 6
+    },
+    {
+      "kp_id": "hsk2025-g5-007",
+      "introduced_level": "5",
+      "category": "词类",
+      "label": "老是、通常、时常",
+      "source_page": 395,
+      "source_row": 7
+    },
+    {
+      "kp_id": "hsk2025-g5-008",
+      "introduced_level": "5",
+      "category": "词类",
+      "label": "尽量、亲自",
+      "source_page": 395,
+      "source_row": 8
+    },
+    {
+      "kp_id": "hsk2025-g5-009",
+      "introduced_level": "5",
+      "category": "词类",
+      "label": "便、一旦",
+      "source_page": 395,
+      "source_row": 9
+    },
+    {
+      "kp_id": "hsk2025-g5-010",
+      "introduced_level": "5",
+      "category": "词类",
+      "label": "似乎、仿佛",
+      "source_page": 395,
+      "source_row": 10
+    },
+    {
+      "kp_id": "hsk2025-g5-011",
+      "introduced_level": "5",
+      "category": "词类",
+      "label": "毕竟、居然、反正、根本、果然、简直、绝对、的确、反而、白、刚好、可3",
+      "source_page": 395,
+      "source_row": 11
+    },
+    {
+      "kp_id": "hsk2025-g5-012",
+      "introduced_level": "5",
+      "category": "词类",
+      "label": "自从",
+      "source_page": 395,
+      "source_row": 12
+    },
+    {
+      "kp_id": "hsk2025-g5-013",
+      "introduced_level": "5",
+      "category": "词类",
+      "label": "朝、沿（着）",
+      "source_page": 395,
+      "source_row": 13
+    },
+    {
+      "kp_id": "hsk2025-g5-014",
+      "introduced_level": "5",
+      "category": "词类",
+      "label": "替、同1、较2",
+      "source_page": 395,
+      "source_row": 14
+    },
+    {
+      "kp_id": "hsk2025-g5-015",
+      "introduced_level": "5",
+      "category": "词类",
+      "label": "凭",
+      "source_page": 395,
+      "source_row": 15
+    },
+    {
+      "kp_id": "hsk2025-g5-016",
+      "introduced_level": "5",
+      "category": "词类",
+      "label": "据",
+      "source_page": 395,
+      "source_row": 16
+    },
+    {
+      "kp_id": "hsk2025-g5-017",
+      "introduced_level": "5",
+      "category": "词类",
+      "label": "依据",
+      "source_page": 395,
+      "source_row": 17
+    },
+    {
+      "kp_id": "hsk2025-g5-018",
+      "introduced_level": "5",
+      "category": "词类",
+      "label": "以及、同2",
+      "source_page": 395,
+      "source_row": 18
+    },
+    {
+      "kp_id": "hsk2025-g5-019",
+      "introduced_level": "5",
+      "category": "词类",
+      "label": "从而、可见、假如、总之",
+      "source_page": 395,
+      "source_row": 19
+    },
+    {
+      "kp_id": "hsk2025-g5-020",
+      "introduced_level": "5",
+      "category": "词类",
+      "label": "似的",
+      "source_page": 395,
+      "source_row": 20
+    },
+    {
+      "kp_id": "hsk2025-g5-021",
+      "introduced_level": "5",
+      "category": "短语",
+      "label": "A来A去",
+      "source_page": 395,
+      "source_row": 21
+    },
+    {
+      "kp_id": "hsk2025-g5-022",
+      "introduced_level": "5",
+      "category": "短语",
+      "label": "A着A着",
+      "source_page": 395,
+      "source_row": 22
+    },
+    {
+      "kp_id": "hsk2025-g5-023",
+      "introduced_level": "5",
+      "category": "短语",
+      "label": "没A没B",
+      "source_page": 395,
+      "source_row": 23
+    },
+    {
+      "kp_id": "hsk2025-g5-024",
+      "introduced_level": "5",
+      "category": "短语",
+      "label": "说A就A",
+      "source_page": 395,
+      "source_row": 24
+    },
+    {
+      "kp_id": "hsk2025-g5-025",
+      "introduced_level": "5",
+      "category": "短语",
+      "label": "不得了",
+      "source_page": 395,
+      "source_row": 25
+    },
+    {
+      "kp_id": "hsk2025-g5-026",
+      "introduced_level": "5",
+      "category": "短语",
+      "label": "用不着",
+      "source_page": 395,
+      "source_row": 26
+    },
+    {
+      "kp_id": "hsk2025-g5-027",
+      "introduced_level": "5",
+      "category": "短语",
+      "label": "从……来看",
+      "source_page": 395,
+      "source_row": 27
+    },
+    {
+      "kp_id": "hsk2025-g5-028",
+      "introduced_level": "5",
+      "category": "短语",
+      "label": "A的A，B的B",
+      "source_page": 395,
+      "source_row": 28
+    },
+    {
+      "kp_id": "hsk2025-g5-029",
+      "introduced_level": "5",
+      "category": "短语",
+      "label": "（自）……以来",
+      "source_page": 395,
+      "source_row": 29
+    },
+    {
+      "kp_id": "hsk2025-g5-030",
+      "introduced_level": "5",
+      "category": "短语",
+      "label": "由……组成",
+      "source_page": 395,
+      "source_row": 30
+    },
+    {
+      "kp_id": "hsk2025-g5-031",
+      "introduced_level": "5",
+      "category": "短语",
+      "label": "X也不是，Y也不是",
+      "source_page": 395,
+      "source_row": 31
+    },
+    {
+      "kp_id": "hsk2025-g5-032",
+      "introduced_level": "5",
+      "category": "短语",
+      "label": "X也X不得，Y也Y不得",
+      "source_page": 395,
+      "source_row": 32
+    },
+    {
+      "kp_id": "hsk2025-g5-033",
+      "introduced_level": "5",
+      "category": "固定格式",
+      "label": "X是它，Y也是它",
+      "source_page": 396,
+      "source_row": 33
+    },
+    {
+      "kp_id": "hsk2025-g5-034",
+      "introduced_level": "5",
+      "category": "固定格式",
+      "label": "X着也是X着",
+      "source_page": 396,
+      "source_row": 34
+    },
+    {
+      "kp_id": "hsk2025-g5-035",
+      "introduced_level": "5",
+      "category": "固定格式",
+      "label": "不管怎样说",
+      "source_page": 396,
+      "source_row": 35
+    },
+    {
+      "kp_id": "hsk2025-g5-036",
+      "introduced_level": "5",
+      "category": "固定格式",
+      "label": "真有你/他/她的",
+      "source_page": 396,
+      "source_row": 36
+    },
+    {
+      "kp_id": "hsk2025-g5-037",
+      "introduced_level": "5",
+      "category": "固定格式",
+      "label": "X什么X",
+      "source_page": 396,
+      "source_row": 37
+    },
+    {
+      "kp_id": "hsk2025-g5-038",
+      "introduced_level": "5",
+      "category": "固定格式",
+      "label": "什么X不X（的）",
+      "source_page": 396,
+      "source_row": 38
+    },
+    {
+      "kp_id": "hsk2025-g5-039",
+      "introduced_level": "5",
+      "category": "固定格式",
+      "label": "不X白不X",
+      "source_page": 396,
+      "source_row": 39
+    },
+    {
+      "kp_id": "hsk2025-g5-040",
+      "introduced_level": "5",
+      "category": "固定格式",
+      "label": "X来X去，都是/就是……",
+      "source_page": 396,
+      "source_row": 40
+    },
+    {
+      "kp_id": "hsk2025-g5-041",
+      "introduced_level": "5",
+      "category": "固定格式",
+      "label": "动词+什么（就）是什么",
+      "source_page": 396,
+      "source_row": 41
+    },
+    {
+      "kp_id": "hsk2025-g5-042",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "多项状语",
+      "source_page": 396,
+      "source_row": 42
+    },
+    {
+      "kp_id": "hsk2025-g5-043",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "动词+得/不得",
+      "source_page": 396,
+      "source_row": 43
+    },
+    {
+      "kp_id": "hsk2025-g5-044",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "形容词/心理动词+得+不得了",
+      "source_page": 396,
+      "source_row": 44
+    },
+    {
+      "kp_id": "hsk2025-g5-045",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "趋向补语的引申用法：表示状态意义：动词/形容词+下来/下去/起来/过来/过去",
+      "source_page": 396,
+      "source_row": 45
+    },
+    {
+      "kp_id": "hsk2025-g5-046",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "动词/形容词+得+动词短语",
+      "source_page": 396,
+      "source_row": 46
+    },
+    {
+      "kp_id": "hsk2025-g5-047",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "动词/形容词+得+主谓短语",
+      "source_page": 396,
+      "source_row": 47
+    },
+    {
+      "kp_id": "hsk2025-g5-048",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "动词/形容词+得+固定短语",
+      "source_page": 396,
+      "source_row": 48
+    },
+    {
+      "kp_id": "hsk2025-g5-049",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "表示存在、具有：主语+有+着+宾语",
+      "source_page": 396,
+      "source_row": 49
+    },
+    {
+      "kp_id": "hsk2025-g5-050",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "表示附着：主语+动词+有+宾语",
+      "source_page": 396,
+      "source_row": 50
+    },
+    {
+      "kp_id": "hsk2025-g5-051",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "主语+把+宾语+一+动词",
+      "source_page": 396,
+      "source_row": 51
+    },
+    {
+      "kp_id": "hsk2025-g5-052",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "主语+把+宾语1+动词+宾语2",
+      "source_page": 396,
+      "source_row": 52
+    },
+    {
+      "kp_id": "hsk2025-g5-053",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "前后两个动词性词语具有因果、转折、条件关系",
+      "source_page": 396,
+      "source_row": 53
+    },
+    {
+      "kp_id": "hsk2025-g5-054",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "A+形容词+B+数量补语",
+      "source_page": 396,
+      "source_row": 54
+    },
+    {
+      "kp_id": "hsk2025-g5-055",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "主语+被/叫/让+宾语+给+动词+其他成分",
+      "source_page": 396,
+      "source_row": 55
+    },
+    {
+      "kp_id": "hsk2025-g5-056",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "……，便……",
+      "source_page": 396,
+      "source_row": 56
+    },
+    {
+      "kp_id": "hsk2025-g5-057",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "或是……，或是……",
+      "source_page": 396,
+      "source_row": 57
+    },
+    {
+      "kp_id": "hsk2025-g5-058",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "一旦……，就……",
+      "source_page": 396,
+      "source_row": 58
+    },
+    {
+      "kp_id": "hsk2025-g5-059",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "假如……，（就）……",
+      "source_page": 396,
+      "source_row": 59
+    },
+    {
+      "kp_id": "hsk2025-g5-060",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "万一……，（就）……",
+      "source_page": 396,
+      "source_row": 60
+    },
+    {
+      "kp_id": "hsk2025-g5-061",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "……，要不然/不然……",
+      "source_page": 396,
+      "source_row": 61
+    },
+    {
+      "kp_id": "hsk2025-g5-062",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "……，因而……",
+      "source_page": 396,
+      "source_row": 62
+    },
+    {
+      "kp_id": "hsk2025-g5-063",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "……，可见……",
+      "source_page": 396,
+      "source_row": 63
+    },
+    {
+      "kp_id": "hsk2025-g5-064",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "哪怕……，也……",
+      "source_page": 396,
+      "source_row": 64
+    },
+    {
+      "kp_id": "hsk2025-g5-065",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "不但不/不但没有……，反而……",
+      "source_page": 396,
+      "source_row": 65
+    },
+    {
+      "kp_id": "hsk2025-g5-066",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "不是……，还/还是……",
+      "source_page": 396,
+      "source_row": 66
+    },
+    {
+      "kp_id": "hsk2025-g5-067",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "……，为的是……",
+      "source_page": 397,
+      "source_row": 67
+    },
+    {
+      "kp_id": "hsk2025-g5-068",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "没有……就没有……",
+      "source_page": 397,
+      "source_row": 68
+    },
+    {
+      "kp_id": "hsk2025-g5-069",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "不……不……",
+      "source_page": 397,
+      "source_row": 69
+    },
+    {
+      "kp_id": "hsk2025-g5-070",
+      "introduced_level": "5",
+      "category": "句子成分",
+      "label": "再……也……",
+      "source_page": 397,
+      "source_row": 70
+    },
+    {
+      "kp_id": "hsk2025-g6-001",
+      "introduced_level": "6",
+      "category": "语素",
+      "label": "超—、多—、反—、无—、亚—、准—",
+      "source_page": 398,
+      "source_row": 1
+    },
+    {
+      "kp_id": "hsk2025-g6-002",
+      "introduced_level": "6",
+      "category": "语素",
+      "label": "—化、—式、—型、—性",
+      "source_page": 398,
+      "source_row": 2
+    },
+    {
+      "kp_id": "hsk2025-g6-003",
+      "introduced_level": "6",
+      "category": "词类",
+      "label": "人家",
+      "source_page": 398,
+      "source_row": 3
+    },
+    {
+      "kp_id": "hsk2025-g6-004",
+      "introduced_level": "6",
+      "category": "词类",
+      "label": "专用名量词：串、滴、枝、扇、卷1、卷2",
+      "source_page": 398,
+      "source_row": 4
+    },
+    {
+      "kp_id": "hsk2025-g6-005",
+      "introduced_level": "6",
+      "category": "词类",
+      "label": "番",
+      "source_page": 398,
+      "source_row": 5
+    },
+    {
+      "kp_id": "hsk2025-g6-006",
+      "introduced_level": "6",
+      "category": "词类",
+      "label": "特、异常、较为",
+      "source_page": 398,
+      "source_row": 6
+    },
+    {
+      "kp_id": "hsk2025-g6-007",
+      "introduced_level": "6",
+      "category": "词类",
+      "label": "净、一同、大都",
+      "source_page": 398,
+      "source_row": 7
+    },
+    {
+      "kp_id": "hsk2025-g6-008",
+      "introduced_level": "6",
+      "category": "词类",
+      "label": "一时、不时、仍旧、依旧、一向",
+      "source_page": 398,
+      "source_row": 8
+    },
+    {
+      "kp_id": "hsk2025-g6-009",
+      "introduced_level": "6",
+      "category": "词类",
+      "label": "一再、再三",
+      "source_page": 398,
+      "source_row": 9
+    },
+    {
+      "kp_id": "hsk2025-g6-010",
+      "introduced_level": "6",
+      "category": "词类",
+      "label": "不禁、赶忙、特地、特意、偷偷",
+      "source_page": 398,
+      "source_row": 10
+    },
+    {
+      "kp_id": "hsk2025-g6-011",
+      "introduced_level": "6",
+      "category": "词类",
+      "label": "未必",
+      "source_page": 398,
+      "source_row": 11
+    },
+    {
+      "kp_id": "hsk2025-g6-012",
+      "introduced_level": "6",
+      "category": "词类",
+      "label": "恰好、倒是、干脆、明明、总算",
+      "source_page": 398,
+      "source_row": 12
+    },
+    {
+      "kp_id": "hsk2025-g6-013",
+      "introduced_level": "6",
+      "category": "词类",
+      "label": "于",
+      "source_page": 398,
+      "source_row": 13
+    },
+    {
+      "kp_id": "hsk2025-g6-014",
+      "introduced_level": "6",
+      "category": "词类",
+      "label": "至于",
+      "source_page": 398,
+      "source_row": 14
+    },
+    {
+      "kp_id": "hsk2025-g6-015",
+      "introduced_level": "6",
+      "category": "词类",
+      "label": "因",
+      "source_page": 398,
+      "source_row": 15
+    },
+    {
+      "kp_id": "hsk2025-g6-016",
+      "introduced_level": "6",
+      "category": "词类",
+      "label": "除",
+      "source_page": 398,
+      "source_row": 16
+    },
+    {
+      "kp_id": "hsk2025-g6-017",
+      "introduced_level": "6",
+      "category": "词类",
+      "label": "不料",
+      "source_page": 398,
+      "source_row": 17
+    },
+    {
+      "kp_id": "hsk2025-g6-018",
+      "introduced_level": "6",
+      "category": "词类",
+      "label": "所",
+      "source_page": 398,
+      "source_row": 18
+    },
+    {
+      "kp_id": "hsk2025-g6-019",
+      "introduced_level": "6",
+      "category": "词类",
+      "label": "啦、嘛",
+      "source_page": 398,
+      "source_row": 19
+    },
+    {
+      "kp_id": "hsk2025-g6-020",
+      "introduced_level": "6",
+      "category": "词类",
+      "label": "也好",
+      "source_page": 398,
+      "source_row": 20
+    },
+    {
+      "kp_id": "hsk2025-g6-021",
+      "introduced_level": "6",
+      "category": "短语",
+      "label": "A这A那",
+      "source_page": 398,
+      "source_row": 21
+    },
+    {
+      "kp_id": "hsk2025-g6-022",
+      "introduced_level": "6",
+      "category": "短语",
+      "label": "左A右B",
+      "source_page": 398,
+      "source_row": 22
+    },
+    {
+      "kp_id": "hsk2025-g6-023",
+      "introduced_level": "6",
+      "category": "短语",
+      "label": "好（不）容易",
+      "source_page": 398,
+      "source_row": 23
+    },
+    {
+      "kp_id": "hsk2025-g6-024",
+      "introduced_level": "6",
+      "category": "短语",
+      "label": "那倒（也）是",
+      "source_page": 398,
+      "source_row": 24
+    },
+    {
+      "kp_id": "hsk2025-g6-025",
+      "introduced_level": "6",
+      "category": "短语",
+      "label": "算了",
+      "source_page": 398,
+      "source_row": 25
+    },
+    {
+      "kp_id": "hsk2025-g6-026",
+      "introduced_level": "6",
+      "category": "短语",
+      "label": "得了",
+      "source_page": 398,
+      "source_row": 26
+    },
+    {
+      "kp_id": "hsk2025-g6-027",
+      "introduced_level": "6",
+      "category": "短语",
+      "label": "A一+量词，B一+量词",
+      "source_page": 398,
+      "source_row": 27
+    },
+    {
+      "kp_id": "hsk2025-g6-028",
+      "introduced_level": "6",
+      "category": "短语",
+      "label": "东一A，西一A",
+      "source_page": 398,
+      "source_row": 28
+    },
+    {
+      "kp_id": "hsk2025-g6-029",
+      "introduced_level": "6",
+      "category": "短语",
+      "label": "到……为止",
+      "source_page": 398,
+      "source_row": 29
+    },
+    {
+      "kp_id": "hsk2025-g6-030",
+      "introduced_level": "6",
+      "category": "短语",
+      "label": "X到Y头上来了",
+      "source_page": 398,
+      "source_row": 30
+    },
+    {
+      "kp_id": "hsk2025-g6-031",
+      "introduced_level": "6",
+      "category": "短语",
+      "label": "不X不……，一X……",
+      "source_page": 398,
+      "source_row": 31
+    },
+    {
+      "kp_id": "hsk2025-g6-032",
+      "introduced_level": "6",
+      "category": "短语",
+      "label": "好你个X",
+      "source_page": 398,
+      "source_row": 32
+    },
+    {
+      "kp_id": "hsk2025-g6-033",
+      "introduced_level": "6",
+      "category": "短语",
+      "label": "早（也）不X，晚（也）不X",
+      "source_page": 398,
+      "source_row": 33
+    },
+    {
+      "kp_id": "hsk2025-g6-034",
+      "introduced_level": "6",
+      "category": "短语",
+      "label": "看/瞧+把+宾语（施事）+X得",
+      "source_page": 398,
+      "source_row": 34
+    },
+    {
+      "kp_id": "hsk2025-g6-035",
+      "introduced_level": "6",
+      "category": "短语",
+      "label": "X了就X了，（没）有……",
+      "source_page": 399,
+      "source_row": 35
+    },
+    {
+      "kp_id": "hsk2025-g6-036",
+      "introduced_level": "6",
+      "category": "短语",
+      "label": "这/那也不X，那/这也不Y",
+      "source_page": 399,
+      "source_row": 36
+    },
+    {
+      "kp_id": "hsk2025-g6-037",
+      "introduced_level": "6",
+      "category": "短语",
+      "label": "X归X，Y归Y",
+      "source_page": 399,
+      "source_row": 37
+    },
+    {
+      "kp_id": "hsk2025-g6-038",
+      "introduced_level": "6",
+      "category": "短语",
+      "label": "看你X的/瞧他X的",
+      "source_page": 399,
+      "source_row": 38
+    },
+    {
+      "kp_id": "hsk2025-g6-039",
+      "introduced_level": "6",
+      "category": "句子成分",
+      "label": "动词/形容词+透+了",
+      "source_page": 399,
+      "source_row": 39
+    },
+    {
+      "kp_id": "hsk2025-g6-040",
+      "introduced_level": "6",
+      "category": "句子的类型",
+      "label": "主语（非生物体）+把+宾语+动词+其他成分",
+      "source_page": 399,
+      "source_row": 40
+    },
+    {
+      "kp_id": "hsk2025-g6-041",
+      "introduced_level": "6",
+      "category": "句子的类型",
+      "label": "主语+把+宾语（施事）+动词+其他成分",
+      "source_page": 399,
+      "source_row": 41
+    },
+    {
+      "kp_id": "hsk2025-g6-042",
+      "introduced_level": "6",
+      "category": "句子的类型",
+      "label": "一时……一时……",
+      "source_page": 399,
+      "source_row": 42
+    },
+    {
+      "kp_id": "hsk2025-g6-043",
+      "introduced_level": "6",
+      "category": "句子的类型",
+      "label": "要么……，要么……",
+      "source_page": 399,
+      "source_row": 43
+    },
+    {
+      "kp_id": "hsk2025-g6-044",
+      "introduced_level": "6",
+      "category": "句子的类型",
+      "label": "虽……，但/可/却/也……",
+      "source_page": 399,
+      "source_row": 44
+    },
+    {
+      "kp_id": "hsk2025-g6-045",
+      "introduced_level": "6",
+      "category": "句子的类型",
+      "label": "凡是……，都……",
+      "source_page": 399,
+      "source_row": 45
+    },
+    {
+      "kp_id": "hsk2025-g6-046",
+      "introduced_level": "6",
+      "category": "句子的类型",
+      "label": "除非……，才……",
+      "source_page": 399,
+      "source_row": 46
+    },
+    {
+      "kp_id": "hsk2025-g6-047",
+      "introduced_level": "6",
+      "category": "句子的类型",
+      "label": "除非……，否则/不然……",
+      "source_page": 399,
+      "source_row": 47
+    },
+    {
+      "kp_id": "hsk2025-g6-048",
+      "introduced_level": "6",
+      "category": "句子的类型",
+      "label": "就算……，也……",
+      "source_page": 399,
+      "source_row": 48
+    },
+    {
+      "kp_id": "hsk2025-g6-049",
+      "introduced_level": "6",
+      "category": "句子的类型",
+      "label": "……，以便……",
+      "source_page": 399,
+      "source_row": 49
+    },
+    {
+      "kp_id": "hsk2025-g7-001",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "后—、亲—",
+      "source_page": 400,
+      "source_row": 1
+    },
+    {
+      "kp_id": "hsk2025-g7-002",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "—观、—鬼、—界、—然、—坛、—为、—制",
+      "source_page": 400,
+      "source_row": 2
+    },
+    {
+      "kp_id": "hsk2025-g7-003",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "巴不得、并非、除外、犯不着、犯得着、恨不得、可否、可谓、免不了、所谓、有所、予以",
+      "source_page": 400,
+      "source_row": 3
+    },
+    {
+      "kp_id": "hsk2025-g7-004",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "我",
+      "source_page": 400,
+      "source_row": 4
+    },
+    {
+      "kp_id": "hsk2025-g7-005",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "彼、这么着、兹",
+      "source_page": 400,
+      "source_row": 5
+    },
+    {
+      "kp_id": "hsk2025-g7-006",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "何、怎么着",
+      "source_page": 400,
+      "source_row": 6
+    },
+    {
+      "kp_id": "hsk2025-g7-007",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "若干",
+      "source_page": 400,
+      "source_row": 7
+    },
+    {
+      "kp_id": "hsk2025-g7-008",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "重、截、缕、码、枚、摊、丸、则、幢、宗",
+      "source_page": 400,
+      "source_row": 8
+    },
+    {
+      "kp_id": "hsk2025-g7-009",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "通",
+      "source_page": 400,
+      "source_row": 9
+    },
+    {
+      "kp_id": "hsk2025-g7-010",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "人次",
+      "source_page": 400,
+      "source_row": 10
+    },
+    {
+      "kp_id": "hsk2025-g7-011",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "大为、分外、何等、极度、极力、略、略微、颇、稍稍、万分、微、尤为、愈加、越发",
+      "source_page": 400,
+      "source_row": 11
+    },
+    {
+      "kp_id": "hsk2025-g7-012",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "大体、概、皆、尽、均、通通、统统、唯、唯独、唯有、无非、一概",
+      "source_page": 400,
+      "source_row": 12
+    },
+    {
+      "kp_id": "hsk2025-g7-013",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "姑且、即、即时、届时、尽早、就此、历来、尚、随即、向来、一经、暂且、早日",
+      "source_page": 400,
+      "source_row": 13
+    },
+    {
+      "kp_id": "hsk2025-g7-014",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "连连、屡次、屡屡、频、时而、时时、相继、一个劲（儿）、一连、再度",
+      "source_page": 400,
+      "source_row": 14
+    },
+    {
+      "kp_id": "hsk2025-g7-015",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "按理、按说、百般、不由得、趁机、趁早、大肆、断然、公然、火速、截然、竭力、尽情、就近、刻意、拼命、强行、任意、日趋、如期、擅自、私自、特此、瞎、一并、一举、一手、毅然、有意、照常、",
+      "source_page": 400,
+      "source_row": 15
+    },
+    {
+      "kp_id": "hsk2025-g7-016",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "不见得、绝不、无从、无须、无可、勿",
+      "source_page": 400,
+      "source_row": 16
+    },
+    {
+      "kp_id": "hsk2025-g7-017",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "必定、必将、不妨、不免、反倒、非得、分明、怪不得、果真、好在、何必、竟、愣、莫非、难怪、宁可、宁愿、碰巧、偏偏、恰巧、切、情愿、势必、索性、万万、未免、务必、幸好、幸亏、终究、何不",
+      "source_page": 400,
+      "source_row": 17
+    },
+    {
+      "kp_id": "hsk2025-g7-018",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "乃",
+      "source_page": 400,
+      "source_row": 18
+    },
+    {
+      "kp_id": "hsk2025-g7-019",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "打",
+      "source_page": 400,
+      "source_row": 19
+    },
+    {
+      "kp_id": "hsk2025-g7-020",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "当着、就6",
+      "source_page": 400,
+      "source_row": 20
+    },
+    {
+      "kp_id": "hsk2025-g7-021",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "本着、基于、鉴于1、经、依",
+      "source_page": 400,
+      "source_row": 21
+    },
+    {
+      "kp_id": "hsk2025-g7-022",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "鉴于2、况且、免得、若、倘若、以防",
+      "source_page": 400,
+      "source_row": 22
+    },
+    {
+      "kp_id": "hsk2025-g7-023",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "加之、乃至、且",
+      "source_page": 400,
+      "source_row": 23
+    },
+    {
+      "kp_id": "hsk2025-g7-024",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "罢了、也罢、矣",
+      "source_page": 400,
+      "source_row": 24
+    },
+    {
+      "kp_id": "hsk2025-g7-025",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "爱A不A",
+      "source_page": 401,
+      "source_row": 25
+    },
+    {
+      "kp_id": "hsk2025-g7-026",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "半A半B",
+      "source_page": 401,
+      "source_row": 26
+    },
+    {
+      "kp_id": "hsk2025-g7-027",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "不A不B",
+      "source_page": 401,
+      "source_row": 27
+    },
+    {
+      "kp_id": "hsk2025-g7-028",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "不A而B",
+      "source_page": 401,
+      "source_row": 28
+    },
+    {
+      "kp_id": "hsk2025-g7-029",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "东A西B",
+      "source_page": 401,
+      "source_row": 29
+    },
+    {
+      "kp_id": "hsk2025-g7-030",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "非A非B",
+      "source_page": 401,
+      "source_row": 30
+    },
+    {
+      "kp_id": "hsk2025-g7-031",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "忽A忽B",
+      "source_page": 401,
+      "source_row": 31
+    },
+    {
+      "kp_id": "hsk2025-g7-032",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "或A或B",
+      "source_page": 401,
+      "source_row": 32
+    },
+    {
+      "kp_id": "hsk2025-g7-033",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "可A可B",
+      "source_page": 401,
+      "source_row": 33
+    },
+    {
+      "kp_id": "hsk2025-g7-034",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "连A带B",
+      "source_page": 401,
+      "source_row": 34
+    },
+    {
+      "kp_id": "hsk2025-g7-035",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "七A八B",
+      "source_page": 401,
+      "source_row": 35
+    },
+    {
+      "kp_id": "hsk2025-g7-036",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "时A时B",
+      "source_page": 401,
+      "source_row": 36
+    },
+    {
+      "kp_id": "hsk2025-g7-037",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "无A不B",
+      "source_page": 401,
+      "source_row": 37
+    },
+    {
+      "kp_id": "hsk2025-g7-038",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "无A可B",
+      "source_page": 401,
+      "source_row": 38
+    },
+    {
+      "kp_id": "hsk2025-g7-039",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "自A自B",
+      "source_page": 401,
+      "source_row": 39
+    },
+    {
+      "kp_id": "hsk2025-g7-040",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "不瞒你说",
+      "source_page": 401,
+      "source_row": 40
+    },
+    {
+      "kp_id": "hsk2025-g7-041",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "不是",
+      "source_page": 401,
+      "source_row": 41
+    },
+    {
+      "kp_id": "hsk2025-g7-042",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "不是我说你",
+      "source_page": 401,
+      "source_row": 42
+    },
+    {
+      "kp_id": "hsk2025-g7-043",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "反过来（说）",
+      "source_page": 401,
+      "source_row": 43
+    },
+    {
+      "kp_id": "hsk2025-g7-044",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "概括来说",
+      "source_page": 401,
+      "source_row": 44
+    },
+    {
+      "kp_id": "hsk2025-g7-045",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "归根到底",
+      "source_page": 401,
+      "source_row": 45
+    },
+    {
+      "kp_id": "hsk2025-g7-046",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "话是这么说",
+      "source_page": 401,
+      "source_row": 46
+    },
+    {
+      "kp_id": "hsk2025-g7-047",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "话（又）说回来",
+      "source_page": 401,
+      "source_row": 47
+    },
+    {
+      "kp_id": "hsk2025-g7-048",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "换句话说",
+      "source_page": 401,
+      "source_row": 48
+    },
+    {
+      "kp_id": "hsk2025-g7-049",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "简（而）言之",
+      "source_page": 401,
+      "source_row": 49
+    },
+    {
+      "kp_id": "hsk2025-g7-050",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "可不（是嘛）",
+      "source_page": 401,
+      "source_row": 50
+    },
+    {
+      "kp_id": "hsk2025-g7-051",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "老实说",
+      "source_page": 401,
+      "source_row": 51
+    },
+    {
+      "kp_id": "hsk2025-g7-052",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "（你）还别说",
+      "source_page": 401,
+      "source_row": 52
+    },
+    {
+      "kp_id": "hsk2025-g7-053",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "你看你",
+      "source_page": 401,
+      "source_row": 53
+    },
+    {
+      "kp_id": "hsk2025-g7-054",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "说到哪儿去了",
+      "source_page": 401,
+      "source_row": 54
+    },
+    {
+      "kp_id": "hsk2025-g7-055",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "说真的",
+      "source_page": 401,
+      "source_row": 55
+    },
+    {
+      "kp_id": "hsk2025-g7-056",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "退一步说",
+      "source_page": 401,
+      "source_row": 56
+    },
+    {
+      "kp_id": "hsk2025-g7-057",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "无论如何",
+      "source_page": 401,
+      "source_row": 57
+    },
+    {
+      "kp_id": "hsk2025-g7-058",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "要（让）我说",
+      "source_page": 401,
+      "source_row": 58
+    },
+    {
+      "kp_id": "hsk2025-g7-059",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "这不",
+      "source_page": 401,
+      "source_row": 59
+    },
+    {
+      "kp_id": "hsk2025-g7-060",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "这样一来",
+      "source_page": 401,
+      "source_row": 60
+    },
+    {
+      "kp_id": "hsk2025-g7-061",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "真是的",
+      "source_page": 402,
+      "source_row": 61
+    },
+    {
+      "kp_id": "hsk2025-g7-062",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "综上所述",
+      "source_page": 402,
+      "source_row": 62
+    },
+    {
+      "kp_id": "hsk2025-g7-063",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "总的来说",
+      "source_page": 402,
+      "source_row": 63
+    },
+    {
+      "kp_id": "hsk2025-g7-064",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "总而言之",
+      "source_page": 402,
+      "source_row": 64
+    },
+    {
+      "kp_id": "hsk2025-g7-065",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "X到这个地步/份上",
+      "source_page": 402,
+      "source_row": 65
+    },
+    {
+      "kp_id": "hsk2025-g7-066",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "X得要命/要死",
+      "source_page": 402,
+      "source_row": 66
+    },
+    {
+      "kp_id": "hsk2025-g7-067",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "X都不/没X",
+      "source_page": 402,
+      "source_row": 67
+    },
+    {
+      "kp_id": "hsk2025-g7-068",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "X就X个Y",
+      "source_page": 402,
+      "source_row": 68
+    },
+    {
+      "kp_id": "hsk2025-g7-069",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "X了Y，Y了X",
+      "source_page": 402,
+      "source_row": 69
+    },
+    {
+      "kp_id": "hsk2025-g7-070",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "X也好，Y也罢",
+      "source_page": 402,
+      "source_row": 70
+    },
+    {
+      "kp_id": "hsk2025-g7-071",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "别提（有）多+形容词+了",
+      "source_page": 402,
+      "source_row": 71
+    },
+    {
+      "kp_id": "hsk2025-g7-072",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "不亚于……",
+      "source_page": 402,
+      "source_row": 72
+    },
+    {
+      "kp_id": "hsk2025-g7-073",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "不知X是/才好",
+      "source_page": 402,
+      "source_row": 73
+    },
+    {
+      "kp_id": "hsk2025-g7-074",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "动不动就……",
+      "source_page": 402,
+      "source_row": 74
+    },
+    {
+      "kp_id": "hsk2025-g7-075",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "动词+得个……",
+      "source_page": 402,
+      "source_row": 75
+    },
+    {
+      "kp_id": "hsk2025-g7-076",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "动词+个X",
+      "source_page": 402,
+      "source_row": 76
+    },
+    {
+      "kp_id": "hsk2025-g7-077",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "该X（就）X，该Y（就）Y",
+      "source_page": 402,
+      "source_row": 77
+    },
+    {
+      "kp_id": "hsk2025-g7-078",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "何至于……",
+      "source_page": 402,
+      "source_row": 78
+    },
+    {
+      "kp_id": "hsk2025-g7-079",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "仅次于X",
+      "source_page": 402,
+      "source_row": 79
+    },
+    {
+      "kp_id": "hsk2025-g7-080",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "看在X的面子上",
+      "source_page": 402,
+      "source_row": 80
+    },
+    {
+      "kp_id": "hsk2025-g7-081",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "没什么+动词+头儿",
+      "source_page": 402,
+      "source_row": 81
+    },
+    {
+      "kp_id": "hsk2025-g7-082",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "没什么好+动词+的",
+      "source_page": 402,
+      "source_row": 82
+    },
+    {
+      "kp_id": "hsk2025-g7-083",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "莫过于……",
+      "source_page": 402,
+      "source_row": 83
+    },
+    {
+      "kp_id": "hsk2025-g7-084",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "你说你一个X，……",
+      "source_page": 402,
+      "source_row": 84
+    },
+    {
+      "kp_id": "hsk2025-g7-085",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "什么A的B的",
+      "source_page": 402,
+      "source_row": 85
+    },
+    {
+      "kp_id": "hsk2025-g7-086",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "视……而定",
+      "source_page": 402,
+      "source_row": 86
+    },
+    {
+      "kp_id": "hsk2025-g7-087",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "谈何……",
+      "source_page": 402,
+      "source_row": 87
+    },
+    {
+      "kp_id": "hsk2025-g7-088",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "无非/不过/只是……罢了/而已",
+      "source_page": 402,
+      "source_row": 88
+    },
+    {
+      "kp_id": "hsk2025-g7-089",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "想X之所想，急X之所急",
+      "source_page": 402,
+      "source_row": 89
+    },
+    {
+      "kp_id": "hsk2025-g7-090",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "向……致以……",
+      "source_page": 402,
+      "source_row": 90
+    },
+    {
+      "kp_id": "hsk2025-g7-091",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "要X有/没X，要Y有/没Y",
+      "source_page": 402,
+      "source_row": 91
+    },
+    {
+      "kp_id": "hsk2025-g7-092",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "因……而……",
+      "source_page": 402,
+      "source_row": 92
+    },
+    {
+      "kp_id": "hsk2025-g7-093",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "有何X",
+      "source_page": 402,
+      "source_row": 93
+    },
+    {
+      "kp_id": "hsk2025-g7-094",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "有什么+动词+头儿",
+      "source_page": 402,
+      "source_row": 94
+    },
+    {
+      "kp_id": "hsk2025-g7-095",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "（在）……之余",
+      "source_page": 402,
+      "source_row": 95
+    },
+    {
+      "kp_id": "hsk2025-g7-096",
+      "introduced_level": "7-9",
+      "category": "语素",
+      "label": "值此……之际，……",
+      "source_page": 402,
+      "source_row": 96
+    },
+    {
+      "kp_id": "hsk2025-g7-097",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "A+形容词+于/过+B",
+      "source_page": 403,
+      "source_row": 97
+    },
+    {
+      "kp_id": "hsk2025-g7-098",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "一来……，二来……，三来……",
+      "source_page": 403,
+      "source_row": 98
+    },
+    {
+      "kp_id": "hsk2025-g7-099",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "一则……，二则……，三则……",
+      "source_page": 403,
+      "source_row": 99
+    },
+    {
+      "kp_id": "hsk2025-g7-100",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "所谓……，就是……",
+      "source_page": 403,
+      "source_row": 100
+    },
+    {
+      "kp_id": "hsk2025-g7-101",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "或……，或……",
+      "source_page": 403,
+      "source_row": 101
+    },
+    {
+      "kp_id": "hsk2025-g7-102",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "宁可/宁愿……，也不……",
+      "source_page": 403,
+      "source_row": 102
+    },
+    {
+      "kp_id": "hsk2025-g7-103",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "与其……，宁愿/宁可……",
+      "source_page": 403,
+      "source_row": 103
+    },
+    {
+      "kp_id": "hsk2025-g7-104",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "X（倒）是X（了），……",
+      "source_page": 403,
+      "source_row": 104
+    },
+    {
+      "kp_id": "hsk2025-g7-105",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "别看……，……",
+      "source_page": 403,
+      "source_row": 105
+    },
+    {
+      "kp_id": "hsk2025-g7-106",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "虽说……，但/可……",
+      "source_page": 403,
+      "source_row": 106
+    },
+    {
+      "kp_id": "hsk2025-g7-107",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "无论……与否，都……",
+      "source_page": 403,
+      "source_row": 107
+    },
+    {
+      "kp_id": "hsk2025-g7-108",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "凡……（者），均（可）……",
+      "source_page": 403,
+      "source_row": 108
+    },
+    {
+      "kp_id": "hsk2025-g7-109",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "假若/假使……，……",
+      "source_page": 403,
+      "source_row": 109
+    },
+    {
+      "kp_id": "hsk2025-g7-110",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "幸亏/幸好……，不然/否则……",
+      "source_page": 403,
+      "source_row": 110
+    },
+    {
+      "kp_id": "hsk2025-g7-111",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "纵然/纵使……，也……",
+      "source_page": 403,
+      "source_row": 111
+    },
+    {
+      "kp_id": "hsk2025-g7-112",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "（因）……，故……",
+      "source_page": 403,
+      "source_row": 112
+    },
+    {
+      "kp_id": "hsk2025-g7-113",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "……，以至（于）……",
+      "source_page": 403,
+      "source_row": 113
+    },
+    {
+      "kp_id": "hsk2025-g7-114",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "别说……，都/也……",
+      "source_page": 403,
+      "source_row": 114
+    },
+    {
+      "kp_id": "hsk2025-g7-115",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "……不说，还……",
+      "source_page": 403,
+      "source_row": 115
+    },
+    {
+      "kp_id": "hsk2025-g7-116",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "连……都……，更不用说……了",
+      "source_page": 403,
+      "source_row": 116
+    },
+    {
+      "kp_id": "hsk2025-g7-117",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "……尚且……，（更）何况……",
+      "source_page": 403,
+      "source_row": 117
+    },
+    {
+      "kp_id": "hsk2025-g7-118",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "……，更不用说……了",
+      "source_page": 403,
+      "source_row": 118
+    },
+    {
+      "kp_id": "hsk2025-g7-119",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "为（了）……起见，……",
+      "source_page": 403,
+      "source_row": 119
+    },
+    {
+      "kp_id": "hsk2025-g7-120",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "……，以……",
+      "source_page": 403,
+      "source_row": 120
+    },
+    {
+      "kp_id": "hsk2025-g7-121",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "非得……才……",
+      "source_page": 403,
+      "source_row": 121
+    },
+    {
+      "kp_id": "hsk2025-g7-122",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "任……也……",
+      "source_page": 403,
+      "source_row": 122
+    },
+    {
+      "kp_id": "hsk2025-g7-123",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "多重并列复句",
+      "source_page": 403,
+      "source_row": 123
+    },
+    {
+      "kp_id": "hsk2025-g7-124",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "多重转折复句",
+      "source_page": 403,
+      "source_row": 124
+    },
+    {
+      "kp_id": "hsk2025-g7-125",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "多重假设复句",
+      "source_page": 403,
+      "source_row": 125
+    },
+    {
+      "kp_id": "hsk2025-g7-126",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "多重因果复句",
+      "source_page": 403,
+      "source_row": 126
+    },
+    {
+      "kp_id": "hsk2025-g7-127",
+      "introduced_level": "7-9",
+      "category": "句子的类型",
+      "label": "多重递进复句",
+      "source_page": 403,
+      "source_row": 127
+    },
+    {
+      "kp_id": "hsk2025-g7-128",
+      "introduced_level": "7-9",
+      "category": "语段（句群）",
+      "label": "时间顺序",
+      "source_page": 403,
+      "source_row": 128
+    },
+    {
+      "kp_id": "hsk2025-g7-129",
+      "introduced_level": "7-9",
+      "category": "语段（句群）",
+      "label": "空间顺序",
+      "source_page": 403,
+      "source_row": 129
+    },
+    {
+      "kp_id": "hsk2025-g7-130",
+      "introduced_level": "7-9",
+      "category": "语段（句群）",
+      "label": "逻辑顺序",
+      "source_page": 403,
+      "source_row": 130
+    },
+    {
+      "kp_id": "hsk2025-g7-131",
+      "introduced_level": "7-9",
+      "category": "语段（句群）",
+      "label": "话题延伸",
+      "source_page": 403,
+      "source_row": 131
+    },
+    {
+      "kp_id": "hsk2025-g7-132",
+      "introduced_level": "7-9",
+      "category": "语段（句群）",
+      "label": "话题转换",
+      "source_page": 403,
+      "source_row": 132
+    },
+    {
+      "kp_id": "hsk2025-g7-133",
+      "introduced_level": "7-9",
+      "category": "语段（句群）",
+      "label": "承前省略",
+      "source_page": 403,
+      "source_row": 133
+    },
+    {
+      "kp_id": "hsk2025-g7-134",
+      "introduced_level": "7-9",
+      "category": "语段（句群）",
+      "label": "蒙后省略",
+      "source_page": 403,
+      "source_row": 134
+    }
+  ]
+}

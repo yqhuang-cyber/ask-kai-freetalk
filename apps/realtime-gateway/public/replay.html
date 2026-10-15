@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Ask Kai · 工程回放</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body><main>
+  <p class="eyebrow">ASK KAI / STEP 01</p><p><a href="/">返回 Web 对话页面</a></p><h1>工程事件回放</h1>
+  <p class="notice">合成测试数据 · 豆包未连接 · 无采音、语音播放或真实学生数据</p>
+  <p>选择场景，检查回合、打断和迟到事件的处理结果。</p>
+  <div class="controls"><label>场景 <select id="scenario"><option value="normal">正常回合</option><option value="interruption">打断与迟到事件</option><option value="failure">连接失败</option></select></label><button id="start">开始回放</button><button id="stop" disabled>停止</button></div>
+  <p id="status" role="status">等待回放</p>
+  <section><h2>Kai 合成字幕</h2><p id="caption" aria-live="polite">—</p></section>
+  <section><h2>事件结果</h2><ol id="events"></ol></section>
+  <section><h2>回放摘要</h2><pre id="summary">尚未运行</pre></section>
+</main></body></html>
