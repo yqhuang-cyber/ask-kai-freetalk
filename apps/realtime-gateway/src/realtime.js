@@ -10,7 +10,7 @@ import { TurnOutputGate } from './output-gate.js';
 import { ReplyAudit,REPLY_POLICY_VERSION } from '../../../packages/agent-core/reply-policy.js';
 import { sameLanguageSupport } from '../../../packages/agent-core/language-support.js';
 
-export function attachRealtime(server,{providerFactory,providerKind='doubao',businessSource='unconfigured',planner,planningPort,maxConnections=8,readyTimeoutMs=8000,maxSessionMs=600000,cancelTimeoutMs=1500,contextTimeoutMs=1500,replyGraceMs=350,turnWaitMs=5000,safeguardingPort,metrics}={}) {
+export function attachRealtime(server,{providerFactory,providerKind='doubao',businessSource='unconfigured',planner,planningPort,maxConnections=8,readyTimeoutMs=8000,maxSessionMs=600000,cancelTimeoutMs=1500,contextTimeoutMs=8000,replyGraceMs=350,turnWaitMs=5000,safeguardingPort,metrics}={}) {
   const tickets = new Map();
   const connections = new Set();
   const sessions=new Map();
@@ -121,6 +121,9 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
       const armSpokenClose = turnId => {
         if(spokenClose||ended||ending)return;
         spokenClose={turnId,phase:'wait_reply',script:teaching.spokenCloseScript(),responseId:runtime.active?.id??null,deadline:Date.now()+12000,timer:null};
+        // A context update already in flight must not use the short synthetic budget
+        // while Doubao is about to speak the closing summary.
+        if(pendingContext?.timer){clearTimeout(pendingContext.timer);pendingContext.timer=setTimeout(()=>finish('CONTEXT_ACK_TIMEOUT'),contextTimeoutMs);}
         if(!spokenClose.responseId)spokenClose.timer=setTimeout(speakCloseSummary,1500);
       };
       const noteSpokenClose = event => {
@@ -139,7 +142,9 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
       const heartbeat=setInterval(()=>{if(!alive){finish('CLIENT_HEARTBEAT_TIMEOUT');ws.terminate();return;}alive=false;if(ws.readyState===ws.OPEN)ws.ping();},15000);
       ws.on('pong',()=>{alive=true;});
       const flushContext = () => {
-        if(ended || !ready || runtime.active || pendingCancel.size || pendingContext || appliedVersion===teaching.version)return;
+        // Spoken close uses a fixed recap. Another session.update races that
+        // speech and the real provider often misses the context ACK window.
+        if(spokenClose||ended || !ready || runtime.active || pendingCancel.size || pendingContext || appliedVersion===teaching.version)return;
         const snapshot=teaching.contextSnapshot(),version=snapshot.version,decision=snapshot.decision;
         diagnose('context.requested',{context_version:version,turn_id:decision?.turn_id,context_hash:snapshot.hash,context_policy_version:snapshot.policy_version,context_scope:snapshot.scope});
         pendingContext={version,decision,language:snapshot.language,snapshot,timer:setTimeout(()=>finish('CONTEXT_ACK_TIMEOUT'),contextTimeoutMs)};
