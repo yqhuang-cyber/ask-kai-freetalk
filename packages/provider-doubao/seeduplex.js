@@ -224,6 +224,11 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
     }
     if (raw.type === 'response.function_call_arguments.done') throw new Error('UNEXPECTED_PROVIDER_TOOL');
   }
+  speakFixedText(text) {
+    if (!this.ready || this.closed || this.pendingControl || this.activeReply || this.queuedCancels.length) throw new Error('PROVIDER_CONTROL_PENDING');
+    if (typeof text!=='string' || !text.length || text.length>400) throw new Error('INVALID_SPOKEN_RECAP');
+    this.send({type:'speech_text_buffer.commit',event_id:randomUUID(),text});
+  }
   sendAudio(bytes) {
     if (!this.ready || !bytes.length || bytes.length % 2 || bytes.length > 640) throw new Error('INVALID_INPUT_AUDIO');
     this.send({type:'input_audio_buffer.append',audio:Buffer.from(bytes).toString('base64')});

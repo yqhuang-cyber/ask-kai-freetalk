@@ -3,7 +3,7 @@ import { PERSONA_VERSION,PERSONA_ADAPTIVE_VERSION,SPORTS_LESSON } from './lesson
 import { speechPaceInstructions } from './speech.js';
 import { REPLY_POLICY_VERSION,REPLY_BUDGET } from './reply-policy.js';
 import { NaturalTeaching,TEACHING_POLICY_VERSION } from './natural-teaching.js';
-import { LearningSummary,SUMMARY_LIMITS } from './learning-summary.js';
+import { LearningSummary,SUMMARY_LIMITS,spokenCloseScript as closeScript } from './learning-summary.js';
 import { LanguageSupport } from './language-support.js';
 import { compileContextSnapshot } from './context-snapshot.js';
 import { planProjection } from './conversation-initializer.js';
@@ -60,6 +60,7 @@ export class TeachingSession {
     else if(this.stage==='closing')this.stage='conversation';
     this.observations?.accept(event,{plan:this.planning.plan,resource:this.planning.resource,goal_status:this.teaching.decision.teaching_paused?'paused':this.planning.plan.goal_status,executions:this.planning.executions.values()});
     this.planning?.reduceSupport(event);
+    if(this.planning&&this.planning.mode!=='shadow')this.learning.observeStudent(event);
     const attempt=this.planning&&this.planning.mode!=='shadow'?null:this.learning.recordFinal(event,decision);
     if(attempt) {
       this.evidence.push(attempt);
@@ -94,7 +95,18 @@ export class TeachingSession {
     }
     return summary;
   }
-  learningRecord(outcome='ended'){return this.planning&&this.planning.mode!=='shadow'?this.observations.record(this.planning.plan,outcome):null;}
+  sessionRecap() {
+    const sourced=this.learning.sourcedLists();
+    const knowledge=[...sourced.knowledge_points];
+    for(const row of this.observations?.observations.values()??[]) {
+      const label=this.planning?.capabilities?.key_points.find(item=>item.id===row.kp_id)?.label;
+      if(label&&!knowledge.includes(label))knowledge.push(label);
+    }
+    const list=items=>items.filter(item=>typeof item==='string'&&item.length>0&&item.length<=40).slice(0,4);
+    return {knowledge_points:list(knowledge),vocabulary:list(sourced.vocabulary),expressions:list(sourced.expressions)};
+  }
+  spokenCloseScript(){return closeScript(this.sessionRecap());}
+  learningRecord(outcome='ended'){return this.planning&&this.planning.mode!=='shadow'?this.observations.record(this.planning.plan,outcome,this.sessionRecap()):null;}
   view() {
     const sports=this.mode==='sports';
     const language=this.languageSnapshot();

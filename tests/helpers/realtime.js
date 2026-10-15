@@ -10,6 +10,7 @@ export class TestProvider {
   sendAudio(bytes){this.frames.push(Buffer.from(bytes));}
   cancel(id){this.cancelled.push(id);}
   updateContext(value){this.contexts.push(value);}
+  speakFixedText(text){this.spoken=text;}
   close(){this.closed=true;}
 }
 export async function setup(t,options={}) {

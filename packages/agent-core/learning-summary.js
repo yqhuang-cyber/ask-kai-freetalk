@@ -15,6 +15,15 @@ export const SUMMARY_EXPRESSIONS=Object.freeze([
   {id:'likes-swimming',text:'我喜欢游泳',pinyin:'wǒ xǐ huān yóu yǒng',english:'I like swimming.'}
 ].map(Object.freeze));
 const directory=[...SUMMARY_EXPRESSIONS,...GENERAL_EXPRESSIONS];
+const clip=(label,items,empty)=>{const text=`${label}：${items.length?items.join('、'):empty}`;return text.length<=100?text:`${text.slice(0,99)}…`;};
+export function spokenCloseScript(recap) {
+  const text=`这轮先说到这里。${clip('知识点',recap.knowledge_points,'这轮没有可核验的新知识点')}。${clip('词汇',recap.vocabulary,'这轮没有单独记下的新词汇')}。${clip('表达',recap.expressions,'这轮没有单独记下的新表达')}。这些只是这轮实际出现过的内容，还不代表已经掌握。再见。`;
+  return text.length<=400?text:`${text.slice(0,399)}。`;
+}
+export function savedRecapLines(recap) {
+  if(!recap)return ['本地 mock 已保存本轮表达尝试；未评估掌握，未升级作者设定的学习画像。'];
+  return [clip('知识点',recap.knowledge_points,'这轮没有可核验的新知识点'),clip('词汇',recap.vocabulary,'这轮没有单独记下的新词汇'),clip('表达',recap.expressions,'这轮没有单独记下的新表达')];
+}
 const sourceRef=event=>({session_id:event.session_id,turn_id:event.turn_id,source_event_id:event.event_id,scope:'accepted_final_asr'});
 const missionAliases=new Set(['用「我喜欢……」表达喜好','用「我喜欢……」说说喜欢的运动。','表达喜好']);
 function missionRule(target) {
@@ -59,6 +68,15 @@ export class LearningSummary {
     return this.items.get(authored.id);
   }
   matches(expression) {return this.rule.supported && (this.mode==='free'||SUMMARY_EXPRESSIONS.some(e=>e.text===expression)) && (!this.rule.literal || this.rule.literal===expression);}
+  sourcedLists() {
+    const knowledge_points=[...this.recapTopics.values()].map(topic=>topic.label);
+    const vocabulary=[],expressions=[];
+    for(const row of this.recapExpressions.values()) {
+      const entry=directory.find(item=>item.id===row.id);
+      if(entry?.type==='word')vocabulary.push(row.text);else expressions.push(row.text);
+    }
+    return {knowledge_points,vocabulary,expressions};
+  }
   observeStudent(event) {
     const add=(map,id,value)=>{if(!map.has(id)){if(map.size>=4)return;map.set(id,{...value,observation_count:0,source_refs:[]});}const row=map.get(id);row.observation_count++;retained(row.source_refs,sourceRef(event));};
     for(const topic of RECAP_TOPICS)if(topic.pattern.test(event.payload.text))add(this.recapTopics,topic.id,{id:topic.id,label:topic.label});
