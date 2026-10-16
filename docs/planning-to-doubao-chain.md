@@ -145,7 +145,7 @@ wss://openspeech.bytedance.com/api/v3/duplex/realtime/dialogue
 
 执行账本的 `turn_plan_ref` 当前为 `null`，`generation_basis` 为 `unknown`，不会仅凭时序或 ACK 把某段回复标成某条逐轮计划的已验证执行。豆包也没有返回“已执行 SCAFFOLD／已完成 task／已观察到 expected_observation”的业务回执。
 
-`PlanningObservations` 根据实际学生输入、有效目标、资源证据规则与观察到的教师输出形成候选和 `learner_feedback`；下一次规划读取这些反馈、实际对话历史及前次执行状态。当前没有以 `expected_observation` 动态驱动判定的实现。可选 `ObservationPort` 保持 shadow：候选不进入规划或写回学习事实。普通 Web 尚无播放消费回执，音频转发不能推断学生听到或理解。
+`PlanningObservations` 根据实际学生输入、有效目标、资源证据规则与观察到的教师输出形成候选和 `learner_feedback`；下一次规划读取这些反馈、实际对话历史及前次执行状态。当前没有以 `expected_observation` 动态驱动判定的实现。可选 `ObservationPort` 保持 shadow：候选不进入规划或写回学习事实。普通交流的播放消费信息仍不能推断学生听到或理解；收尾现已增加独立的、绑定收尾编号／回复／小结版本的 `closing.playback` 回执，仅确认浏览器报告的播放排空及字幕完成，不升级学习证据。见[增强移植分析](freetalk-enhancement-port.md)。
 
 业务身份、课程和学习记录仍走授权 HSKai 边界；本 POC 默认使用本地 mock。Mock 数据与回执不证明真实学习成果或真人送达。
 

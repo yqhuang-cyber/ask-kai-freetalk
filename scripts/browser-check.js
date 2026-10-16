@@ -191,7 +191,9 @@ try {
   assert.equal(await page.locator('#session-summary').isVisible(),false);
   await page.getByText('本次语速：正常；结束后可切换。',{exact:true}).waitFor();assert.equal(creates[1].session.audio.output.speed,0);
   await page.locator('#end').click();await page.waitForFunction(()=>!document.querySelector('#connect').disabled);
-  await page.locator('[data-mode=free]').click();assert.equal(await page.locator('#session-summary').isVisible(),false);assert.equal(await page.locator('#summary-jump').isVisible(),false);
+  // FreeTalk has one entry. Reselecting it keeps the completed summary;
+  // starting a new session above is what clears the old one.
+  await page.locator('[data-mode=free]').click();assert.equal(await page.locator('#session-summary').isVisible(),true);assert.equal(await page.locator('#summary-jump').isVisible(),true);
   await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   await page.screenshot({path:'.local/browser-check/speech-pace-mobile.png',fullPage:true});
   // Real local mock HTTP service and signed cookies; the voice provider is absent.
@@ -217,7 +219,7 @@ try {
     assert.equal(await page.locator('#connection-status').textContent(),'未连接');
   }
   await page.locator('#learner-profile').screenshot({path:'.local/browser-check/four-learners-mobile.png'});
-  await page.locator('.memory').first().locator('summary').click();
+  await page.locator('details.memory:has(#memory-form) > summary').click();
   // Expire the launch cookie without waiting 60 seconds. Each protected action refreshes it.
   await page.context().clearCookies();await page.locator('#memory-value').fill('篮球');await page.locator('#memory-save').click();
   await page.getByText('偏好已更正；后续回合将使用新偏好。',{exact:true}).waitFor();assert.match(await page.locator('#memory-list').textContent(),/篮球/);
@@ -241,7 +243,8 @@ try {
   await page.goto(`http://127.0.0.1:${dynamicServer.address().port}`);
   await page.getByText('对话已准备；当前使用保守策略，规划模型暂不可用。',{exact:true}).waitFor();
   await page.waitForFunction(()=>document.querySelector('#goal').textContent==='由你选择话题，自然交流。');
-  assert.equal(await page.locator('#save-learning-input').isChecked(),false);
+  assert.equal(await page.locator('#save-learning-input').isChecked(),true);
+  assert.equal(await page.locator('#save-learning-input').isDisabled(),true);
   await page.waitForTimeout(150);assert.equal(await page.locator('.word-card').isVisible(),false);assert.equal(await page.locator('#prompt-hint').textContent(),'');
   assert.equal(await page.evaluate(()=>window.microphoneRequests),0);
   await page.locator('#connect').click();await page.getByText('实时语音尚未开通。需完成豆包协议和服务端连接验证。',{exact:true}).waitFor();

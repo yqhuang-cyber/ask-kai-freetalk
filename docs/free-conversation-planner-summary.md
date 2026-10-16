@@ -1,6 +1,8 @@
 # 自由对话 Planner：初始化、逐轮决策与四位 Mock 学习者对照
 
-日期：2026-10-16（Asia/Shanghai）。依据当前工作区实现，描述默认 `next_turn_advisory` 路径；业务资料来自独立 POC 的本地 Mock HSKai。
+日期：2026-10-16（Asia/Shanghai）。移植自原 Ask Kai 仓库 [8d84fda](https://github.com/yqhuang-cyber/ask-kai/commit/8d84fdaa818df3adc19893aee2229a581a88822a)，对照本独立 FreeTalk POC 后补充下述适配说明。业务资料仍来自本地 Mock HSKai。
+
+本仓库保留可选 `ASK_KAI_PLANNER_PROVIDER=pi`：Free 的初始／逐轮计划分别通过 `submit_conversation_plan`／`submit_turn_plan` 提交，仍使用现有 MiniMax 配置及相同宿主校验、时限和失效规则。本文主要说明默认 MiniMax `full_contract_v3` 的业务机制；未把原仓库的主题管理服务或主题连续性一起移植。收尾路径与本次验证以[增强移植分析](freetalk-enhancement-port.md)为准。
 
 本文区分三种信息：**代码约束**是宿主实际执行的规则；**确定性推导**来自当前 Mock 画像和规则函数；**规划示例**是为说明差异而编写的候选结果，不是真实 M3 输出、豆包回复或质量验收。本文没有调用真实 Planner／豆包，也没有采集浏览器或真人音频。
 

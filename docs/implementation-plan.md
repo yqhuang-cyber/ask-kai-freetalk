@@ -1,5 +1,7 @@
 # Incremental delivery
 
+2026-10-16 独立 FreeTalk POC 收尾增强：逐文件适配原仓库 `3e4422e` 的 ClosingCoordinator、浏览器播放确认、有来源 SessionRecap 和授权会话小结存取，保留本仓库的退出码／告别 fallback、中文结束语、8 秒上下文确认及可选 Pi Planner。口头正常收尾保持全双工，可继续／撤销；立即退出跳过播放；不再取消已完成告别来等待第二句。Planner 机制文档已移植并标记原仓库来源。483 项 verify、三个 synthetic replay、专项 Chromium 合成收尾检查通过；真实两轮作者合成音频探针收到有内容回顾和告别及正常关闭，但未测浏览器播放或真人设备，不声明真实 Web 自动结束验收。通用 Chromium 合成设备回归也通过，page errors 为 0；完整范围见[增强移植分析](freetalk-enhancement-port.md)。
+
 2026-10-15 Pi 自由对话规划已接入为可关闭路径：锁 `pi-agent-core` / `pi-ai` 1.2.0，Node 要求改为 `>=22.19.0`。`ASK_KAI_PLANNER_PROVIDER=pi` 时，自由对话的初始计划和逐轮计划用 `submit_conversation_plan` / `submit_turn_plan` 各提交一次，请求仍走现有 MiniMax 配置；主题和 Mission 仍走原来的 JSON 规划。豆包语音未改。默认不加这个变量时行为与原来一致。真实 12 案／18 轮对照和是否改默认都还没做。见 [Pi 接入任务清单](pi-integration-tasking.md)。
 
 2026-10-15 按用户最新要求恢复主题目标与页面这一项：主题初始化必须有一个合法教学目标，拒绝空目标提案并在期限内修复／回退；缺学习证据仍可选择无先修冲突的探索任务，已有稳定能力安排新情境应用，不据此虚构薄弱点。明确只想聊天、请求目标先修不足或全部候选不可用时准备失败并提示调整选择／free。页面展示同一已接受计划的目标、关联知识点和表达任务，切换／重准备／失败时清除旧内容；语音上下文使用相同 goal_details，会中暂停保留原任务、替换时同步新知识点与任务。其余主题 TODO 继续搁置，learner-data、冻结评测输入／oracle 和 Topic Pack 生成准入未修改。实施与本轮检查见[主题目标准备与展示](topic-chain-implementation.md#主题目标准备与展示)。
