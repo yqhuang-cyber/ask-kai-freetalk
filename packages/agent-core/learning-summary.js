@@ -16,6 +16,11 @@ export const SUMMARY_EXPRESSIONS=Object.freeze([
 ].map(Object.freeze));
 const directory=[...SUMMARY_EXPRESSIONS,...GENERAL_EXPRESSIONS];
 const clip=(label,items,empty)=>{const text=`${label}：${items.length?items.join('、'):empty}`;return text.length<=100?text:`${text.slice(0,99)}…`;};
+export function closingBrief(recap) {
+  const line=(label,items)=>`${label}：${items.length?items.join('、'):''}`;
+  return `本轮结束：学生这一句是在结束对话。只用一两句轻声收束。先接住结束，再自然带上后面列出的真实内容，然后告别。不要说出“词汇”“表达”这些标签，不要加小标题，不要提问，不要教新内容，不要说已经掌握或学会了。某一行是空的就不要提那一类；两行都空就只告别，不要编造。\n${line('词汇',recap.vocabulary)}\n${line('表达',recap.expressions)}`;
+}
+// Detailed labeled recap. The spoken close does not read this aloud.
 export function spokenCloseScript(recap) {
   const text=`这轮先说到这里。${clip('知识点',recap.knowledge_points,'这轮没有可核验的新知识点')}。${clip('词汇',recap.vocabulary,'这轮没有单独记下的新词汇')}。${clip('表达',recap.expressions,'这轮没有单独记下的新表达')}。这些只是这轮实际出现过的内容，还不代表已经掌握。再见。`;
   return text.length<=400?text:`${text.slice(0,399)}。`;

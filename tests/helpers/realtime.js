@@ -11,6 +11,7 @@ export class TestProvider {
   cancel(id){this.cancelled.push(id);}
   updateContext(value){this.contexts.push(value);}
   speakFixedText(text){this.spoken=text;}
+  mute(){this.muted=true;}
   close(){this.closed=true;}
 }
 export async function setup(t,options={}) {

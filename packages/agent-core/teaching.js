@@ -3,7 +3,7 @@ import { PERSONA_VERSION,PERSONA_ADAPTIVE_VERSION,SPORTS_LESSON } from './lesson
 import { speechPaceInstructions } from './speech.js';
 import { REPLY_POLICY_VERSION,REPLY_BUDGET } from './reply-policy.js';
 import { NaturalTeaching,TEACHING_POLICY_VERSION } from './natural-teaching.js';
-import { LearningSummary,SUMMARY_LIMITS,spokenCloseScript as closeScript } from './learning-summary.js';
+import { LearningSummary,SUMMARY_LIMITS,closingBrief as closeBrief } from './learning-summary.js';
 import { LanguageSupport } from './language-support.js';
 import { compileContextSnapshot } from './context-snapshot.js';
 import { planProjection } from './conversation-initializer.js';
@@ -105,7 +105,7 @@ export class TeachingSession {
     const list=items=>items.filter(item=>typeof item==='string'&&item.length>0&&item.length<=40).slice(0,4);
     return {knowledge_points:list(knowledge),vocabulary:list(sourced.vocabulary),expressions:list(sourced.expressions)};
   }
-  spokenCloseScript(){return closeScript(this.sessionRecap());}
+  closingBrief(){return closeBrief(this.sessionRecap());}
   learningRecord(outcome='ended'){return this.planning&&this.planning.mode!=='shadow'?this.observations.record(this.planning.plan,outcome,this.sessionRecap()):null;}
   view() {
     const sports=this.mode==='sports';

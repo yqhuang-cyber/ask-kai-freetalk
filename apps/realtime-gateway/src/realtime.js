@@ -9,8 +9,9 @@ import { hasSpeechText } from '../../../packages/agent-core/turn-taking.js';
 import { TurnOutputGate } from './output-gate.js';
 import { ReplyAudit,REPLY_POLICY_VERSION } from '../../../packages/agent-core/reply-policy.js';
 import { sameLanguageSupport } from '../../../packages/agent-core/language-support.js';
+import { providerExitSuppressed } from '../../../packages/agent-core/natural-teaching.js';
 
-export function attachRealtime(server,{providerFactory,providerKind='doubao',businessSource='unconfigured',planner,planningPort,maxConnections=8,readyTimeoutMs=8000,maxSessionMs=600000,cancelTimeoutMs=1500,contextTimeoutMs=8000,replyGraceMs=350,turnWaitMs=5000,safeguardingPort,metrics}={}) {
+export function attachRealtime(server,{providerFactory,providerKind='doubao',businessSource='unconfigured',planner,planningPort,maxConnections=8,readyTimeoutMs=8000,maxSessionMs=600000,cancelTimeoutMs=1500,contextTimeoutMs=8000,replyGraceMs=350,turnWaitMs=5000,closeSpeechWaitMs=3000,safeguardingPort,metrics}={}) {
   const tickets = new Map();
   const connections = new Set();
   const sessions=new Map();
@@ -41,6 +42,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
       let ended = false;
       let ending=false;
       let spokenClose=null;
+      const finalText=new Map();
       let recordController;
       let ready = false;
       let lastResponse = null;
@@ -71,7 +73,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
       };
       const finish = (code,endReason) => {
         if (ended) return;
-        if(spokenClose?.timer)clearTimeout(spokenClose.timer);
+        clearTimeout(spokenClose?.speechTimer);clearTimeout(spokenClose?.deadlineTimer);
         if(code||endReason==='transport_closed')recordController?.abort();
         for(const id of replyStats.keys())completeStats(id,code?'failed':'closed');
         diagnose('session.end',{state:code?'failed':'closed',code:code??undefined});
@@ -96,9 +98,67 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         connections.delete(ws);
         sessions.delete(ws);
       };
+      const closeContextTimer = () => setTimeout(()=>{
+        pendingContext=null;
+        if(spokenClose&&!spokenClose.responseId&&!ended&&!ending)endAndSave({keepPlayback:true});
+      },contextTimeoutMs);
+      const armSpeechWait = () => {
+        if(!spokenClose||spokenClose.responseId||ended||ending)return;
+        clearTimeout(spokenClose.speechTimer);
+        spokenClose.speechTimer=setTimeout(()=>{
+          if(!spokenClose||spokenClose.responseId||ended||ending)return;
+          endAndSave({keepPlayback:true});
+        },closeSpeechWaitMs);
+      };
+      const sendCloseBrief = () => {
+        if(!spokenClose||ended||ending)return;
+        if(pendingCancel.size){spokenClose.phase='cancel';return;}
+        if(pendingContext && spokenClose.phase!=='brief'){spokenClose.phase='wait_prior_ack';return;}
+        const version=teaching.version;
+        const instructions=`${teaching.instructions()}\n${teaching.closingBrief()}`;
+        try{provider.updateContext({version,instructions,duringSilentReply:!!runtime.active});}
+        catch{
+          const active=runtime.active;
+          if(active && spokenClose.cancelId!==active.id){spokenClose.phase='cancel';spokenClose.cancelId=active.id;interrupt(active.id,'student_end');return;}
+          endAndSave({keepPlayback:true});return;
+        }
+        spokenClose.phase='brief';
+        if(pendingContext?.timer)clearTimeout(pendingContext.timer);
+        pendingContext={version,decision:teaching.teaching.decision,language:teaching.languageSnapshot(),snapshot:teaching.contextSnapshot(),timer:closeContextTimer()};
+        if(runtime.active && !spokenClose.responseId){spokenClose.responseId=runtime.active.id;spokenClose.phase='speaking';}
+      };
+      const pumpClose = () => {
+        if(!spokenClose||ended||ending)return;
+        if(['speaking','wait_speech','brief','wait_prior_ack','cancel'].includes(spokenClose.phase))return;
+        const active=runtime.active,stats=active?replyStats.get(active.id):null;
+        if(active && stats && (stats.chars>0 || stats.chunks>0)){
+          spokenClose.phase='cancel';
+          if(spokenClose.cancelId!==active.id){spokenClose.cancelId=active.id;interrupt(active.id,'student_end');}
+          return;
+        }
+        sendCloseBrief();
+      };
+      const armSpokenClose = turnId => {
+        if(spokenClose||ended||ending)return;
+        spokenClose={turnId,phase:'prepare',responseId:null,cancelId:null,speechTimer:null,deadlineTimer:setTimeout(()=>{if(!ended&&!ending)endAndSave({keepPlayback:true});},12000)};
+        try{provider.mute?.();}catch{}
+        send({type:'session.closing'});
+        if(pendingContext?.timer){clearTimeout(pendingContext.timer);pendingContext.timer=closeContextTimer();}
+        pumpClose();
+      };
+      const noteSpokenClose = event => {
+        if(!spokenClose||ended||ending)return;
+        if(event.type==='response.started' && ['brief','wait_speech','speaking'].includes(spokenClose.phase) && event.response_id!==spokenClose.cancelId){
+          spokenClose.responseId=event.response_id;spokenClose.phase='speaking';clearTimeout(spokenClose.speechTimer);
+        }
+        if(event.type==='response.cancelled' && event.response_id===spokenClose.cancelId){
+          spokenClose.cancelId=null;spokenClose.responseId=null;spokenClose.phase='prepare';pumpClose();return;
+        }
+        if(event.type==='response.done' && spokenClose.phase==='speaking' && event.response_id===spokenClose.responseId)endAndSave({keepPlayback:true});
+      };
       const endAndSave = ({keepPlayback=false}={}) => {
         if(ended||ending)return;
-        if(spokenClose?.timer)clearTimeout(spokenClose.timer);
+        clearTimeout(spokenClose?.speechTimer);clearTimeout(spokenClose?.deadlineTimer);
         const canSave=planningPort&&teaching.planning&&!teaching.closed&&ticket.identity.authorization_until>Date.now()&&ticket.identity.scopes.includes('learning:write');
         let record=null;
         if(canSave){try{record=teaching.learningRecord();}catch{record=null;}}
@@ -107,44 +167,13 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         if(!keepPlayback)send({type:'output.stop'});
         void planningPort.append(ticket.identity,record,ticket.session_id,{signal:recordController.signal}).then(receipt=>{send({type:'learning.record.receipt',status:receipt.status,mocked:true});metrics?.count(providerKind,receipt.status==='accepted'?'mock_records_saved':'mock_records_pending');}).catch(()=>{send({type:'learning.record.receipt',status:'failed',mocked:true});metrics?.count(providerKind,'mock_records_failed');}).finally(()=>finish());
       };
-      const speakCloseSummary = () => {
-        if(!spokenClose||spokenClose.phase==='wait_summary'||ended||ending)return;
-        if(Date.now()>spokenClose.deadline){endAndSave();return;}
-        if(runtime.active||pendingCancel.size){spokenClose.timer=setTimeout(speakCloseSummary,200);return;}
-        spokenClose.phase='wait_summary';spokenClose.responseId=null;
-        try{
-          if(typeof provider.speakFixedText!=='function'){endAndSave();return;}
-          provider.speakFixedText(spokenClose.script);
-          send({type:'session.closing'});
-        }catch{endAndSave();return;}
-        spokenClose.timer=setTimeout(()=>endAndSave(),12000);
-      };
-      const armSpokenClose = turnId => {
-        if(spokenClose||ended||ending)return;
-        spokenClose={turnId,phase:'wait_reply',script:teaching.spokenCloseScript(),responseId:runtime.active?.id??null,deadline:Date.now()+12000,timer:null};
-        // A context update already in flight must not use the short synthetic budget
-        // while Doubao is about to speak the closing summary.
-        if(pendingContext?.timer){clearTimeout(pendingContext.timer);pendingContext.timer=setTimeout(()=>finish('CONTEXT_ACK_TIMEOUT'),contextTimeoutMs);}
-        if(!spokenClose.responseId)spokenClose.timer=setTimeout(speakCloseSummary,1500);
-      };
-      const noteSpokenClose = event => {
-        if(!spokenClose||ended||ending)return;
-        if(event.type==='response.started') {
-          if(spokenClose.phase==='wait_reply'){clearTimeout(spokenClose.timer);spokenClose.responseId=event.response_id;}
-          else if(spokenClose.phase==='wait_summary'&&!spokenClose.responseId)spokenClose.responseId=event.response_id;
-        }
-        if(event.type!=='response.done'&&event.type!=='response.cancelled')return;
-        if(spokenClose.phase==='wait_reply'&&(!spokenClose.responseId||spokenClose.responseId===event.response_id)){clearTimeout(spokenClose.timer);spokenClose.responseId=null;speakCloseSummary();}
-        else if(spokenClose.phase==='wait_summary'&&spokenClose.responseId===event.response_id){clearTimeout(spokenClose.timer);endAndSave();}
-      };
       const readyTimer = setTimeout(()=>finish('PROVIDER_READY_TIMEOUT'),readyTimeoutMs);
       const lifetime = setTimeout(()=>finish('SESSION_DURATION_LIMIT'),Math.min(maxSessionMs,ticket.identity.authorization_until-Date.now()));
       let alive=true;
       const heartbeat=setInterval(()=>{if(!alive){finish('CLIENT_HEARTBEAT_TIMEOUT');ws.terminate();return;}alive=false;if(ws.readyState===ws.OPEN)ws.ping();},15000);
       ws.on('pong',()=>{alive=true;});
       const flushContext = () => {
-        // Spoken close uses a fixed recap. Another session.update races that
-        // speech and the real provider often misses the context ACK window.
+        // A closing brief owns the next session.update. A later plan must not replace it.
         if(spokenClose||ended || !ready || runtime.active || pendingCancel.size || pendingContext || appliedVersion===teaching.version)return;
         const snapshot=teaching.contextSnapshot(),version=snapshot.version,decision=snapshot.decision;
         diagnose('context.requested',{context_version:version,turn_id:decision?.turn_id,context_hash:snapshot.hash,context_policy_version:snapshot.policy_version,context_scope:snapshot.scope});
@@ -201,6 +230,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         if(ended || ending || restricted)return;
         try {
           if (binary) {
+            if (spokenClose) return;
             if (!ready) throw new Error('AUDIO_BEFORE_READY');
             if (Date.now()-windowAt >= 1000) {windowAt=Date.now();byteWindow=0;}
             byteWindow += bytes.length;
@@ -246,18 +276,34 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             const pending=pendingCancel.get(packet.response_id);if(!pending || pending.turn!==packet.turn_id)return;
             clearTimeout(pending.timer);pendingCancel.delete(packet.response_id);
             diagnose('cancel.skipped',{response_id:packet.response_id,turn_id:packet.turn_id,reason:packet.reason,source:pending.source});
-            completeStats(packet.response_id,'cancelled');flushContext();return;
+            completeStats(packet.response_id,'cancelled');
+            if(spokenClose?.cancelId===packet.response_id){spokenClose.cancelId=null;spokenClose.responseId=null;spokenClose.phase='prepare';pumpClose();}
+            else flushContext();
+            return;
           }
           if (packet.control==='user.speech.started') {diagnose('user.speech.started',{turn_id:packet.turn_id,source:'provider_speech_start',active:!!runtime.active});if(ready)interrupt(undefined,'provider_speech_start');return;}
           if(packet.control==='user.exit.intent') {
             diagnose('user.exit.intent',{turn_id:packet.turn_id,response_id:packet.response_id});
-            // Collection sessions keep the scripted peer. Ordinary web closes
-            // after the reply audio already sent, without a second fixed script.
-            if(!diagnostics)endAndSave({keepPlayback:true});
+            // The closing brief already owns this turn. A late signal only confirms it.
+            if(diagnostics||spokenClose)return;
+            const heard=finalText.get(packet.turn_id);
+            if(heard && providerExitSuppressed(heard))return;
+            endAndSave({keepPlayback:true});
             return;
           }
           if(packet.control==='context.updated') {
-            if(pendingContext && packet.version===pendingContext.version){clearTimeout(pendingContext.timer);appliedContext=pendingContext.snapshot;appliedVersion=packet.version;appliedDecision=appliedContext.decision;appliedLanguage=appliedContext.language;pendingContext=null;diagnose('context.applied',{context_version:appliedVersion,turn_id:appliedDecision?.turn_id,context_hash:appliedContext.hash,context_policy_version:appliedContext.policy_version});send({type:'teaching.context.applied',version:appliedVersion,context_hash:appliedContext.hash});flushContext();}
+            if(pendingContext && packet.version===pendingContext.version){
+              clearTimeout(pendingContext.timer);
+              const closePhase=spokenClose?.phase;
+              appliedContext=pendingContext.snapshot;appliedVersion=packet.version;appliedDecision=appliedContext.decision;appliedLanguage=appliedContext.language;pendingContext=null;
+              diagnose('context.applied',{context_version:appliedVersion,turn_id:appliedDecision?.turn_id,context_hash:appliedContext.hash,context_policy_version:appliedContext.policy_version});
+              send({type:'teaching.context.applied',version:appliedVersion,context_hash:appliedContext.hash});
+              if(spokenClose && closePhase==='wait_prior_ack'){spokenClose.phase='prepare';pumpClose();}
+              else if(spokenClose && closePhase==='brief'){
+                if(spokenClose.responseId)spokenClose.phase='speaking';
+                else{spokenClose.phase='wait_speech';armSpeechWait();}
+              }else flushContext();
+            }
             else diagnose('context.confirmation.ignored',{reason:pendingContext?'wrong_version':'no_pending'});
             return;
           }
@@ -275,6 +321,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
           if(packet.event.type==='session.failed'){finish('PROVIDER_SESSION_FAILED');return;}
           if (packet.event.type==='response.started'){lastResponse={id:packet.event.response_id,turn:packet.event.turn_id};policy.newResponse();replyAt=performance.now();firstAudio=false;}
           const event=packet.event,ids={response_id:event.response_id,turn_id:event.turn_id};
+          if(event.type==='user.final' && typeof event.payload?.text==='string')finalText.set(event.turn_id,event.payload.text);
           if(event.type==='response.started') {
             const languageContextMatched=!pendingContext && sameLanguageSupport(appliedLanguage,teaching.languageSnapshot());
             replyStats.set(event.response_id,{at:performance.now(),turn:event.turn_id,chars:0,deltas:0,chunks:0,pcmMs:0,audit:diagnostics?new ReplyAudit({englishSupport:appliedLanguage.english_support,languageContextMatched}):null});

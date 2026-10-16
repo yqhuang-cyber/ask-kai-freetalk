@@ -148,7 +148,7 @@ connect.addEventListener('click',async()=> {
         if(packet.type==='diagnostics.event'){trace?.gateway(packet.row);refreshDiagnostics();return;}
         if(packet.type==='session.config'){config=packet.audio;paceHint.textContent=packet.speech?.supported && ['slow','normal'].includes(packet.speech.pace)?`本次语速：${packet.speech.pace==='slow'?'慢速':'正常'}；结束后可切换。`:'本次使用服务默认语速。';return;}
         if(packet.type==='teaching.state'){if(!summaryCards.state.suppressed)learning(packet);return;}
-        if(packet.type==='session.closing'){message.textContent='正在说这轮小结……';return;}
+        if(packet.type==='session.closing'){message.textContent='正在说再见……';io?.stopCapture();return;}
         if(packet.type==='teaching.summary'){if(summaryCards.accept(packet))learning(packet);return;}
         if(packet.type==='learning.record.receipt'){document.querySelector('#learning-attempts').textContent=packet.status==='accepted'?'本轮尝试已保存到本地 mock 内存；重启后重置。':'本轮记录未保存，请保留当前小结。';return;}
         if(packet.type==='session.failed'){if(['AUTHORIZATION_REVOKED','SAFETY_RESTRICTED'].includes(packet.code))suppressLearning(packet.code);observe('browser.failed',{code:packet.code});await stop(safetyMessage ?? failureMessage(packet.code),true);return;}

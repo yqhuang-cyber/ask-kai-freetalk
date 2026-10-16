@@ -74,7 +74,7 @@ test('planning diagnostics preserve anonymous causal fields without prompt, stud
   assert.equal(clean.rejection_code,'PREREQUISITE_UNVERIFIED');assert.equal(clean.goal_status,'paused');assert.deepEqual(metadata({rejection_code:'PRIVATE'}),{});
   const trace=new ExperienceTrace();trace.gateway({name:'planning.accepted',at_ms:2,fields:clean});assert.equal(trace.snapshot().timeline[0].turn_ref,'t1');assert.equal(trace.snapshot().contains_text,false);
 });
-test('a recognized goodbye speaks the sourced summary before closing and always writes recent history',async t=> {
+test('a recognized goodbye briefs the real words, lets that reply finish, and still saves the detailed record',async t=> {
   const f=await fixture(t),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json();
   const {ws,provider,packets}=await f.open(ticket);
   provider.emit('session.ready');
@@ -82,14 +82,22 @@ test('a recognized goodbye speaks the sourced summary before closing and always 
   provider.emit('response.started',{},{turn_id:'talk',response_id:'talk-reply'});
   provider.emit('response.done',{},{turn_id:'talk',response_id:'talk-reply'});
   provider.emit('user.final',{text:'再见。'},{turn_id:'bye'});
+  const acked=new Set();
+  for(let i=0;i<6&&!provider.contexts.some(c=>c.instructions.includes('本轮结束'));i++){
+    await until(()=>provider.contexts.length>acked.size);
+    const pending=provider.contexts.find(c=>!acked.has(c.version));
+    acked.add(pending.version);
+    provider.control('context.updated',{version:pending.version});
+  }
+  const brief=provider.contexts.find(c=>c.instructions.includes('本轮结束'));
+  assert.match(brief.instructions,/表达：我喜欢音乐/);
+  assert.match(brief.instructions,/词汇：/);
+  assert.equal(brief.instructions.includes('知识点：'),false);
+  assert.equal(provider.muted,true);
+  assert.equal(provider.spoken,undefined);
+  assert.equal(packets.some(p=>p.type==='output.stop'),false);
   provider.emit('response.started',{},{turn_id:'bye',response_id:'bye-reply'});
   provider.emit('response.done',{},{turn_id:'bye',response_id:'bye-reply'});
-  await until(()=>typeof provider.spoken==='string');
-  assert.match(provider.spoken,/知识点：兴趣爱好/);assert.match(provider.spoken,/表达：我喜欢音乐/);assert.match(provider.spoken,/还不代表已经掌握/);
-  assert.equal(packets.some(p=>p.type==='session.closed'),false);
-  provider.emit('response.started',{},{turn_id:'summary',response_id:'summary-reply'});
-  provider.emit('response.text.delta',{text:provider.spoken},{turn_id:'summary',response_id:'summary-reply'});
-  provider.emit('response.done',{},{turn_id:'summary',response_id:'summary-reply'});
   await once(ws,'close');
   const summaryIndex=packets.findIndex(p=>p.type==='teaching.summary'),closedIndex=packets.findIndex(p=>p.type==='session.closed');
   assert.ok(summaryIndex>=0&&summaryIndex<closedIndex);
@@ -97,6 +105,32 @@ test('a recognized goodbye speaks the sourced summary before closing and always 
   const identity=f.backend.bridge.verify(await f.backend.pocPort.issue(),'session:create'),context=await f.backend.planningPort.read(identity);
   const saved=context.learning_history.find(row=>row.observations.some(line=>line.includes('我喜欢音乐')));
   assert.ok(saved);assert.ok(saved.observations.some(line=>line.startsWith('知识点：')));assert.ok(saved.observations.some(line=>line.startsWith('表达：')));
+});
+test('a goodbye that already has reply text is cancelled, then closes if no new reply starts',async t=> {
+  const f=await fixture(t,{closeSpeechWaitMs:40}),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json();
+  const {ws,provider}=await f.open(ticket);
+  provider.emit('session.ready');
+  provider.emit('response.started',{},{turn_id:'talk',response_id:'talk-reply'});
+  provider.emit('response.text.delta',{text:'好的。'},{turn_id:'talk',response_id:'talk-reply'});
+  provider.emit('user.final',{text:'不想聊了。'},{turn_id:'bye'});
+  await until(()=>provider.cancelled.includes('talk-reply'));
+  provider.emit('response.cancelled',{},{turn_id:'talk',response_id:'talk-reply'});
+  await until(()=>provider.contexts.some(c=>c.instructions.includes('本轮结束')));
+  const brief=provider.contexts.find(c=>c.instructions.includes('本轮结束'));
+  provider.control('context.updated',{version:brief.version});
+  assert.equal(provider.spoken,undefined);
+  await once(ws,'close');
+});
+test('a question about the word goodbye does not let the provider exit signal close the session',async t=> {
+  const f=await fixture(t),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json();
+  const {ws,provider,packets}=await f.open(ticket);
+  provider.emit('session.ready');
+  provider.emit('user.final',{text:'再见用中文怎么说？'},{turn_id:'ask'});
+  await until(()=>packets.some(p=>p.type==='teaching.state'&&p.decision?.turn_id==='ask'));
+  provider.control('user.exit.intent',{turn_id:'ask',response_id:'ask-reply'});
+  await new Promise(r=>setTimeout(r,30));
+  assert.equal(packets.some(p=>p.type==='session.closed'),false);
+  ws.close();await once(ws,'close');
 });
 test('Doubao exit signal closes and saves without a second fixed script or cutting playback',async t=> {
   const f=await fixture(t),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json();

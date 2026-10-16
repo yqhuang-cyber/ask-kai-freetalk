@@ -169,6 +169,17 @@ test('identified audio boundaries own ID-less PCM; usage never completes output 
   assert.deepEqual(x.packets.filter(p=>p.event?.type==='response.done').map(p=>p.event.response_id),[first.id,fresh.id]);
   assert.deepEqual(x.failures,[]);x.provider.close();
 });
+test('mute is an explicit keepalive event and audio that already started cannot take a closing brief',()=>{
+  const x=setup();x.ready();
+  x.provider.mute();
+  assert.equal(x.sent.at(-1).type,'input_audio_mute.commit');
+  x.provider.updateContext({instructions:'本轮结束',version:2});
+  assert.equal(x.sent.at(-1).session.instructions,'本轮结束');
+  x.wire({type:'session.updated',session:{id:'private-session'}});
+  x.wire(output('response.output_audio.started'));
+  assert.throws(()=>x.provider.updateContext({instructions:'太晚',version:3,duringSilentReply:true}),/CONTROL_PENDING/);
+  assert.deepEqual(x.failures,[]);x.provider.close();
+});
 test('audio.done exit status asks the client to leave; other codes stay ordinary completions',()=>{
   const exited=setup();exited.ready();
   exited.wire(output('response.output_audio.started'));

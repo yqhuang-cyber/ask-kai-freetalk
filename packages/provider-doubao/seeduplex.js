@@ -243,6 +243,10 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
     }
     if (raw.type === 'response.function_call_arguments.done') throw new Error('UNEXPECTED_PROVIDER_TOOL');
   }
+  mute() {
+    if (!this.ready || this.closed) throw new Error('PROVIDER_NOT_OPEN');
+    this.send({type:'input_audio_mute.commit',event_id:randomUUID()});
+  }
   speakFixedText(text) {
     if (!this.ready || this.closed || this.pendingControl || this.activeReply || this.queuedCancels.length) throw new Error('PROVIDER_CONTROL_PENDING');
     if (typeof text!=='string' || !text.length || text.length>400) throw new Error('INVALID_SPOKEN_RECAP');
@@ -278,8 +282,9 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
       return;
     }
   }
-  updateContext({instructions,version}) {
-    if (!this.ready || this.pendingControl || this.queuedCancels.length || this.activeReply || typeof instructions !== 'string' || instructions.length > 16000 || !Number.isSafeInteger(version) || version < 1) throw new Error('PROVIDER_CONTROL_PENDING');
+  updateContext({instructions,version,duringSilentReply=false}) {
+    const silent=duringSilentReply && this.activeReply && !this.activeReply.textStarted && this.audioLane!==this.activeReply;
+    if (!this.ready || this.pendingControl || this.queuedCancels.length || (this.activeReply && !silent) || typeof instructions !== 'string' || instructions.length > 16000 || !Number.isSafeInteger(version) || version < 1) throw new Error('PROVIDER_CONTROL_PENDING');
     this.pendingControl = {kind:'context',version};
     this.send({type:'session.update',event_id:randomUUID(),session:{id:this.rawSessionId,instructions}});
   }

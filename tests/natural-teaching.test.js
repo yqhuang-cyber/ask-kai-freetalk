@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { once } from 'node:events';
 import { TeachingSession } from '../packages/agent-core/teaching.js';
-import { NATURAL_TEACHING_INSTRUCTIONS,TEACHING_POLICY_VERSION,TEACHING_ACTIONS,TEACHING_REASONS } from '../packages/agent-core/natural-teaching.js';
+import { NATURAL_TEACHING_INSTRUCTIONS,TEACHING_POLICY_VERSION,TEACHING_ACTIONS,TEACHING_REASONS,providerExitSuppressed } from '../packages/agent-core/natural-teaching.js';
 import { ExperienceTrace,metadata } from '../apps/realtime-gateway/public/diagnostics.js';
 import { setup,until } from './helpers/realtime.js';
 
@@ -137,13 +137,14 @@ test('farewell pauses the goal and continuing conversation does not implicitly a
 });
 
 test('ending is advisory, quotes/translation questions cannot control the session',()=>{
-  for(const text of ['再见。','我不聊了。','Goodbye Kai.','End the conversation.','I have to go. Can we chat tomorrow?']) {
+  for(const text of ['再见。','我不聊了。','不想聊了。','我不想聊了。','哎呀我不想聊了。','那就聊到这儿。','那就聊到这里','聊到这儿','先聊到这儿','Goodbye Kai.','End the conversation.','I have to go. Can we chat tomorrow?']) {
     const {session,say}=learner();const d=say(text);assert.equal(d.action,'CLOSE');assert.equal(d.new_points,0);
     assert.equal(session.stage,'closing');assert.equal(d.advisory,true);
   }
   for(const text of ['“再见”用中文怎么说？','How do I say goodbye?','How do I say "I don\'t want to practice" in Chinese?',"How do I say 'goodbye' in Chinese?",'换话题是什么意思？']) {
     const {say}=learner();const d=say(text);assert.notEqual(d.action,'CLOSE',text);
     if(text.includes('say') || text.includes('怎么说'))assert.equal(d.action,'TEACH_TARGET',text);
+    assert.equal(providerExitSuppressed(text),true,text);
     assert.equal(d.teaching_paused,false,text);
   }
 });
