@@ -11,8 +11,9 @@ export const SEEDUPLEX_SPEEDS = Object.freeze({slow:-20,normal:0});
 // Full-duplex session.create puts Dialog settings in extension.dialog.
 // enable_user_query_exit is the documented switch; default false. When true,
 // response.output_audio.done carries the exit signal and the client closes.
-// That page does not print the signal JSON. 接入必读 maps this event to
-// TTSEnded, whose published example is status_code "20000002".
+// Live 1.2.6.1 observation, 2026-10-16: an exit query adds top-level
+// status_code "20000002" on that event. An ordinary completion omits the
+// field. response.done stays usage-only and does not carry the signal.
 export const SEEDUPLEX_EXIT_EXTENSION = Object.freeze({dialog:Object.freeze({extra:Object.freeze({enable_user_query_exit:true})})});
 export function isSeeduplexExitExtension(extension) {
   if (extension === undefined) return true;

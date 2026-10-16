@@ -9,7 +9,7 @@ import { hasSpeechText } from '../../../packages/agent-core/turn-taking.js';
 import { TurnOutputGate } from './output-gate.js';
 import { ReplyAudit,REPLY_POLICY_VERSION } from '../../../packages/agent-core/reply-policy.js';
 import { sameLanguageSupport } from '../../../packages/agent-core/language-support.js';
-import { providerExitSuppressed } from '../../../packages/agent-core/natural-teaching.js';
+import { assistantFarewell,providerExitSuppressed } from '../../../packages/agent-core/natural-teaching.js';
 
 export function attachRealtime(server,{providerFactory,providerKind='doubao',businessSource='unconfigured',planner,planningPort,maxConnections=8,readyTimeoutMs=8000,maxSessionMs=600000,cancelTimeoutMs=1500,contextTimeoutMs=8000,replyGraceMs=350,turnWaitMs=5000,closeSpeechWaitMs=3000,safeguardingPort,metrics}={}) {
   const tickets = new Map();
@@ -41,7 +41,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
       let outputGate;
       let ended = false;
       let ending=false;
-      let spokenClose=null;
+      let spokenClose=null,pendingExit=false;
       const finalText=new Map();
       let recordController;
       let ready = false;
@@ -285,10 +285,13 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
           if(packet.control==='user.exit.intent') {
             diagnose('user.exit.intent',{turn_id:packet.turn_id,response_id:packet.response_id});
             // The closing brief already owns this turn. A late signal only confirms it.
+            // audio.done can arrive before response.done clears the active reply;
+            // wait for that boundary so the finished goodbye is not cut off.
             if(diagnostics||spokenClose)return;
             const heard=finalText.get(packet.turn_id);
             if(heard && providerExitSuppressed(heard))return;
-            endAndSave({keepPlayback:true});
+            if(runtime.active)pendingExit=true;
+            else armSpokenClose(packet.turn_id??runtime.active?.turn);
             return;
           }
           if(packet.control==='context.updated') {
@@ -324,7 +327,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
           if(event.type==='user.final' && typeof event.payload?.text==='string')finalText.set(event.turn_id,event.payload.text);
           if(event.type==='response.started') {
             const languageContextMatched=!pendingContext && sameLanguageSupport(appliedLanguage,teaching.languageSnapshot());
-            replyStats.set(event.response_id,{at:performance.now(),turn:event.turn_id,chars:0,deltas:0,chunks:0,pcmMs:0,audit:diagnostics?new ReplyAudit({englishSupport:appliedLanguage.english_support,languageContextMatched}):null});
+            replyStats.set(event.response_id,{at:performance.now(),turn:event.turn_id,chars:0,deltas:0,chunks:0,pcmMs:0,text:'',audit:diagnostics?new ReplyAudit({englishSupport:appliedLanguage.english_support,languageContextMatched}):null});
             diagnose('response.started',{...ids,pending_context:!!pendingContext,pending_cancel:pendingCancel.size>0});
             // Snapshot at the first accepted response-start notification, which
             // can arrive after generation began. This proves ACK/turn matching,
@@ -335,6 +338,8 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
           const stats=replyStats.get(event.response_id);
           if(stats && event.type==='response.text.delta') {
             stats.chars+=Array.from(event.payload.text).length;stats.deltas++;
+            if(stats.text.length<240)stats.text+=event.payload.text;
+            if(!diagnostics && !spokenClose && !ending && assistantFarewell(stats.text))armSpokenClose(event.turn_id);
             stats.audit?.append(event.payload.text);
             if(stats.deltas===1)diagnose('response.first_text',{...ids,elapsed_ms:performance.now()-stats.at});
           }
@@ -347,6 +352,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             if(pending?.sentAt!==undefined)diagnose('cancel.ack',{...ids,ack_ms:performance.now()-pending.sentAt});
             completeStats(event.response_id,'cancelled');
           }
+          const doneText=event.type==='response.done'?replyStats.get(event.response_id)?.text??'':'';
           if(event.type==='response.done')completeStats(event.response_id,'done');
           if(['user.partial','user.final','response.text.delta'].includes(packet.event.type)) {
             const risk=policy.inspect(packet.event.payload.text,{output:packet.event.type==='response.text.delta'});
@@ -388,6 +394,9 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             }).catch(()=>diagnose('planning.rejected',{turn_id:event.turn_id,reason:'planning_failed'}));
           }
           noteSpokenClose(event);
+          if(event.type==='response.done' && !diagnostics && !spokenClose && !ending && (pendingExit || assistantFarewell(doneText))){
+            pendingExit=false;armSpokenClose(event.turn_id);
+          }
           const projected={type:'event',event:packet.event,audio:packet.audio,sample_rate:packet.sample_rate,provider_connected:ready && providerKind==='doubao',synthetic:providerKind!=='doubao'};
           if(outputGate && ['response.started','response.text.delta','response.audio.chunk','response.done'].includes(event.type))outputGate.push(projected);else send(projected);
           if(teaching.completeReply(event)) {

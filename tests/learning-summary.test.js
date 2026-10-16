@@ -22,6 +22,13 @@ function unit(mode='sports',mission=MOCK_MISSION) {
   return {teaching,event,say,forward,reply,finish};
 }
 
+test('an ordering goodbye speaks the sourced topic and does not invite another task',()=> {
+  const chat=unit('free');chat.say('我想点餐。');chat.say('今天就先聊到这里吧');
+  assert.equal(chat.teaching.view().decision.action,'CLOSE');
+  const brief=chat.teaching.closingBrief();
+  assert.match(brief,/话题：日常饮食/);assert.match(brief,/不要邀请下次练习/);
+  assert.equal(brief.includes('点餐'),false);
+});
 test('planned goals/decisions alone are not learned items; empty and ordinary chat are distinct',()=> {
   const empty=unit();const a=empty.finish();assert.equal(a.focus,'insufficient');assert.equal(a.goals.length,1);assert.equal(a.learning_items.length,0);assert.equal(a.review_suggestions.length,0);
   const chat=unit('free');chat.say('今天很热');const b=chat.finish();assert.equal(b.focus,'conversation_only');assert.match(b.headline.zh,/以交流为主/);assert.equal(b.goals.length,0);

@@ -90,8 +90,10 @@ test('a recognized goodbye briefs the real words, lets that reply finish, and st
     provider.control('context.updated',{version:pending.version});
   }
   const brief=provider.contexts.find(c=>c.instructions.includes('本轮结束'));
+  assert.match(brief.instructions,/话题：兴趣爱好/);
   assert.match(brief.instructions,/表达：我喜欢音乐/);
   assert.match(brief.instructions,/词汇：/);
+  assert.match(brief.instructions,/不要邀请下次练习/);
   assert.equal(brief.instructions.includes('知识点：'),false);
   assert.equal(provider.muted,true);
   assert.equal(provider.spoken,undefined);
@@ -132,18 +134,48 @@ test('a question about the word goodbye does not let the provider exit signal cl
   assert.equal(packets.some(p=>p.type==='session.closed'),false);
   ws.close();await once(ws,'close');
 });
-test('Doubao exit signal closes and saves without a second fixed script or cutting playback',async t=> {
-  const f=await fixture(t),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json();
+test('Doubao exit signal enters the closing brief without cutting playback',async t=> {
+  const f=await fixture(t,{closeSpeechWaitMs:40}),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json();
   const {ws,provider,packets}=await f.open(ticket);
   provider.emit('session.ready');
   provider.emit('user.final',{text:'我喜欢音乐。'},{turn_id:'talk'});
   await until(()=>packets.some(p=>p.type==='teaching.state'&&p.decision?.turn_id==='talk'));
   provider.control('user.exit.intent',{turn_id:'talk',response_id:'talk-reply'});
+  let brief;
+  for(let i=0;i<6 && !brief;i++){
+    await until(()=>provider.contexts.length>i);
+    provider.control('context.updated',{version:provider.contexts[i].version});
+    brief=provider.contexts[i].instructions.includes('本轮结束')?provider.contexts[i]:undefined;
+  }
   await once(ws,'close');
+  assert.equal(provider.muted,true);
   assert.equal(provider.spoken,undefined);
   assert.equal(packets.some(p=>p.type==='output.stop'),false);
+  assert.equal(packets.some(p=>p.type==='session.closing'),true);
   assert.equal(packets.find(p=>p.type==='learning.record.receipt')?.status,'accepted');
   assert.ok(packets.some(p=>p.type==='session.closed'));
+});
+test('a finished goodbye without an exit code still enters the closing brief',async t=> {
+  const f=await fixture(t,{closeSpeechWaitMs:40}),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json();
+  const {ws,provider,packets}=await f.open(ticket);
+  provider.emit('session.ready');
+  provider.emit('user.final',{text:'我想点餐。'},{turn_id:'talk'});
+  await until(()=>packets.some(p=>p.type==='teaching.state'&&p.decision?.turn_id==='talk'));
+  provider.emit('response.started',{},{turn_id:'talk',response_id:'talk-reply'});
+  provider.emit('response.text.delta',{text:'好的，那今天就先聊到这里，下次想练点餐。'},{turn_id:'talk',response_id:'talk-reply'});
+  await until(()=>provider.cancelled.includes('talk-reply'));
+  provider.emit('response.cancelled',{},{turn_id:'talk',response_id:'talk-reply'});
+  let brief;
+  for(let i=0;i<6 && !brief;i++){
+    await until(()=>provider.contexts.length>i);
+    provider.control('context.updated',{version:provider.contexts[i].version});
+    brief=provider.contexts[i].instructions.includes('本轮结束')?provider.contexts[i]:undefined;
+  }
+  assert.match(brief.instructions,/话题：日常饮食/);
+  assert.match(brief.instructions,/不要邀请下次练习/);
+  await once(ws,'close');
+  assert.equal(packets.some(p=>p.type==='output.stop'),true);
+  assert.ok(packets.some(p=>p.type==='teaching.summary'));
 });
 test('collection diagnostics ignore the Doubao exit signal',async t=> {
   const f=await fixture(t),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json();

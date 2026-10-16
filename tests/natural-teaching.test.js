@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { once } from 'node:events';
 import { TeachingSession } from '../packages/agent-core/teaching.js';
-import { NATURAL_TEACHING_INSTRUCTIONS,TEACHING_POLICY_VERSION,TEACHING_ACTIONS,TEACHING_REASONS,providerExitSuppressed } from '../packages/agent-core/natural-teaching.js';
+import { NATURAL_TEACHING_INSTRUCTIONS,TEACHING_POLICY_VERSION,TEACHING_ACTIONS,TEACHING_REASONS,assistantFarewell,providerExitSuppressed } from '../packages/agent-core/natural-teaching.js';
 import { ExperienceTrace,metadata } from '../apps/realtime-gateway/public/diagnostics.js';
 import { setup,until } from './helpers/realtime.js';
 
@@ -136,8 +136,16 @@ test('farewell pauses the goal and continuing conversation does not implicitly a
   for(const text of ['别结束聊天','不要说再见','Goodbye 是什么意思？'])assert.notEqual(learner().say(text).action,'CLOSE',text);
 });
 
+test('a spoken goodbye is a farewell, a word question is not',()=>{
+  assert.equal(assistantFarewell('好的，那今天就先聊到这里，下次想练点餐或者别的中文都可以找我呀。Okay, let\'s stop here for today.'),true);
+  assert.equal(assistantFarewell('今天就到这里。'),true);
+  assert.equal(assistantFarewell('再见是什么意思？'),false);
+  assert.equal(assistantFarewell('先聊到这里这个词怎么说？'),false);
+  assert.equal(assistantFarewell('你好，今天想聊点什么？'),false);
+  assert.equal(assistantFarewell('先聊到这里。'),false);
+});
 test('ending is advisory, quotes/translation questions cannot control the session',()=>{
-  for(const text of ['再见。','我不聊了。','不想聊了。','我不想聊了。','哎呀我不想聊了。','那就聊到这儿。','那就聊到这里','聊到这儿','先聊到这儿','Goodbye Kai.','End the conversation.','I have to go. Can we chat tomorrow?']) {
+  for(const text of ['再见。','我不聊了。','不想聊了。','我不想聊了。','哎呀我不想聊了。','那就聊到这儿。','那就聊到这里','聊到这儿','先聊到这儿','Goodbye Kai.','End the conversation.','I have to go. Can we chat tomorrow?','今天就先聊到这里吧','结束对话吧','我想结束了','我想结束这个对话','可以结束了吗','那今天就先聊到这里','先这样吧','再见吧','我们结束吧','下次再聊吧','请结束对话','停止聊天']) {
     const {session,say}=learner();const d=say(text);assert.equal(d.action,'CLOSE');assert.equal(d.new_points,0);
     assert.equal(session.stage,'closing');assert.equal(d.advisory,true);
   }

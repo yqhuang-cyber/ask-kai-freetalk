@@ -1,13 +1,13 @@
 import { languageHelpKind } from './language-support.js';
 import { supportedExpression } from './learner-feedback.js';
 // Conservative, session-local rules over validated final ASR; not a semantic judge.
-export const TEACHING_POLICY_VERSION='kai-teaching-v10';
+export const TEACHING_POLICY_VERSION='kai-teaching-v11';
 export const TEACHING_COOLDOWN_TURNS=2;
 export const TEACHING_ACTIONS=Object.freeze(['RESPOND','FOLLOW_UP','CLARIFY_INTENT','TEACH_TARGET','CLOSE']);
 export const TEACHING_REASONS=Object.freeze(['student_end','student_declined','student_changed_topic','student_requested_practice','student_requested_help','student_understanding_help','student_continuation_help','ambiguous_expression','unclear_input','prior_context_reference','clarification_limit','teaching_paused','teaching_cooldown','goal_attempt_observed','relevant_short_answer','ordinary_question','conversation_first']);
 export const NATURAL_TEACHING_INSTRUCTIONS=`自然教学策略 ${TEACHING_POLICY_VERSION}：每个完整学生回合只选一个主要动作，先回应当前意图，再考虑目标。主动作是交流重心，可以包含接住具体内容、相关补充和自然追问，不限制为一句话或简单应答；不要用泛泛表扬代替交流。
-学生明确结束：只用一两句轻声收束，不追加问题、练习邀请或下次任务。若本轮指令末尾列出了词汇和表达，只自然带上那些真实内容，然后告别；列表为空就只告别。不要编造内容，不要说出“词汇”“表达”这些标签，不要声称掌握。不要把提到“再见”、翻译请求或引语当成结束。
-结束与回顾同时提出时，主动作仍是结束：口头仍是轻声收束，不逐项读词表。详细列表在关闭后显示。不能因为用户请求完整复盘就把结束改成继续教学。学生说聊完了、不想聊了、练习结束或先到这里，也属于结束，不只识别bye。
+学生明确结束：只用一两句轻声收束，不追加问题、练习邀请或下次任务。若本轮指令末尾列出了话题、词汇和表达，只自然带上那些真实内容，然后告别；列表为空就说明这轮是在聊天，然后告别。不要编造内容，不要说出“话题”“词汇”“表达”这些标签，不要声称掌握。不要把提到“再见”、翻译请求或引语当成结束。
+结束与回顾同时提出时，主动作仍是结束：口头仍是轻声收束，不逐项读词表。详细列表在关闭后显示。不能因为用户请求完整复盘就把结束改成继续教学。学生说聊完了、不想聊了、练习结束、先到这里、结束吧、可以结束了吗，也属于结束；句尾的吧、了、呀不取消结束。否定和询问词义不是结束。不只识别bye。
 学生拒绝练习或换题：直接接住当前内容，暂停原目标，不示范旧目标、不要求理由、不邀请重试。只有学生明确求助于原目标或恢复该练习才重新激活。新话题或“这个词／句子”的表达求助只处理该表达，不激活旧目标；提到旧关键词、正确目标句或普通聊天也不构成恢复许可。
 先用实际前文理解学生所指，再决定是否澄清；“这个／that”不是必须澄清的关键词。如果所指对象或词义在实际前文已明确，直接接住，不重复确认。翻译、表达求助中的多义词缺少必要对象／含义时，先问一个短问题，暂不给猜测式翻译；如 bank 未说明含义，不能擅自选银行。
 表达求助也可能是澄清动作，不默认一收到“怎么说”就给示范。词在当前用途有不同中文表达而对象未明确时，先确认一个含义，暂不先选一个翻译再问是否正确。对象已由当前输入或实际前文明示时直接回答；理解不清楚的代词不能用画像兴趣补成指称。后台的词义线索只是来自已接受学生回合的有限提示，模型仍检查实际前文，不把提示当语义裁判。
@@ -23,12 +23,15 @@ export const NATURAL_TEACHING_INSTRUCTIONS=`自然教学策略 ${TEACHING_POLICY
 export function controlText(text) {
   return text.replace(/“[^”]*”|「[^」]*」|『[^』]*』|"[^"]*"|(?<![\p{L}\p{N}])'[^'\n]+'(?![\p{L}\p{N}])|‘[^’]*’/gu,' ').trim();
 }
-const endIntent=/^(?:(?:我(?:要|想)?|我们)?(?:不聊了|结束(?:对话|聊天|这轮)|先聊到这里)|(?:今天)?(?:就)?到这里|(?:我要走了|再见|拜拜|先这样)|(?:bye|goodbye|stop chatting|end (?:the )?(?:chat|conversation)|i (?:want to end|have to go|need to go)|that'?s (?:all|enough for today)))(?:[。.!！,，\s]|$)/iu;
-const explicitEnd=/^(?:please\s+)?(?:(?:let['’]?s|we can|i(?:\s+will|['’]ll))\s+(?:stop|end|finish)\s+(?:here|now|for today|(?:the |our |this |both )?(?:[a-z]+\s+){0,3}(?:chat|conversation|practice|talk|topics))|(?:end|stop|finish)\s+(?:now|here|(?:the |our |my |this )?(?:[a-z]+\s+){0,3}(?:chat|conversation|practice|talk))|(?:i(?:\s+am|['’]m)|we(?:\s+are|['’]re))\s+(?:done|ending)(?:\s+(?:now|here|for today|chatting))?|i (?:need|have) to leave|(?:speaking |listening |shopping )?practice is over|that is enough)(?:[\s,，.!！?？]|$)|^(?:我(?:今天)?(?:聊完了|要离开了|得走了)|(?:我们)?(?:今天)?(?:就)?(?:先)?(?:到这[里儿]|聊到这[里儿])|(?:这次|本次)?(?:练习|对话|聊天)(?:结束了|结束)|结束(?:这次|本次)?(?:练习|对话|聊天))(?:[\s,，。.!！?？]|$)/iu;
-const endQuestion=/^(?:can|could|may) we (?:please )?(?:stop|end|finish) (?:here|now|for today|(?:the |our |this )?(?:chat|conversation|practice|talk))(?:[\s,.!！?？]|$)/iu;
-const bareEnd=/^(?:please )?(?:let['’]?s (?:end|stop|finish)|end|stop|finish)$/iu;
+const endTail='(?:了)?(?:[吧呗啦呀啊哦呢])*(?:[。.!！,，?？\\s]*)$';
+const englishTail='(?:[\\s,，.！!?？].*)?$';
+const endIntent=new RegExp(`^(?:(?:我(?:要|想)?|我们|可以|能不能|能|请)?(?:不聊了|别聊了|结束(?:一下)?(?:这个|这次|本次)?(?:对话|聊天|这轮)|停止(?:这个|这次|本次)?(?:对话|聊天)|退出(?:这个)?(?:对话|聊天)|结束(?:一下)?|先聊到这里|下次再聊)|(?:今天|现在)?(?:就)?(?:先)?到这里|(?:(?:今天|现在)(?:就)?(?:先)?这样|(?:就)?先这样|就这样)|(?:我要走了|再见|拜拜))${endTail}|^(?:(?:bye|goodbye)(?:\\s+[A-Za-z][\\p{L}\\p{N}'’-]{0,31})?|stop chatting|end (?:the )?(?:chat|conversation)|i (?:want to end|have to go|need to go)|that'?s (?:all|enough for today))${englishTail}`,'iu');
+const explicitEnd=new RegExp(`^(?:please\\s+)?(?:(?:let['’]?s|we can|i(?:\\s+will|['’]ll))\\s+(?:stop|end|finish)\\s+(?:here|now|for today|(?:the |our |this |both )?(?:[a-z]+\\s+){0,3}(?:chat|conversation|practice|talk|topics))|(?:end|stop|finish)\\s+(?:now|here|(?:the |our |my |this )?(?:[a-z]+\\s+){0,3}(?:chat|conversation|practice|talk))|(?:i(?:\\s+am|['’]m)|we(?:\\s+are|['’]re))\\s+(?:done|ending)(?:\\s+(?:now|here|for today|chatting))?|i (?:need|have) to leave|(?:speaking |listening |shopping )?practice is over|that is enough)${englishTail}|^(?:我(?:今天)?(?:聊完了|要离开了|得走了)|(?:我们)?(?:今天)?(?:就)?(?:先)?(?:到这[里儿]|聊到这[里儿])|(?:这次|本次)?(?:练习|对话|聊天)(?:结束了|结束)|结束(?:这个|这次|本次)?(?:练习|对话|聊天)|(?:我(?:想|要)|我们|可以|能不能|能|请)?结束了)${endTail}`,'iu');
+const endQuestion=new RegExp(`^(?:can|could|may) we (?:please )?(?:stop|end|finish) (?:here|now|for today|(?:the |our |this )?(?:chat|conversation|practice|talk))(?:[\\s,.!！?？]*)$|^(?:(?:我们|那我们|那就|那)?(?:可以|能不能|能)(?:请)?(?:现在)?结束(?:一下)?(?:这个|这次|本次)?(?:对话|聊天|练习)?了?吗)(?:[。.!！?？\\s]*)$`,'iu');
+const bareEnd=/^(?:please )?(?:let['’]?s (?:end|stop|finish)|end|stop|finish)(?:[\s.！!]*)$/iu;
+const refusedEnd=/^(?:请)?(?:别|不要|不用|先别|不)(?:再)?(?:结束|停|说再见)|不想(?:再)?结束|(?:\b(?:do not|don'?t|not)\b)\s*(?:re\s*)?(?:\bend\b|\bstop\b|\bfinish\b)|\bstop saying\b|\bi'?m not done\b|\bi am not done\b/iu;
 const endWordDiscussion=/^(?:bye|goodbye|再见)(?:\s+(?:is|means|as)\b|\s*(?:这个词|是(?:一个)?(?:词|告别语)|的意思))/iu;
-const reluctantEnd=/^(?:哎呀\s*)?(?:(?:我|我们)?不想聊了|(?:那就|那)?(?:先)?聊到这[儿里])(?:[。.!！,，\s]|$)/u;
+const reluctantEnd=new RegExp(`^(?:哎呀\\s*)?(?:(?:我|我们)?不想聊了|(?:那就|那)?(?:先)?聊到这[儿里])${endTail}`,'u');
 const declineIntent=/(?:^|[，,。.!！;；\s])(?:我)?(?:先)?(?:不想|不愿意|不要|不用|不)(?:再)?(?:练习|学习|复习|跟读|重说|纠正)|(?:不练了|不学了|跳过(?:练习|复习|这个目标)|只想(?:聊天|聊聊)|(?:不要|不用|别)(?:再)?(?:教我|考我))|\b(?:i (?:do not|don'?t|don’t) want to (?:practice|learn|review)|(?:don'?t|don’t|stop) (?:teach|teaching|correct|correcting) me|skip (?:the )?(?:lesson|practice|review)|no (?:more )?(?:practice|lessons)|just (?:chat|talk))\b/iu;
 const changeIntent=/(?:换(?:个|一个)?话题|换题|聊点别的|(?:我想|我要|我们来)聊)|\b(?:let'?s (?:talk|chat) about|can we (?:talk|chat) about|change (?:the )?(?:topic|subject)|talk about something else)\b/iu;
 const keepTopic=/(?:不(?:要|想)?|别)换(?:个|一个)?(?:话题|题)|\b(?:do not|don'?t|don’t|not) change (?:the )?(?:topic|subject)\b/iu;
@@ -57,9 +60,30 @@ export function sportsExpression(text) {
 }
 export function sportsAttempt(text) {return sportsExpression(text)!==null;}
 
+function endingClause(raw) {
+  const text=raw.trim();
+  if(!text||endWordDiscussion.test(text)||refusedEnd.test(text))return false;
+  const peeled=text.replace(/^(?:嗯+|啊+|哦+|哎+|呃+|好了|好的|好|行了|行|okay|ok|那就|那么|那)(?!个)(?=\S)/iu,'').trim();
+  return [text,...(peeled&&peeled!==text?[peeled]:[])].some(clauseEnds);
+}
+function clauseEnds(text) {
+  if(endWordDiscussion.test(text)||refusedEnd.test(text))return false;
+  if(endQuestion.test(text))return true;
+  if(questionInput.test(text))return false;
+  return endIntent.test(text)||explicitEnd.test(text)||bareEnd.test(text)||reluctantEnd.test(text);
+}
 function studentEnd(text) {
   const clauses=text.split(/(?<!\p{N})\.(?!\p{N})|[，,。？！!?；;\n]/u).filter(c=>!languageQuestion.test(c));
-  return clauses.some(c=>!endWordDiscussion.test(c.trim())&&((endIntent.test(c.trim())||explicitEnd.test(c.trim())||bareEnd.test(c.trim())||reluctantEnd.test(c.trim()))&&!questionInput.test(c.trim())||endQuestion.test(c.trim())));
+  return clauses.some(endingClause);
+}
+// A finished Kai reply can show that this turn already ended even when the
+// student transcript missed the local rules and audio.done has no exit code.
+export function assistantFarewell(text) {
+  if(typeof text!=='string')return false;
+  const clean=text.replace(/\s+/gu,' ').trim();
+  if(!clean||[...clean].length>240)return false;
+  if(/什么意思|怎么说|怎么讲|什么叫|这个词|\bmeans\b|how (?:do|to) say/iu.test(clean))return false;
+  return /那今天就先聊到这里|今天就先聊到这里|那就先聊到这里|今天就到这里|那就到这里|let'?s stop here for today/iu.test(clean);
 }
 // Doubao's exit signal is ignored when this transcript is asking about the
 // word or is a question our own rules do not treat as ending. Empty text stays

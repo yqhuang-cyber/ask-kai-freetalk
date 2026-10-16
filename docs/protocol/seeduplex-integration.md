@@ -71,10 +71,12 @@ disabled. The voice adapter adds one field on `session.create`:
 profile JSON stays without it, so pinned connect-probe hashes do not move.
 The full-duplex page says this makes
 `response.output_audio.done` carry an exit-intent signal for the client to close.
-That page does not print the signal JSON. 接入必读 maps the event to old
-`TTSEnded`, whose published example uses `status_code` `"20000002"`. The adapter
-reads that value, then the client closes and saves. No safety setting is inferred
-from any other demo extension field.
+That page does not print the signal JSON. A live 1.2.6.1 session on 2026-10-16
+showed the shape: an exit query adds top-level `status_code` `"20000002"` on
+`response.output_audio.done`; an ordinary completion omits the field.
+`response.done` remains usage-only and does not carry it. The adapter reads
+that value, then the gateway enters the same closing brief. No safety setting
+is inferred from any other demo extension field.
 
 ## Internal setup
 
