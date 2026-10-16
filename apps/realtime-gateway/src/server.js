@@ -16,6 +16,8 @@ import { LEARNER_PARTS } from '../../../packages/contracts/learner-data.js';
 
 const publicDir = new URL('../public/', import.meta.url);
 const staticFiles = new Map([
+  ['/closing-playback.js',['closing-playback.js','text/javascript']],
+  ['/packages/contracts/conversation-record.js',['../../../packages/contracts/conversation-record.js','text/javascript']],
   ['/', ['index.html','text/html']], ['/web.js', ['web.js','text/javascript']], ['/web.css', ['web.css','text/css']],
   ['/audio.js',['audio.js','text/javascript']], ['/capture-worklet.js',['capture-worklet.js','text/javascript']],
   ['/failure-messages.js',['failure-messages.js','text/javascript']],
@@ -90,6 +92,12 @@ export function createGateway({ paceMs = 120, bridge, memoryPort, privacyPort, p
       if (req.method === 'GET' && url.pathname === '/healthz') return json(res, 200, { service:'ask-kai', mode:pocPort?'standalone_poc':'synthetic_replay', provider_connected:false, status:'ok' });
       if (req.method === 'GET' && url.pathname === '/api/replays') return json(res, 200, { scenarios:SCENARIOS });
       if(req.method==='GET'&&url.pathname==='/api/topics'){if(!planningPort?.topics)return json(res,200,{managed:false,topics:[]});try{return json(res,200,{managed:true,topics:await planningPort.topics.list()});}catch{return json(res,503,{managed:true,topics:[],error:'TOPIC_SERVICE_UNAVAILABLE'});}}
+      if(req.method==='GET'&&url.pathname.startsWith('/api/conversations/')) {
+        const id=url.pathname.slice('/api/conversations/'.length);if(!/^[A-Za-z0-9_-]{1,128}$/.test(id)||url.search)return json(res,400,{error:'INVALID_CONVERSATION_ID'});
+        let identity;try{identity=authorize(req,'context:read');}catch{return json(res,401,{error:'HSKAI_AUTHORIZATION_REQUIRED'});}
+        if(!planningPort?.readConversation)return json(res,501,{error:'CONVERSATION_RECORD_UNAVAILABLE'});
+        try{return json(res,200,await planningPort.readConversation(identity,id));}catch{return json(res,404,{error:'CONVERSATION_NOT_FOUND'});}
+      }
       if(req.method==='GET' && url.pathname==='/api/runtime')return json(res,200,{app:'ask-kai-agent-poc',backend:pocPort?'mock_hskai':bridge?'external_hskai':'unconfigured',voice_configured:realtime.available,provider_connected:false,mock_persistence:pocPort?'process_memory':null,planning:{mode:planningMode,available:!!preparations,planner_configured:!!planner,controlled_available:false},entry_previews:planningMode==='legacy'?Object.fromEntries(['sports','free'].map(mode=>[mode,new TeachingSession({sessionId:'preview',mode}).view()])):{}});
       if(url.pathname==='/api/conversation-preparations'||url.pathname.startsWith('/api/conversation-preparations/')) {
         if(!preparations)return json(res,501,{error:'PLANNING_NOT_CONFIGURED'});
@@ -198,7 +206,7 @@ export function createGateway({ paceMs = 120, bridge, memoryPort, privacyPort, p
           }catch{return json(res,409,{error:'PREPARATION_UNAVAILABLE_OR_STALE'});}
         } else if(input.preparation_id!==undefined)return json(res,400,{error:'PLANNING_NOT_CONFIGURED'});
         try{bridge?.consume(identity);}catch{return json(res,401,{error:'LAUNCH_ALREADY_USED'});}
-        try{return json(res,201,realtime.create({origin,mode:input.mode==='topic'&&planning?.resource?.id==='sports'?'sports':input.mode,identity,planning,bindPlanning:preparations?(result,id)=>preparations.bind(result,id):undefined,speechPace:speechAvailable?(input.speech_pace??DEFAULT_SPEECH_PACE):undefined}));}catch{return json(res,429,{error:'SESSION_CAPACITY'});}
+        try{return json(res,201,await realtime.create({origin,mode:input.mode==='topic'&&planning?.resource?.id==='sports'?'sports':input.mode,identity,planning,bindPlanning:preparations?(result,id)=>preparations.bind(result,id):undefined,speechPace:speechAvailable?(input.speech_pace??DEFAULT_SPEECH_PACE):undefined}));}catch(error){const unavailable=error.message==='CONVERSATION_RECORD_UNAVAILABLE';return json(res,unavailable?503:429,{error:unavailable?'CONVERSATION_RECORD_UNAVAILABLE':'SESSION_CAPACITY'});}
       }
       if (req.method === 'GET' && url.pathname.startsWith('/api/replays/')) {
         const id = url.pathname.slice('/api/replays/'.length);

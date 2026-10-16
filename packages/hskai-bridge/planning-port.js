@@ -1,4 +1,5 @@
-import { randomUUID } from 'node:crypto';
+import { validateConversationRecord } from '../contracts/conversation-record.js';
+import { randomUUID,createHash } from 'node:crypto';
 import { signAssertion } from './identity.js';
 import { bridgeEndpoint } from './endpoint.js';
 import { requireIdentity,validateLearnerContext,validateCurriculum,validateLearningRecord,isId } from '../contracts/planning.js';
@@ -20,6 +21,19 @@ export class HskaiPlanningPort {
     const result=validateCurriculum(await this.request(identity,'resource',{mode:entry.mode,resource_id:entry.mode==='mission'?entry.mission_id:entry.topic_id??'sports'},'curriculum:read',signal));
     if(result.id!==(entry.mode==='mission'?entry.mission_id:entry.topic_id??'sports')||result.kind!==(entry.mode==='mission'?'mission':'topic'))throw new Error('WRONG_CURRICULUM');
     return result;
+  }
+  async openConversation(identity,sessionId,mode,{signal}={}) {return this.request(identity,'conversation_open',{session_id:sessionId,mode},'session:create',signal);}
+  async saveConversation(identity,record,{signal}={}) {
+    validateConversationRecord(record);
+    const result=await this.request(identity,'conversation_save',{record},'learning:write',signal);
+    if(result.status!=='accepted'||result.session_id!==record.session_id||result.summary_revision!==record.summary.revision||result.summary_hash!==createHash('sha256').update(JSON.stringify(record)).digest('hex')||result.mocked!==true||result.persistence!=='process_memory')throw new Error('INVALID_CONVERSATION_RECEIPT');
+    return result;
+  }
+  async readConversation(identity,sessionId) {
+    if(!isId(sessionId))throw new Error('INVALID_CONVERSATION');
+    const result=await this.request(identity,'conversation_read',{session_id:sessionId});
+    if(result.session_id!==sessionId||result.mocked!==true)throw new Error('INVALID_CONVERSATION_RECEIPT');
+    if(result.record){validateConversationRecord(result.record);if(result.record.session_id!==sessionId)throw new Error('INVALID_CONVERSATION_RECEIPT');}return result;
   }
   async append(identity,record,idempotencyKey,{signal}={}) {
     validateLearningRecord(record);if(!isId(idempotencyKey)||idempotencyKey!==record.session_id)throw new Error('INVALID_RECORD_KEY');

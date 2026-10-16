@@ -27,6 +27,16 @@ export function isSeeduplexExitExtension(extension) {
 export function isSeeduplexExitSignal(raw) {
   return raw?.status_code === '20000002' || raw?.status_code === 20000002;
 }
+function visibleProviderEvent(value,depth=0) {
+  if(value==null||typeof value==='number'||typeof value==='boolean')return value;
+  if(typeof value==='string')return value.length>400?`[省略 ${value.length} 字符]`:value;
+  if(Array.isArray(value))return depth>3?`[数组 ${value.length}]`:value.slice(0,20).map(item=>visibleProviderEvent(item,depth+1));
+  if(typeof value==='object') {
+    if(depth>4)return {keys:Object.keys(value)};
+    return Object.fromEntries(Object.entries(value).map(([key,item])=>[key,visibleProviderEvent(item,depth+1)]));
+  }
+  return String(value);
+}
 export function validateSeeduplexProfile(profile,{protocolProbe=false}={}) {
   validateProfile(profile);
   const rt = profile.realtime, session = profile.session_create.session;
@@ -208,6 +218,7 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
         if(this.audioLane===reply){this.audioLane=null;this.audioFence=true;}
         // Signal the client before completing output, so a local closing script
         // cannot start after Doubao has already marked this reply as an exit.
+        this.onEvent({control:'audio.done.observed',body:visibleProviderEvent(raw)});
         if(isSeeduplexExitSignal(raw))this.onEvent({control:'user.exit.intent',turn_id:reply.turn,response_id:reply.id});
         this.completeOutput(reply);return;
       }

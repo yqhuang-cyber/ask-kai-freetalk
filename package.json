@@ -37,7 +37,9 @@
     "probe:planning:fc": "node --env-file-if-exists=.env scripts/fc-planning-probe.js",
     "eval:agent": "node --env-file-if-exists=.env scripts/agent-eval.js",
     "review:planning": "node --env-file-if-exists=.env scripts/review-planning.js",
-    "eval:agent:long": "node scripts/long-session-eval.js"
+    "eval:agent:long": "node scripts/long-session-eval.js",
+    "test:browser:closing": "node scripts/closing-browser-check.js",
+    "probe:closing": "node --env-file-if-exists=.env scripts/closing-voice-probe.js"
   },
   "dependencies": {
     "@earendil-works/pi-agent-core": "1.2.0",

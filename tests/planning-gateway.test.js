@@ -47,7 +47,7 @@ test('explicit end-save writes attempted-only mock record, returns receipt, dedu
   provider.emit('session.ready');provider.emit('user.final',{text:'我下午打篮球。'},{turn_id:'turn-a'});
   await until(()=>packets.some(p=>p.type==='teaching.state'&&p.attempt_count===1));ws.send(JSON.stringify({type:'session.end',save_learning:true}));await once(ws,'close');
   const receipt=packets.find(p=>p.type==='learning.record.receipt');assert.equal(receipt.status,'accepted');assert.equal(receipt.mocked,true);
-  const i=f.backend.bridge.verify(await f.backend.pocPort.issue(),'session:create'),context=await f.backend.planningPort.read(i);assert.ok(context.learning_history.some(h=>h.activity_type==='ask_kai'&&h.observations.some(line=>line.startsWith('知识点：'))));
+  const i=f.backend.bridge.verify(await f.backend.pocPort.issue(),'session:create'),context=await f.backend.planningPort.read(i);assert.ok(context.learning_history.some(h=>h.activity_type==='ask_kai'&&h.resource_id===ticket.session_id&&h.observations.some(line=>line.includes('会话小结'))));
   assert.equal(context.learning_profile.kp_states[1].evidence_state,'prompted_attempt');
 });
 test('mock planning ports separate owners/scopes, reject fabricated mastery and deduplicate record writes',async t=> {
@@ -74,54 +74,31 @@ test('planning diagnostics preserve anonymous causal fields without prompt, stud
   assert.equal(clean.rejection_code,'PREREQUISITE_UNVERIFIED');assert.equal(clean.goal_status,'paused');assert.deepEqual(metadata({rejection_code:'PRIVATE'}),{});
   const trace=new ExperienceTrace();trace.gateway({name:'planning.accepted',at_ms:2,fields:clean});assert.equal(trace.snapshot().timeline[0].turn_ref,'t1');assert.equal(trace.snapshot().contains_text,false);
 });
-test('a recognized goodbye briefs the real words, lets that reply finish, and still saves the detailed record',async t=> {
-  const f=await fixture(t),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json();
-  const {ws,provider,packets}=await f.open(ticket);
-  provider.emit('session.ready');
-  provider.emit('user.final',{text:'我喜欢音乐。'},{turn_id:'talk'});
-  provider.emit('response.started',{},{turn_id:'talk',response_id:'talk-reply'});
-  provider.emit('response.done',{},{turn_id:'talk',response_id:'talk-reply'});
-  provider.emit('user.final',{text:'再见。'},{turn_id:'bye'});
-  const acked=new Set();
-  for(let i=0;i<6&&!provider.contexts.some(c=>c.instructions.includes('本轮结束'));i++){
-    await until(()=>provider.contexts.length>acked.size);
-    const pending=provider.contexts.find(c=>!acked.has(c.version));
-    acked.add(pending.version);
-    provider.control('context.updated',{version:pending.version});
-  }
-  const brief=provider.contexts.find(c=>c.instructions.includes('本轮结束'));
-  assert.match(brief.instructions,/话题：兴趣爱好/);
-  assert.match(brief.instructions,/表达：我喜欢音乐/);
-  assert.match(brief.instructions,/词汇：/);
-  assert.match(brief.instructions,/不要邀请下次练习/);
-  assert.equal(brief.instructions.includes('知识点：'),false);
-  assert.equal(provider.muted,true);
-  assert.equal(provider.spoken,undefined);
-  assert.equal(packets.some(p=>p.type==='output.stop'),false);
-  provider.emit('response.started',{},{turn_id:'bye',response_id:'bye-reply'});
-  provider.emit('response.done',{},{turn_id:'bye',response_id:'bye-reply'});
-  await once(ws,'close');
-  const summaryIndex=packets.findIndex(p=>p.type==='teaching.summary'),closedIndex=packets.findIndex(p=>p.type==='session.closed');
-  assert.ok(summaryIndex>=0&&summaryIndex<closedIndex);
-  assert.equal(packets.find(p=>p.type==='learning.record.receipt').status,'accepted');
-  const identity=f.backend.bridge.verify(await f.backend.pocPort.issue(),'session:create'),context=await f.backend.planningPort.read(identity);
-  const saved=context.learning_history.find(row=>row.observations.some(line=>line.includes('我喜欢音乐')));
-  assert.ok(saved);assert.ok(saved.observations.some(line=>line.startsWith('知识点：')));assert.ok(saved.observations.some(line=>line.startsWith('表达：')));
+async function reportClosing(live,state='text_only',audioMs=0) {
+  await until(()=>live.packets.some(p=>p.type==='session.closing'&&p.phase==='awaiting_playback'));
+  const c=live.packets.filter(p=>p.type==='session.closing').at(-1);
+  live.ws.send(JSON.stringify({type:'closing.playback',closing_id:c.closing_id,response_id:c.response_id,summary_revision:c.summary_revision,state,audio_ms:audioMs}));
+  await once(live.ws,'close');
+}
+test('a recognized goodbye keeps full duplex and saves after its owned playback report',async t=> {
+  const f=await fixture(t),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json(),live=await f.open(ticket),p=live.provider;
+  p.updateContext=v=>{p.contexts.push(v);p.control('context.updated',{version:v.version});};p.emit('session.ready');
+  p.emit('user.final',{text:'我喜欢音乐。'},{turn_id:'talk'});
+  p.emit('response.started',{},{turn_id:'talk',response_id:'talk-reply'});p.emit('response.done',{},{turn_id:'talk',response_id:'talk-reply'});
+  p.emit('user.final',{text:'再见。'},{turn_id:'bye'});
+  assert.equal(p.muted,undefined);assert.equal(p.spoken,undefined);
+  p.emit('response.started',{},{turn_id:'bye',response_id:'bye-reply'});p.emit('response.done',{},{turn_id:'bye',response_id:'bye-reply'});
+  assert.equal(p.closed,undefined);await reportClosing(live);
+  const summaryIndex=live.packets.findIndex(p=>p.type==='teaching.summary'),closedIndex=live.packets.findIndex(p=>p.type==='session.closed');assert.ok(summaryIndex>=0&&summaryIndex<closedIndex);
+  assert.equal(live.packets.find(p=>p.type==='conversation.record.receipt').status,'accepted');
+  const saved=await(await f.call('GET',`/api/conversations/${ticket.session_id}`)).json();assert.ok(saved.record.summary.knowledge_points.some(k=>k.text==='我喜欢音乐'));assert.equal(saved.record.summary_delivery,'text_only');
 });
-test('a goodbye that already has reply text is cancelled, then closes if no new reply starts',async t=> {
-  const f=await fixture(t,{closeSpeechWaitMs:40}),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json();
-  const {ws,provider}=await f.open(ticket);
-  provider.emit('session.ready');
-  provider.emit('response.started',{},{turn_id:'talk',response_id:'talk-reply'});
-  provider.emit('response.text.delta',{text:'好的。'},{turn_id:'talk',response_id:'talk-reply'});
-  provider.emit('user.final',{text:'不想聊了。'},{turn_id:'bye'});
-  await until(()=>provider.cancelled.includes('talk-reply'));
-  provider.emit('response.cancelled',{},{turn_id:'talk',response_id:'talk-reply'});
-  await until(()=>provider.contexts.some(c=>c.instructions.includes('本轮结束')));
-  const brief=provider.contexts.find(c=>c.instructions.includes('本轮结束'));
-  provider.control('context.updated',{version:brief.version});
-  assert.equal(provider.spoken,undefined);
-  await once(ws,'close');
+test('an older reply completion cannot finish a new closing turn; a missing close times out honestly',async t=> {
+  const f=await fixture(t,{closingWaitMs:60}),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json(),live=await f.open(ticket),p=live.provider;
+  p.emit('session.ready');p.emit('response.started',{},{turn_id:'talk',response_id:'talk-reply'});p.emit('response.text.delta',{text:'好的。'},{turn_id:'talk',response_id:'talk-reply'});
+  p.emit('user.final',{text:'不想聊了。'},{turn_id:'bye'});p.emit('response.done',{},{turn_id:'talk',response_id:'talk-reply'});
+  await until(()=>live.packets.some(p=>p.type==='session.closing'));assert.equal(p.closed,undefined);assert.deepEqual(p.cancelled,[]);
+  await once(live.ws,'close');const saved=await(await f.call('GET',`/api/conversations/${ticket.session_id}`)).json();assert.equal(saved.record.summary_delivery,'incomplete');
 });
 test('a question about the word goodbye does not let the provider exit signal close the session',async t=> {
   const f=await fixture(t),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json();
@@ -134,48 +111,18 @@ test('a question about the word goodbye does not let the provider exit signal cl
   assert.equal(packets.some(p=>p.type==='session.closed'),false);
   ws.close();await once(ws,'close');
 });
-test('Doubao exit signal enters the closing brief without cutting playback',async t=> {
-  const f=await fixture(t,{closeSpeechWaitMs:40}),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json();
-  const {ws,provider,packets}=await f.open(ticket);
-  provider.emit('session.ready');
-  provider.emit('user.final',{text:'我喜欢音乐。'},{turn_id:'talk'});
-  await until(()=>packets.some(p=>p.type==='teaching.state'&&p.decision?.turn_id==='talk'));
-  provider.control('user.exit.intent',{turn_id:'talk',response_id:'talk-reply'});
-  let brief;
-  for(let i=0;i<6 && !brief;i++){
-    await until(()=>provider.contexts.length>i);
-    provider.control('context.updated',{version:provider.contexts[i].version});
-    brief=provider.contexts[i].instructions.includes('本轮结束')?provider.contexts[i]:undefined;
-  }
-  await once(ws,'close');
-  assert.equal(provider.muted,true);
-  assert.equal(provider.spoken,undefined);
-  assert.equal(packets.some(p=>p.type==='output.stop'),false);
-  assert.equal(packets.some(p=>p.type==='session.closing'),true);
-  assert.equal(packets.find(p=>p.type==='learning.record.receipt')?.status,'accepted');
-  assert.ok(packets.some(p=>p.type==='session.closed'));
+test('Doubao exit signal binds the finished reply and waits for browser playback without cancellation',async t=> {
+  const f=await fixture(t),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json(),live=await f.open(ticket),p=live.provider;
+  p.emit('session.ready');p.emit('user.final',{text:'我喜欢音乐。'},{turn_id:'talk'});
+  p.emit('response.started',{},{turn_id:'talk',response_id:'talk-reply'});
+  p.control('user.exit.intent',{turn_id:'talk',response_id:'talk-reply'});p.emit('response.done',{},{turn_id:'talk',response_id:'talk-reply'});
+  assert.deepEqual(p.cancelled,[]);assert.equal(p.muted,undefined);assert.equal(p.closed,undefined);await reportClosing(live);assert.ok(live.packets.some(p=>p.type==='session.closed'));
 });
-test('a finished goodbye without an exit code still enters the closing brief',async t=> {
-  const f=await fixture(t,{closeSpeechWaitMs:40}),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json();
-  const {ws,provider,packets}=await f.open(ticket);
-  provider.emit('session.ready');
-  provider.emit('user.final',{text:'我想点餐。'},{turn_id:'talk'});
-  await until(()=>packets.some(p=>p.type==='teaching.state'&&p.decision?.turn_id==='talk'));
-  provider.emit('response.started',{},{turn_id:'talk',response_id:'talk-reply'});
-  provider.emit('response.text.delta',{text:'好的，那今天就先聊到这里，下次想练点餐。'},{turn_id:'talk',response_id:'talk-reply'});
-  await until(()=>provider.cancelled.includes('talk-reply'));
-  provider.emit('response.cancelled',{},{turn_id:'talk',response_id:'talk-reply'});
-  let brief;
-  for(let i=0;i<6 && !brief;i++){
-    await until(()=>provider.contexts.length>i);
-    provider.control('context.updated',{version:provider.contexts[i].version});
-    brief=provider.contexts[i].instructions.includes('本轮结束')?provider.contexts[i]:undefined;
-  }
-  assert.match(brief.instructions,/话题：日常饮食/);
-  assert.match(brief.instructions,/不要邀请下次练习/);
-  await once(ws,'close');
-  assert.equal(packets.some(p=>p.type==='output.stop'),true);
-  assert.ok(packets.some(p=>p.type==='teaching.summary'));
+test('a forwarded goodbye without an exit code closes after playback instead of cancelling the goodbye',async t=> {
+  const f=await fixture(t),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json(),live=await f.open(ticket),p=live.provider;
+  p.emit('session.ready');p.emit('user.final',{text:'我想点餐。'},{turn_id:'talk'});
+  p.emit('response.started',{},{turn_id:'talk',response_id:'talk-reply'});p.emit('response.text.delta',{text:'好的，那今天就先聊到这里。'},{turn_id:'talk',response_id:'talk-reply'});p.emit('response.done',{},{turn_id:'talk',response_id:'talk-reply'});
+  assert.deepEqual(p.cancelled,[]);assert.equal(p.closed,undefined);await reportClosing(live);assert.ok(live.packets.some(p=>p.type==='teaching.summary'));
 });
 test('collection diagnostics ignore the Doubao exit signal',async t=> {
   const f=await fixture(t),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json();
@@ -208,4 +155,23 @@ test('free practice uses host skills without resources and shares the page/voice
   ws.send(JSON.stringify({type:'session.end',save_learning:true}));await once(ws,'close');
   assert.equal(packets.find(p=>p.type==='learning.record.receipt').status,'accepted');
   const summary=packets.find(p=>p.type==='teaching.summary');assert.deepEqual(projectSummary(summary,{sessionId:ticket.session_id,mode:'free'}).observations,[]);assert.equal(summary.summary.goals[0].attempt_rule_supported,false);
+});
+
+test('foreign, negated and older-turn provider exit signals cannot close current conversation',async t=> {
+  const f=await fixture(t),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json(),live=await f.open(ticket),p=live.provider;
+  p.updateContext=v=>p.control('context.updated',{version:v.version});p.emit('session.ready');
+  p.emit('user.final',{text:'不要结束聊天。'},{turn_id:'first'});p.emit('response.started',{},{turn_id:'first',response_id:'first-r'});
+  p.control('user.exit.intent',{turn_id:'first',response_id:'first-r'});p.emit('response.done',{},{turn_id:'first',response_id:'first-r'});
+  p.emit('user.final',{text:'我还想聊音乐。'},{turn_id:'next'});
+  p.control('user.exit.intent',{turn_id:'first',response_id:'first-r'});p.control('user.exit.intent',{turn_id:'next',response_id:'foreign-r'});
+  await until(()=>live.packets.some(p=>p.type==='teaching.state'&&p.decision?.turn_id==='next'));
+  assert.equal(live.packets.some(p=>p.type==='session.closing'),false);assert.equal(p.closed,undefined);
+  live.ws.send(JSON.stringify({type:'session.end'}));await once(live.ws,'close');
+});
+test('diagnostic collection keeps an explicit goodbye reply without automatic browser closure',async t=> {
+  const f=await fixture(t),ticket=await(await f.call('POST','/api/sessions',{mode:'free'})).json(),live=await f.open(ticket),p=live.provider;
+  p.emit('session.ready');live.ws.send(JSON.stringify({type:'diagnostics.enable'}));await until(()=>live.packets.some(p=>p.row?.name==='session.ready'));
+  p.emit('user.final',{text:'再见。'},{turn_id:'end'});p.emit('response.started',{},{turn_id:'end',response_id:'end-r'});p.emit('response.done',{},{turn_id:'end',response_id:'end-r'});
+  await until(()=>live.packets.some(p=>p.event?.type==='response.done'));assert.equal(live.packets.some(p=>p.type==='session.closing'),false);assert.equal(p.closed,undefined);
+  live.ws.send(JSON.stringify({type:'session.end'}));await once(live.ws,'close');
 });

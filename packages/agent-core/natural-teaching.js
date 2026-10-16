@@ -6,8 +6,7 @@ export const TEACHING_COOLDOWN_TURNS=2;
 export const TEACHING_ACTIONS=Object.freeze(['RESPOND','FOLLOW_UP','CLARIFY_INTENT','TEACH_TARGET','CLOSE']);
 export const TEACHING_REASONS=Object.freeze(['student_end','student_declined','student_changed_topic','student_requested_practice','student_requested_help','student_understanding_help','student_continuation_help','ambiguous_expression','unclear_input','prior_context_reference','clarification_limit','teaching_paused','teaching_cooldown','goal_attempt_observed','relevant_short_answer','ordinary_question','conversation_first']);
 export const NATURAL_TEACHING_INSTRUCTIONS=`自然教学策略 ${TEACHING_POLICY_VERSION}：每个完整学生回合只选一个主要动作，先回应当前意图，再考虑目标。主动作是交流重心，可以包含接住具体内容、相关补充和自然追问，不限制为一句话或简单应答；不要用泛泛表扬代替交流。
-学生明确结束：只用一两句轻声收束，不追加问题、练习邀请或下次任务。若本轮指令末尾列出了话题、词汇和表达，只自然带上那些真实内容，然后告别；列表为空就说明这轮是在聊天，然后告别。不要编造内容，不要说出“话题”“词汇”“表达”这些标签，不要声称掌握。不要把提到“再见”、翻译请求或引语当成结束。
-结束与回顾同时提出时，主动作仍是结束：口头仍是轻声收束，不逐项读词表。详细列表在关闭后显示。不能因为用户请求完整复盘就把结束改成继续教学。学生说聊完了、不想聊了、练习结束、先到这里、结束吧、可以结束了吗，也属于结束；句尾的吧、了、呀不取消结束。否定和询问词义不是结束。不只识别bye。
+学生明确结束：先回顾本次目标或交流目的，再总结实际聊到的关键知识点，包括词汇、表达方式或用法，随后简短告别；不追加问题、练习邀请或下次任务。口头选择最有价值的1～3点，不逐项读拼音。根据实际对话与有来源小结数据整理；计划目标不等于实际学过，不声称掌握、发音准确或独立使用。没有知识点时只回顾实际交流，不编造。当前语言规则同样适用。不要把提到“再见”、翻译请求、引语或否定当成结束。学生说聊完了、练习结束或先到这里也属于结束。告别播完后系统自动结束，学生明确继续时先停止收尾再接住当前话题，旧目标不自动恢复。明确马上退出／不用总结或点击结束按钮时立即结束。小结尚未展示、保存未获回执时不要说已经展示或保存。
 学生拒绝练习或换题：直接接住当前内容，暂停原目标，不示范旧目标、不要求理由、不邀请重试。只有学生明确求助于原目标或恢复该练习才重新激活。新话题或“这个词／句子”的表达求助只处理该表达，不激活旧目标；提到旧关键词、正确目标句或普通聊天也不构成恢复许可。
 先用实际前文理解学生所指，再决定是否澄清；“这个／that”不是必须澄清的关键词。如果所指对象或词义在实际前文已明确，直接接住，不重复确认。翻译、表达求助中的多义词缺少必要对象／含义时，先问一个短问题，暂不给猜测式翻译；如 bank 未说明含义，不能擅自选银行。
 表达求助也可能是澄清动作，不默认一收到“怎么说”就给示范。词在当前用途有不同中文表达而对象未明确时，先确认一个含义，暂不先选一个翻译再问是否正确。对象已由当前输入或实际前文明示时直接回答；理解不清楚的代词不能用画像兴趣补成指称。后台的词义线索只是来自已接受学生回合的有限提示，模型仍检查实际前文，不把提示当语义裁判。
@@ -68,6 +67,7 @@ function endingClause(raw) {
 }
 function clauseEnds(text) {
   if(endWordDiscussion.test(text)||refusedEnd.test(text))return false;
+  if(/^(?:请)?(?:现在|马上|立刻)(?:就)?结束(?:本次|这次)?(?:对话|聊天|通话)(?:吧)?$/u.test(text))return true;
   if(endQuestion.test(text))return true;
   if(questionInput.test(text))return false;
   return endIntent.test(text)||explicitEnd.test(text)||bareEnd.test(text)||reluctantEnd.test(text);
@@ -92,7 +92,7 @@ export function providerExitSuppressed(text) {
   if(typeof text!=='string')return false;
   const clean=controlText(text).trim();
   if(!clean)return false;
-  if(endWordDiscussion.test(clean))return true;
+  if(endWordDiscussion.test(clean)||refusedEnd.test(clean))return true;
   if(studentEnd(clean))return false;
   return questionInput.test(clean)||languageQuestion.test(clean);
 }

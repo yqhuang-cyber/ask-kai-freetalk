@@ -1,3 +1,4 @@
+import { ClosingPlayback } from './closing-playback.js';
 import { AudioIO } from './audio.js';
 import { Presentation } from './presentation.js';
 import { ExperienceTrace } from './diagnostics.js';
@@ -9,7 +10,7 @@ const trace=diagnosticsEnabled?new ExperienceTrace():null;
 let selectedLearner='poc-learner',learnerEpoch=0,learnerSwitching=false,authorizationQueue=Promise.resolve();
 const runtimeReady=fetch('/api/runtime').then(r=>{if(!r.ok)throw new Error('RUNTIME_UNAVAILABLE');return r.json();}).then(runtime=>{
   if(runtime.backend==='mock_hskai') {
-    document.querySelector('#backend-note').hidden=false;
+    document.querySelector('#backend-note').hidden=false;document.querySelector('#session-record-note').hidden=false;
     document.querySelector('footer').textContent='Ask Kai 自由对话 · 学习者资料使用本地 mock；语音状态单独显示。';
   }
   return runtime;
@@ -46,10 +47,20 @@ if(diagnosticsEnabled) {
     const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=`ask-kai-baseline-${diagnosticCase}.json`;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
   });
 }
+const closePhases={preparing_close:'开始收束',presenting_close:'正在说收束',awaiting_playback:'等播放完再结束',interrupted:'收束被打断',cancelled:'收束取消了',finalizing_record:'正在写入小结'};
+function appendCloseLog(title,note,body) {
+  const list=document.querySelector('#close-log-list');if(!list)return;
+  const item=document.createElement('li');
+  const heading=document.createElement('strong');heading.textContent=title;item.append(heading);
+  if(note){const line=document.createElement('p');line.textContent=note;item.append(line);}
+  if(body){const block=document.createElement('pre');block.textContent=JSON.stringify(body,null,2);item.append(block);}
+  list.append(item);item.scrollIntoView({block:'nearest'});
+}
+function clearCloseLog() {document.querySelector('#close-log-list')?.replaceChildren();}
 const modes=[...document.querySelectorAll('[data-mode]')];
 const goal=document.querySelector('#goal'),promptTitle=document.querySelector('#prompt-title'),promptHint=document.querySelector('#prompt-hint');
 const connect=document.querySelector('#connect'),status=document.querySelector('#connection-status'),message=document.querySelector('#session-message');
-const summaryCards=new SummaryCards({root:document.querySelector('#session-summary'),link:document.querySelector('#summary-jump'),onRestart:()=>connect.click()});
+const summaryCards=new SummaryCards({root:document.querySelector('#session-summary'),link:document.querySelector('#summary-jump'),onRestart:()=>connect.click(),onReadRecord:async(id,label)=>{try{const r=await authorizedFetch(`/api/conversations/${id}`);if(!r.ok)throw new Error('NOT_SAVED');const result=await r.json();label.textContent=result.record?`服务端已保存本次小结（版本 ${result.record.summary.revision}）；本地 mock 内存，重启重置。`:'服务端已创建会话，小结尚未保存。';}catch{label.textContent='暂未查到本次保存结果，请稍后重试。';}}});
 const mute=document.querySelector('#mute'),end=document.querySelector('#end'),caption=document.querySelector('#caption'),student=document.querySelector('#student-caption');
 const paceSelect=document.querySelector('#speech-pace'),paceHint=document.querySelector('#speech-pace-hint');
 const learnerSelect=document.querySelector('#mock-learner-select'),learnerHint=document.querySelector('#mock-learner-hint');
@@ -64,8 +75,10 @@ const presentation=new Presentation({render:(text,parts)=>{
   previous.className=parts?.complete?'caption-complete':'caption-previous';previous.textContent=parts?.previous??text;
   current.className='caption-current';current.textContent=parts?.current??'';caption.replaceChildren(previous,current);
 },play:(audio,rate,id)=>io?.play(audio,rate,id),getPlayback:id=>io?.playback(id),stopAudio:()=>io?.stopPlayback(),onMode:(mode,details)=>{
+  if(mode==='complete')closingPlayback.check();
   captionHint.textContent=mode==='complete'?(details.has_text?details.text_only?'本轮仅有文字回复，已显示完毕。':'本轮回复已显示。':'本轮没有收到字幕。'):({idle:'字幕会随回复逐段出现。',waiting_audio:'等待语音开始……',playing:'当前字幕短语已加深显示。',paused:'播放已暂停，字幕会随播放继续。',text_only:'本轮未收到语音，正在显示文字回复。'})[mode];
 },onObserve:diagnosticsEnabled?observe:undefined});
+const closingPlayback=new ClosingPlayback({presentation,getPlayback:id=>io?.playback(id),isMuted:()=>muted,send:packet=>{if(ws?.readyState!==WebSocket.OPEN)return false;ws.send(JSON.stringify(packet));return true;}});
 function learning(packet) {
   goal.textContent=packet.goal;promptHint.textContent=packet.start_tip;
   const details=packet.goal_details;
@@ -99,7 +112,7 @@ async function loadSpeechPaces() {
 }
 void loadSpeechPaces();
 async function stop(text='对话已结束。',failed=false) {
-  summaryCards.finish();
+  closingPlayback.reset();summaryCards.finish();
   const stopped=++generation;const previous=ws;ws=null;previous?.close();
   preparationEpoch++;preparer.cancel();preparationPromise=null;
   status.textContent=failed?'连接中断':'未连接';message.textContent=text;message.dataset.state=failed?'failed':'idle';
@@ -113,6 +126,7 @@ async function stop(text='对话已结束。',failed=false) {
   muted=false;mute.setAttribute('aria-pressed','false');mute.textContent='静音';
 }
 connect.addEventListener('click',async()=> {
+  clearCloseLog();
   summaryCards.reset();
   trace?.reset();diagnosticCase=caseSelect.value;outcomeSelect.value='not_run';refreshDiagnostics();
   const current=++generation;controls(true);status.textContent='检查连接';message.textContent='正在检查实时服务……';message.dataset.state='idle';
@@ -147,9 +161,18 @@ connect.addEventListener('click',async()=> {
         const packet=JSON.parse(event.data);
         if(packet.type==='diagnostics.event'){trace?.gateway(packet.row);refreshDiagnostics();return;}
         if(packet.type==='session.config'){config=packet.audio;paceHint.textContent=packet.speech?.supported && ['slow','normal'].includes(packet.speech.pace)?`本次语速：${packet.speech.pace==='slow'?'慢速':'正常'}；结束后可切换。`:'本次使用服务默认语速。';return;}
+        if(packet.type==='close.trace'){appendCloseLog(packet.title??'收束',packet.note??'',packet.body);return;}
+        if(packet.type==='session.closing'){
+          if(packet.session_id!==summaryCards.state.sessionId)return;
+          appendCloseLog(closePhases[packet.phase]??packet.phase,packet.phase==='cancelled'?'这一轮没有结束。':'');
+          if(packet.phase==='cancelled'){closingPlayback.reset();summaryCards.clearPreview();message.textContent='继续交流。';return;}
+          closingPlayback.update(packet,summaryCards.state.sessionId);status.textContent=packet.phase==='finalizing_record'?'正在保存':'正在收尾';message.textContent=packet.phase==='finalizing_record'?'正在更新本次对话小结……':'Kai 正在总结本次对话，播完后自动结束。';
+          if(packet.phase==='finalizing_record')io?.stopCapture();else closingPlayback.check();return;
+        }
+        if(packet.type==='teaching.summary.preview'){summaryCards.preview(packet);return;}
+        if(packet.type==='conversation.record.receipt'){summaryCards.record(packet);return;}
         if(packet.type==='teaching.state'){if(!summaryCards.state.suppressed)learning(packet);return;}
-        if(packet.type==='session.closing'){message.textContent='正在说再见……';io?.stopCapture();return;}
-        if(packet.type==='teaching.summary'){if(summaryCards.accept(packet))learning(packet);return;}
+        if(packet.type==='teaching.summary'){appendCloseLog('页面小结已送到',packet.summary?.headline?.zh??'');if(summaryCards.accept(packet))learning(packet);return;}
         if(packet.type==='learning.record.receipt'){document.querySelector('#learning-attempts').textContent=packet.status==='accepted'?'本轮尝试已保存到本地 mock 内存；重启后重置。':'本轮记录未保存，请保留当前小结。';return;}
         if(packet.type==='session.failed'){if(['AUTHORIZATION_REVOKED','SAFETY_RESTRICTED'].includes(packet.code))suppressLearning(packet.code);observe('browser.failed',{code:packet.code});await stop(safetyMessage ?? failureMessage(packet.code),true);return;}
         if(packet.type==='safety.notice'){suppressLearning('safety');safetyMessage=packet.message;message.textContent=safetyMessage;presentation.stop();await io?.close();return;}
@@ -168,7 +191,7 @@ connect.addEventListener('click',async()=> {
         else if(value.type==='response.text.delta')presentation.append(value.response_id,value.payload.text);
         else if(value.type==='user.partial' || value.type==='user.final')student.textContent=value.payload.text;
         else if(value.type==='response.audio.chunk' && packet.audio)presentation.audio(value.response_id,packet.audio,packet.sample_rate);
-        else if(value.type==='response.done')presentation.done(value.response_id);
+        else if(value.type==='response.done'){presentation.done(value.response_id);closingPlayback.check();}
       } catch(error) {const code=failureCode(error?.message);observe('browser.failed',{code});await stop(safetyMessage ?? failureMessage(code),true);}
     };
     ws.onerror=()=>{if(current===generation)void stop(safetyMessage ?? '无法连接实时服务，请重试。',true);};
@@ -177,7 +200,7 @@ connect.addEventListener('click',async()=> {
 });
 mute.addEventListener('click',()=>{muted=!muted;io?.mute(muted);mute.setAttribute('aria-pressed',String(muted));mute.textContent=muted?'取消静音':'静音';});
 end.addEventListener('click',()=>{
-  if(ws?.readyState===WebSocket.OPEN){ws.send(JSON.stringify({type:'session.end',save_learning:true}));const current=generation;message.textContent='正在结束对话……';void io?.close();setTimeout(()=>{if(current===generation)void stop();},3500);}
+  if(ws?.readyState===WebSocket.OPEN){ws.send(JSON.stringify({type:'session.end',save_learning:true}));const current=generation;message.textContent='正在结束对话……';void io?.close();setTimeout(()=>{if(current===generation)void stop();},5500);}
   else void stop();
 });
 interrupt.addEventListener('click',()=> {

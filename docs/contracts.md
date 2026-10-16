@@ -67,3 +67,25 @@ This SSE contract is diagnostic and is not the learner-facing UI protocol. A
 synthetic session.ready event must never be interpreted as real connectivity.
 Client disconnect stops the fixture generator. Reconnect starts a new replay;
 there is no durable resume, business session or authentication in this shell.
+
+
+## Conversation closing and record (2026-10-16)
+
+`teaching.summary` optionally includes `session_recap` (session-recap-v1) with
+objective/history, sourced vocabulary/expressions and coverage, plus
+`summary_delivery`. The old learning observation fields retain their semantics.
+`teaching.summary.preview` is nonterminal and does not close learning collection.
+The DOM projection strips recap session IDs and source references.
+
+Internal Web messages `session.closing` and `closing.playback` bind closing_id,
+response_id and summary_revision. Only the current completed reply and matching
+browser PCM duration can finish automatic closing; paused/interrupted/foreign or
+obsolete reports cannot. A client report does not prove human consumption.
+
+The signed mock planning boundary adds conversation_open/save/read operations;
+conversation-record-v1 is separate from learning-record-v1/v2. Session summaries
+save automatically under the authorized learner; extra attempted-only writes
+retain their own opt-in. Receipts bind revision and body hash. Authorized
+`GET /api/conversations/:session_id` reads the same session record. No public
+write endpoint accepts client-authored summaries. Mock storage remains process
+memory, disclosed in receipts and UI. See [implementation and limits](conversation-closing-design.md).

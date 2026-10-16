@@ -1,3 +1,4 @@
+import { ClosingCoordinator } from './closing-coordinator.js';
 import { randomUUID } from 'node:crypto';
 import { WebSocketServer } from 'ws';
 import { SessionRuntime } from '../../../packages/agent-core/session.js';
@@ -9,9 +10,9 @@ import { hasSpeechText } from '../../../packages/agent-core/turn-taking.js';
 import { TurnOutputGate } from './output-gate.js';
 import { ReplyAudit,REPLY_POLICY_VERSION } from '../../../packages/agent-core/reply-policy.js';
 import { sameLanguageSupport } from '../../../packages/agent-core/language-support.js';
-import { assistantFarewell,providerExitSuppressed } from '../../../packages/agent-core/natural-teaching.js';
+import { assistantFarewell,providerExitSuppressed,controlText } from '../../../packages/agent-core/natural-teaching.js';
 
-export function attachRealtime(server,{providerFactory,providerKind='doubao',businessSource='unconfigured',planner,planningPort,maxConnections=8,readyTimeoutMs=8000,maxSessionMs=600000,cancelTimeoutMs=1500,contextTimeoutMs=8000,replyGraceMs=350,turnWaitMs=5000,closeSpeechWaitMs=3000,safeguardingPort,metrics}={}) {
+export function attachRealtime(server,{providerFactory,providerKind='doubao',businessSource='unconfigured',planner,planningPort,maxConnections=8,readyTimeoutMs=8000,maxSessionMs=600000,cancelTimeoutMs=1500,contextTimeoutMs=8000,replyGraceMs=350,turnWaitMs=5000,closingWaitMs=12000,closingPlaybackMs=35000,safeguardingPort,metrics}={}) {
   const tickets = new Map();
   const connections = new Set();
   const sessions=new Map();
@@ -38,11 +39,11 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
       const started=performance.now();metrics?.count(providerKind,'sessions');
       let restricted=false,controlCount=0,controlAt=Date.now(),replyAt=null,firstAudio=false;
       let provider;
-      let outputGate;
+      let outputGate,closing;
       let ended = false;
       let ending=false;
-      let spokenClose=null,pendingExit=false;
-      const finalText=new Map();
+      const finalText=new Map(),exitReplies=new Set(),replyText=new Map();
+      let latestInputTurn=null;
       let recordController;
       let ready = false;
       let lastResponse = null;
@@ -56,6 +57,12 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         if(!diagnostics || ws.readyState!==ws.OPEN || ws.bufferedAmount>131072)return;
         try{ws.send(JSON.stringify({type:'diagnostics.event',row:{name,at_ms:performance.now()-started,fields:metadata(fields)}}));}catch{/* Diagnostics do not control the session. */}
       };
+      const traceClose=(title,note,body)=>{
+        if(ws.readyState!==ws.OPEN)return;
+        const packet={type:'close.trace',title,note};
+        if(body&&typeof body==='object')packet.body=body;
+        try{ws.send(JSON.stringify(packet));}catch{/* The trace never controls the session. */}
+      };
       const completeStats=(id,state)=>{
         const s=replyStats.get(id);if(!s)return;
         if(s.audit)diagnose('reply.audit',{response_id:id,turn_id:s.turn,state,...s.audit.finish(state)});
@@ -67,18 +74,43 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         if (ended || ws.readyState !== ws.OPEN) return false;
         if (ws.bufferedAmount > 262144) return finish('CLIENT_BACKPRESSURE');
         ws.send(JSON.stringify(data));
+        const before=teaching.version;
         teaching.forward(data); // Only forwarded packets, after safety/output hold.
         teaching.planning?.observe(data);
+        const event=data.type==='event'?data.event:null;
+        if(event?.type==='response.started')replyText.set(event.response_id,'');
+        if(event?.type==='response.text.delta'&&replyText.has(event.response_id))replyText.set(event.response_id,(replyText.get(event.response_id)+event.payload.text).slice(0,240));
+        // Retain this POC's exit-code/farewell fallback, but only bind an owned,
+        // forwarded reply. Never cancel a finished goodbye to request another one.
+        if(event?.type==='response.done'){
+          const heard=finalText.get(event.turn_id);
+          const farewell=assistantFarewell(replyText.get(event.response_id));
+          const marked=exitReplies.has(event.response_id);
+          const stale=runtime.finalTurns.has(event.turn_id)&&latestInputTurn!==event.turn_id;
+          const suppressed=!!heard&&providerExitSuppressed(heard);
+          const enter=!diagnostics&&!closing?.current&&!stale&&!suppressed&&(marked||farewell);
+          traceClose(enter?'这句回复进入收束':'这句回复没有进入收束',diagnostics?'诊断开关开着，不进入收束。':closing?.current?'已经在收束里。':stale?'这句回复不属于最新的学生话。':suppressed?'学生这句被当成问词义或疑问，不收束。':marked?'这句带了退出码。':farewell?'回复像告别。':'没有退出码，回复也不像告别。');
+          if(enter){
+            teaching.planning?.invalidate('student_end');
+            teaching.recap.input(event,{closing:true});
+            closing.input(event,{action:'CLOSE'},teaching.summarySnapshot());
+          }
+          exitReplies.delete(event.response_id);replyText.delete(event.response_id);
+        }
+        if(event?.type==='response.cancelled'){exitReplies.delete(event.response_id);replyText.delete(event.response_id);}
+        closing?.forward(data);
+        if(teaching.version!==before)send({type:'teaching.state',...teaching.view()});
         return true;
       };
-      const finish = (code,endReason) => {
-        if (ended) return;
-        clearTimeout(spokenClose?.speechTimer);clearTimeout(spokenClose?.deadlineTimer);
+      const finish = async (code,endReason) => {
+        if (ended) {if(['AUTHORIZATION_REVOKED','SAFETY_RESTRICTED'].includes(code)){recordController?.abort();if(ws.readyState===ws.OPEN){ws.send(JSON.stringify({type:'session.failed',code}));ws.close();}}return;}
         if(code||endReason==='transport_closed')recordController?.abort();
         for(const id of replyStats.keys())completeStats(id,code?'failed':'closed');
         diagnose('session.end',{state:code?'failed':'closed',code:code??undefined});
-        ended = true;
+        ended = true;ending=true;
+        const delivery=closing?.delivery??'skipped';closing?.close();
         outputGate?.close();speechCandidates.clear();
+        finalText.clear();exitReplies.clear();replyText.clear();
         const reason=endReason??(code==='AUTHORIZATION_REVOKED'?'authorization_revoked':code==='SAFETY_RESTRICTED'?'safety_restricted':code==='SESSION_DURATION_LIMIT'?'session_limit':code?'service_failure':'student_end');
         const summary=teaching.finalize({outcome:code?'failed':'ended',endReason:reason,businessSource,providerKind,ready});
         diagnose('summary.finalized',{summary_policy_version:summary.policy_version,summary_focus:summary.focus,summary_outcome:summary.outcome,summary_partial:summary.partial,summary_attempts:summary.counts.attempts,summary_items:summary.learning_items.length});
@@ -89,92 +121,34 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         pendingCancel.clear();
         if(pendingContext)clearTimeout(pendingContext.timer);
         try { provider?.close(); } catch {}
+        let receipt={status:'unavailable',session_id:ticket.session_id};
+        if(summary.session_recap&&ticket.conversation_registered&&planningPort?.saveConversation&&ticket.identity.authorization_until>Date.now()&&ticket.identity.scopes.includes('learning:write')) {
+          recordController=new AbortController();
+          const record={schema_version:'conversation-record-v1',session_id:ticket.session_id,summary:summary.session_recap,outcome:code||reason==='transport_closed'?'partial':'ended',end_reason:reason,summary_delivery:delivery};
+          let deadline;
+          const timeout=new Promise((_,reject)=>{deadline=setTimeout(()=>{recordController.abort();reject(new Error('RECORD_TIMEOUT'));},2200);});
+          try{receipt=await Promise.race([planningPort.saveConversation(ticket.identity,record,{signal:recordController.signal}),timeout]);}
+          catch{receipt={status:recordController.signal.aborted?'pending':'failed',session_id:ticket.session_id};}
+          finally{clearTimeout(deadline);}
+        }
         if (ws.readyState === ws.OPEN) {
+          ws.send(JSON.stringify({type:'conversation.record.receipt',...receipt}));
           const view=summary.focus==='unavailable'?{mode:ticket.mode,goal:'',start_tip:'',cards:[],attempts:[],attempt_count:0,attempts_truncated:false,notice:'本轮总结不可用。'}:teaching.view();
-          ws.send(JSON.stringify({type:'teaching.summary',session_id:ticket.session_id,...view,summary}));
+          ws.send(JSON.stringify({type:'teaching.summary',session_id:ticket.session_id,...view,summary,summary_delivery:delivery}));
           ws.send(JSON.stringify({type:code ? 'session.failed':'session.closed',code:code ?? undefined,provider_connected:false}));
         }
         ws.close(code ? 1011:1000,'session ended');
         connections.delete(ws);
         sessions.delete(ws);
       };
-      const closeContextTimer = () => setTimeout(()=>{
-        pendingContext=null;
-        if(spokenClose&&!spokenClose.responseId&&!ended&&!ending)endAndSave({keepPlayback:true});
-      },contextTimeoutMs);
-      const armSpeechWait = () => {
-        if(!spokenClose||spokenClose.responseId||ended||ending)return;
-        clearTimeout(spokenClose.speechTimer);
-        spokenClose.speechTimer=setTimeout(()=>{
-          if(!spokenClose||spokenClose.responseId||ended||ending)return;
-          endAndSave({keepPlayback:true});
-        },closeSpeechWaitMs);
-      };
-      const sendCloseBrief = () => {
-        if(!spokenClose||ended||ending)return;
-        if(pendingCancel.size){spokenClose.phase='cancel';return;}
-        if(pendingContext && spokenClose.phase!=='brief'){spokenClose.phase='wait_prior_ack';return;}
-        const version=teaching.version;
-        const instructions=`${teaching.instructions()}\n${teaching.closingBrief()}`;
-        try{provider.updateContext({version,instructions,duringSilentReply:!!runtime.active});}
-        catch{
-          const active=runtime.active;
-          if(active && spokenClose.cancelId!==active.id){spokenClose.phase='cancel';spokenClose.cancelId=active.id;interrupt(active.id,'student_end');return;}
-          endAndSave({keepPlayback:true});return;
-        }
-        spokenClose.phase='brief';
-        if(pendingContext?.timer)clearTimeout(pendingContext.timer);
-        pendingContext={version,decision:teaching.teaching.decision,language:teaching.languageSnapshot(),snapshot:teaching.contextSnapshot(),timer:closeContextTimer()};
-        if(runtime.active && !spokenClose.responseId){spokenClose.responseId=runtime.active.id;spokenClose.phase='speaking';}
-      };
-      const pumpClose = () => {
-        if(!spokenClose||ended||ending)return;
-        if(['speaking','wait_speech','brief','wait_prior_ack','cancel'].includes(spokenClose.phase))return;
-        const active=runtime.active,stats=active?replyStats.get(active.id):null;
-        if(active && stats && (stats.chars>0 || stats.chunks>0)){
-          spokenClose.phase='cancel';
-          if(spokenClose.cancelId!==active.id){spokenClose.cancelId=active.id;interrupt(active.id,'student_end');}
-          return;
-        }
-        sendCloseBrief();
-      };
-      const armSpokenClose = turnId => {
-        if(spokenClose||ended||ending)return;
-        spokenClose={turnId,phase:'prepare',responseId:null,cancelId:null,speechTimer:null,deadlineTimer:setTimeout(()=>{if(!ended&&!ending)endAndSave({keepPlayback:true});},12000)};
-        try{provider.mute?.();}catch{}
-        send({type:'session.closing'});
-        if(pendingContext?.timer){clearTimeout(pendingContext.timer);pendingContext.timer=closeContextTimer();}
-        pumpClose();
-      };
-      const noteSpokenClose = event => {
-        if(!spokenClose||ended||ending)return;
-        if(event.type==='response.started' && ['brief','wait_speech','speaking'].includes(spokenClose.phase) && event.response_id!==spokenClose.cancelId){
-          spokenClose.responseId=event.response_id;spokenClose.phase='speaking';clearTimeout(spokenClose.speechTimer);
-        }
-        if(event.type==='response.cancelled' && event.response_id===spokenClose.cancelId){
-          spokenClose.cancelId=null;spokenClose.responseId=null;spokenClose.phase='prepare';pumpClose();return;
-        }
-        if(event.type==='response.done' && spokenClose.phase==='speaking' && event.response_id===spokenClose.responseId)endAndSave({keepPlayback:true});
-      };
-      const endAndSave = ({keepPlayback=false}={}) => {
-        if(ended||ending)return;
-        clearTimeout(spokenClose?.speechTimer);clearTimeout(spokenClose?.deadlineTimer);
-        const canSave=planningPort&&teaching.planning&&!teaching.closed&&ticket.identity.authorization_until>Date.now()&&ticket.identity.scopes.includes('learning:write');
-        let record=null;
-        if(canSave){try{record=teaching.learningRecord();}catch{record=null;}}
-        if(!record){finish();return;}
-        ending=true;recordController=new AbortController();teaching.planning.close();
-        if(!keepPlayback)send({type:'output.stop'});
-        void planningPort.append(ticket.identity,record,ticket.session_id,{signal:recordController.signal}).then(receipt=>{send({type:'learning.record.receipt',status:receipt.status,mocked:true});metrics?.count(providerKind,receipt.status==='accepted'?'mock_records_saved':'mock_records_pending');}).catch(()=>{send({type:'learning.record.receipt',status:'failed',mocked:true});metrics?.count(providerKind,'mock_records_failed');}).finally(()=>finish());
-      };
+      closing=new ClosingCoordinator({sessionId:ticket.session_id,send,finish:()=>void finish(),waitMs:closingWaitMs,playbackMs:closingPlaybackMs});
       const readyTimer = setTimeout(()=>finish('PROVIDER_READY_TIMEOUT'),readyTimeoutMs);
       const lifetime = setTimeout(()=>finish('SESSION_DURATION_LIMIT'),Math.min(maxSessionMs,ticket.identity.authorization_until-Date.now()));
       let alive=true;
       const heartbeat=setInterval(()=>{if(!alive){finish('CLIENT_HEARTBEAT_TIMEOUT');ws.terminate();return;}alive=false;if(ws.readyState===ws.OPEN)ws.ping();},15000);
       ws.on('pong',()=>{alive=true;});
       const flushContext = () => {
-        // A closing brief owns the next session.update. A later plan must not replace it.
-        if(spokenClose||ended || !ready || runtime.active || pendingCancel.size || pendingContext || appliedVersion===teaching.version)return;
+        if(ended || ending || !ready || runtime.active || pendingCancel.size || pendingContext || appliedVersion===teaching.version)return;
         const snapshot=teaching.contextSnapshot(),version=snapshot.version,decision=snapshot.decision;
         diagnose('context.requested',{context_version:version,turn_id:decision?.turn_id,context_hash:snapshot.hash,context_policy_version:snapshot.policy_version,context_scope:snapshot.scope});
         pendingContext={version,decision,language:snapshot.language,snapshot,timer:setTimeout(()=>finish('CONTEXT_ACK_TIMEOUT'),contextTimeoutMs)};
@@ -191,6 +165,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         const id=responseId ?? active?.id ?? lastResponse?.id;
         if(responseId===undefined||responseId===active?.id||responseId===lastResponse?.id)teaching.planning?.invalidate('student_interruption');
         if (!id) return;
+        if(closing.current?.response_id===id){if(source==='manual')closing.cancel();else closing.suspend();}
         if(pendingCancel.has(id)){diagnose('cancel.ignored',{response_id:id,source,reason:'duplicate'});return;}
         diagnose('cancel.requested',{response_id:id,source,active:!!active && active.id===id,pending_context:!!pendingContext,pending_cancel:pendingCancel.size>0});
         outputGate?.stop(id);send({type:'output.stop',response_id:id});
@@ -230,7 +205,6 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         if(ended || ending || restricted)return;
         try {
           if (binary) {
-            if (spokenClose) return;
             if (!ready) throw new Error('AUDIO_BEFORE_READY');
             if (Date.now()-windowAt >= 1000) {windowAt=Date.now();byteWindow=0;}
             byteWindow += bytes.length;
@@ -242,9 +216,13 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             if (bytes.length > 1024) throw new Error('CONTROL_TOO_LARGE');
             const value = JSON.parse(bytes.toString());
           if (value?.type === 'session.end' && Object.keys(value).every(k=>['type','save_learning'].includes(k)) && (value.save_learning===undefined||typeof value.save_learning==='boolean')) {
-            // Student end always writes the sourced mock record. The checkbox
-            // no longer gates it. Facts stay attempted-only, without transcript or mastery.
-            endAndSave();
+            // Explicit opt-in only. Submitted facts remain attempted-only mock
+            // observations; no transcript/audio, automatic mastery or retries.
+            if(value.save_learning===true&&planningPort&&teaching.planning&&!teaching.closed&&ticket.identity.authorization_until>Date.now()&&ticket.identity.scopes.includes('learning:write')) {
+              const record=teaching.learningRecord();
+              if(record){ending=true;recordController=new AbortController();teaching.planning.close();send({type:'output.stop'});void planningPort.append(ticket.identity,record,ticket.session_id,{signal:recordController.signal}).then(receipt=>{send({type:'learning.record.receipt',status:receipt.status,mocked:true});metrics?.count(providerKind,receipt.status==='accepted'?'mock_records_saved':'mock_records_pending');}).catch(()=>{send({type:'learning.record.receipt',status:'failed',mocked:true});metrics?.count(providerKind,'mock_records_failed');}).finally(()=>finish());return;}
+            }
+            finish();
           }
             else if(value?.type==='diagnostics.enable' && Object.keys(value).length===1) {
               if(!diagnostics) {
@@ -256,6 +234,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
               }
             }
             else if (value?.type==='response.cancel' && ready && Object.keys(value).every(k=>['type','response_id'].includes(k)) && (value.response_id===undefined || /^[a-zA-Z0-9_.:-]{1,128}$/.test(value.response_id))) interrupt(value.response_id);
+            else if(value?.type==='closing.playback'&&Object.keys(value).every(k=>['type','closing_id','response_id','summary_revision','state','audio_ms'].includes(k)))closing.report(value);
             else if(value?.type==='playback.report' && Object.keys(value).every(k=>['type','response_id','state','audio_ms'].includes(k)))teaching.planning?.consumption(value.response_id,value);
             else throw new Error('INVALID_CONTROL');
           }
@@ -276,37 +255,30 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             const pending=pendingCancel.get(packet.response_id);if(!pending || pending.turn!==packet.turn_id)return;
             clearTimeout(pending.timer);pendingCancel.delete(packet.response_id);
             diagnose('cancel.skipped',{response_id:packet.response_id,turn_id:packet.turn_id,reason:packet.reason,source:pending.source});
-            completeStats(packet.response_id,'cancelled');
-            if(spokenClose?.cancelId===packet.response_id){spokenClose.cancelId=null;spokenClose.responseId=null;spokenClose.phase='prepare';pumpClose();}
-            else flushContext();
-            return;
+            completeStats(packet.response_id,'cancelled');flushContext();return;
           }
           if (packet.control==='user.speech.started') {diagnose('user.speech.started',{turn_id:packet.turn_id,source:'provider_speech_start',active:!!runtime.active});if(ready)interrupt(undefined,'provider_speech_start');return;}
-          if(packet.control==='user.exit.intent') {
+          if(packet.control==='audio.done.observed'){
+            const code=packet.body?.status_code;
+            const recognized=code==='20000002'||code===20000002;
+            traceClose(recognized?'豆包返回了退出码':'豆包这帧音频结束，没有退出码',code==null?'这一帧没有 status_code 字段。':`status_code 是 ${code}。`,packet.body);
+            return;
+          }
+          if(packet.control==='user.exit.intent'){
             diagnose('user.exit.intent',{turn_id:packet.turn_id,response_id:packet.response_id});
-            // The closing brief already owns this turn. A late signal only confirms it.
-            // audio.done can arrive before response.done clears the active reply;
-            // wait for that boundary so the finished goodbye is not cut off.
-            if(diagnostics||spokenClose)return;
-            const heard=finalText.get(packet.turn_id);
-            if(heard && providerExitSuppressed(heard))return;
-            if(runtime.active)pendingExit=true;
-            else armSpokenClose(packet.turn_id??runtime.active?.turn);
+            const suppressed=providerExitSuppressed(finalText.get(packet.turn_id));
+            const owned=runtime.responses.get(packet.response_id);
+            const stale=runtime.finalTurns.has(packet.turn_id)&&latestInputTurn!==packet.turn_id;
+            const ownedOk=!!owned&&owned.turn===packet.turn_id&&['active','done'].includes(owned.status)&&!stale;
+            const reason=diagnostics?'诊断开关开着，信号被忽略。':closing.current?'已经在收束里。':suppressed?'学生这句被当成问词义或疑问，信号被忽略。':!owned?'还没有对上这句回复。':owned.turn!==packet.turn_id?'回复和这一轮对不上。':!['active','done'].includes(owned.status)?'这句回复已经不能再收束。':stale?'不是最新的学生话。':'';
+            if(reason||!ownedOk){traceClose('网关没有用这个退出码进入收束',reason||'回复归属没有通过。');return;}
+            const reply=closing.replies.get(packet.response_id);
+            if(reply?.done){traceClose('退出码进入收束','这句回复已经说完，开始收束。');teaching.planning?.invalidate('student_end');closing.input({turn_id:reply.turn_id},{action:'CLOSE'},teaching.summarySnapshot());}
+            else {traceClose('退出码先记下','等这句回复结束后再收束。');exitReplies.add(packet.response_id);}
             return;
           }
           if(packet.control==='context.updated') {
-            if(pendingContext && packet.version===pendingContext.version){
-              clearTimeout(pendingContext.timer);
-              const closePhase=spokenClose?.phase;
-              appliedContext=pendingContext.snapshot;appliedVersion=packet.version;appliedDecision=appliedContext.decision;appliedLanguage=appliedContext.language;pendingContext=null;
-              diagnose('context.applied',{context_version:appliedVersion,turn_id:appliedDecision?.turn_id,context_hash:appliedContext.hash,context_policy_version:appliedContext.policy_version});
-              send({type:'teaching.context.applied',version:appliedVersion,context_hash:appliedContext.hash});
-              if(spokenClose && closePhase==='wait_prior_ack'){spokenClose.phase='prepare';pumpClose();}
-              else if(spokenClose && closePhase==='brief'){
-                if(spokenClose.responseId)spokenClose.phase='speaking';
-                else{spokenClose.phase='wait_speech';armSpeechWait();}
-              }else flushContext();
-            }
+            if(pendingContext && packet.version===pendingContext.version){clearTimeout(pendingContext.timer);appliedContext=pendingContext.snapshot;appliedVersion=packet.version;appliedDecision=appliedContext.decision;appliedLanguage=appliedContext.language;pendingContext=null;diagnose('context.applied',{context_version:appliedVersion,turn_id:appliedDecision?.turn_id,context_hash:appliedContext.hash,context_policy_version:appliedContext.policy_version});send({type:'teaching.context.applied',version:appliedVersion,context_hash:appliedContext.hash});flushContext();}
             else diagnose('context.confirmation.ignored',{reason:pendingContext?'wrong_version':'no_pending'});
             return;
           }
@@ -324,10 +296,9 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
           if(packet.event.type==='session.failed'){finish('PROVIDER_SESSION_FAILED');return;}
           if (packet.event.type==='response.started'){lastResponse={id:packet.event.response_id,turn:packet.event.turn_id};policy.newResponse();replyAt=performance.now();firstAudio=false;}
           const event=packet.event,ids={response_id:event.response_id,turn_id:event.turn_id};
-          if(event.type==='user.final' && typeof event.payload?.text==='string')finalText.set(event.turn_id,event.payload.text);
           if(event.type==='response.started') {
             const languageContextMatched=!pendingContext && sameLanguageSupport(appliedLanguage,teaching.languageSnapshot());
-            replyStats.set(event.response_id,{at:performance.now(),turn:event.turn_id,chars:0,deltas:0,chunks:0,pcmMs:0,text:'',audit:diagnostics?new ReplyAudit({englishSupport:appliedLanguage.english_support,languageContextMatched}):null});
+            replyStats.set(event.response_id,{at:performance.now(),turn:event.turn_id,chars:0,deltas:0,chunks:0,pcmMs:0,audit:diagnostics?new ReplyAudit({englishSupport:appliedLanguage.english_support,languageContextMatched}):null});
             diagnose('response.started',{...ids,pending_context:!!pendingContext,pending_cancel:pendingCancel.size>0});
             // Snapshot at the first accepted response-start notification, which
             // can arrive after generation began. This proves ACK/turn matching,
@@ -338,8 +309,6 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
           const stats=replyStats.get(event.response_id);
           if(stats && event.type==='response.text.delta') {
             stats.chars+=Array.from(event.payload.text).length;stats.deltas++;
-            if(stats.text.length<240)stats.text+=event.payload.text;
-            if(!diagnostics && !spokenClose && !ending && assistantFarewell(stats.text))armSpokenClose(event.turn_id);
             stats.audit?.append(event.payload.text);
             if(stats.deltas===1)diagnose('response.first_text',{...ids,elapsed_ms:performance.now()-stats.at});
           }
@@ -352,7 +321,6 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             if(pending?.sentAt!==undefined)diagnose('cancel.ack',{...ids,ack_ms:performance.now()-pending.sentAt});
             completeStats(event.response_id,'cancelled');
           }
-          const doneText=event.type==='response.done'?replyStats.get(event.response_id)?.text??'':'';
           if(event.type==='response.done')completeStats(event.response_id,'done');
           if(['user.partial','user.final','response.text.delta'].includes(packet.event.type)) {
             const risk=policy.inspect(packet.event.payload.text,{output:packet.event.type==='response.text.delta'});
@@ -362,6 +330,9 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
           // Register accepted input/request provenance after safety, before a
           // final releases held teacher text. Plans alone remain no evidence.
           const acceptedTeaching=teaching.accept(packet.event);
+          if(acceptedTeaching){latestInputTurn=event.turn_id;finalText.set(event.turn_id,event.payload.text);}
+          if(acceptedTeaching&&teaching.view().decision.action==='CLOSE'&&/(?:不用总结|不(?:用|要)回顾|(?:现在|马上|立刻)(?:就)?结束|(?:end|stop) (?:right now|immediately)|no (?:recap|summary))/iu.test(controlText(event.payload.text))){closing.delivery='skipped';void finish();return;}
+          if(acceptedTeaching&&!diagnostics){closing.input(event,teaching.view().decision,teaching.summarySnapshot());if(teaching.view().decision.action==='CLOSE')teaching.planning?.invalidate('student_end');}
           if(outputGate && ['user.partial','user.final'].includes(event.type)) {
             if(event.type==='user.final' || !runtime.finalTurns.has(event.turn_id)) {
               const candidate=captureSpeech(event.turn_id);
@@ -380,22 +351,16 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             const language=teaching.languageSnapshot();
             diagnose('language.decision',{turn_id:event.turn_id,context_version:teaching.version,language_policy_version:language.policy_version,english_support:language.english_support,language_reason:language.reason,known_expression_count:language.known_expressions.length});
             diagnose('teaching.decision',{turn_id:decision.turn_id,context_version:decision.context_version,teaching_policy_version:decision.policy_version,mode:decision.mode,action:decision.action,decision_reason:decision.reason,interaction:decision.interaction,support_level:decision.support_level,new_points:decision.new_points,turn_count:decision.turn_count,goal_attempt_observed:decision.goal_attempt_observed,teaching_paused:decision.teaching_paused,clarification_pending:decision.clarification_pending,teaching_cooldown:decision.teaching_cooldown});
+            if(event.type==='user.final')traceClose(decision.action==='CLOSE'&&decision.reason==='student_end'?'你的话被判成结束':'你的话没有被判成结束',`动作 ${decision.action}，原因 ${decision.reason}。`);
             send({type:'teaching.state',...view});
             diagnose('context.queued',{context_version:teaching.version,turn_id:decision.turn_id});
             // A final can arrive after this reply's observed terminal boundary.
             // Flush only that owned completed turn, never an arbitrary early final.
             if(teaching.completedReplyTurns.has(event.turn_id))flushContext();
-            // Collection sessions enable diagnostics and must keep the scripted
-            // reply as the only model reply. Ordinary web sessions speak the summary.
-            if(decision.action==='CLOSE'&&decision.reason==='student_end'&&!diagnostics)armSpokenClose(event.turn_id);
-            if(teaching.planning)void teaching.planTurn(event).then(plan=> {
+            if(teaching.planning&&decision.action!=='CLOSE')void teaching.planTurn(event).then(plan=> {
               if(!plan||ended)return;
               send({type:'teaching.state',...teaching.view()});flushContext();
             }).catch(()=>diagnose('planning.rejected',{turn_id:event.turn_id,reason:'planning_failed'}));
-          }
-          noteSpokenClose(event);
-          if(event.type==='response.done' && !diagnostics && !spokenClose && !ending && (pendingExit || assistantFarewell(doneText))){
-            pendingExit=false;armSpokenClose(event.turn_id);
           }
           const projected={type:'event',event:packet.event,audio:packet.audio,sample_rate:packet.sample_rate,provider_connected:ready && providerKind==='doubao',synthetic:providerKind!=='doubao'};
           if(outputGate && ['response.started','response.text.delta','response.audio.chunk','response.done'].includes(event.type))outputGate.push(projected);else send(projected);
@@ -412,13 +377,14 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
   });
   return {
     available:!!providerFactory,
-    create({origin,mode,identity,speechPace,planning,bindPlanning}) {
+    async create({origin,mode,identity,speechPace,planning,bindPlanning}) {
       if (!providerFactory) return null;
       if (tickets.size+connections.size >= maxConnections) throw new Error('SESSION_CAPACITY');
       const token = randomUUID();
       const ticket = {session_id:randomUUID(),mode,speech_pace:speechPace,origin,identity,expires:Math.min(Date.now()+30000,identity.expires)};
       if(planning)ticket.planning=bindPlanning(planning,ticket.session_id);
       tickets.set(token,ticket);
+      try{if(planningPort?.openConversation){await planningPort.openConversation(identity,ticket.session_id,mode);ticket.conversation_registered=true;}}catch{tickets.delete(token);throw new Error('CONVERSATION_RECORD_UNAVAILABLE');}
       return {session_id:ticket.session_id,ticket:token,websocket_path:'/api/realtime',protocol:'ask-kai.v1',expires_in:30,provider_connected:false};
     },
     async updateMemory(identity,memory) {

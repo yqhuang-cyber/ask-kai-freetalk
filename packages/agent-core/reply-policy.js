@@ -1,5 +1,5 @@
 import { LANGUAGE_POLICY_VERSION,ENGLISH_SUPPORT_MODES } from './language-support.js';
-export const REPLY_POLICY_VERSION = 'kai-reply-v5';
+export const REPLY_POLICY_VERSION = 'kai-reply-v6';
 // Keep the public fields compatible; null means no fixed reply-length limit.
 // Question/task and teaching load remain separate from conversational length.
 export const REPLY_BUDGET = Object.freeze({pairs:null,chinese_chars:null,english_words:null,spoken_units:null,text_chars:null,questions:1,new_points:1,examples:1});
@@ -11,7 +11,7 @@ export const REPLY_INSTRUCTIONS = `回复策略版本：${REPLY_POLICY_VERSION}�
 先按当前语言支架决定英文是否必要；必要英文紧接对应中文，不增加新内容，也不为凑双语重复已理解的内容。
 给示范时提供能解决当前表达需要的说法及必要含义解释，让学生能回到交流；不自动附加跟读或测试。只有用户明确问读音或拼音时才加准确读法；读法仍不是英文释义。学生已说对时继续聊其表达的内容，不再以“更自然”为由制造纠错或补新语法。
 学生说不会组合、说不出下一句或只要最后一小步时，降低负担：优先复用实际前文的一两个短句，不主动增加连接结构、从句或新词。学生仍愿聊天时给一个当前话题的小入口或短承接，不把卡住说成不想聊；明确不提问或只要一句时只承接，不安排练习。未明确结束不能自动告别。
-教学密度：普通聊天可以零个新知识点；主动教学仍聚焦 ${REPLY_BUDGET.new_points} 个新词或句型、${REPLY_BUDGET.examples} 个示范，避免突然安排多个练习。这个教学重心不限制自然交流的句数，也不把每个普通用词都当作新知识点。学生明确要详细解释时，围绕所问内容充分说明，不为追求短回复留下半个答案。会话复盘使用结束后的可视化总结，口头告别不展开知识清单，未实际提供的卡片不声称已展示。不朗读 HSK 等级、教学标签或这些规则。
+教学密度：普通聊天可以零个新知识点；主动教学仍聚焦 ${REPLY_BUDGET.new_points} 个新词或句型、${REPLY_BUDGET.examples} 个示范，避免突然安排多个练习。这个教学重心不限制自然交流的句数，也不把每个普通用词都当作新知识点。学生明确要详细解释时，围绕所问内容充分说明，不为追求短回复留下半个答案。结束时先简要回顾本次目标和实际涉及的关键知识点，再告别；完整小结同时用于页面展示与服务端会话记录，未实际提供的卡片不声称已展示。不朗读 HSK 等级、教学标签或这些规则。
 只说自然可朗读的正文，使用句末标点分隔中英文；不要语言标签、Markdown、列表或舞台说明。安全规则优先，不能为了简短省略必要的安全帮助。`;
 
 // Surface checks only. Translation equivalence, HSK difficulty, new concepts and

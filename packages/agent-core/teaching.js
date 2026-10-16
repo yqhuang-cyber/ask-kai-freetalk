@@ -9,6 +9,7 @@ import { compileContextSnapshot } from './context-snapshot.js';
 import { planProjection } from './conversation-initializer.js';
 import { PlanningState } from './planning-state.js';
 import { PlanningObservations } from './planning-observations.js';
+import { SessionRecap } from './session-recap.js';
 import { assessGoal } from './goal-lifecycle.js';
 export class TeachingSession {
   constructor({sessionId,mode='sports',memory=[],mission=null,speechPace,planning,planner,resourceVerifier,onPlanningRecord,onAcceptedProposal,observationPort}) {
@@ -27,7 +28,9 @@ export class TeachingSession {
         this.teaching.likesGoal=planning.plan.mode!=='free'&&(planning.plan.primary_goal?.kp_ids.includes('likes-expression')??false);
       }
     }
+    this.recap=new SessionRecap({sessionId,mode,mission,planning:planning?.plan.execution_mode==='shadow'?null:planning});
   }
+  summarySnapshot(){return this.recap.snapshot();}
   instructions() {
     return this.contextSnapshot().instructions;
   }
@@ -43,7 +46,7 @@ export class TeachingSession {
   contextSnapshot() {
     const memory=this.language.validMemory().map(m=>({field:m.field,value:m.value,source:m.source,updated_at:m.updated_at}));
     return compileContextSnapshot({sessionId:this.sessionId,version:this.version,mode:this.mode,mission:this.mission,stage:this.stage,speechInstructions:this.speechInstructions,
-      languageInstructions:this.language.instructions(),language:this.language.snapshot(),decision:this.teaching.decision,teachingContext:this.teaching.context(),memory,planning:this.planning?.mode==='shadow'?null:this.planning});
+      languageInstructions:this.language.instructions(),language:this.language.snapshot(),decision:this.teaching.decision,teachingContext:this.teaching.context(),memory,sessionRecap:this.teaching.decision?.teaching_paused&&this.teaching.decision?.action!=='CLOSE'?null:this.recap?.snapshot(),planning:this.planning?.mode==='shadow'?null:this.planning});
   }
   accept(event) {
     if(this.closed || !validateEvent(event) || event.session_id!==this.sessionId || event.type!=='user.final' || this.seen.has(event.turn_id))return false;
@@ -52,7 +55,9 @@ export class TeachingSession {
     this.seen.add(event.turn_id);
     this.version++;
     const decision=this.teaching.select(event,this.version);
+    this.recap.input(event,{closing:decision.action==='CLOSE',plan:this.planning?.plan});
     this.planning?.controls(event,decision);this.syncGoal();
+    if(decision.action!=='CLOSE'&&this.planning&&this.planning.mode!=='shadow'){for(const {goal,status} of this.planning.goalOutcomes.values())this.recap.goal({primary_goal:goal,goal_status:status,revision:this.planning.plan.revision});}
     this.language.observe(event.payload.text,{turn_id:event.turn_id,source_event_id:event.event_id,context_version:this.version});
     if(this.completedReplyTurns.has(event.turn_id))this.language.completeReply(event.turn_id);
     if(this.stage==='warmup')this.stage='conversation';
@@ -71,7 +76,7 @@ export class TeachingSession {
   async planTurn(event) {
     if(!this.planning||this.closed)return null;
     const plan=await this.planning.acceptInput(event,this.teaching.decision,this.language.snapshot());
-    if(plan&&!this.closed){this.syncGoal();this.version++;return plan;}return null;
+    if(plan&&!this.closed){this.syncGoal();this.recap.goal(this.planning.plan);this.version++;return plan;}return null;
   }
   completeReply(event) {
     if(this.closed||!validateEvent(event)||event.session_id!==this.sessionId||!['response.done','response.cancelled'].includes(event.type)||this.completedReplyTurns.has(event.turn_id))return false;
@@ -80,7 +85,7 @@ export class TeachingSession {
     if(!this.language.completeReply(event.turn_id))return false;
     this.version++;return true;
   }
-  forward(packet) {return this.learning.forward(packet);}
+  forward(packet) {const before=this.recap.revision;this.recap.forward(packet);if(this.recap.revision!==before)this.version++;return this.learning.forward(packet);}
   updateMemory(memory){this.planning?.invalidate('preferences_changed');this.memory=structuredClone(memory);this.language.updateMemory(memory);this.version++;}
   updateLearnerContext(context){this.planning?.updateContext(context);this.syncGoal();this.version++;}
   languageSnapshot(){return this.language.snapshot();}
@@ -93,6 +98,7 @@ export class TeachingSession {
       summary.counts.student_final_turns=suppressed?0:this.seen.size;summary.counts.attempts=rows.length;
       summary.headline=suppressed?{zh:'本轮总结暂不可用。',en:'This session summary is unavailable.'}:rows.length?{zh:'本轮记录了表达尝试；尚未评估掌握。',en:'Expression attempts were recorded; mastery was not assessed.'}:this.seen.size?{zh:'本轮以交流为主。',en:'This session focused on conversation.'}:{zh:'本轮记录不足。',en:'There is not enough information to summarize.'};
     }
+    if(!['authorization_revoked','safety_restricted'].includes(options.endReason))summary.session_recap=this.summarySnapshot();
     return summary;
   }
   sessionRecap() {

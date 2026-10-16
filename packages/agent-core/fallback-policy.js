@@ -1,12 +1,12 @@
 import { eligibleGoal } from './goal-lifecycle.js';
-export const FALLBACK_POLICY_VERSION='kai-planning-fallback-v3';
+export const FALLBACK_POLICY_VERSION='kai-planning-fallback-v4';
 export function fallbackDecision(input) {
   const resource=input.skill_catalog??input.resource;
   const p=input.policy,close=p.action==='CLOSE',clarify=p.action==='CLARIFY_INTENT';
   const declined=input.goal_review?.session_declined_goal_ids??[];
   const easier=!close&&!p.teaching_paused&&input.goal_review?.difficulty_count>=2?resource?.goals.find(g=>!declined.includes(g.id)&&eligibleGoal(g,{learning_profile:input.learning_profile,learning_history:input.learning_history??[]},resource)&&input.plan.primary_goal?.kp_ids.some(id=>resource.key_points.find(k=>k.id===id).prerequisites.some(kp=>g.kp_ids.includes(kp)))):null;
   const choice=(code,task,support='none',action='RESPOND')=>({code,task,support,action,localHelp:false,easier:null});
-  if(close)return choice('student_end_rule','简短告别，不追加提问、复盘或练习','none','CLOSE');
+  if(close)return choice('student_end_rule','根据本次实际对话回顾目标与关键词汇／表达，再告别；不追加提问或练习，不声称掌握','none','CLOSE');
   if(clarify)return choice('fallback_necessary_clarification','只问一个必要的短澄清问题，依据实际前文；不猜词义或能力','choice','CLARIFY');
   if(easier)return {...choice('repeated_explicit_difficulty','承认当前练习困难，给一个更小的低压选择；不强制跟读或声称学生不会','choice'),easier};
   if(input.learner_feedback?.signal==='difficulty_report'||input.goal_review?.difficulty_count>0)return choice('fallback_student_difficulty','承认学生觉得当前练习困难，降低这一轮负担；最多一个低压选择，不要求重说完整句','choice');

@@ -1,3 +1,4 @@
+import { validateSessionRecap } from '../../../packages/contracts/conversation-record.js';
 // Versioned, session-owned, ephemeral view; never display IDs or transcripts.
 const modes={topic:'主题对话',sports:'运动主题',mission:'Mission 后对话',free:'自由聊天'};
 const focuses=new Set(['practice_observed','target_text_observed','conversation_only','insufficient','unavailable']);
@@ -14,7 +15,13 @@ function projectRecap(recap,sessionId,finalTurns) {
   if(recap.expressions.some(e=>!e||!id(e.id)||!line(e.text,100)||!line(e.pinyin,100)||!line(e.english,120)||e.kind!=='student_text_observed'||e.content_source?.kind!=='ask-kai-authored-expression-directory'||e.content_source.directory_version!=='kai-expression-directory-v1'||!validRefs(e)))return null;
   return {topics:recap.topics.map(t=>t.label),expressions:recap.expressions.map(e=>({text:e.text,pinyin:e.pinyin,english:e.english,observations:e.observation_count}))};
 }
-export function projectSummary(packet,{sessionId,mode}) {
+function projectSessionRecap(value,sessionId){const r=validateSessionRecap(value,sessionId);return {objective:{purpose:r.objective.purpose,initial_goal:r.objective.initial_goal,goals:r.objective.goals.map(({label,status})=>({label,status})),progress:r.objective.progress},knowledge_points:r.knowledge_points.map(({type,text,meaning_or_usage,example,occurrence})=>({type,text,meaning_or_usage,example,occurrence})),topics:r.topics,coverage:r.coverage};}
+export function projectSummary(packet,options) {
+  const data=projectSummaryBase(packet,options);if(!data)return null;
+  if(['played','text_only','skipped','incomplete','advisory_played'].includes(packet.summary_delivery))data.delivery=packet.summary_delivery;
+  if(packet.summary?.session_recap&&data.focus!=='unavailable'){try{data.sessionRecap=projectSessionRecap(packet.summary.session_recap,options.sessionId);}catch{return null;}}return data;
+}
+function projectSummaryBase(packet,{sessionId,mode}) {
   const s=packet?.summary;
   if(s?.schema_version===3&&['kai-dynamic-summary-v1','kai-dynamic-summary-v2'].includes(s.policy_version))return projectDynamicSummary(packet,{sessionId,mode});
   if(packet?.type!=='teaching.summary' || packet.session_id!==sessionId || !id(sessionId) || !Object.hasOwn(modes,mode) || s?.session_id!==sessionId || s.mode!==mode || !(s.schema_version===1&&s.policy_version==='kai-summary-v1'||s.schema_version===2&&['kai-summary-v2','kai-summary-v3'].includes(s.policy_version)) || !focuses.has(s.focus))return null;
@@ -65,10 +72,14 @@ export class SummaryState {
 function element(tag,text,className){const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(className)el.className=className;return el;}
 function bilingual(parent,zh,en){parent.append(element('p',zh,'summary-zh'));const english=element('p',en,'summary-en');english.lang='en';parent.append(english);}
 export class SummaryCards {
-  constructor({root,link,onRestart}){Object.assign(this,{root,link,onRestart});this.state=new SummaryState();this.reset();}
-  reset(){this.state.reset();this.root.replaceChildren();this.root.hidden=true;this.link.hidden=true;}
+  constructor({root,link,onRestart,onReadRecord}){Object.assign(this,{root,link,onRestart,onReadRecord});this.state=new SummaryState();this.reset();}
+  reset(){this.receipt=null;this.state.reset();this.root.replaceChildren();this.root.hidden=true;this.link.hidden=true;}
   begin(sessionId,mode){this.reset();return this.state.begin(sessionId,mode);}
   accept(packet){return this.state.accept(packet);}
+  preview(packet){if(packet.session_id!==this.state.sessionId||this.state.suppressed||this.state.ended)return false;try{const recap=projectSessionRecap(packet.summary,this.state.sessionId);this.render({mode:this.state.mode,focus:'conversation_only',headline:{zh:'本次对话小结 · 正在收尾',en:'Session recap'},items:[],sessionRecap:recap,preview:true});return true;}catch{return false;}}
+  clearPreview(){if(!this.state.ended){this.root.replaceChildren();this.root.hidden=true;this.link.hidden=true;}}
+  record(receipt){if(receipt.session_id===this.state.sessionId&&!this.state.suppressed)this.receipt=receipt;}
+
   suppress(reason){this.state.suppress(reason);this.root.replaceChildren();this.root.hidden=true;this.link.hidden=true;}
   finish(){const data=this.state.finish();if(data)this.render(data);}
   render(data){
@@ -77,9 +88,20 @@ export class SummaryCards {
     const status=element('div',undefined,'summary-status');status.setAttribute('role','status');bilingual(status,data.headline.zh,data.headline.en);this.root.append(status);
     if(data.synthetic)bilingual(this.root,'工程测试数据，不代表真实语音体验。','Engineering test data; this is not real voice acceptance.');
     if(data.mock)this.root.append(element('p','独立 POC · 身份与课程为本地示例。','summary-source'));
+    if(data.delivery==='incomplete')this.root.append(element('p','语音小结未完成，以下展示已记录的文字内容。'));
     if(data.partial)bilingual(this.root,'对话提前结束，仅展示已收到的部分记录。','The conversation ended early; only received records are shown.');
     if(data.focus==='unavailable')bilingual(this.root,'没有可展示的总结，请重新开始一轮。','No summary is available. You can start another conversation.');
     else {
+      if(data.sessionRecap){
+        const recap=data.sessionRecap,o=recap.objective;
+        this.root.append(element('h3','本次目标'),element('p',o.initial_goal??o.purpose));
+        for(const g of o.goals)this.root.append(element('p',`${g.label}（${({active:'达成尚未确认',paused:'会中暂停',retired:'会中停止'})[g.status]}）`));
+        if(recap.topics.length)this.root.append(element('p',`聊到的话题：${recap.topics.join('、')}`));
+        this.root.append(element('h3','本次涉及的知识点'));
+        if(!recap.knowledge_points.length)this.root.append(element('p','暂无可核验的词汇或表达记录，本次以交流为主。'));
+        for(const k of recap.knowledge_points){const row=element('article',undefined,'summary-card');row.append(element('h4',`${({vocabulary:'词汇',expression:'表达方式',usage:'用法'})[k.type]}：${k.text}`));if(k.meaning_or_usage)row.append(element('p',k.meaning_or_usage));row.append(element('p',k.occurrence==='teacher_demonstrated'?'回复中讲解／示范过':'对话中提到过'));this.root.append(row);}
+        if(recap.coverage.truncated)this.root.append(element('p','小结保留部分重点，内容已截断。'));
+      }
       if(data.goals?.length){for(const goal of data.goals)this.root.append(element('p','会话中的练习方向：'+goal.label+'（'+(goal.status==='paused'?'已暂停':goal.status==='retired'?'已停止':'达成尚未确认')+'）','summary-goal'));}
       else if(data.goal)this.root.append(element('p',`本轮对话目标：${data.goal.label}`,'summary-goal'));
       if(data.goal && !data.goal.supported)bilingual(this.root,'当前目标暂未自动评估，未据此判断学习结果。','This target has not been assessed; no learning result is inferred.');
@@ -98,8 +120,13 @@ export class SummaryCards {
       this.root.append(grid);
       for(const row of data.observations??[])this.root.append(element('p',`${row.label}：${row.count} 次识别表达尝试；提示程度与掌握未评估。`,'summary-observation'));
       if(data.review){const review=element('div',undefined,'summary-review');review.append(element('h3','可再练一句 · 自愿练习'));bilingual(review,data.review.text,data.review.english);bilingual(review,'下次想练习时，可以再试试这句话。','You can try this sentence again whenever you want.');this.root.append(review);}
-      bilingual(this.root,'仅根据本轮记录整理；尚未评估掌握、独立使用或发音。','Based on this session only; mastery, independent use and pronunciation were not assessed.');
+      bilingual(this.root,'仅根据本轮可核验记录整理，可能未覆盖全部知识点；尚未评估掌握、独立使用或发音。','Based on this session only; mastery, independent use and pronunciation were not assessed.');
     }
-    const restart=element('button','再聊一轮','summary-restart');restart.type='button';restart.addEventListener('click',()=>this.onRestart?.());this.root.append(restart);
+    if(!data.preview){
+      const r=this.receipt,text=r?.status==='accepted'?'本次对话小结已保存到本地 mock 内存，重启后重置。':r?.status==='pending'?'本次对话保存状态未确认，可查询服务端记录。':'本次对话小结未保存到服务端。';
+      const state=element('p',text);state.dataset.recordStatus=r?.status??'unavailable';this.root.append(state);
+      if(this.onReadRecord&&this.state.sessionId){const read=element('button','查看服务端保存状态');read.type='button';read.addEventListener('click',()=>this.onReadRecord(this.state.sessionId,state));this.root.append(read);}
+    }
+    const restart=element('button','再聊一轮','summary-restart');restart.type='button';restart.disabled=!!data.preview;restart.addEventListener('click',()=>this.onRestart?.());this.root.append(restart);
   }
 }

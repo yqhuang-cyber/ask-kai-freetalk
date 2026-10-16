@@ -1,3 +1,4 @@
+import { ConversationStore } from './conversation-store.js';
 import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 import { signAssertion,verifyAssertion,validateMemoryRecord,MEMORY_FIELDS } from '../../../packages/hskai-bridge/identity.js';
@@ -18,6 +19,7 @@ async function body(req){const chunks=[];let size=0;for await(const chunk of req
 // Actual local HTTP contract double, never an external HSKai account or human queue.
 export function createMockHskai({secret,clock=()=>Date.now(),initialMemory,mission=MOCK_MISSION,fixtureVariant,fixtureIdentities=[],topicResources}={}) {
   if(typeof secret!=='string' || secret.length<32)throw new Error('BRIDGE_SECRET_REQUIRED');
+  const conversations=new ConversationStore({clock});
   const memory=new InMemoryLearnerStore(),used=new Map(),privacy=new Map(),handoffs=new Map();
   const fixtureAt=clock();
   const learners=new Map([...MOCK_LEARNERS.map(i=>[key(i),undefined]),[key(MOCK_IDENTITY),fixtureVariant],...fixtureIdentities.map(i=>[key(i),i.variant])]),revisions=new Map(),learningRecords=new Map();
@@ -28,8 +30,11 @@ export function createMockHskai({secret,clock=()=>Date.now(),initialMemory,missi
   memory.records.set(key(MOCK_IDENTITY),records.map(r=>validateMemoryRecord(r,clock())));
   for(const learner of MOCK_LEARNERS)if(learner.learner_id!==MOCK_IDENTITY.learner_id)memory.records.set(key(learner),accountMemory(learner.uid,clock()));
   const contextFor=async identity=> {
-    const revision=revisions.get(key(identity))??1,options={revision,memory:await memory.read(identity),now:clock(),fixtureAt,records:[...learningRecords.values()].filter(r=>r.owner===key(identity))};
-    return learners.get(key(identity))!==undefined?learnerFixture(identity,{...options,variant:learners.get(key(identity))}):accountContext(identity,options);
+    const saved=conversations.list(identity),savedIds=new Set(saved.map(r=>r.session_id));
+    const revision=revisions.get(key(identity))??1,options={revision,memory:await memory.read(identity),now:clock(),fixtureAt,records:[...learningRecords.values()].filter(r=>r.owner===key(identity)&&!savedIds.has(r.record.session_id))};
+    const context=structuredClone(learners.get(key(identity))!==undefined?learnerFixture(identity,{...options,variant:learners.get(key(identity))}):accountContext(identity,options));
+    const rows=saved.map(r=>({record_id:r.receipt_id,source:'mock_hskai',updated_at:r.updated_at,activity_type:'ask_kai',resource_id:r.session_id,kp_ids:[],observations:[`本地 mock 已保存会话小结：${r.record.summary.objective.initial_goal??r.record.summary.objective.purpose}`.slice(0,100),...r.record.summary.knowledge_points.slice(0,4).map(k=>`涉及${k.type==='vocabulary'?'词汇':'表达'}：${k.text}`.slice(0,100))],declined_goal_ids:[],complete:r.record.outcome==='ended'}));
+    const history=[...rows,...context.learning_history];context.learning_history=history.slice(0,10);context.history_page={truncated:history.length>10||context.history_page.truncated,next_cursor:history.length>10?'more-history':context.history_page.next_cursor};if(context.history_page.truncated)context.coverage.learning_history='partial';return context;
   };
   const server=createServer(async(req,res)=> {
     if(!/^127\.0\.0\.1:\d+$/.test(req.headers.host??'') || req.headers.origin || req.headers['sec-fetch-site'])return json(res,403,{error:'INTERNAL_LOOPBACK_REQUIRED'});
@@ -54,6 +59,17 @@ export function createMockHskai({secret,clock=()=>Date.now(),initialMemory,missi
         return json(res,200,learnerPart(await contextFor(identity),part,learners.get(key(identity))!==undefined?'legacy-fixture-v1':LEARNER_FIXTURE_VERSION,part==='learning-profile'&&learners.get(key(identity))===undefined?accountSyllabusInventory(identity,{fixtureAt}):undefined));
       }
       if(audience==='hskai-planning') {
+        if(['conversation_open','conversation_save','conversation_read'].includes(input.operation)) {
+          const op=input.operation,scope=op==='conversation_open'?'session:create':op==='conversation_save'?'learning:write':'context:read';
+          if(!learners.has(key(identity))||identity.operation!==op||!identity.scopes?.includes(scope))return json(res,403,{error:'CONVERSATION_AUTHORIZATION_REQUIRED'});
+          const fields=op==='conversation_open'?['operation','session_id','mode']:op==='conversation_save'?['operation','record']:['operation','session_id'];
+          if(Object.keys(input).length!==fields.length||Object.keys(input).some(k=>!fields.includes(k)))return json(res,400,{error:'INVALID_OPERATION'});
+          try {
+            if(op==='conversation_open')return json(res,200,conversations.open(identity,input.session_id,input.mode));
+            if(op==='conversation_read')return json(res,200,conversations.read(identity,input.session_id));
+            const before=conversations.read(identity,input.record?.session_id).record_revision,result=conversations.save(identity,input.record);if(result.record_revision!==before)bump(identity);return json(res,200,result);
+          }catch(error){return json(res,error.message==='CONVERSATION_NOT_FOUND'?404:error.message==='CONVERSATION_CONFLICT'?409:400,{error:error.message==='CONVERSATION_NOT_FOUND'?'CONVERSATION_NOT_FOUND':error.message==='CONVERSATION_CONFLICT'?'CONVERSATION_CONFLICT':'INVALID_CONVERSATION_RECORD'});}
+        }
         const fields={context:['operation'],resource:['operation','mode','resource_id'],append:['operation','record','idempotency_key']};
         const scope=input.operation==='append'?'learning:write':input.operation==='resource'?'curriculum:read':'context:read';
         if(!learners.has(key(identity))||!identity.scopes?.includes(scope))return json(res,403,{error:'PLANNING_AUTHORIZATION_REQUIRED'});
@@ -93,7 +109,7 @@ export function createMockHskai({secret,clock=()=>Date.now(),initialMemory,missi
         if(!['export','erase','status'].includes(input.operation) || identity.operation!==input.operation || Object.keys(input).some(k=>!['operation','request_id'].includes(k)))return json(res,400,{error:'INVALID_OPERATION'});
         if(input.operation==='status') {
           const entry=privacy.get(input.request_id);if(!entry || entry.owner!==key(identity))return json(res,404,{error:'NOT_FOUND'});
-          if(entry.status==='pending'){if(entry.operation==='erase'){await memory.delete(identity);for(const [k,r] of learningRecords)if(r.owner===key(identity))learningRecords.delete(k);bump(identity);}entry.status='completed';}
+          if(entry.status==='pending'){if(entry.operation==='erase'){await memory.delete(identity);conversations.erase(identity);for(const [k,r] of learningRecords)if(r.owner===key(identity))learningRecords.delete(k);bump(identity);}entry.status='completed';}
           return json(res,200,{request_id:input.request_id,status:entry.status,mocked:true});
         }
         if(privacy.size>=1000)throw new Error('MOCK_CAPACITY');
@@ -109,6 +125,6 @@ export function createMockHskai({secret,clock=()=>Date.now(),initialMemory,missi
     }catch{return json(res,400,{error:'MOCK_REQUEST_FAILED'});}
   });
   server.requestTimeout=5000;server.headersTimeout=5000;
-  server.on('close',()=>{memory.records.clear();used.clear();privacy.clear();handoffs.clear();learningRecords.clear();revisions.clear();});
+  server.on('close',()=>{memory.records.clear();used.clear();privacy.clear();handoffs.clear();learningRecords.clear();conversations.clear();revisions.clear();});
   return server;
 }
