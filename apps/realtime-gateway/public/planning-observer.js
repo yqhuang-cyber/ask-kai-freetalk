@@ -7,6 +7,8 @@ const titles={
   'planning.accepted':'逐轮规划完成','planning.cancelled':'规划取消／失效','conversation_plan.revised':'会话计划修订',
   'student.input.accepted':'接受学生表达','voice.context.prepared':'编译语音指令','voice.context.waiting':'等待可更新配置的时机',
   'voice.context.requested':'准备更新语音指令','voice.request.sent':'已发送语音模型请求',
+  'voice.cancel.requested':'请求打断旧回复','voice.cancel.sent':'打断请求实际已发出','voice.cancel.ack':'收到打断确认',
+  'voice.cancel.skipped':'旧回复取消已跳过','voice.cancel.ignored':'忽略重复打断','voice.cancel.timeout':'等待打断确认超时','voice.event.dropped':'供应商事件未通过归属检查',
   'voice.ready':'语音连接就绪','voice.context.confirmed':'语音模型已确认配置',
   'voice.reply.started':'观察到语音回复开始','voice.reply.forwarded':'已转发的回复文字','session.ended':'会话结束'
 };

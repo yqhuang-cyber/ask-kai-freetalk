@@ -328,7 +328,8 @@ npm run replay
 | 请求规划模型 | 实际请求地址、方法和 JSON body，包括 messages、生成参数，以及 Pi 使用的工具定义 |
 | 返回与校验 | 模型 content 或 tool_calls、HTTP 状态、结束原因、token 用量、编译后的提案及校验错误码 |
 | 修复与采用 | 重试原因、规则降级原因、最终采用的计划，以及过期或取消的结果 |
-| 更新语音模型 | 完整 instructions、实际发送的 session.create／session.update body、配置版本与哈希、等待更新的原因和确认事件 |
+| 更新语音模型 | 完整 instructions、实际发送的 session.create／session.update／response.cancel body、配置版本与哈希、等待更新的原因和确认事件 |
+| 打断与超时 | 自动识别或手动触发的来源、旧话轮与回复、实际取消请求、确认、跳过或超时时长 |
 | 开始与转发回复 | 回复开始时已确认的配置版本、是否仍有配置待确认，以及通过安全和归属检查后转发的回复文字 |
 
 例如排查 Alex 的中文是否过难，先看初始计划的 `strategy.speaking_difficulty` 和 `speaking_constraints`，再展开 `voice.request.sent`，在 `body.session.instructions` 中查找「说话要求」，确认普通主动用词范围为 HSK1。逐轮调整还要查看校验／降级、指令发送与确认，再对照 `voice.reply.started` 的配置版本和哈希。

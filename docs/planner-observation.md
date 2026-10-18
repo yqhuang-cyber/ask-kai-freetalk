@@ -24,7 +24,8 @@
 | 校验 | `planning.proposal`、`planning.validated/rejected` | 适配器编译后的提案、校验结果、错误码和安全字段名 |
 | 降级／采用 | `planning.fallback`、`planning.committed`、`planning.accepted/cancelled` | 规则计划和具体原因；通过校验后是否仍适用于当前轮。通过校验的旧提案仍可能失效 |
 | 语音配置 | `voice.context.prepared/requested/waiting` | 编译后的完整 instructions、配置版本与哈希，以及是否正在等待回复结束或控制确认 |
-| 实际发送 | `voice.request.sent` | 当前豆包适配器成功交给 WebSocket 的 session.create / session.update body；不包含鉴权头或音频帧 |
+| 实际发送 | `voice.request.sent` | 当前豆包适配器成功交给 WebSocket 的 session.create / session.update / response.cancel body；不包含鉴权头或音频帧 |
+| 打断 | `voice.cancel.requested/sent/ack/skipped/ignored/timeout` | 自动识别或手动打断的来源、归属、实际发送和确认时长；超时前是否仍在等配置确认 |
 | 确认 | `voice.ready`、`voice.context.confirmed` | 连接就绪；或适配器接受了匹配的配置更新确认。初始就绪与配置更新确认分开 |
 | 回复 | `voice.reply.started`、`voice.reply.forwarded` | 回复开始时观察到的已确认版本、哈希、是否还有配置待确认；安全和归属检查后已转发的文字及完成／取消状态 |
 

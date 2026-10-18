@@ -89,6 +89,7 @@ export function createGateway({ paceMs = 120, bridge, memoryPort, privacyPort, p
     if (req.headers['sec-fetch-site'] === 'cross-site') return json(res, 403, { error:'CROSS_SITE_DENIED' });
     try {
       const url = new URL(req.url, 'http://localhost');
+      if(req.method==='GET'&&url.pathname==='/favicon.ico'){res.writeHead(204);return res.end();}
       if (req.method === 'GET' && url.pathname === '/healthz') return json(res, 200, { service:'ask-kai', mode:pocPort?'standalone_poc':'synthetic_replay', provider_connected:false, status:'ok' });
       if (req.method === 'GET' && url.pathname === '/api/replays') return json(res, 200, { scenarios:SCENARIOS });
       if(req.method==='GET'&&url.pathname==='/api/topics'){if(!planningPort?.topics)return json(res,200,{managed:false,topics:[]});try{return json(res,200,{managed:true,topics:await planningPort.topics.list()});}catch{return json(res,503,{managed:true,topics:[],error:'TOPIC_SERVICE_UNAVAILABLE'});}}
@@ -115,7 +116,11 @@ export function createGateway({ paceMs = 120, bridge, memoryPort, privacyPort, p
           }
           if(!/^[A-Za-z0-9_-]{1,128}$/.test(id))return json(res,400,{error:'INVALID_PREPARATION_ID'});
           if(req.method==='GET')return json(res,200,preparations.view(identity,id));
-          if(req.method==='DELETE'){preparations.cancel(identity,id);return json(res,200,{status:'cancelled'});}
+          if(req.method==='DELETE'){
+            // Cleanup is idempotent: consumption/expiry may already have removed it.
+            try{preparations.cancel(identity,id);}catch(error){if(error.message!=='PREPARATION_NOT_FOUND')throw error;}
+            return json(res,200,{status:'cancelled'});
+          }
           return json(res,405,{error:'METHOD_NOT_ALLOWED'});
         }catch(error){return json(res,error.message==='PREPARATION_CAPACITY'?429:error.message==='PREPARATION_NOT_FOUND'?404:400,{error:error.message==='PREPARATION_CAPACITY'?'PREPARATION_CAPACITY':'INVALID_PREPARATION'});}
       }

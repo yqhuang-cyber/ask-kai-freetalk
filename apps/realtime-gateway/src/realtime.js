@@ -55,6 +55,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
       let diagnostics=false;
       const replyStats=new Map();
       const diagnose=(name,fields={})=>{
+        if(name.startsWith('cancel.')||name==='event.dropped')observation?.record(`voice.${name}`,metadata(fields));
         if(!diagnostics || ws.readyState!==ws.OPEN || ws.bufferedAmount>131072)return;
         try{ws.send(JSON.stringify({type:'diagnostics.event',row:{name,at_ms:performance.now()-started,fields:metadata(fields)}}));}catch{/* Diagnostics do not control the session. */}
       };
@@ -172,7 +173,11 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         const pending=pendingCancel.get(id);if(!pending || pending.timer!==undefined)return;
         pending.sentAt=performance.now();
         diagnose('cancel.sent',{response_id:id,turn_id:pending.turn,source:pending.source,elapsed_ms:pending.sentAt-pending.at});
-        pending.timer=setTimeout(()=>finish('CANCEL_ACK_TIMEOUT'),cancelTimeoutMs);
+        pending.timer=setTimeout(()=>{
+          if(pendingCancel.get(id)!==pending)return;
+          diagnose('cancel.timeout',{response_id:id,turn_id:pending.turn,source:pending.source,elapsed_ms:performance.now()-pending.sentAt,cancel_timeout_ms:cancelTimeoutMs,pending_context:!!pendingContext});
+          finish('CANCEL_ACK_TIMEOUT');
+        },cancelTimeoutMs);
       };
       const interrupt = (responseId,source='manual') => {
         const active = runtime.active;

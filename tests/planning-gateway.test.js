@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { once } from 'node:events';
 import { startMockBackend } from '../apps/hskai-mock/src/backend.js';
-import { setup,until } from './helpers/realtime.js';
+import { setup,until,TestProvider } from './helpers/realtime.js';
 import { projectSummary } from '../apps/realtime-gateway/public/summary-cards.js';
 import { validateLearningRecord } from '../packages/contracts/planning.js';
 import { metadata,ExperienceTrace } from '../apps/realtime-gateway/public/diagnostics.js';
@@ -81,6 +81,9 @@ test('opt-in observation follows preparation, accepted input, turn plan, context
   const prepared=await f.prepare({mode:'free',observe:true});
   assert.ok(prepared.observation.rows.some(x=>x.stage==='planning.triggered'&&x.data.kind==='conversation'));
   const ticket=await(await f.call('POST','/api/sessions',{mode:'free',preparation_id:prepared.preparation_id})).json();
+  assert.equal((await f.call('DELETE',`/api/conversation-preparations/${prepared.preparation_id}`)).status,200);
+  assert.equal((await f.call('DELETE',`/api/conversation-preparations/${prepared.preparation_id}`)).status,200);
+  assert.equal((await f.call('GET',`/api/conversation-preparations/${prepared.preparation_id}`)).status,404);
   const {ws,provider,packets}=await f.open(ticket);
   provider.emit('session.ready');provider.emit('user.final',{text:'我喜欢音乐。'},{turn_id:'observe-turn'});
   await until(()=>packets.some(p=>p.type==='planning.observation'&&p.row.stage==='planning.committed'));
@@ -102,6 +105,23 @@ test('opt-in observation follows preparation, accepted input, turn plan, context
   provider.emit('user.final',{text:'再见。'},{turn_id:'observe-bye'});
   await until(()=>packets.some(p=>p.type==='session.closing'));
   ws.send(JSON.stringify({type:'session.end'}));await once(ws,'close');
+});
+test('automatic ASR cancellation is observable without manual interruption, including the actual-send timeout',async t=>{
+  let provider;
+  const f=await fixture(t,{cancelTimeoutMs:25,providerFactory:()=>provider=Object.assign(new TestProvider(),{speechStartKind:'asr_candidate'})});
+  const prepared=await f.prepare({mode:'free',observe:true});
+  const ticket=await(await f.call('POST','/api/sessions',{mode:'free',preparation_id:prepared.preparation_id})).json();
+  const {ws,packets}=await f.open(ticket);provider.emit('session.ready');
+  provider.emit('response.started',{},{turn_id:'old-turn',response_id:'old-reply'});
+  provider.emit('user.partial',{text:'测试输入'},{turn_id:'new-turn'});
+  await once(ws,'close');
+  const rows=packets.filter(p=>p.type==='planning.observation').map(p=>p.row);
+  assert.equal(rows.find(r=>r.stage==='voice.cancel.requested').data.source,'asr_confirmed');
+  assert.ok(rows.some(r=>r.stage==='voice.cancel.sent'));
+  const timeout=rows.find(r=>r.stage==='voice.cancel.timeout');
+  assert.equal(timeout.data.response_id,'old-reply');assert.equal(timeout.data.cancel_timeout_ms,25);assert.ok(timeout.data.elapsed_ms>=20);
+  assert.ok(!rows.some(r=>r.stage==='voice.cancel.ack'));
+  assert.equal(rows.find(r=>r.stage==='session.ended').data.code,'CANCEL_ACK_TIMEOUT');
 });
 async function reportClosing(live,state='text_only',audioMs=0) {
   await until(()=>live.packets.some(p=>p.type==='session.closing'&&p.phase==='awaiting_playback'));

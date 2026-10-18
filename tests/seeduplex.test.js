@@ -317,14 +317,20 @@ test('audio compatibility stays bounded, canonical and fenced after cancellation
 });
 
 
-test('voice request observation matches sent create/update bodies and excludes audio frames and credentials',()=>{
+test('voice request observation matches sent create/update/cancel bodies and excludes audio frames and credentials',()=>{
   const observed=[],x=setup({observeRequest:body=>observed.push(structuredClone(body))});
   assert.deepEqual(observed,[x.sent[0]]);assert.equal(observed[0].session.instructions,'trusted lesson');
   x.ready();x.provider.sendAudio(Buffer.alloc(640));assert.equal(observed.length,1);
   x.provider.updateContext({version:1,instructions:'说话要求：只用一级词。'});
   assert.equal(observed.length,2);assert.deepEqual(observed[1],x.sent.at(-1));
   assert.equal(JSON.stringify(observed).includes('synthetic-only'),false);
+  x.wire({type:'session.updated',session:{id:'private-session'}});
+  x.wire(output('response.output_text.delta',undefined,undefined,{delta:'合成回复'}));
+  x.provider.cancel(x.provider.activeReply.id);
+  assert.equal(observed.length,3);assert.equal(observed[2].type,'response.cancel');assert.deepEqual(observed[2],x.sent.at(-1));
+  x.wire({type:'response.canceled'});
+  x.provider.updateContext({version:2,instructions:'稍后更新'});
   x.provider.observeRequest=()=>{throw new Error('observer must not fail voice');};
   x.wire({type:'session.updated',session:{id:'private-session'}});
-  x.provider.updateContext({version:2,instructions:'新要求'});assert.deepEqual(x.failures,[]);x.provider.close();
+  x.provider.updateContext({version:3,instructions:'新要求'});assert.deepEqual(x.failures,[]);x.provider.close();
 });
