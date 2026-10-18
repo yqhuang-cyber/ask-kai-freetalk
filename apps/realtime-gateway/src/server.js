@@ -24,7 +24,7 @@ const staticFiles = new Map([
   ['/presentation.js',['presentation.js','text/javascript']],
   ['/caption-phrases.js',['caption-phrases.js','text/javascript']],
   ['/summary-cards.js',['summary-cards.js','text/javascript']],
-  ['/diagnostics.js',['diagnostics.js','text/javascript']], ['/experience-cases.json',['experience-cases.json','application/json']],
+  ['/diagnostics.js',['diagnostics.js','text/javascript']], ['/planning-observer.js',['planning-observer.js','text/javascript']], ['/experience-cases.json',['experience-cases.json','application/json']],
   ['/preparation-client.js',['preparation-client.js','text/javascript']],
   ['/dev/replay', ['replay.html','text/html']], ['/app.js',['app.js','text/javascript']], ['/style.css',['style.css','text/css']]
 ]);
@@ -108,7 +108,10 @@ export function createGateway({ paceMs = 120, bridge, memoryPort, privacyPort, p
           const id=url.pathname.slice('/api/conversation-preparations/'.length);
           if(req.method==='POST'&&url.pathname==='/api/conversation-preparations') {
             if(planningMode==='controlled')return json(res,501,{error:'CONTROLLED_REALTIME_NOT_VERIFIED'});
-            return json(res,202,preparations.create(identity,await readJson(req,1024)));
+            const input=await readJson(req,1024);
+            if(!input||typeof input!=='object'||Array.isArray(input)||input.observe!==undefined&&typeof input.observe!=='boolean')return json(res,400,{error:'INVALID_PREPARATION'});
+            const {observe,...entry}=input;
+            return json(res,202,preparations.create(identity,entry,{observe:observe===true}));
           }
           if(!/^[A-Za-z0-9_-]{1,128}$/.test(id))return json(res,400,{error:'INVALID_PREPARATION_ID'});
           if(req.method==='GET')return json(res,200,preparations.view(identity,id));

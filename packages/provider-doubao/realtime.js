@@ -84,6 +84,7 @@ export class DoubaoJsonTransport {
     if (this.closed || this.socket?.readyState !== WebSocket.OPEN) throw new Error('PROVIDER_NOT_OPEN');
     if (this.socket.bufferedAmount > 262144) throw new Error('PROVIDER_BACKPRESSURE');
     this.socket.send(JSON.stringify(value));
+    if(['session.create','session.update'].includes(value.type))try{this.observeRequest?.(value);}catch{/* Observation never controls transport. */}
   }
   close() { this.closed = true; this.socket?.terminate(); this.ids.clear(); this.reverse.clear(); }
 }

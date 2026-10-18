@@ -1,10 +1,13 @@
+import { PlanningObserver } from './planning-observer.js';
 import { ClosingPlayback } from './closing-playback.js';
 import { AudioIO } from './audio.js';
 import { Presentation } from './presentation.js';
 import { ExperienceTrace } from './diagnostics.js';
 import { SummaryCards } from './summary-cards.js';
-import { PreparationClient } from './preparation-client.js';
+import { PreparationClient,preparationReadyMessage } from './preparation-client.js';
 import { failureCode,failureMessage } from './failure-messages.js';
+const observationEnabled=new URLSearchParams(location.search).get('observe')==='1';
+const planningObserver=new PlanningObserver(document.querySelector('#planning-observation'),{enabled:observationEnabled});
 const diagnosticsEnabled=new URLSearchParams(location.search).get('diagnostics')==='1';
 const trace=diagnosticsEnabled?new ExperienceTrace():null;
 let selectedLearner='poc-learner',learnerEpoch=0,learnerSwitching=false,authorizationQueue=Promise.resolve();
@@ -92,9 +95,9 @@ function learning(packet) {
 }
 function clearGoalDetails(){document.querySelector('#goal-details').hidden=true;document.querySelector('#goal-key-points').replaceChildren();document.querySelector('#goal-expression-task').textContent='';document.querySelector('#goal-state').textContent='';}
 const entry=()=>({mode:'free',...(paceSupported?{speech_pace:paceSelect.value}:{})});
-const preparer=new PreparationClient({fetcher:authorizedFetch,onView:learning,onStatus:(state,details)=> {
+const preparer=new PreparationClient({fetcher:authorizedFetch,observe:observationEnabled,onObservation:report=>planningObserver.snapshot(report),onView:learning,onStatus:(state,details)=> {
   if(state==='preparing'){clearGoalDetails();goal.textContent='正在规划本次对话……';promptHint.textContent='';document.querySelector('.word-card').hidden=true;message.textContent='正在准备对话……';}
-  else if(state==='ready')message.textContent=details?.degraded?'对话已准备；当前使用保守策略，规划模型暂不可用。':'对话已准备，可以开始。';
+  else if(state==='ready')message.textContent=preparationReadyMessage(details);
   else if(state==='failed'){clearGoalDetails();goal.textContent='本次对话尚未准备完成。';message.textContent='对话准备失败，请重新开始。';}
 }});
 function prepareSelected(){if(!dynamicPlanning)return;const epoch=++preparationEpoch;preparationPromise=preparer.prepare(entry()).then(id=>epoch===preparationEpoch?id:null);}
@@ -159,6 +162,7 @@ connect.addEventListener('click',async()=> {
       if(current!==generation)return;
       try {
         const packet=JSON.parse(event.data);
+        if(packet.type==='planning.observation'){planningObserver.record(packet.row);return;}
         if(packet.type==='diagnostics.event'){trace?.gateway(packet.row);refreshDiagnostics();return;}
         if(packet.type==='session.config'){config=packet.audio;paceHint.textContent=packet.speech?.supported && ['slow','normal'].includes(packet.speech.pace)?`本次语速：${packet.speech.pace==='slow'?'慢速':'正常'}；结束后可切换。`:'本次使用服务默认语速。';return;}
         if(packet.type==='close.trace'){appendCloseLog(packet.title??'收束',packet.note??'',packet.body);return;}
@@ -282,7 +286,7 @@ learnerSelect.addEventListener('change',async()=> {
   try {
     await stop('正在切换学习者……');
     const revoked=await authorizedFetch('/api/authorization/revoke',{method:'POST'});if(!revoked.ok)throw new Error('REVOKE_FAILED');
-    learnerEpoch++;selectedLearner=next;summaryCards.reset();entryPreviews=(await runtimeReady).entry_previews??{};
+    learnerEpoch++;planningObserver.clear();selectedLearner=next;summaryCards.reset();entryPreviews=(await runtimeReady).entry_previews??{};
     document.querySelector('#save-learning-input').checked=false;document.querySelector('#memory-list').replaceChildren();document.querySelector('#learner-profile-content').replaceChildren();document.querySelector('#learner-profile').hidden=true;document.querySelector('#learner-level').textContent='正在加载画像';
     goal.textContent='正在为当前学习者准备对话。';promptHint.textContent='';document.querySelector('.word-card').hidden=true;
     await bootstrap();

@@ -22,11 +22,14 @@ test('model cannot submit fields owned by host or bypass resource/semantic polic
   for(const field of ['strategy','key_points','owner_id','plan_revision'])assert.throws(()=>compilePlannerDraft('conversation',{...selection,[field]:'injected'},initial),/INVALID_DRAFT/);
   for(const field of ['prior_outcome','reply_directive','expected_observation','session_id'])assert.throws(()=>compilePlannerDraft('turn',{...turn,[field]:'injected'},{}),/INVALID_DRAFT/);
   assert.throws(()=>compilePlannerDraft('conversation',{...selection,primary_goal_id:'invented'},initial),/RESOURCE_REFERENCE/);
-  assert.throws(()=>compilePlannerDraft('conversation',selection,{...initial,entry:{mode:'free'}}),/INVALID_DRAFT/);
+  assert.throws(()=>compilePlannerDraft('conversation',selection,{...initial,entry:{mode:'free'}}),/FREE_INITIAL_GOAL_FORBIDDEN/);
   const spoken={lexical_style:'everyday',sentence_structure:'simple',new_word_policy:'avoid',focus_term:null,reason:'按已达范围',refs:[context.snapshot_id]};
   const freeInput={...initial,entry:{mode:'free'}};
-  const p=compilePlannerDraft('conversation',{...selection,speaking_difficulty:spoken},freeInput);
-  assert.throws(()=>validateConversation(p,{entry:freeInput.entry,context,resource:SPORTS_RESOURCE}),/FREE/);
+  const {primary_goal_id,candidate_goal_ids,support_level,...freeSelection}=selection;
+  const freeDraft={...freeSelection,strategy:{support_level,speaking_difficulty:spoken}};
+  const p=compilePlannerDraft('conversation',freeDraft,freeInput);
+  assert.equal(p.primary_goal_id,null);assert.deepEqual(p.candidate_goal_ids,[]);assert.deepEqual(p.key_points,[]);
+  assert.throws(()=>compilePlannerDraft('conversation',{...freeDraft,primary_goal_id:'express-likes'},freeInput),/FREE_INITIAL_GOAL_FORBIDDEN/);
   const t=compilePlannerDraft('turn',{...turn,action:'CLOSE',active_goal_id:null},{});
   assert.throws(()=>validateTurn(t,{plan:{primary_goal:SPORTS_RESOURCE.goals[0],goal_status:'active'},input:{text:'聊篮球',source_event_id:'input',expires_at:Date.now()+1000},policy:{action:'RESPOND',teaching_paused:false,teaching_cooldown:0},allowedRefs:new Set(['input']),priorExecution:null}),/UNREQUESTED/);
 });
@@ -62,8 +65,8 @@ test('full-contract versions adaptive reply directives while retaining fields an
   for(const kind of ['Conversation','Turn'])for(const options of [{},{repair:true,repairCode:'INVALID_SELECTION_REFERENCE'}]) {
     await old['plan'+kind](initial,options);await current['plan'+kind](initial,options);const sent=requests.at(-1),baseline=requests.at(-2);assert.ok(sent.messages[0].content.includes(AGENT_REASONING_INSTRUCTIONS));assert.deepEqual(sent.messages[1],baseline.messages[1]);assert.equal(sent.model,baseline.model);assert.equal(sent.max_completion_tokens,baseline.max_completion_tokens);if(kind==='Turn'){assert.match(sent.messages[0].content,/kai-reply-v7/);assert.match(sent.messages[0].content,/承接内容、相关补充与自然追问/);assert.match(baseline.messages[0].content,/kai-reply-v4/);}if(options.repair)assert.match(sent.messages[0].content,/INVALID_SELECTION_REFERENCE/);
   }
-  assert.equal(plannerDescriptor(configuredPlanner({MINIMAX_API_KEY:'fixture'})).prompt,'kai-planner-v10');
-  assert.equal(plannerDescriptor(configuredPlanner({MINIMAX_API_KEY:'fixture',ASK_KAI_PLANNER_PROTOCOL:'draft_v1'})).prompt,'kai-planner-v10');
+  assert.equal(plannerDescriptor(configuredPlanner({MINIMAX_API_KEY:'fixture'})).prompt,'kai-planner-v11');
+  assert.equal(plannerDescriptor(configuredPlanner({MINIMAX_API_KEY:'fixture',ASK_KAI_PLANNER_PROTOCOL:'draft_v1'})).prompt,'kai-planner-v11');
   assert.throws(()=>configuredPlanner({MINIMAX_API_KEY:'fixture',ASK_KAI_PLANNER_PROTOCOL:'unknown'}),/NOT_REGISTERED/);
 });
 test('planner metadata exports only bounded descriptor fields',()=> {

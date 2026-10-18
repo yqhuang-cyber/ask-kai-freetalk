@@ -2,6 +2,7 @@ import { REPLY_POLICY_VERSION } from './reply-policy.js';
 import { DraftPlanner,PLANNER_PROMPT_VERSION } from './planner-draft.js';
 import { AGENT_REASONING_INSTRUCTIONS } from './agent-reasoning.js';
 import { SPEAKING_PLANNER_RULES } from './speaking-policy.js';
+import { freeInitialInput,compileFreeInitialPlan,FREE_INITIAL_RULES,FREE_INITIAL_REASONING,freeInitialRepairHint } from './free-initial-plan.js';
 // Retain the full-contract field layout; share current reply/reasoning policies.
 export const CONVERSATION_SHAPE={conversation_purpose:'短交流目的',content_focus:'具体切入点',opening_options:['可选开场，最多2项'],primary_goal_id:null,candidate_goal_ids:[],key_points:[],strategy:{language_support:'auto',support_level:'unknown',correction:'gentle',pace:'slow'},selection_basis:[{reason:'简短原因码',refs:['输入里存在的record_id']} ]};
 export const TURN_SHAPE={interpretation:{intent:'简短意图',clarity:'unknown',refs:[]},prior_outcome:{execution_ref:null,status:'none',unknown:['播放与理解未知']},goal_assessment:null,action:'RESPOND',active_goal_id:null,local_help_target:null,reply_directive:{task:'下一步回应任务',support_level:'none',new_points:0,budget_ref:REPLY_POLICY_VERSION},expected_observation:{kind:'conversation_continuity',required_student_answer:null},proposed_plan_patch:null,evidence_refs:[],rationale_code:'短理由'};
@@ -13,7 +14,9 @@ const RULES={
 const SPEAKING_SHAPE={lexical_style:'everyday',sentence_structure:'simple',new_word_policy:'avoid',focus_term:null,reason:'按当前理解和已达范围选择',refs:['输入里存在的record_id']};
 export function conversationShape(input) {
   if((input?.entry?.mode??input?.plan?.mode)!=='free')return CONVERSATION_SHAPE;
-  return {...CONVERSATION_SHAPE,strategy:{...CONVERSATION_SHAPE.strategy,speaking_difficulty:SPEAKING_SHAPE}};
+  const {primary_goal_id,candidate_goal_ids,key_points,...conversation}=CONVERSATION_SHAPE;
+  const refs=input.snapshot_ref?[input.snapshot_ref]:SPEAKING_SHAPE.refs;
+  return {...conversation,strategy:{...conversation.strategy,speaking_difficulty:{...SPEAKING_SHAPE,refs}},selection_basis:[{reason:'简短依据',refs}]};
 }
 export function turnShape(input) {
   if(input?.plan?.mode!=='free')return TURN_SHAPE;
@@ -22,6 +25,10 @@ export function turnShape(input) {
 export function fullContractMessages(kind,input,{repair=false,repairCode}={}) {
   if(!RULES[kind])throw new Error('INVALID_PLANNER_METHOD');
   const free=(input.plan?.mode??input.entry?.mode)==='free';
+  if(free&&kind==='conversation') {
+    const initial=freeInitialInput(input);
+    return [{role:'system',content:`${COMMON}${FREE_INITIAL_RULES} 输出字段与类型示例：${JSON.stringify(conversationShape(initial))}。${FREE_INITIAL_REASONING}${SPEAKING_PLANNER_RULES}${repair?freeInitialRepairHint(repairCode):''}`},{role:'user',content:JSON.stringify(initial)}];
+  }
   const shape=kind==='conversation'?conversationShape(input):turnShape(input);
   const freeRules=free?'free使用宿主skill_catalog和实际前文，resource为空，不读取Topic Pack或指定运动内容；初始无目标，只有学生明确持续练习才使用通用技能。局部求助不设正式目标；未评估规则不能称已尝试或掌握。':'';
   return [{role:'system',content:`${COMMON}${RULES[kind]} 输出字段与类型示例：${JSON.stringify(shape)}。${AGENT_REASONING_INSTRUCTIONS}${freeRules}${free?SPEAKING_PLANNER_RULES:''}${repair?'上次校验失败，原因：'+repairCode+'；按字段契约修复，不得增加字段。':''}`},{role:'user',content:JSON.stringify(input)}];
@@ -31,6 +38,7 @@ export class FullContractPlanner extends DraftPlanner {
   describe(){return {...super.describe(),draft:'full_contract_v3',prompt:PLANNER_PROMPT_VERSION};}
   async propose(kind,input,{signal,repair=false,repairCode}={}) {
     if(Buffer.byteLength(JSON.stringify(input))>49152)throw new Error('PLANNER_INPUT_TOO_LARGE');
-    return this.transport.completeJSON({kind,signal,messages:fullContractMessages(kind,input,{repair,repairCode})});
+    const proposal=await this.transport.completeJSON({kind,signal,messages:fullContractMessages(kind,input,{repair,repairCode})});
+    return kind==='conversation'&&input.entry?.mode==='free'?compileFreeInitialPlan(proposal):proposal;
   }
 }

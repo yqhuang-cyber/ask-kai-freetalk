@@ -33,6 +33,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
     if (connections.size >= maxConnections) return reject(socket,'429 Too Many Requests');
     wss.handleUpgrade(req,socket,head,ws => {
       connections.add(ws);
+      const observation=ticket.planning?.trace;
       const runtime = new SessionRuntime(ticket.session_id,{target:null});
       const teaching=new TeachingSession({sessionId:ticket.session_id,mode:ticket.mode,memory:ticket.identity.memory,mission:ticket.identity.mission,speechPace:ticket.speech_pace,planning:ticket.planning,planner,resourceVerifier:planningPort?.checkResource?(resource,options)=>planningPort.checkResource(ticket.identity,resource,options):null,onPlanningRecord:(name,fields)=>diagnose(name,fields)});
       const policy=new SafetyPolicy();
@@ -57,6 +58,14 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         if(!diagnostics || ws.readyState!==ws.OPEN || ws.bufferedAmount>131072)return;
         try{ws.send(JSON.stringify({type:'diagnostics.event',row:{name,at_ms:performance.now()-started,fields:metadata(fields)}}));}catch{/* Diagnostics do not control the session. */}
       };
+      const sendObservation=row=>{
+        if(ws.readyState!==ws.OPEN)return;
+        try{const packet=JSON.stringify({type:'planning.observation',row});if(ws.bufferedAmount+Buffer.byteLength(packet)>131072)return;ws.send(packet);}catch{}
+      };
+      for(const row of observation?.snapshot().rows??[])sendObservation(row);
+      const unsubscribeObservation=observation?.subscribe(sendObservation);
+      observation?.record('voice.context.prepared',{session_id:ticket.session_id,provider_kind:providerKind,synthetic:providerKind!=='doubao',context_version:appliedVersion,context_hash:appliedContext.hash,instructions:appliedContext.instructions});
+      const observedReplies=new Map();
       const traceClose=(title,note,body)=>{
         if(ws.readyState!==ws.OPEN)return;
         const packet={type:'close.trace',title,note};
@@ -78,7 +87,10 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         teaching.forward(data); // Only forwarded packets, after safety/output hold.
         teaching.planning?.observe(data);
         const event=data.type==='event'?data.event:null;
-        if(event?.type==='response.started')replyText.set(event.response_id,'');
+        if(event?.type==='response.started'){replyText.set(event.response_id,'');if(observation)observedReplies.set(event.response_id,{text:'',truncated:false});}
+        const observedReply=observedReplies.get(event?.response_id);
+        if(observedReply&&event.type==='response.text.delta'){const text=observedReply.text+event.payload.text;observedReply.text=text.slice(0,16000);observedReply.truncated||=text.length>16000;}
+        if(observedReply&&['response.done','response.cancelled'].includes(event.type)){observation.record('voice.reply.forwarded',{turn_id:event.turn_id,response_id:event.response_id,status:event.type,text:observedReply.text,truncated:observedReply.truncated,playback_confirmed:false});observedReplies.delete(event.response_id);}
         if(event?.type==='response.text.delta'&&replyText.has(event.response_id))replyText.set(event.response_id,(replyText.get(event.response_id)+event.payload.text).slice(0,240));
         // Retain this POC's exit-code/farewell fallback, but only bind an owned,
         // forwarded reply. Never cancel a finished goodbye to request another one.
@@ -107,6 +119,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         if(code||endReason==='transport_closed')recordController?.abort();
         for(const id of replyStats.keys())completeStats(id,code?'failed':'closed');
         diagnose('session.end',{state:code?'failed':'closed',code:code??undefined});
+        observation?.record('session.ended',{state:code?'failed':'closed',code:code??null});unsubscribeObservation?.();observation?.clear();observedReplies.clear();
         ended = true;ending=true;
         const delivery=closing?.delivery??'skipped';closing?.close();
         outputGate?.close();speechCandidates.clear();
@@ -148,9 +161,10 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
       const heartbeat=setInterval(()=>{if(!alive){finish('CLIENT_HEARTBEAT_TIMEOUT');ws.terminate();return;}alive=false;if(ws.readyState===ws.OPEN)ws.ping();},15000);
       ws.on('pong',()=>{alive=true;});
       const flushContext = () => {
-        if(ended || ending || !ready || runtime.active || pendingCancel.size || pendingContext || appliedVersion===teaching.version)return;
+        if(ended || ending || !ready || runtime.active || pendingCancel.size || pendingContext || appliedVersion===teaching.version){if(!ended&&!ending&&appliedVersion!==teaching.version)observation?.record('voice.context.waiting',{context_version:teaching.version,applied_context_version:appliedVersion,active_reply:!!runtime.active,pending_cancel:pendingCancel.size>0,pending_context:!!pendingContext,ready});return;}
         const snapshot=teaching.contextSnapshot(),version=snapshot.version,decision=snapshot.decision;
         diagnose('context.requested',{context_version:version,turn_id:decision?.turn_id,context_hash:snapshot.hash,context_policy_version:snapshot.policy_version,context_scope:snapshot.scope});
+        observation?.record('voice.context.requested',{context_version:version,context_hash:snapshot.hash,turn_id:decision?.turn_id??null,instructions:snapshot.instructions});
         pendingContext={version,decision,language:snapshot.language,snapshot,timer:setTimeout(()=>finish('CONTEXT_ACK_TIMEOUT'),contextTimeoutMs)};
         try{provider.updateContext({version,instructions:snapshot.instructions});}catch{finish('PROVIDER_CONTEXT_FAILED');}
       };
@@ -242,6 +256,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
       });
       try {
         provider = providerFactory(ticket);
+        if(observation)provider.observeRequest=body=>observation.record('voice.request.sent',{provider_kind:providerKind,synthetic:providerKind!=='doubao',context_version:pendingContext?.version??appliedVersion,context_hash:pendingContext?.snapshot.hash??appliedContext.hash,body});
         if(provider.speechStartKind==='asr_candidate')outputGate=new TurnOutputGate({send,fail:finish,observe:diagnose,graceMs:replyGraceMs,maxWaitMs:turnWaitMs});
         provider.open({sessionId:ticket.session_id,instructions:appliedContext.instructions,onFailure:code=>finish(code),onEvent:packet=> {
           if (ended || ending || restricted) return;
@@ -278,7 +293,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             return;
           }
           if(packet.control==='context.updated') {
-            if(pendingContext && packet.version===pendingContext.version){clearTimeout(pendingContext.timer);appliedContext=pendingContext.snapshot;appliedVersion=packet.version;appliedDecision=appliedContext.decision;appliedLanguage=appliedContext.language;pendingContext=null;diagnose('context.applied',{context_version:appliedVersion,turn_id:appliedDecision?.turn_id,context_hash:appliedContext.hash,context_policy_version:appliedContext.policy_version});send({type:'teaching.context.applied',version:appliedVersion,context_hash:appliedContext.hash});flushContext();}
+            if(pendingContext && packet.version===pendingContext.version){clearTimeout(pendingContext.timer);appliedContext=pendingContext.snapshot;appliedVersion=packet.version;appliedDecision=appliedContext.decision;appliedLanguage=appliedContext.language;pendingContext=null;observation?.record('voice.context.confirmed',{context_version:appliedVersion,context_hash:appliedContext.hash,turn_id:appliedDecision?.turn_id??null});diagnose('context.applied',{context_version:appliedVersion,turn_id:appliedDecision?.turn_id,context_hash:appliedContext.hash,context_policy_version:appliedContext.policy_version});send({type:'teaching.context.applied',version:appliedVersion,context_hash:appliedContext.hash});flushContext();}
             else diagnose('context.confirmation.ignored',{reason:pendingContext?'wrong_version':'no_pending'});
             return;
           }
@@ -291,12 +306,14 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             return;
           }
           if (packet.event.type === 'session.ready') {ready=true;clearTimeout(readyTimer);metrics?.count(providerKind,'ready');metrics?.observe(providerKind,'ready_ms',performance.now()-started);}
+          if(packet.event.type==='session.ready')observation?.record('voice.ready',{provider_kind:providerKind,synthetic:providerKind!=='doubao',context_version:appliedVersion,context_hash:appliedContext.hash});
           if(packet.event.type==='session.ready')diagnose('session.ready',{provider_ready:true,elapsed_ms:performance.now()-started});
           if(packet.event.type==='session.closed'){finish(undefined,'provider_closed');return;}
           if(packet.event.type==='session.failed'){finish('PROVIDER_SESSION_FAILED');return;}
           if (packet.event.type==='response.started'){lastResponse={id:packet.event.response_id,turn:packet.event.turn_id};policy.newResponse();replyAt=performance.now();firstAudio=false;}
           const event=packet.event,ids={response_id:event.response_id,turn_id:event.turn_id};
           if(event.type==='response.started') {
+            observation?.record('voice.reply.started',{...ids,applied_context_version:appliedVersion,applied_context_hash:appliedContext.hash,current_context_version:teaching.version,pending_context:!!pendingContext,decision_turn_id:appliedDecision?.turn_id??null,generation_basis:'unknown'});
             const languageContextMatched=!pendingContext && sameLanguageSupport(appliedLanguage,teaching.languageSnapshot());
             replyStats.set(event.response_id,{at:performance.now(),turn:event.turn_id,chars:0,deltas:0,chunks:0,pcmMs:0,audit:diagnostics?new ReplyAudit({englishSupport:appliedLanguage.english_support,languageContextMatched}):null});
             diagnose('response.started',{...ids,pending_context:!!pendingContext,pending_cancel:pendingCancel.size>0});
@@ -330,7 +347,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
           // Register accepted input/request provenance after safety, before a
           // final releases held teacher text. Plans alone remain no evidence.
           const acceptedTeaching=teaching.accept(packet.event);
-          if(acceptedTeaching){latestInputTurn=event.turn_id;finalText.set(event.turn_id,event.payload.text);}
+          if(acceptedTeaching){observation?.record('student.input.accepted',{turn_id:event.turn_id,source_event_id:event.event_id,text:event.payload.text});latestInputTurn=event.turn_id;finalText.set(event.turn_id,event.payload.text);}
           if(acceptedTeaching&&teaching.view().decision.action==='CLOSE'&&/(?:不用总结|不(?:用|要)回顾|(?:现在|马上|立刻)(?:就)?结束|(?:end|stop) (?:right now|immediately)|no (?:recap|summary))/iu.test(controlText(event.payload.text))){closing.delivery='skipped';void finish();return;}
           if(acceptedTeaching&&!diagnostics){closing.input(event,teaching.view().decision,teaching.summarySnapshot());if(teaching.view().decision.action==='CLOSE')teaching.planning?.invalidate('student_end');}
           if(outputGate && ['user.partial','user.final'].includes(event.type)) {

@@ -4,8 +4,9 @@ import { proposeTopic } from './topic-initialization.js';
 import { eligibleGoal } from './goal-lifecycle.js';
 import { AGENT_REASONING_INSTRUCTIONS } from './agent-reasoning.js';
 import { SPEAKING_PLANNER_RULES } from './speaking-policy.js';
+import { freeInitialInput,compileFreeInitialPlan,assertNoFreeInitialGoalFields,FREE_INITIAL_RULES,FREE_INITIAL_REASONING,freeInitialRepairHint } from './free-initial-plan.js';
 export const PLANNER_DRAFT_VERSION='kai-proposal-draft-v1';
-export const PLANNER_PROMPT_VERSION='kai-planner-v10';
+export const PLANNER_PROMPT_VERSION='kai-planner-v11';
 const object=properties=>({type:'object',additionalProperties:false,required:Object.keys(properties),properties});
 const text={type:'string',minLength:1,maxLength:200};
 const nullableText={anyOf:[text,{type:'null'}]};
@@ -16,14 +17,14 @@ export const DRAFT_SCHEMAS=immutable({
   turn:object({interpretation:object({intent:{...text,maxLength:100},clarity:{enum:['clear','ambiguous','unknown']},refs}),goal_assessment:{anyOf:[{type:'null'},object({progress:{enum:['unknown','attempted','not_related']},gap:{...text,maxLength:150},refs})]},action:{enum:PLAN_ACTIONS},active_goal_id:nullableText,local_help_target:{anyOf:[{...text,maxLength:100},{type:'null'}]},reply_task:{...text,maxLength:400},support_level:{enum:['none','partial','model','choice']},new_points:{enum:[0,1]},expected_observation_kind:{...text,maxLength:100},proposed_plan_patch:{anyOf:[{type:'null'},{enum:['pause','resume']},object({op:{enum:['replace','retire']},goal_id:text,refs})]},evidence_refs:refs,rationale_code:{...text,maxLength:100}})
 });
 export const FREE_DRAFT_SCHEMAS=immutable({
-  conversation:object({...DRAFT_SCHEMAS.conversation.properties,speaking_difficulty:speakingDifficulty}),
+  conversation:object({conversation_purpose:text,content_focus:text,opening_options:DRAFT_SCHEMAS.conversation.properties.opening_options,strategy:object({support_level:DRAFT_SCHEMAS.conversation.properties.support_level,speaking_difficulty:speakingDifficulty}),selection_basis:DRAFT_SCHEMAS.conversation.properties.selection_basis}),
   turn:object({...DRAFT_SCHEMAS.turn.properties,speaking_difficulty:speakingDifficulty})
 });
 export function draftSchema(kind,input) {
   const free=kind==='conversation'?input?.entry?.mode==='free':input?.plan?.mode==='free';
   return (free?FREE_DRAFT_SCHEMAS:DRAFT_SCHEMAS)[kind];
 }
-export const DRAFT_FIELD_NAMES=Object.freeze([...new Set(['root','extra_fields',...Object.keys(DRAFT_SCHEMAS.conversation.properties),...Object.keys(DRAFT_SCHEMAS.turn.properties),'speaking_difficulty'])]);
+export const DRAFT_FIELD_NAMES=Object.freeze([...new Set(['root','extra_fields',...Object.keys(DRAFT_SCHEMAS.conversation.properties),...Object.keys(DRAFT_SCHEMAS.turn.properties),'strategy','key_points','speaking_difficulty'])]);
 export const safeDraftFields=fields=>Array.isArray(fields)?fields.filter(f=>DRAFT_FIELD_NAMES.includes(f)).slice(0,4):[];
 // A small, bounded schema subset. Shared across JSON-prompt and future native
 // structured adapters; input-dependent ownership/policy is validated afterwards.
@@ -37,6 +38,8 @@ function valid(v,s) {
   return false;
 }
 export function compilePlannerDraft(kind,draft,input) {
+  const freeInitial=kind==='conversation'&&input.entry?.mode==='free';
+  if(freeInitial)assertNoFreeInitialGoalFields(draft);
   const schema=draftSchema(kind,input);
   if(!schema||!valid(draft,schema)||Buffer.byteLength(JSON.stringify(draft))>LIMITS.proposal_bytes) {
     const error=new Error('PLANNER_INVALID_DRAFT');
@@ -44,6 +47,10 @@ export function compilePlannerDraft(kind,draft,input) {
     throw error;
   }
   if(kind==='conversation') {
+    if(freeInitial) {
+      const {strategy,...selection}=draft;
+      return compileFreeInitialPlan({...selection,strategy:{...input.required_strategy,...strategy}});
+    }
     const goal=input.resource?.goals.find(g=>g.id===draft.primary_goal_id);
     if(draft.primary_goal_id!==null&&!goal)throw new Error('INVALID_PLAN_RESOURCE_REFERENCE');
     const {support_level,speaking_difficulty,...selection}=draft;
@@ -58,14 +65,21 @@ const RULES={
   turn:'当前学生意图优先，每轮一个主要动作；一个动作可以包含承接具体内容、相关补充和自然追问，不限制为一句应答。拒绝或换题后聊天，不自动恢复练习；只有policy.action为CLOSE时才选CLOSE。先看实际前文，语义明确不重复澄清、正确表达不纠错。已尝试后继续内容交流，不自动重复示范或要求跟读；主动求助仍可帮助。free使用宿主skill_catalog和实际前文，resource为空，不读取Topic Pack或指定运动内容；仅学生明确持续练习时使用通用技能。free一次求助填local_help_target但active_goal_id:null，下一轮结束局部帮助，不强制整场练习。局部帮助与正式目标不可同时填。宿主已按明确选择更新目标时不要再修订；replace仅学生明确选择或连续明确困难>=2后退回先修目标，禁止自行提高目标。paused/retired时active_goal_id:null，不选INVITE_PRACTICE/REVIEW，不评attempted。new_points在冷却时为0。提示范围和语义未验证，不能称独立／达成。expected_observation_kind是待观察方向，不要求固定学生答案。'
 };
 export function draftInputConstraints(input) {
-  const resource=input.skill_catalog??input.resource,context={learning_profile:input.learning_profile??{kp_states:[]},learning_history:input.learning_history??[]};
-  const refIds=[input.snapshot_ref,input.plan?.input_refs?.context,input.turn?.source_event_id,input.prior_execution?.execution_id,...(input.student_profile?.interests??[]).map(x=>x.record_id),...(input.learning_profile?.kp_states??[]).map(x=>x.record_id),...(input.learning_history??[]).map(x=>x.record_id),...(input.actual_context??[]).flatMap(x=>[x.source_event_id,x.execution_id]),...(input.goal_review?.assessment?.observation_refs??[]),...(resource?[resource.id,...resource.goals.map(g=>g.id),...resource.key_points.map(k=>k.id),...resource.cards.map(c=>c.id)]:[])];
-  return {available_refs:[...new Set(refIds.filter(x=>typeof x==='string'))],goal_options:resource?.goals.map(g=>({goal_id:g.id,eligible:eligibleGoal(g,context,resource),review_candidate:g.kp_ids.some(k=>context.learning_profile.review_candidates?.includes(k)),learning_evidence:g.kp_ids.map(k=>({kp_id:k,state:context.learning_profile.kp_states.find(s=>s.kp_id===k)?.evidence_state??'unknown'}))}))??[]};
+  const freeInitial=input.entry?.mode==='free'&&!input.plan;
+  const resource=freeInitial?null:input.skill_catalog??input.resource,context={learning_profile:input.learning_profile??{kp_states:[]},learning_history:input.learning_history??[]};
+  const refIds=[input.snapshot_ref,...(input.entry?.opening_request?['initial-choice']:[]),input.plan?.input_refs?.context,input.turn?.source_event_id,input.prior_execution?.execution_id,...(input.student_profile?.interests??[]).map(x=>x.record_id),...(input.learning_profile?.kp_states??[]).map(x=>x.record_id),...(input.learning_history??[]).map(x=>x.record_id),...(input.actual_context??[]).flatMap(x=>[x.source_event_id,x.execution_id]),...(input.goal_review?.assessment?.observation_refs??[]),...(resource?[resource.id,...resource.goals.map(g=>g.id),...resource.key_points.map(k=>k.id),...resource.cards.map(c=>c.id)]:[])];
+  const available_refs=[...new Set(refIds.filter(x=>typeof x==='string'))];
+  if(freeInitial)return {available_refs};
+  return {available_refs,goal_options:resource?.goals.map(g=>({goal_id:g.id,eligible:eligibleGoal(g,context,resource),review_candidate:g.kp_ids.some(k=>context.learning_profile.review_candidates?.includes(k)),learning_evidence:g.kp_ids.map(k=>({kp_id:k,state:context.learning_profile.kp_states.find(s=>s.kp_id===k)?.evidence_state??'unknown'}))}))??[]};
 }
 export function plannerMessages(kind,input,{repairCode,repairFields}={}) {
   const schema=draftSchema(kind,input);
   if(!schema)throw new Error('INVALID_PLANNER_METHOD');
   const free=(kind==='conversation'?input?.entry?.mode:input?.plan?.mode)==='free';
+  if(free&&kind==='conversation') {
+    const initial=freeInitialInput(input);
+    return [{role:'system',content:COMMON.replace('目标与下一步','交流与下一步')+FREE_INITIAL_RULES+FREE_INITIAL_REASONING+SPEAKING_PLANNER_RULES+' refs填写available_refs中的实际ID字符串。输出schema：'+JSON.stringify(schema)+(repairCode?freeInitialRepairHint(repairCode):'')},{role:'user',content:JSON.stringify({...initial,...draftInputConstraints(initial)})}];
+  }
   return [{role:'system',content:COMMON+RULES[kind]+AGENT_REASONING_INSTRUCTIONS+(free?SPEAKING_PLANNER_RULES:'')+' refs填写available_refs中的实际ID字符串，不填snapshot_ref或learning_profile等字段名。reason只用短原因码。goal_options是宿主派生的来源约束，不是评分答案。输出schema：'+JSON.stringify(schema)+(repairCode?' 上次失败原因码：'+repairCode+'，字段：'+safeDraftFields(repairFields).join(',')+'。重新按schema生成，不扩大权限或增加字段。':'')},{role:'user',content:JSON.stringify({...input,...draftInputConstraints(input)})}];
 }
 export class DraftPlanner {

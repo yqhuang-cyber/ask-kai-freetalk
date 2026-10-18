@@ -30,9 +30,17 @@
     <details id="close-log" class="memory" open><summary>这次收束过程</summary><p>只显示在这个页面里，不保存。音频结束那一帧会展开当时收到的 JSON。</p><ol id="close-log-list"></ol></details>
     <details id="learner-profile" class="learner-profile" hidden><summary>当前学习者的三类 Mock 资料</summary><p>完整档案按 HSK 大纲累计，交流技能摘要单独列出。“模拟掌握”为作者设定的背景证据，不是本轮学习成果或真实考试证明。</p><div id="learner-profile-content"></div></details>
     <details class="memory"><summary>我的偏好与记忆</summary><p id="memory-status" role="status">经 HSKai 授权后，可查看、更正或删除自己的偏好。</p><ul id="memory-list"></ul><form id="memory-form"><label>偏好 <select id="memory-field"><option value="interest">兴趣</option><option value="correction_preference">纠错偏好：gentle / on_request</option><option value="support_language">语言支架：auto 按需 / zh 中文 / zh_en 双语</option><option value="chinese_comprehension">中文理解：beginner 初学 / comfortable 能听懂</option><option value="known_expressions">已知表达：如 茶，音乐</option></select></label><label>值 <input id="memory-value" maxlength="80" required></label><button id="memory-save" disabled>保存更正</button><button id="memory-delete" type="button" disabled>删除全部偏好</button></form></details>
+    <details id="planning-observation" class="memory"><summary>Planner 与语音模型观测</summary>
+      <a data-observation-enable href="/?observe=1">开启观测并重新加载页面 ↗</a>
+      <p data-observation-status role="status"></p>
+      <div data-observation-content hidden><p>仅在本机内存和当前页面保留，刷新后清除；不记录密钥、音频或模型思考过程。请求和返回会包含画像及对话文字，导出文件也包含这些文字。</p>
+        <p>按顺序展开查看请求与返回。配置确认只证明更新已确认；回复开始时显示的是当时已确认的版本，不能证明此前已生成的语音使用了它。回复文字已转发，也不代表实际播放完毕。</p>
+        <label>查看范围 <select aria-label="观测范围"><option value="all">整条链路</option><option value="initial">初始规划</option><option value="turn">逐轮规划</option><option value="input">学生输入</option><option value="voice">语音模型交互</option></select></label>
+        <button type="button" data-observation-clear>清空显示</button><button type="button" data-observation-export disabled>导出观测 JSON（含文本）</button><ol class="planning-observation-list"></ol>
+      </div></details>
     <details id="diagnostics" class="memory" hidden><summary>体验基线诊断 · 开发测试</summary><p>仅记录数值和事件顺序，不记录对话文字、录音或密钥。报告保存在本次页面内，需手动导出；刷新会清除。</p><label>测试场景 <select id="diagnostic-case"><option value="unselected">未选择</option></select></label><p id="diagnostic-guide">每次选择一个场景，开始新会话后测试。</p><label>本次人工观察 <select id="diagnostic-outcome"><option value="not_run">尚未观察</option><option value="pass">体验符合预期</option><option value="fail">存在问题</option><option value="uncertain">无法确定</option></select></label><p id="diagnostic-count" role="status">尚无诊断事件。</p><button id="diagnostic-export" type="button" disabled>导出诊断 JSON</button><p>供应商识别开始不等于实际说话起点；音频队列时间不等于人耳听到的延迟。人工结果不自动代表 P0 验收通过。</p></details>
     <footer>Ask Kai · Web 体验预览。真实语音和学习记录尚未启用。</footer>
-    <p class="privacy-note">本应用不保存原始音频或完整逐字稿；供应商留存规则仍待确认。<a id="memory-export" href="/api/memory/export">导出已授权偏好</a></p>
+    <p class="privacy-note">本应用不持久保存原始音频或完整逐字稿；开发观测开启后会在本机临时显示文本。供应商留存规则仍待确认。<a id="memory-export" href="/api/memory/export">导出已授权偏好</a></p>
   </main>
 </body>
 </html>

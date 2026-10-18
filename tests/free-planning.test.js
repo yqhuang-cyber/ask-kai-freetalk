@@ -25,7 +25,7 @@ test('free prepare and one-shot consume read authorized learner facts only, even
   let initial;
   const f=await fixture({planConversation:async input=>{initial=input;return conservativeConversation(input.entry,{snapshot_id:input.snapshot_ref,...input},null);}});
   const bound=f.preparations.bind(await f.consume(),'free-session');
-  assert.equal(initial.resource,null);assert.equal(initial.skill_catalog.source,'host_policy');
+  assert.equal(initial.resource,undefined);assert.equal(initial.skill_catalog,undefined);assert.equal(initial.goal_options,undefined);
   for(const key of ['student_profile','learning_profile','learning_history'])assert.deepEqual(initial[key],bound.context[key]);
   assert.equal(bound.plan.primary_goal,null);assert.deepEqual(bound.plan.resource_refs,[]);assert.equal(bound.resource,null);
   assert.deepEqual(f.calls,{facts:2,resources:0});await assert.rejects(f.consume(),/PREPARATION_NOT_FOUND/);

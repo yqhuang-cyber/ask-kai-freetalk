@@ -4,6 +4,8 @@
 
 本仓库保留可选 `ASK_KAI_PLANNER_PROVIDER=pi`：Free 的初始／逐轮计划分别通过 `submit_conversation_plan`／`submit_turn_plan` 提交，仍使用现有 MiniMax 配置及相同宿主校验、时限和失效规则。本文主要说明默认 MiniMax `full_contract_v3` 的业务机制；未把原仓库的主题管理服务或主题连续性一起移植。收尾路径与本次验证以[增强移植分析](freetalk-enhancement-port.md)为准。
 
+2026-10-18 更新：`kai-planner-v11` 将 Free 初始规划与目标选择契约分开。模型仅生成交流目的、切入、开场、策略和依据；不再看到技能目录／候选目标，也不输出三个正式目标字段。完整、Draft、Pi 经宿主编译固定补齐空目标，逐轮自愿练习机制保留。页面区分降级原因，见[本次修复与独立验证](eval-results/2026-10-18-free-initial-plan.md)。说话难度已由独立字段进入初始及逐轮计划，下面原有四人示例不作为其新增字段的质量验收。
+
 本文区分三种信息：**代码约束**是宿主实际执行的规则；**确定性推导**来自当前 Mock 画像和规则函数；**规划示例**是为说明差异而编写的候选结果，不是真实 M3 输出、豆包回复或质量验收。本文没有调用真实 Planner／豆包，也没有采集浏览器或真人音频。
 
 ## 1. 两层规划各自负责什么
@@ -28,13 +30,13 @@ Planner 输出结构化建议，不输出完整聊天正文。豆包实时全双
 | Leo | 能比较选择、说明原因与经历；观点需要具体例子，论据与措辞有待展开 | 电影、团队活动、比赛与配合；先讨论内容，再反馈影响表达的一点 | normal／comfortable |
 | Nina | 能讨论抽象议题与不同立场；判断范围、反例、语域和细微措辞需要打磨 | 文化、公共议题、竞技公平；偏好平等讨论与按需反馈 | normal／comfortable |
 
-初始化实际收到个人画像、学习画像、近期最多 10 条学习活动，以及来源、revision、覆盖状态和截断信息。Free 的 `resource` 为 null，不读取 Topic Pack 或课程资源；通用 Skill catalog 是宿主技能目录，不是某个主题的课程。
+初始化实际收到个人画像、学习画像、近期最多 10 条学习活动，以及来源快照、覆盖状态和截断信息。Free 不读取 Topic Pack 或课程资源；宿主内部 resource 为 null，外部初始请求不携带 resource、skill_catalog 或 goal_options。通用 Skill catalog 仅在会中需要时使用，是宿主技能目录，不是某个主题的课程。
 
 ## 3. 初始化：哪些必须相同，哪些能够不同
 
 ### 3.1 硬约束
 
-- `primary_goal_id: null`，`candidate_goal_ids: []`，`key_points: []`；最终 `primary_goal` 也为空。资料里有待练技能，不等于学生同意本场练习。
+- 模型不输出 `primary_goal_id/candidate_goal_ids/key_points`；宿主编译为 `null / [] / []`，最终 `primary_goal` 也为空。资料里有待练技能，不等于学生同意本场练习。
 - `strategy.language_support`、`correction`、`pace` 必须等于宿主提供的 `required_strategy`。模型不能因为学生等级高就擅自关掉已选择的英文支持。
 - 页面选择语速时覆盖画像语速。Web 可以按学习者画像预选语速，也可由学生改选，最终以页面传入值为准；不能仅由 Leo／Nina 的画像 normal 推断每次通话一定正常语速。
 - `support_level` 只能是 `none / partial / model / unknown`；`model` 指完整示范支架。
@@ -51,7 +53,7 @@ Planner 输出结构化建议，不输出完整聊天正文。豆包实时全双
 | 语言、纠错、语速 | 随偏好和页面选择变化 | 必须沿用宿主值；实际语言状态另由 LanguageSupport 维护，供应商语速由会话配置处理 |
 | `selection_basis` | 根据不同资料说明选择依据 | 用于来源校验与规划追踪，不直接当成学生可见或可朗读内容 |
 
-**当前没有独立的 Free 字段来完整规定词汇复杂度、问题抽象程度、解释粒度、允许的追问负担、何时提示或怎样逐步撤去提示。** 模型主要从通用提示词、能力资料和短策略中理解这些需要；也没有要求四个人必须生成四种不同计划。
+初始 `strategy.speaking_difficulty` 和逐轮 `reply_directive.speaking_difficulty` 已单独表达用词方式、句子组织和新词策略；范围由宿主根据画像绑定。这不等于完整规定问题抽象程度、解释粒度和逐步撤去提示，也不要求四个人每个字段都不同。实际内容适配仍需独立评测。
 
 ### 3.3 四人的合理初始化示例
 

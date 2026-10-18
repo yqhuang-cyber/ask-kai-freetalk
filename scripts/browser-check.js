@@ -241,7 +241,7 @@ try {
   const dynamicBackend=await startMockBackend({fixtureVariant:'b'});backends.push(dynamicBackend);
   const dynamicServer=createGateway({...dynamicBackend,planningMode:'next_turn_advisory'});servers.push(dynamicServer);dynamicServer.listen(0,'127.0.0.1');await once(dynamicServer,'listening');
   await page.goto(`http://127.0.0.1:${dynamicServer.address().port}`);
-  await page.getByText('对话已准备；当前使用保守策略，规划模型暂不可用。',{exact:true}).waitFor();
+  await page.getByText('对话已准备；规划模型尚未配置，当前使用保守策略。',{exact:true}).waitFor();
   await page.waitForFunction(()=>document.querySelector('#goal').textContent==='由你选择话题，自然交流。');
   assert.equal(await page.locator('#save-learning-input').isChecked(),true);
   assert.equal(await page.locator('#save-learning-input').isDisabled(),true);
@@ -265,6 +265,40 @@ try {
   assert.match(await page.locator('#session-summary').textContent(),/已停止/);
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   await page.locator('#session-summary').screenshot({path:'.local/browser-check/dynamic-goals-summary-mobile.png'});
+  // Opt-in request-content observation uses the real preparation HTTP path,
+  // stays separate from the metadata diagnostics, and renders text literally.
+  await page.goto(`http://127.0.0.1:${dynamicServer.address().port}/?observe=1`);
+  await page.getByText('对话已准备；规划模型尚未配置，当前使用保守策略。',{exact:true}).waitFor();
+  await page.waitForFunction(()=>document.querySelector('#planning-observation ol').textContent.includes('初始计划已采用'));
+  assert.equal(await page.locator('#diagnostics').isVisible(),false);
+  const observationCount=await page.locator('#planning-observation ol > li').count();
+  assert.ok(observationCount>=4);await page.waitForTimeout(150);
+  assert.equal(await page.locator('#planning-observation ol > li').count(),observationCount);
+  await page.locator('#planning-observation select').selectOption('voice');
+  assert.equal(await page.locator('#planning-observation ol > li:visible').count(),0);
+  await page.locator('#planning-observation select').selectOption('all');
+  const observationDownloadPromise=page.waitForEvent('download');await page.locator('[data-observation-export]').click();
+  const observationDownload=await observationDownloadPromise,observationStream=await observationDownload.createReadStream(),observationChunks=[];
+  for await(const chunk of observationStream)observationChunks.push(chunk);
+  const observationReport=JSON.parse(Buffer.concat(observationChunks).toString());
+  assert.equal(observationReport.contains_text,true);assert.equal(observationReport.contains_audio,false);
+  assert.ok(observationReport.rows.some(row=>row.stage==='planning.fallback'));
+  await page.locator('#mock-learner-select').selectOption('mock-maya-hsk3');
+  await page.waitForFunction(()=>!document.querySelector('#mock-learner-select').disabled&&document.querySelector('#planning-observation ol').textContent.includes('初始计划已采用'));
+  assert.ok(!(await page.locator('#planning-observation ol').textContent()).includes(observationReport.rows.find(row=>row.stage==='preparation.started').data.preparation_id));
+  await page.evaluate(async()=>{
+    const {PlanningObserver}=await import('/planning-observer.js');
+    window.observationFixture=new PlanningObserver(document.querySelector('#planning-observation'),{enabled:true,limit:3});
+    const row={trace_id:'authored-ui-fixture',seq:1,at_ms:1,stage:'planner.request',data:{kind:'turn',body:{messages:[{role:'user',content:'<img src=x onerror="window.observationInjected=true">'}]}}};
+    window.observationFixture.record(row);window.observationFixture.record(row);
+  });
+  assert.equal(await page.locator('#planning-observation ol > li').count(),1);
+  await page.locator('#planning-observation ol summary').click();
+  assert.equal(await page.locator('#planning-observation img').count(),0);
+  assert.equal(await page.evaluate(()=>Boolean(window.observationInjected)),false);
+  await page.setViewportSize({width:390,height:844});
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+  await page.locator('#planning-observation').screenshot({path:'.local/browser-check/planning-observation-mobile.png'});
   assert.equal(errors.length,0);
-  console.log(JSON.stringify({browser:'chromium',input:'synthetic_device',provider_connected:false,web_controls:true,mobile_overflow:false,microphone_before_readiness:false,audio_worklet_pcm:true,capture_continues_during_output_stop:true,progressive_captions:true,native_caption_clock:true,caption_pause_resume:true,caption_controls:true,diagnostics_export:true,audio_metadata:true,speech_pace_selection:true,speech_pace_session_lock:true,speech_pace_wire_payload:true,poc_mock_backend:true,four_learner_switching:true,three_learner_services:true,poc_cookie_refresh:true,poc_mission:true,poc_preferences:true,adaptive_language_preferences:true,summary_cards:true,summary_empty_partial_states:true,summary_session_isolation:true,summary_safety_revocation:true,summary_restart:true,summary_literal_text:true,dynamic_preparations:true,dynamic_evidence_goal:true,dynamic_free_empty:true,dynamic_entry_race:true,dynamic_goal_history_summary:true,replay:true,page_errors:0}));
+  console.log(JSON.stringify({browser:'chromium',input:'synthetic_device',provider_connected:false,web_controls:true,mobile_overflow:false,microphone_before_readiness:false,audio_worklet_pcm:true,capture_continues_during_output_stop:true,progressive_captions:true,native_caption_clock:true,caption_pause_resume:true,caption_controls:true,diagnostics_export:true,audio_metadata:true,speech_pace_selection:true,speech_pace_session_lock:true,speech_pace_wire_payload:true,poc_mock_backend:true,four_learner_switching:true,three_learner_services:true,poc_cookie_refresh:true,poc_mission:true,poc_preferences:true,adaptive_language_preferences:true,summary_cards:true,summary_empty_partial_states:true,summary_session_isolation:true,summary_safety_revocation:true,summary_restart:true,summary_literal_text:true,planning_observation:true,planning_observation_literal_text:true,dynamic_preparations:true,dynamic_evidence_goal:true,dynamic_free_empty:true,dynamic_entry_race:true,dynamic_goal_history_summary:true,replay:true,page_errors:0}));
 }finally{await browser?.close();for(const item of servers){item.stopRealtime();await new Promise(resolve=>{item.close(resolve);item.closeAllConnections();});}for(const backend of backends)await backend.close();}

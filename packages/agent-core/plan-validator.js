@@ -12,12 +12,12 @@ export function contextRefs(context,resource) {
 const refs=(list,allowed)=>Array.isArray(list)&&list.length<=12&&list.every(id=>isId(id)&&allowed.has(id));
 const strategyShape=(strategy,mode)=>exact(strategy,['language_support','support_level','correction','pace',...(mode==='free'?['speaking_difficulty']:[])])||mode==='free'&&exact(strategy,['language_support','support_level','correction','pace']);
 export function validateConversation(p,{entry,context,resource,speakingConstraints}={}) {
-  const allowed=contextRefs(context,planningCapabilities(entry,resource));
+  const allowed=contextRefs(context,entry.mode==='free'?null:planningCapabilities(entry,resource));
   if(entry.opening_request)allowed.add('initial-choice');
   if(!exact(p,['conversation_purpose','content_focus','opening_options','primary_goal_id','candidate_goal_ids','key_points','strategy','selection_basis'])||Buffer.byteLength(JSON.stringify(p))>LIMITS.proposal_bytes||!boundedText(p.conversation_purpose)||!boundedText(p.content_focus)||!Array.isArray(p.opening_options)||p.opening_options.length>2||!p.opening_options.every(x=>boundedText(x,100))||!strategyShape(p.strategy,entry.mode)||!['auto','zh','zh_en'].includes(p.strategy.language_support)||!['none','partial','model','unknown'].includes(p.strategy.support_level)||!['gentle','on_request'].includes(p.strategy.correction)||!['slow','normal'].includes(p.strategy.pace))throw new Error('INVALID_CONVERSATION_PROPOSAL');
   const ids=new Set(resource?.goals.map(g=>g.id)??[]),kp=new Set(resource?.key_points.map(k=>k.id)??[]);
+  if(entry.mode==='free'&&(p.primary_goal_id!==null||!Array.isArray(p.candidate_goal_ids)||p.candidate_goal_ids.length||!Array.isArray(p.key_points)||p.key_points.length))throw new Error('FREE_INITIAL_GOAL_FORBIDDEN');
   if(p.primary_goal_id!==null&&!ids.has(p.primary_goal_id)||!Array.isArray(p.candidate_goal_ids)||p.candidate_goal_ids.length>2||!p.candidate_goal_ids.every(id=>ids.has(id))||new Set(p.candidate_goal_ids).size!==p.candidate_goal_ids.length||!Array.isArray(p.key_points)||p.key_points.length>2||!p.key_points.every(id=>kp.has(id)))throw new Error('INVALID_PLAN_RESOURCE_REFERENCE');
-  if(entry.mode==='free'&&(p.primary_goal_id!==null||p.candidate_goal_ids.length||p.key_points.length))throw new Error('FREE_INITIAL_GOAL_FORBIDDEN');
   if(entry.mode==='free') {
     if(!p.strategy.speaking_difficulty)throw new Error('INVALID_SPEAKING_DIFFICULTY');
     assertSpeakingChoice(p.strategy.speaking_difficulty,{constraints:speakingConstraints??deriveSpeakingConstraints(context),allowedRefs:allowed,kind:'conversation'});

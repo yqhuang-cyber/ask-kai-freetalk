@@ -14,12 +14,13 @@ function profile() {
   const p = structuredClone(template); p.reviewed = true; p.realtime.reviewed = true; p.realtime.ordered_acks_reviewed = true;
   return p; // Synthetic test attestation, never evidence about a real supplier account.
 }
-function setup() {
+function setup({observeRequest}={}) {
   const socket = new EventEmitter(), sent = [], packets = [], failures = [];
   Object.assign(socket,{readyState:1,bufferedAmount:0,send:v=>sent.push(JSON.parse(v)),terminate:()=>socket.ended=true});
   const provider = createDoubaoProvider({profile:profile(),env:{DOUBAO_API_KEY:'synthetic-only'},socketFactory:(_url,options)=>{
     assert.equal(options.headers['X-Api-Key'],'synthetic-only'); assert.equal(options.maxPayload,131072); return socket;
   }});
+  provider.observeRequest=observeRequest;
   provider.open({sessionId:'local-session',instructions:'trusted lesson',onEvent:p=>packets.push(p),onFailure:code=>failures.push(code)});
   socket.emit('open');
   let seq = 0;
@@ -313,4 +314,17 @@ test('audio compatibility stays bounded, canonical and fenced after cancellation
   const owner=x.packets.find(p=>p.event?.type==='response.started').event;x.provider.cancel(owner.response_id);
   x.wire(output('response.output_audio.delta',undefined,undefined,{delta:Buffer.alloc(69632).toString('base64')}));
   assert.ok(!x.packets.some(p=>p.audio));assert.deepEqual(x.failures,[]);x.provider.close();
+});
+
+
+test('voice request observation matches sent create/update bodies and excludes audio frames and credentials',()=>{
+  const observed=[],x=setup({observeRequest:body=>observed.push(structuredClone(body))});
+  assert.deepEqual(observed,[x.sent[0]]);assert.equal(observed[0].session.instructions,'trusted lesson');
+  x.ready();x.provider.sendAudio(Buffer.alloc(640));assert.equal(observed.length,1);
+  x.provider.updateContext({version:1,instructions:'说话要求：只用一级词。'});
+  assert.equal(observed.length,2);assert.deepEqual(observed[1],x.sent.at(-1));
+  assert.equal(JSON.stringify(observed).includes('synthetic-only'),false);
+  x.provider.observeRequest=()=>{throw new Error('observer must not fail voice');};
+  x.wire({type:'session.updated',session:{id:'private-session'}});
+  x.provider.updateContext({version:2,instructions:'新要求'});assert.deepEqual(x.failures,[]);x.provider.close();
 });

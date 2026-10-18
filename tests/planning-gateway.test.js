@@ -74,6 +74,35 @@ test('planning diagnostics preserve anonymous causal fields without prompt, stud
   assert.equal(clean.rejection_code,'PREREQUISITE_UNVERIFIED');assert.equal(clean.goal_status,'paused');assert.deepEqual(metadata({rejection_code:'PRIVATE'}),{});
   const trace=new ExperienceTrace();trace.gateway({name:'planning.accepted',at_ms:2,fields:clean});assert.equal(trace.snapshot().timeline[0].turn_ref,'t1');assert.equal(trace.snapshot().contains_text,false);
 });
+test('opt-in observation follows preparation, accepted input, turn plan, context ACK and forwarded reply without enabling diagnostics',async t=>{
+  const f=await fixture(t),plain=await f.prepare({mode:'free'});
+  assert.equal(plain.observation,undefined);
+  assert.equal((await f.call('POST','/api/conversation-preparations',{mode:'free',observe:'yes'})).status,400);
+  const prepared=await f.prepare({mode:'free',observe:true});
+  assert.ok(prepared.observation.rows.some(x=>x.stage==='planning.triggered'&&x.data.kind==='conversation'));
+  const ticket=await(await f.call('POST','/api/sessions',{mode:'free',preparation_id:prepared.preparation_id})).json();
+  const {ws,provider,packets}=await f.open(ticket);
+  provider.emit('session.ready');provider.emit('user.final',{text:'我喜欢音乐。'},{turn_id:'observe-turn'});
+  await until(()=>packets.some(p=>p.type==='planning.observation'&&p.row.stage==='planning.committed'));
+  await until(()=>provider.contexts.length===1);
+  provider.control('context.updated',{version:provider.contexts[0].version});
+  const ids={turn_id:'observe-turn',response_id:'observe-reply'};
+  provider.emit('response.started',{},ids);provider.emit('response.text.delta',{text:'你喜欢什么音乐？'},ids);provider.emit('response.done',{},ids);
+  await until(()=>packets.some(p=>p.type==='planning.observation'&&p.row.stage==='voice.reply.forwarded'));
+  const observations=packets.filter(p=>p.type==='planning.observation').map(p=>p.row);
+  assert.ok(observations.every(x=>x.trace_id===prepared.observation.trace_id));
+  assert.ok(observations.some(x=>x.stage==='planning.triggered'&&x.data.kind==='turn'&&x.data.turn_id==='observe-turn'));
+  assert.match(observations.find(x=>x.stage==='voice.context.prepared').data.instructions,/说话要求/);
+  assert.equal(observations.find(x=>x.stage==='voice.context.requested').data.instructions,provider.contexts[0].instructions);
+  const confirmed=observations.find(x=>x.stage==='voice.context.confirmed'),started=observations.find(x=>x.stage==='voice.reply.started');
+  assert.equal(started.data.applied_context_hash,confirmed.data.context_hash);assert.equal(started.data.generation_basis,'unknown');
+  assert.equal(observations.find(x=>x.stage==='voice.reply.forwarded').data.playback_confirmed,false);
+  assert.ok(!packets.some(p=>p.type==='diagnostics.event'));
+  // Observing must not activate the diagnostic mode that suppresses closing.
+  provider.emit('user.final',{text:'再见。'},{turn_id:'observe-bye'});
+  await until(()=>packets.some(p=>p.type==='session.closing'));
+  ws.send(JSON.stringify({type:'session.end'}));await once(ws,'close');
+});
 async function reportClosing(live,state='text_only',audioMs=0) {
   await until(()=>live.packets.some(p=>p.type==='session.closing'&&p.phase==='awaiting_playback'));
   const c=live.packets.filter(p=>p.type==='session.closing').at(-1);

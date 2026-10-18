@@ -5,6 +5,7 @@ import { MiniMaxJsonTransport } from '../provider-minimax/planner.js';
 import { minimaxToolStream } from '../provider-minimax/pi-stream.js';
 import { LIMITS,isObject,boundedText } from '../contracts/planning.js';
 import { REPLY_POLICY_VERSION } from './reply-policy.js';
+import { FREE_INITIAL_GOAL_FIELDS,compileFreeInitialPlan } from './free-initial-plan.js';
 
 export const PI_PACKAGE_VERSION='1.2.0';
 const JSON_SENTENCE='只返回一个 JSON 对象，不返回思维链、Markdown或回复正文。';
@@ -61,6 +62,8 @@ function duplicateIds(value) {
   return false;
 }
 export const submitConversationPlanTool=submissionTool('submit_conversation_plan','提交一次自由对话或会话的初始计划。不要在正文再写一份 JSON。',CONVERSATION_PARAMETERS);
+const FREE_CONVERSATION_PARAMETERS={...CONVERSATION_PARAMETERS,required:CONVERSATION_PARAMETERS.required.filter(key=>!FREE_INITIAL_GOAL_FIELDS.includes(key)),properties:Object.fromEntries(Object.entries(CONVERSATION_PARAMETERS.properties).filter(([key])=>!FREE_INITIAL_GOAL_FIELDS.includes(key)))};
+export const submitFreeConversationPlanTool=submissionTool('submit_conversation_plan','提交自由聊天的交流内容、开场和策略。正式目标字段由宿主补齐，不提交这些字段。',FREE_CONVERSATION_PARAMETERS);
 export const submitTurnPlanTool=submissionTool('submit_turn_plan','提交这一轮的下一步计划。不要在正文再写一份 JSON。',TURN_PARAMETERS);
 const TOOLS={conversation:submitConversationPlanTool,turn:submitTurnPlanTool};
 function plannerModel(transport) {
@@ -96,7 +99,8 @@ export class PiMiniMaxPlanner {
     if(Buffer.byteLength(JSON.stringify(input))>49152)throw new Error('PLANNER_INPUT_TOO_LARGE');
     if(options.signal?.aborted)throw new Error('PLANNER_CANCELLED');
     const source=fullContractMessages(kind,input,options);
-    const tool=TOOLS[kind];
+    const freeInitial=kind==='conversation'&&input.entry?.mode==='free';
+    const tool=freeInitial?submitFreeConversationPlanTool:TOOLS[kind];
     let submissions=0;
     const agent=new Agent({
       initialState:{systemPrompt:toolPrompt(source[0].content),tools:[tool],model:plannerModel(this.transport),thinkingLevel:'off'},
@@ -108,7 +112,7 @@ export class PiMiniMaxPlanner {
     });
     const abort=()=>agent.abort();
     options.signal?.addEventListener('abort',abort,{once:true});
-    try{await agent.prompt(source[1].content);return readSubmission(agent,options.signal);}
+    try{await agent.prompt(source[1].content);const proposal=readSubmission(agent,options.signal);return freeInitial?compileFreeInitialPlan(proposal):proposal;}
     finally{options.signal?.removeEventListener('abort',abort);}
   }
   planConversation(input,options){return this.propose('conversation',input,options);}

@@ -1,5 +1,9 @@
 # Incremental delivery
 
+2026-10-18 Planner 到语音的观测：新增独立 `?observe=1` 页面时间线，串联准备、初始／逐轮模型请求与返回、校验／修复／降级、采用或过期、语音配置实际发送与确认，以及回复开始时已确认的配置。规划请求支持完整 JSON、Draft 与 Pi tool body；观测按授权准备一次性传递并隔离，默认关闭，仅保留有界内存，不捕获密钥、音频或模型思考过程。与原元数据诊断分开，不抑制自动收束，不改变全双工或宣称本轮生成受控。使用与验证边界见[观测说明](planner-observation.md)。
+
+2026-10-18 FreeTalk 初始规划目标字段修复：专用初始说明／输入／输出契约不再要求模型选目标，完整 JSON、Draft、Pi 均输出五个交流字段，经共享宿主编译器固定补齐空目标；技能目录仅用于会中，初始引用给出明确来源清单。页面区分四类降级原因。500 项 verify、三个 synthetic replay、Chromium 合成设备检查通过；最后真实 M3 四次检查接受 LLM，开发过程中的 JSON／难度失败和 Pi 引用修复超时均单列保留。未调用豆包、未重启现有服务，不代表实际语音或全部规划质量验收。见[修复与验证记录](eval-results/2026-10-18-free-initial-plan.md)。
+
 2026-10-16 独立 FreeTalk POC 收尾增强：逐文件适配原仓库 `3e4422e` 的 ClosingCoordinator、浏览器播放确认、有来源 SessionRecap 和授权会话小结存取，保留本仓库的退出码／告别 fallback、中文结束语、8 秒上下文确认及可选 Pi Planner。口头正常收尾保持全双工，可继续／撤销；立即退出跳过播放；不再取消已完成告别来等待第二句。Planner 机制文档已移植并标记原仓库来源。483 项 verify、三个 synthetic replay、专项 Chromium 合成收尾检查通过；真实两轮作者合成音频探针收到有内容回顾和告别及正常关闭，但未测浏览器播放或真人设备，不声明真实 Web 自动结束验收。通用 Chromium 合成设备回归也通过，page errors 为 0；完整范围见[增强移植分析](freetalk-enhancement-port.md)。
 
 2026-10-15 Pi 自由对话规划已接入为可关闭路径：锁 `pi-agent-core` / `pi-ai` 1.2.0，Node 要求改为 `>=22.19.0`。`ASK_KAI_PLANNER_PROVIDER=pi` 时，自由对话的初始计划和逐轮计划用 `submit_conversation_plan` / `submit_turn_plan` 各提交一次，请求仍走现有 MiniMax 配置；主题和 Mission 仍走原来的 JSON 规划。豆包语音未改。默认不加这个变量时行为与原来一致。真实 12 案／18 轮对照和是否改默认都还没做。见 [Pi 接入任务清单](pi-integration-tasking.md)。

@@ -13,3 +13,8 @@
 .learner-profile{margin-top:30px;border:1px solid #dce4d5;border-radius:12px;padding:18px;color:#586d59;font-size:12px}.learner-profile summary{cursor:pointer}
 #session-message[data-state=failed]{color:#873d30;background:#fff3ed;border:1px solid #efd1c7;border-radius:8px;padding:10px 12px;font-size:13px;font-weight:600}
 .goal-details{margin:16px 0 0;padding:14px 16px;background:#f4f7ef;border:1px solid #dfe7d7;border-radius:10px;overflow-wrap:anywhere}.goal-details h3{margin:0;font-size:13px}.goal-details>p{font-size:11px;color:#65756c;margin:7px 0 12px}.goal-details dl{margin:0;font-size:12px;line-height:1.7}.goal-details dt{font-weight:600;margin-top:10px}.goal-details dd{margin:3px 0 0}.goal-details ul{margin:0;padding-left:18px}
+
+.planning-observation-list {max-height:640px;overflow:auto;padding-left:1.5rem;}
+.planning-observation-list li {margin:10px 0;overflow-wrap:anywhere;}
+.planning-observation-list summary {cursor:pointer;font-size:13px;line-height:1.7;}
+.planning-observation-list pre {white-space:pre-wrap;overflow-wrap:anywhere;max-height:420px;overflow:auto;background:#f4f5f6;padding:12px;font-size:12px;line-height:1.6;}

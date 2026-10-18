@@ -1,9 +1,15 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { PreparationClient } from '../apps/realtime-gateway/public/preparation-client.js';
+import { PreparationClient,preparationReadyMessage } from '../apps/realtime-gateway/public/preparation-client.js';
 
 const flush=()=>new Promise(resolve=>setImmediate(resolve));
 const response=value=>({ok:true,json:async()=>value});
+
+test('ready status distinguishes validation failure, timeout, configuration and provider failure without exposing raw errors',()=>{
+  for(const [reason,label] of Object.entries({planner_validation_failed:'规划结果未通过检查',planner_timeout:'规划超时',planner_unconfigured:'规划模型尚未配置',planner_unavailable:'规划服务暂不可用'}))assert.equal(preparationReadyMessage({degraded:true,degraded_reason:reason}),`对话已准备；${label}，当前使用保守策略。`);
+  for(const reason of ['PRIVATE_RESPONSE','__proto__',undefined])assert.equal(preparationReadyMessage({degraded:true,degraded_reason:reason}),'对话已准备；当前使用保守策略。');
+  assert.equal(preparationReadyMessage({degraded:false}),'对话已准备，可以开始。');
+});
 
 test('browser accepts a fallback returned at the server planning deadline on the next poll',async t=> {
   t.mock.timers.enable({apis:['setTimeout']});
