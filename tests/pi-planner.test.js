@@ -12,7 +12,7 @@ import { MOCK_IDENTITY } from '../apps/hskai-mock/src/server.js';
 import { runGoalEval } from '../scripts/goal-eval.js';
 import { REPLY_POLICY_VERSION } from '../packages/agent-core/reply-policy.js';
 
-const turnPlan=()=>({interpretation:{intent:'打招呼',clarity:'clear',refs:['turn-1']},prior_outcome:{execution_ref:null,status:'none',unknown:['播放与理解未知']},goal_assessment:null,action:'RESPOND',active_goal_id:null,local_help_target:null,reply_directive:{task:'先接住这句问候',support_level:'none',new_points:0,budget_ref:REPLY_POLICY_VERSION},expected_observation:{kind:'conversation_continuity',required_student_answer:null},proposed_plan_patch:null,evidence_refs:['turn-1'],rationale_code:'greet'});
+const turnPlan=()=>({interpretation:{intent:'打招呼',clarity:'clear',refs:['turn-1']},prior_outcome:{execution_ref:null,status:'none',unknown:['播放与理解未知']},goal_assessment:null,action:'RESPOND',active_goal_id:null,local_help_target:null,reply_directive:{task:'先接住这句问候',support_level:'none',new_points:0,budget_ref:REPLY_POLICY_VERSION,speaking_difficulty:{lexical_style:'everyday',sentence_structure:'simple',new_word_policy:'avoid',focus_term:null,reason:'先接住问候。',refs:['turn-1']}},expected_observation:{kind:'conversation_continuity',required_student_answer:null},proposed_plan_patch:null,evidence_refs:['turn-1'],rationale_code:'greet'});
 function toolResponse(body,{status=200}={}) {
   return new Response(JSON.stringify(body),{status,headers:{'Content-Type':'application/json'}});
 }
@@ -95,7 +95,7 @@ test('cancellation before the request does not call MiniMax',async()=>{
 });
 test('free conversation uses Pi and topic or mission stays on the JSON planner',async()=>{
   const calls=[];
-  const freeProposal=input=>({conversation_purpose:'跟随学生选择进行自然交流',content_focus:'由学生选择话题',opening_options:[],primary_goal_id:null,candidate_goal_ids:[],key_points:[],strategy:{...input.required_strategy,support_level:'unknown'},selection_basis:[{reason:'free_student_choice',refs:[input.snapshot_ref]}]});
+  const freeProposal=input=>({conversation_purpose:'跟随学生选择进行自然交流',content_focus:'由学生选择话题',opening_options:[],primary_goal_id:null,candidate_goal_ids:[],key_points:[],strategy:{...input.required_strategy,support_level:'unknown',speaking_difficulty:{lexical_style:'everyday',sentence_structure:'simple',new_word_policy:'avoid',focus_term:null,reason:'按已达范围先用常见说法。',refs:[input.snapshot_ref]}},selection_basis:[{reason:'free_student_choice',refs:[input.snapshot_ref]}]});
   const free={describe:()=>({provider:'minimax',model:'MiniMax-M3',output_format:'pi_tool_v1',draft:'full_contract_v3',prompt:'kai-planner-v9'}),planConversation:async input=>{calls.push(['free',input.entry.mode]);return freeProposal(input);},planTurn:async input=>{calls.push(['free-turn',input.plan.mode]);return turnPlan();}};
   const shared={describe:()=>({provider:'minimax',model:'MiniMax-M3',output_format:'json_prompt',draft:'full_contract_v3',prompt:'kai-planner-v9'}),planConversation:async input=>{calls.push(['json',input.entry.mode]);const {conservativeConversation}=await import('../packages/agent-core/conversation-initializer.js');return conservativeConversation(input.entry,{student_profile:input.student_profile,learning_profile:input.learning_profile,learning_history:input.learning_history,snapshot_id:input.snapshot_ref},input.resource);},planTurn:async input=>{calls.push(['json-turn',input.plan.mode]);return turnPlan();},planTopicConversation:async()=>{calls.push(['topic-model']);throw new Error('TOPIC_MODEL');}};
   const router=new ModePlanner({free,shared});

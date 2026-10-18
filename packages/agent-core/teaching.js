@@ -59,6 +59,7 @@ export class TeachingSession {
     this.planning?.controls(event,decision);this.syncGoal();
     if(decision.action!=='CLOSE'&&this.planning&&this.planning.mode!=='shadow'){for(const {goal,status} of this.planning.goalOutcomes.values())this.recap.goal({primary_goal:goal,goal_status:status,revision:this.planning.plan.revision});}
     this.language.observe(event.payload.text,{turn_id:event.turn_id,source_event_id:event.event_id,context_version:this.version});
+    if(this.planning?.speaking&&this.planning.mode!=='shadow')this.planning.speaking.observe(event.payload.text,event);
     if(this.completedReplyTurns.has(event.turn_id))this.language.completeReply(event.turn_id);
     if(this.stage==='warmup')this.stage='conversation';
     if(decision.action==='CLOSE')this.stage='closing';

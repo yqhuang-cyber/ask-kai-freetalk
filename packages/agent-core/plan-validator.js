@@ -4,18 +4,24 @@ import { PLAN_ACTIONS,LIMITS,exact,boundedText,isId,immutable } from '../contrac
 import { checkGoalPatch,goalChoice } from './goal-lifecycle.js';
 import { validateVisibleInstruction } from './agent-reasoning.js';
 import { measureReply,REPLY_POLICY_VERSION } from './reply-policy.js';
+import { assertSpeakingChoice,deriveSpeakingConstraints } from './speaking-policy.js';
 export const planHash=v=>createHash('sha256').update(JSON.stringify(v)).digest('hex');
 export function contextRefs(context,resource) {
   return new Set([context.snapshot_id,...context.student_profile.interests.map(r=>r.record_id),...context.learning_profile.kp_states.map(r=>r.record_id),...context.learning_history.map(r=>r.record_id),...(resource?[resource.id,...resource.goals.map(g=>g.id),...resource.key_points.map(k=>k.id),...resource.cards.map(c=>c.id)]:[])]);
 }
 const refs=(list,allowed)=>Array.isArray(list)&&list.length<=12&&list.every(id=>isId(id)&&allowed.has(id));
-export function validateConversation(p,{entry,context,resource}) {
+const strategyShape=(strategy,mode)=>exact(strategy,['language_support','support_level','correction','pace',...(mode==='free'?['speaking_difficulty']:[])])||mode==='free'&&exact(strategy,['language_support','support_level','correction','pace']);
+export function validateConversation(p,{entry,context,resource,speakingConstraints}={}) {
   const allowed=contextRefs(context,planningCapabilities(entry,resource));
   if(entry.opening_request)allowed.add('initial-choice');
-  if(!exact(p,['conversation_purpose','content_focus','opening_options','primary_goal_id','candidate_goal_ids','key_points','strategy','selection_basis'])||Buffer.byteLength(JSON.stringify(p))>LIMITS.proposal_bytes||!boundedText(p.conversation_purpose)||!boundedText(p.content_focus)||!Array.isArray(p.opening_options)||p.opening_options.length>2||!p.opening_options.every(x=>boundedText(x,100))||!exact(p.strategy,['language_support','support_level','correction','pace'])||!['auto','zh','zh_en'].includes(p.strategy.language_support)||!['none','partial','model','unknown'].includes(p.strategy.support_level)||!['gentle','on_request'].includes(p.strategy.correction)||!['slow','normal'].includes(p.strategy.pace))throw new Error('INVALID_CONVERSATION_PROPOSAL');
+  if(!exact(p,['conversation_purpose','content_focus','opening_options','primary_goal_id','candidate_goal_ids','key_points','strategy','selection_basis'])||Buffer.byteLength(JSON.stringify(p))>LIMITS.proposal_bytes||!boundedText(p.conversation_purpose)||!boundedText(p.content_focus)||!Array.isArray(p.opening_options)||p.opening_options.length>2||!p.opening_options.every(x=>boundedText(x,100))||!strategyShape(p.strategy,entry.mode)||!['auto','zh','zh_en'].includes(p.strategy.language_support)||!['none','partial','model','unknown'].includes(p.strategy.support_level)||!['gentle','on_request'].includes(p.strategy.correction)||!['slow','normal'].includes(p.strategy.pace))throw new Error('INVALID_CONVERSATION_PROPOSAL');
   const ids=new Set(resource?.goals.map(g=>g.id)??[]),kp=new Set(resource?.key_points.map(k=>k.id)??[]);
   if(p.primary_goal_id!==null&&!ids.has(p.primary_goal_id)||!Array.isArray(p.candidate_goal_ids)||p.candidate_goal_ids.length>2||!p.candidate_goal_ids.every(id=>ids.has(id))||new Set(p.candidate_goal_ids).size!==p.candidate_goal_ids.length||!Array.isArray(p.key_points)||p.key_points.length>2||!p.key_points.every(id=>kp.has(id)))throw new Error('INVALID_PLAN_RESOURCE_REFERENCE');
   if(entry.mode==='free'&&(p.primary_goal_id!==null||p.candidate_goal_ids.length||p.key_points.length))throw new Error('FREE_INITIAL_GOAL_FORBIDDEN');
+  if(entry.mode==='free') {
+    if(!p.strategy.speaking_difficulty)throw new Error('INVALID_SPEAKING_DIFFICULTY');
+    assertSpeakingChoice(p.strategy.speaking_difficulty,{constraints:speakingConstraints??deriveSpeakingConstraints(context),allowedRefs:allowed,kind:'conversation'});
+  }
   if(entry.mode==='topic'&&p.primary_goal_id===null)throw new Error('TOPIC_GOAL_REQUIRED');
   if(resource&&p.primary_goal_id===null) {
     const declined=context.learning_history.flatMap(h=>h.declined_goal_ids);
@@ -36,9 +42,12 @@ export function validateConversation(p,{entry,context,resource}) {
   validateVisibleInstruction([p.conversation_purpose,p.content_focus,...p.opening_options],allowed);
   return immutable(p);
 }
-export function validateTurn(p,{plan,input,policy,allowedRefs,context,resource,priorExecution,review={difficulty_count:0},now=Date.now()}) {
+export function validateTurn(p,{plan,input,policy,allowedRefs,context,resource,priorExecution,review={difficulty_count:0},speakingConstraints,now=Date.now()}) {
   if(!exact(p,['interpretation','prior_outcome','goal_assessment','action','active_goal_id','local_help_target','reply_directive','expected_observation','proposed_plan_patch','evidence_refs','rationale_code'])||Buffer.byteLength(JSON.stringify(p))>LIMITS.proposal_bytes||!exact(p.interpretation,['intent','clarity','refs'])||!boundedText(p.interpretation.intent,100)||!['clear','ambiguous','unknown'].includes(p.interpretation.clarity)||!refs(p.interpretation.refs,allowedRefs)||!PLAN_ACTIONS.includes(p.action)||!boundedText(p.rationale_code,100)||!refs(p.evidence_refs,allowedRefs))throw new Error('INVALID_TURN_PROPOSAL');
-  if(!exact(p.reply_directive,['task','support_level','new_points','budget_ref'])||!boundedText(p.reply_directive.task,400))throw new Error('INVALID_TURN_DIRECTIVE');
+  const freeTurn=plan.mode==='free';
+  const directiveShape=exact(p.reply_directive,['task','support_level','new_points','budget_ref',...(freeTurn?['speaking_difficulty']:[])])||freeTurn&&exact(p.reply_directive,['task','support_level','new_points','budget_ref']);
+  if(!directiveShape||!boundedText(p.reply_directive.task,400))throw new Error('INVALID_TURN_DIRECTIVE');
+  if(freeTurn&&!p.reply_directive.speaking_difficulty)throw new Error('INVALID_SPEAKING_DIFFICULTY');
   if(!['none','partial','model','choice'].includes(p.reply_directive.support_level))throw new Error('INVALID_SUPPORT_LEVEL');
   if(![0,1].includes(p.reply_directive.new_points))throw new Error('INVALID_NEW_POINT_COUNT');
   if(p.reply_directive.budget_ref!==REPLY_POLICY_VERSION)throw new Error('INVALID_REPLY_BUDGET_REF');
@@ -61,5 +70,6 @@ export function validateTurn(p,{plan,input,policy,allowedRefs,context,resource,p
   if(p.action==='CORRECT'&&policy.reason==='goal_attempt_observed')throw new Error('VALID_EXPRESSION_CORRECTION_FORBIDDEN');
   validateVisibleInstruction([p.reply_directive.task],allowedRefs);
   if(measureReply(p.reply_directive.task).question_budget_exceeded)throw new Error('MULTIPLE_QUESTIONS_IN_DIRECTIVE');
+  if(freeTurn)assertSpeakingChoice(p.reply_directive.speaking_difficulty,{constraints:speakingConstraints??deriveSpeakingConstraints(context),allowedRefs,kind:'turn',newPoints:p.reply_directive.new_points,action:p.action,cooldown:policy.teaching_cooldown??0});
   return immutable(p);
 }

@@ -303,7 +303,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             // Snapshot at the first accepted response-start notification, which
             // can arrive after generation began. This proves ACK/turn matching,
             // not model compliance or that already generated audio used it.
-            diagnose('teaching.response',{...ids,applied_context_version:appliedVersion,applied_context_hash:appliedContext.hash,context_policy_version:appliedContext.policy_version,current_state_version:teaching.version,current_decision_context_version:teaching.view().decision?.context_version,decision_context_version:appliedDecision?.context_version,decision_context_matched:appliedDecision?.turn_id===event.turn_id,pending_context:!!pendingContext});
+            diagnose('teaching.response',{...ids,applied_context_version:appliedVersion,applied_context_hash:appliedContext.hash,context_policy_version:appliedContext.policy_version,current_state_version:teaching.version,current_decision_context_version:teaching.view().decision?.context_version,decision_context_version:appliedDecision?.context_version,decision_context_matched:appliedDecision?.turn_id===event.turn_id,pending_context:!!pendingContext,...(teaching.mode==='free'?{speaking_generation_basis:teaching.planning?.executions.get(event.response_id)?.speaking_generation_basis??'unknown'}:{})});
           }
           if(['user.partial','user.final'].includes(event.type))diagnose(event.type,{...ids,chars:Array.from(event.payload.text).length});
           const stats=replyStats.get(event.response_id);

@@ -18,7 +18,7 @@ const directory=[...SUMMARY_EXPRESSIONS,...GENERAL_EXPRESSIONS];
 const clip=(label,items,empty)=>{const text=`${label}：${items.length?items.join('、'):empty}`;return text.length<=100?text:`${text.slice(0,99)}…`;};
 export function closingBrief(recap) {
   const line=(label,items)=>`${label}：${items.length?items.join('、'):''}`;
-  return `本轮结束：学生这一句是在结束对话。停在这一轮。只用一两句轻声收束。先接住结束。如果下面列出了话题、词汇或表达，就自然带上这些真实内容，再告别。不要说出“话题”“词汇”“表达”这些标签，不要加小标题，不要提问，不要教新内容，不要邀请下次练习或其他任务，不要说已经掌握或学会了。某一行是空的就不要提那一类；三行都空就只说这轮是在聊天，然后告别，不要编造。\n${line('话题',recap.knowledge_points)}\n${line('词汇',recap.vocabulary)}\n${line('表达',recap.expressions)}`;
+  return `本轮结束：学生这一句是在结束对话。停在这一轮。只用一两句轻声收束。先接住结束。如果下面列出了话题、词汇或表达，就自然带上这些真实内容，再告别。不要说出“话题”“词汇”“表达”这些标签，不要念等级、策略名或内部标签，不要加小标题，不要提问，不要教新内容，不要邀请下次练习或其他任务，不要说已经掌握或学会了。某一行是空的就不要提那一类；三行都空就只说这轮是在聊天，然后告别，不要编造。\n${line('话题',recap.knowledge_points)}\n${line('词汇',recap.vocabulary)}\n${line('表达',recap.expressions)}`;
 }
 // Detailed labeled recap. The spoken close does not read this aloud.
 export function spokenCloseScript(recap) {

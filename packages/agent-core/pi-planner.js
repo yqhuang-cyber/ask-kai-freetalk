@@ -14,6 +14,7 @@ const text={type:'string',minLength:1,maxLength:200};
 const short={type:'string',minLength:1,maxLength:100};
 const nullableText={anyOf:[text,{type:'null'}]};
 const refs={type:'array',maxItems:12,items:{type:'string',minLength:1,maxLength:200}};
+const SPEAKING_PARAMETERS={type:'object',additionalProperties:false,required:['lexical_style','sentence_structure','new_word_policy','focus_term','reason','refs'],properties:{lexical_style:{enum:['everyday','precise']},sentence_structure:{enum:['simple','linked','flexible']},new_word_policy:{enum:['avoid','one_explained','requested_only']},focus_term:{anyOf:[{type:'string',minLength:1,maxLength:80},{type:'null'}]},reason:{type:'string',minLength:1,maxLength:160},refs:{type:'array',minItems:1,maxItems:6,items:{type:'string',minLength:1,maxLength:200}}}};
 const CONVERSATION_PARAMETERS={
   type:'object',additionalProperties:false,
   required:['conversation_purpose','content_focus','opening_options','primary_goal_id','candidate_goal_ids','key_points','strategy','selection_basis'],
@@ -23,7 +24,7 @@ const CONVERSATION_PARAMETERS={
     primary_goal_id:nullableText,
     candidate_goal_ids:{type:'array',maxItems:2,items:text},
     key_points:{type:'array',maxItems:2,items:text},
-    strategy:{type:'object',additionalProperties:false,required:['language_support','support_level','correction','pace'],properties:{language_support:{enum:['auto','zh','zh_en']},support_level:{enum:['none','partial','model','unknown']},correction:{enum:['gentle','on_request']},pace:{enum:['slow','normal']}}},
+    strategy:{type:'object',additionalProperties:false,required:['language_support','support_level','correction','pace','speaking_difficulty'],properties:{language_support:{enum:['auto','zh','zh_en']},support_level:{enum:['none','partial','model','unknown']},correction:{enum:['gentle','on_request']},pace:{enum:['slow','normal']},speaking_difficulty:SPEAKING_PARAMETERS}},
     selection_basis:{type:'array',minItems:1,maxItems:6,items:{type:'object',additionalProperties:false,required:['reason','refs'],properties:{reason:{type:'string',minLength:1,maxLength:80},refs}}}
   }
 };
@@ -37,7 +38,7 @@ const TURN_PARAMETERS={
     action:{enum:['RESPOND','FOLLOW_UP','CLARIFY','SCAFFOLD','INVITE_PRACTICE','CORRECT','REVIEW','CLOSE']},
     active_goal_id:nullableText,
     local_help_target:{anyOf:[{type:'string',minLength:1,maxLength:100},{type:'null'}]},
-    reply_directive:{type:'object',additionalProperties:false,required:['task','support_level','new_points','budget_ref'],properties:{task:{type:'string',minLength:1,maxLength:400},support_level:{enum:['none','partial','model','choice']},new_points:{enum:[0,1]},budget_ref:{const:REPLY_POLICY_VERSION}}},
+    reply_directive:{type:'object',additionalProperties:false,required:['task','support_level','new_points','budget_ref','speaking_difficulty'],properties:{task:{type:'string',minLength:1,maxLength:400},support_level:{enum:['none','partial','model','choice']},new_points:{enum:[0,1]},budget_ref:{const:REPLY_POLICY_VERSION},speaking_difficulty:SPEAKING_PARAMETERS}},
     expected_observation:{type:'object',additionalProperties:false,required:['kind','required_student_answer'],properties:{kind:short,required_student_answer:{type:'null'}}},
     proposed_plan_patch:{anyOf:[{type:'null'},{enum:['pause','resume']},{type:'object',additionalProperties:false,required:['op','goal_id','refs'],properties:{op:{enum:['replace','retire']},goal_id:text,refs}}]},
     evidence_refs:refs,

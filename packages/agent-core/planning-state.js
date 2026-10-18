@@ -7,17 +7,19 @@ import { ObservationCoordinator } from './observation-port.js';
 import { boundedProposal } from './planner-port.js';
 import { contextRefs,validateTurn,planHash } from './plan-validator.js';
 import { goalChoice,eligibleGoal,assessGoal,GOAL_POLICY_VERSION } from './goal-lifecycle.js';
+import { SpeakingPolicyState,fallbackTurnDifficulty,SPEAKING_POLICY_VERSION } from './speaking-policy.js';
 export const TURN_PLANNING_BUDGET_MS=2000;
 export const TURN_PLANNING_COMMIT_RESERVE_MS=200;
 export function conservativeTurn(input) {
   const d=fallbackDecision(input),p=input.policy;
-  return {interpretation:{intent:d.code,clarity:d.action==='CLARIFY'?'ambiguous':'unknown',refs:[input.turn.source_event_id]},prior_outcome:{execution_ref:input.prior_execution?.execution_id??null,status:input.prior_execution?.status??'none',unknown:['学生理解与完整播放未知']},goal_assessment:null,action:d.action,active_goal_id:null,local_help_target:d.localHelp?'回应本轮表达求助':null,reply_directive:{task:d.task,support_level:d.support,new_points:0,budget_ref:REPLY_POLICY_VERSION},expected_observation:{kind:d.action==='CLOSE'?'student_choice':'conversation_continuity',required_student_answer:null},proposed_plan_patch:p.teaching_paused?'pause':d.easier?{op:'replace',goal_id:d.easier.id,refs:[input.turn.source_event_id]}:null,evidence_refs:[input.turn.source_event_id],rationale_code:d.code};
+  const directive={task:d.task,support_level:d.support,new_points:0,budget_ref:REPLY_POLICY_VERSION,...(input.plan?.mode==='free'?{speaking_difficulty:fallbackTurnDifficulty(input)}:{})};
+  return {interpretation:{intent:d.code,clarity:d.action==='CLARIFY'?'ambiguous':'unknown',refs:[input.turn.source_event_id]},prior_outcome:{execution_ref:input.prior_execution?.execution_id??null,status:input.prior_execution?.status??'none',unknown:['学生理解与完整播放未知']},goal_assessment:null,action:d.action,active_goal_id:null,local_help_target:d.localHelp?'回应本轮表达求助':null,reply_directive:directive,expected_observation:{kind:d.action==='CLOSE'?'student_choice':'conversation_continuity',required_student_answer:null},proposed_plan_patch:p.teaching_paused?'pause':d.easier?{op:'replace',goal_id:d.easier.id,refs:[input.turn.source_event_id]}:null,evidence_refs:[input.turn.source_event_id],rationale_code:d.code};
 }
 export class PlanningState {
   constructor({plan,context,resource,planner,observations,resourceVerifier,mode=plan.execution_mode,clock=()=>Date.now(),budgetMs=TURN_PLANNING_BUDGET_MS,onRecord=()=>{},onAcceptedProposal,observationPort}) {
     if(plan.mode==='free'&&resource!=null)throw new Error('FREE_RESOURCE_FORBIDDEN');
     if(!Number.isSafeInteger(budgetMs)||budgetMs<1||budgetMs>TURN_PLANNING_BUDGET_MS)throw new Error('INVALID_TURN_PLANNING_BUDGET');
-    Object.assign(this,{plan,context,resource,planner,observations,resourceVerifier,mode,clock,budgetMs,onRecord,onAcceptedProposal,observationPort});this.observationCoordinator=new ObservationCoordinator({port:observationPort,clock});this.sessionDeclinedGoals=new Set();this.transitions=[];this.goalOutcomes=new Map();this.controlInputs=new Map();this.difficulties=[];this.localHelp=null;if(plan.primary_goal)this.goalOutcomes.set(plan.primary_goal.id,{goal:plan.primary_goal,status:plan.goal_status});this.revision=1;this.authorizationEpoch=1;this.closed=false;this.inputs=new Map();this.records=[];this.history=[];this.executions=new Map();this.current=null;this.accepted=null;this.controller=null;
+    Object.assign(this,{plan,context,resource,planner,observations,resourceVerifier,mode,clock,budgetMs,onRecord,onAcceptedProposal,observationPort});this.observationCoordinator=new ObservationCoordinator({port:observationPort,clock});this.sessionDeclinedGoals=new Set();this.transitions=[];this.goalOutcomes=new Map();this.controlInputs=new Map();this.difficulties=[];this.localHelp=null;this.speaking=plan.mode==='free'?new SpeakingPolicyState(context):null;if(plan.primary_goal)this.goalOutcomes.set(plan.primary_goal.id,{goal:plan.primary_goal,status:plan.goal_status});this.revision=1;this.authorizationEpoch=1;this.closed=false;this.inputs=new Map();this.records=[];this.history=[];this.executions=new Map();this.current=null;this.accepted=null;this.controller=null;
   }
   get capabilities(){return planningCapabilities(this.plan,this.resource);}
   noteInput(event) {
@@ -29,7 +31,7 @@ export class PlanningState {
     const accepted_at=this.clock();this.acceptedInputTimes.set(event.turn_id,{source_event_id:event.event_id,accepted_at});return accepted_at;
   }
   emit(name,fields={}){this.onRecord(name,{planning_revision:this.revision,path:this.mode,...fields});}
-  invalidate(reason='new_input') {this.revision++;this.controller?.abort();this.observationCoordinator.cancel(reason);this.accepted=null;this.localHelp=null;this.emit('planning.cancelled',{reason});}
+  invalidate(reason='new_input') {this.revision++;this.controller?.abort();this.observationCoordinator.cancel(reason);this.accepted=null;this.localHelp=null;this.speaking?.dropTurn();this.emit('planning.cancelled',{reason});}
   review() {
     const rows=[...this.observations?.observations.values()??[]];
     return immutable({policy_version:GOAL_POLICY_VERSION,fallback_policy_version:FALLBACK_POLICY_VERSION,session_declined_goal_ids:[...this.sessionDeclinedGoals],difficulty_count:this.difficulties.length,assessment:this.plan.primary_goal?assessGoal(this.plan.primary_goal,rows):null,observed_attempts:rows.filter(o=>o.goal_id===this.plan.primary_goal?.id).slice(-12).map(o=>({observation_id:o.observation_id,source_event_id:o.source_event_id,support:o.support,semantic_review:'unverified'})),transitions:this.transitions.slice(-6)});
@@ -85,6 +87,7 @@ export class PlanningState {
     if(this.inputs.size>=1000)throw new Error('PLANNING_TURN_LIMIT');
     const startedAt=this.noteInput(event),reserve=Math.min(TURN_PLANNING_COMMIT_RESERVE_MS,Math.max(1,Math.floor(this.budgetMs/10)));
     this.invalidate(previous?'input_corrected':'new_input');
+    if(this.speaking)this.speaking.observe(event.payload.text,event);
     const input=immutable({turn_id:event.turn_id,source_event_id:event.event_id,text:event.payload.text,input_revision:(previous?.input_revision??0)+1,expires_at:startedAt+this.budgetMs,revision:this.revision,authorization_epoch:this.authorizationEpoch});
     this.inputs.set(event.turn_id,input);this.current=input;this.controls(event,policy);const controller=new AbortController();this.controller=controller;
     const expired=()=> {
@@ -109,7 +112,8 @@ export class PlanningState {
     policy={...policy,teaching_paused:this.plan.goal_status==='paused'||this.plan.goal_status==='retired'||policy.teaching_paused&&this.plan.goal_status!=='active'};
     this.history=this.history.filter(h=>h.turn_id!==event.turn_id);
     const prior=[...this.executions.values()].at(-1)??null;
-    const snapshot=immutable({plan:this.plan,turn:input,policy,language,learner_feedback:this.observations?.feedback.get(event.turn_id)??null,actual_context:this.history.slice(-12),prior_execution:prior?{execution_id:prior.execution_id,status:prior.status,consumption:prior.consumption,generation_basis:prior.generation_basis}:null,student_profile:this.context.student_profile,learning_profile:this.context.learning_profile,learning_history:this.context.learning_history,coverage:this.context.coverage,resource:this.resource,...(this.plan.mode==='free'?{skill_catalog:this.capabilities}:{}),goal_review:this.review()});
+    const speakingConstraints=this.speaking?.constraints()??null;
+    const snapshot=immutable({plan:this.plan,turn:input,policy,language,learner_feedback:this.observations?.feedback.get(event.turn_id)??null,actual_context:this.history.slice(-12),prior_execution:prior?{execution_id:prior.execution_id,status:prior.status,consumption:prior.consumption,generation_basis:prior.generation_basis}:null,student_profile:this.context.student_profile,learning_profile:this.context.learning_profile,learning_history:this.context.learning_history,coverage:this.context.coverage,resource:this.resource,...(this.plan.mode==='free'?{skill_catalog:this.capabilities,speaking_constraints:speakingConstraints}:{}),goal_review:this.review()});
     // Shadow observation never changes Planner input, goals, attempts or saved facts.
     this.observationWork=this.observationCoordinator.start(snapshot,{signal:controller.signal,isCurrent:()=>!this.closed&&this.current===input&&this.revision===input.revision&&this.authorizationEpoch===input.authorization_epoch&&this.plan.revision===snapshot.plan.revision});
     this.history.push({turn_id:input.turn_id,source_event_id:event.event_id,role:'student',text:input.text});this.history=this.history.slice(-12);
@@ -118,13 +122,14 @@ export class PlanningState {
     const base={input_ref:event.event_id,turn_id:input.turn_id,input_revision:input.input_revision,based_on_plan_revision:this.plan.revision,base_planning_revision:input.revision,authorization_epoch:this.authorizationEpoch};
     let result;
     try {
-      if(policy.action==='CLOSE'||this.resourceUnavailable)result={proposal:validateTurn(conservativeTurn(snapshot),{plan:this.plan,input,policy,allowedRefs,context:this.context,resource:this.resource,priorExecution:snapshot.prior_execution,review:snapshot.goal_review,now:this.clock()}),planner_kind:'rule',degraded_reason:null};
-      else if(input.expires_at-this.clock()<=reserve)result={proposal:validateTurn(conservativeTurn(snapshot),{plan:this.plan,input,policy,allowedRefs,context:this.context,resource:this.resource,priorExecution:snapshot.prior_execution,review:snapshot.goal_review,now:this.clock()}),planner_kind:'rule',degraded_reason:'planner_timeout',attempts:[]};
-      else result=await boundedProposal({planner:this.planner,method:'planTurn',input:snapshot,signal:controller.signal,budgetMs:input.expires_at-this.clock()-reserve,deadlineAt:input.expires_at-reserve,clock:this.clock,validate:p=>validateTurn(p,{plan:this.plan,input,policy,allowedRefs,context:this.context,resource:this.resource,priorExecution:snapshot.prior_execution,review:snapshot.goal_review,now:this.clock()}),fallback:()=>conservativeTurn(snapshot)});
+      const turnCheck=p=>validateTurn(p,{plan:this.plan,input,policy,allowedRefs,context:this.context,resource:this.resource,priorExecution:snapshot.prior_execution,review:snapshot.goal_review,speakingConstraints,now:this.clock()});
+      if(policy.action==='CLOSE'||this.resourceUnavailable)result={proposal:turnCheck(conservativeTurn(snapshot)),planner_kind:'rule',degraded_reason:null};
+      else if(input.expires_at-this.clock()<=reserve)result={proposal:turnCheck(conservativeTurn(snapshot)),planner_kind:'rule',degraded_reason:'planner_timeout',attempts:[]};
+      else result=await boundedProposal({planner:this.planner,method:'planTurn',input:snapshot,signal:controller.signal,budgetMs:input.expires_at-this.clock()-reserve,deadlineAt:input.expires_at-reserve,clock:this.clock,validate:turnCheck,fallback:()=>conservativeTurn(snapshot)});
     } catch {if(this.current===input&&expired())return null;const elapsed_ms=Math.max(0,this.clock()-startedAt);this.records.push({...base,status:'cancelled',elapsed_ms});this.emit('planning.cancelled',{turn_id:input.turn_id,elapsed_ms});return null;}
     if(this.closed||controller.signal.aborted||this.current!==input||this.revision!==input.revision){this.records.push({...base,status:'stale'});this.emit('planning.rejected',{turn_id:input.turn_id,reason:'stale'});return null;}
     if(expired())return null;
-    const proposal={schema_version:'turn-plan-v1',proposal_id:randomUUID(),session_id:this.plan.session_id,...base,...result.proposal,planner_kind:result.planner_kind,degraded_reason:result.degraded_reason,accepted_at:this.clock(),expires_at:input.expires_at};
+    const proposal={schema_version:this.plan.mode==='free'?'turn-plan-v2':'turn-plan-v1',proposal_id:randomUUID(),session_id:this.plan.session_id,...base,...result.proposal,planner_kind:result.planner_kind,degraded_reason:result.degraded_reason,accepted_at:this.clock(),expires_at:input.expires_at};
     const accepted=immutable({...proposal,hash:planHash(proposal)});
     if(expired())return null;
     this.records.push({proposal_id:accepted.proposal_id,...base,status:this.mode==='shadow'?'shadow':'accepted',elapsed_ms:Math.max(0,this.clock()-startedAt),planner_kind:accepted.planner_kind,degraded_reason:accepted.degraded_reason,attempts:result.attempts??[],hash:accepted.hash});
@@ -140,12 +145,13 @@ export class PlanningState {
       this.localHelp=accepted.local_help_target?{text:accepted.local_help_target,turn_id:input.turn_id,source_event_id:event.event_id}:null;
       this.accepted=accepted;
     }
-    this.emit('planning.accepted',{turn_id:input.turn_id,elapsed_ms:Math.max(0,this.clock()-startedAt),planner_kind:accepted.planner_kind,degraded:!!accepted.degraded_reason,rejection_code:(result.attempts??[]).filter(a=>a.state==='rejected').at(-1)?.code});return this.mode==='shadow'?null:accepted;
+    const spoken=accepted.reply_directive?.speaking_difficulty;
+    this.emit('planning.accepted',{turn_id:input.turn_id,elapsed_ms:Math.max(0,this.clock()-startedAt),planner_kind:accepted.planner_kind,degraded:!!accepted.degraded_reason,rejection_code:(result.attempts??[]).filter(a=>a.state==='rejected').at(-1)?.code,...(spoken?{speaking_policy_version:SPEAKING_POLICY_VERSION,lexical_style:spoken.lexical_style,sentence_structure:spoken.sentence_structure,new_word_policy:spoken.new_word_policy,profile_level:speakingConstraints?.profile_level,verified_through_level:speakingConstraints?.verified_through_level,request_scope:speakingConstraints?.request_scope}:{})});return this.mode==='shadow'?null:accepted;
   }
   updateContext(context) {
-    if(this.closed)return;this.invalidate('preferences_changed');this.context=context;
+    if(this.closed)return;this.invalidate('preferences_changed');this.context=context;this.speaking?.refresh(context);
     const {hash,...base}=this.plan,interest=context.student_profile.interests[0]?.label;
-    const next={...base,revision:base.revision+1,input_refs:{...base.input_refs,context:context.snapshot_id,revision:context.revision,coverage:context.coverage},selection_basis:[{reason:'authorized_context_refresh',refs:[context.snapshot_id]}],content_focus:this.plan.mode==='free'?base.content_focus:interest??'跟随学生当前选择',strategy:{...base.strategy,language_support:context.learning_profile.language_support,correction:context.student_profile.conversation_preferences.correction}};
+    const next={...base,revision:base.revision+1,input_refs:{...base.input_refs,context:context.snapshot_id,revision:context.revision,coverage:context.coverage},selection_basis:[{reason:'authorized_context_refresh',refs:[context.snapshot_id]}],content_focus:this.plan.mode==='free'?base.content_focus:interest??'跟随学生当前选择',strategy:{...base.strategy,language_support:context.learning_profile.language_support,correction:context.student_profile.conversation_preferences.correction},...(this.speaking?{speaking_constraints:this.speaking.constraints()}:{})};
     this.plan=immutable({...next,hash:planHash(next)});this.emit('conversation_plan.revised',{plan_revision:this.plan.revision});
     if(this.plan.primary_goal&&!eligibleGoal(this.plan.primary_goal,context,this.capabilities,{explicit:true}))this.commitGoal('paused',{reason:'prerequisite_context_changed'});
   }
@@ -156,7 +162,7 @@ export class PlanningState {
     let x=this.executions.get(e.response_id);
     if(e.type==='response.started'&&!x) {
       if(this.executions.size>=1000)return;
-      x={execution_id:e.response_id,turn_id:e.turn_id,plan_id:this.plan.plan_id,plan_revision:this.plan.revision,turn_plan_ref:null,path:this.mode,generation_basis:'unknown',generation_requested_at:null,first_observed_output_at:this.clock(),status:'unknown',consumption:'unknown',text:'',audio_bytes:0};this.executions.set(e.response_id,x);
+      x={execution_id:e.response_id,turn_id:e.turn_id,plan_id:this.plan.plan_id,plan_revision:this.plan.revision,turn_plan_ref:null,path:this.mode,generation_basis:'unknown',speaking_generation_basis:'unknown',generation_requested_at:null,first_observed_output_at:this.clock(),status:'unknown',consumption:'unknown',text:'',audio_bytes:0};this.executions.set(e.response_id,x);
     }
     if(!x||x.turn_id!==e.turn_id||['cancelled','completed'].includes(x.status))return;
     if(e.type==='response.text.delta'){x.text=(x.text+e.payload.text).slice(0,2000);x.status='forwarded';}

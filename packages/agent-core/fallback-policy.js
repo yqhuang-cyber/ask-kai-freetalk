@@ -1,5 +1,5 @@
 import { eligibleGoal } from './goal-lifecycle.js';
-export const FALLBACK_POLICY_VERSION='kai-planning-fallback-v4';
+export const FALLBACK_POLICY_VERSION='kai-planning-fallback-v5';
 export function fallbackDecision(input) {
   const resource=input.skill_catalog??input.resource;
   const p=input.policy,close=p.action==='CLOSE',clarify=p.action==='CLARIFY_INTENT';
