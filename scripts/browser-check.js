@@ -177,7 +177,7 @@ try {
   await page.goto(`http://127.0.0.1:${paceServer.address().port}/?diagnostics=1`);
   await page.waitForFunction(()=>!document.querySelector('#speech-pace').disabled);
   assert.equal(await page.locator('#speech-pace').inputValue(),'slow');
-  await page.locator('#connect').click();await page.getByText('本次语速：慢速；结束后可切换。',{exact:true}).waitFor();
+  await page.locator('#connect').click();await page.getByText('本次语速：慢速；可以说“慢一点”“快一点”或“恢复正常”。',{exact:true}).waitFor();
   assert.equal(await page.locator('#speech-pace').isDisabled(),true);assert.equal(creates[0].session.audio.output.speed,-20);
   assert.equal(await page.evaluate(()=>window.microphoneRequests),0);
   await page.locator('#end').click();await page.waitForFunction(()=>!document.querySelector('#connect').disabled);
@@ -191,7 +191,7 @@ try {
   const paceRow=paceReport.timeline.find(r=>r.clock==='gateway' && r.name==='session.config');assert.equal(paceRow.speech_pace,'slow');assert.equal(paceRow.output_speed,-20);
   await page.locator('#speech-pace').selectOption('normal');await page.locator('#session-summary .summary-restart').click();
   assert.equal(await page.locator('#session-summary').isVisible(),false);
-  await page.getByText('本次语速：正常；结束后可切换。',{exact:true}).waitFor();assert.equal(creates[1].session.audio.output.speed,0);
+  await page.getByText('本次语速：正常；可以说“慢一点”“快一点”或“恢复正常”。',{exact:true}).waitFor();assert.equal(creates[1].session.audio.output.speed,0);
   await page.locator('#end').click();await page.waitForFunction(()=>!document.querySelector('#connect').disabled);
   // FreeTalk has one entry. Reselecting it keeps the completed summary;
   // starting a new session above is what clears the old one.

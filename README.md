@@ -85,6 +85,8 @@ flowchart TD
 
 持续采音、随时打断、慢速或正常语速、中文优先和按需短英文，都在这一条入口里。只有语音服务真实就绪后才申请麦克风，并显示连接成功。
 
+会话中可以口头说“慢一点”“快一点”或“恢复正常”。Kai 先确认请求，播完后更新本场语速，配置确认成功后再用新语速说明结果；只影响当前会话。连续请求、打断和退出会隔离过期确认。分享与跨项目复用见[功能总结与移植说明](docs/spoken-speech-pace-feature-summary.md)、[独立 PRD](docs/prd/spoken-speech-pace-prd-v1.md)；工程追溯见[任务及结果](docs/spoken-speech-pace-tasking.md)。
+
 ### 4.1 进入对话
 
 ```mermaid

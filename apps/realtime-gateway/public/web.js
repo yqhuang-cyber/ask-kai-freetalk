@@ -1,6 +1,7 @@
 import { ObservationReportsPanel } from './observation-reports.js';
 import { PlanningObserver } from './planning-observer.js';
 import { ClosingPlayback } from './closing-playback.js';
+import { SpeechPlayback, speechStateMessage } from './speech-playback.js';
 import { AudioIO } from './audio.js';
 import { Presentation } from './presentation.js';
 import { ExperienceTrace } from './diagnostics.js';
@@ -80,10 +81,11 @@ const presentation=new Presentation({render:(text,parts)=>{
   previous.className=parts?.complete?'caption-complete':'caption-previous';previous.textContent=parts?.previous??text;
   current.className='caption-current';current.textContent=parts?.current??'';caption.replaceChildren(previous,current);
 },play:(audio,rate,id)=>io?.play(audio,rate,id),getPlayback:id=>io?.playback(id),stopAudio:()=>io?.stopPlayback(),onMode:(mode,details)=>{
-  if(mode==='complete')closingPlayback.check();
+  if(mode==='complete'){closingPlayback.check();speechPlayback.check();}
   captionHint.textContent=mode==='complete'?(details.has_text?details.text_only?'本轮仅有文字回复，已显示完毕。':'本轮回复已显示。':'本轮没有收到字幕。'):({idle:'字幕会随回复逐段出现。',waiting_audio:'等待语音开始……',playing:'当前字幕短语已加深显示。',paused:'播放已暂停，字幕会随播放继续。',text_only:'本轮未收到语音，正在显示文字回复。'})[mode];
 },onObserve:diagnosticsEnabled?observe:undefined});
 const closingPlayback=new ClosingPlayback({presentation,getPlayback:id=>io?.playback(id),isMuted:()=>muted,send:packet=>{if(ws?.readyState!==WebSocket.OPEN)return false;ws.send(JSON.stringify(packet));return true;}});
+const speechPlayback=new SpeechPlayback({presentation,getPlayback:id=>io?.playback(id),isMuted:()=>muted,send:packet=>{if(ws?.readyState!==WebSocket.OPEN)return false;ws.send(JSON.stringify(packet));return true;}});
 function learning(packet) {
   goal.textContent=packet.goal;promptHint.textContent=packet.start_tip;
   const details=packet.goal_details;
@@ -117,7 +119,7 @@ async function loadSpeechPaces() {
 }
 void loadSpeechPaces();
 async function stop(text='对话已结束。',failed=false) {
-  closingPlayback.reset();summaryCards.finish();
+  closingPlayback.reset();speechPlayback.reset();summaryCards.finish();
   const stopped=++generation;const previous=ws;ws=null;previous?.close();
   preparationEpoch++;preparer.cancel();preparationPromise=null;
   status.textContent=failed?'连接中断':'未连接';message.textContent=text;message.dataset.state=failed?'failed':'idle';
@@ -167,7 +169,8 @@ connect.addEventListener('click',async()=> {
         if(packet.type==='observation.report.saved'){observationReports.receipt(packet);return;}
         if(packet.type==='planning.observation'){planningObserver.record(packet.row);return;}
         if(packet.type==='diagnostics.event'){trace?.gateway(packet.row);refreshDiagnostics();return;}
-        if(packet.type==='session.config'){config=packet.audio;paceHint.textContent=packet.speech?.supported && ['slow','normal'].includes(packet.speech.pace)?`本次语速：${packet.speech.pace==='slow'?'慢速':'正常'}；结束后可切换。`:'本次使用服务默认语速。';return;}
+        if(packet.type==='session.config'){config=packet.audio;paceHint.textContent=packet.speech?.supported && ['slow','normal'].includes(packet.speech.pace)?`本次语速：${packet.speech.pace==='slow'?'慢速':'正常'}；可以说“慢一点”“快一点”或“恢复正常”。`:'本次使用服务默认语速。';return;}
+        if(packet.type==='speech.state'){paceHint.textContent=speechStateMessage(packet);speechPlayback.update(packet);return;}
         if(packet.type==='close.trace'){appendCloseLog(packet.title??'收束',packet.note??'',packet.body);return;}
         if(packet.type==='session.closing'){
           if(packet.session_id!==summaryCards.state.sessionId)return;
@@ -198,7 +201,7 @@ connect.addEventListener('click',async()=> {
         else if(value.type==='response.text.delta')presentation.append(value.response_id,value.payload.text);
         else if(value.type==='user.partial' || value.type==='user.final')student.textContent=value.payload.text;
         else if(value.type==='response.audio.chunk' && packet.audio)presentation.audio(value.response_id,packet.audio,packet.sample_rate);
-        else if(value.type==='response.done'){presentation.done(value.response_id);closingPlayback.check();}
+        else if(value.type==='response.done'){presentation.done(value.response_id);closingPlayback.check();speechPlayback.check();}
       } catch(error) {const code=failureCode(error?.message);observe('browser.failed',{code});await stop(safetyMessage ?? failureMessage(code),true);}
     };
     ws.onerror=()=>{if(current===generation)void stop(safetyMessage ?? '无法连接实时服务，请重试。',true);};

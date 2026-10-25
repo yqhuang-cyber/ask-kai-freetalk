@@ -1,6 +1,6 @@
 import { validateEvent } from '../contracts/events.js';
 import { PERSONA_VERSION,PERSONA_ADAPTIVE_VERSION,SPORTS_LESSON } from './lessons.js';
-import { speechPaceInstructions } from './speech.js';
+import { speechPaceInstructions, speechSpeedInstructions, SpeechPaceState } from './speech.js';
 import { REPLY_POLICY_VERSION,REPLY_BUDGET } from './reply-policy.js';
 import { NaturalTeaching,TEACHING_POLICY_VERSION } from './natural-teaching.js';
 import { LearningSummary,SUMMARY_LIMITS,closingBrief as closeBrief } from './learning-summary.js';
@@ -16,6 +16,7 @@ export class TeachingSession {
     if(!['sports','topic','free','mission'].includes(mode))throw new Error('INVALID_MODE');
     if(mode==='mission' && !mission)throw new Error('TRUSTED_MISSION_REQUIRED');
     this.speechInstructions=speechPaceInstructions(speechPace);
+    this.speech=new SpeechPaceState(speechPace);
     Object.assign(this,{sessionId,mode,memory:structuredClone(memory),mission:mission?structuredClone(mission):null});this.stage='warmup';this.version=1;this.seen=new Set();this.evidence=[];this.completedReplyTurns=new Set();
     this.teaching=new NaturalTeaching({mode,mission});
     this.learning=new LearningSummary({sessionId,mode,mission});
@@ -45,7 +46,7 @@ export class TeachingSession {
   }
   contextSnapshot() {
     const memory=this.language.validMemory().map(m=>({field:m.field,value:m.value,source:m.source,updated_at:m.updated_at}));
-    return compileContextSnapshot({sessionId:this.sessionId,version:this.version,mode:this.mode,mission:this.mission,stage:this.stage,speechInstructions:this.speechInstructions,
+    return compileContextSnapshot({sessionId:this.sessionId,version:this.version,mode:this.mode,mission:this.mission,stage:this.stage,speechInstructions:this.speechInstructions,speech:this.speech.enabled?this.speech.snapshot():undefined,
       languageInstructions:this.language.instructions(),language:this.language.snapshot(),decision:this.teaching.decision,teachingContext:this.teaching.context(),memory,sessionRecap:this.teaching.decision?.teaching_paused&&this.teaching.decision?.action!=='CLOSE'?null:this.recap?.snapshot(),planning:this.planning?.mode==='shadow'?null:this.planning});
   }
   accept(event) {
@@ -55,6 +56,8 @@ export class TeachingSession {
     this.seen.add(event.turn_id);
     this.version++;
     const decision=this.teaching.select(event,this.version);
+    const paceRequest=decision.action==='CLOSE'?null:this.speech.observe(event);
+    if(paceRequest){Object.assign(decision,{action:'RESPOND',reason:'student_speech_pace',interaction:'chat',support_level:'none',new_points:0,goal_id:null,goal_source:null});this.teaching.decision={...decision};this.planning?.invalidate('speech_pace_request');}
     this.recap.input(event,{closing:decision.action==='CLOSE',plan:this.planning?.plan});
     this.planning?.controls(event,decision);this.syncGoal();
     if(decision.action!=='CLOSE'&&this.planning&&this.planning.mode!=='shadow'){for(const {goal,status} of this.planning.goalOutcomes.values())this.recap.goal({primary_goal:goal,goal_status:status,revision:this.planning.plan.revision});}
@@ -75,6 +78,7 @@ export class TeachingSession {
     return true;
   }
   async planTurn(event) {
+    if(this.speech.request?.turn_id===event.turn_id)return null;
     if(!this.planning||this.closed)return null;
     const plan=await this.planning.acceptInput(event,this.teaching.decision,this.language.snapshot());
     if(plan&&!this.closed){this.syncGoal();this.recap.goal(this.planning.plan);this.version++;return plan;}return null;
@@ -89,6 +93,7 @@ export class TeachingSession {
   forward(packet) {const before=this.recap.revision;this.recap.forward(packet);if(this.recap.revision!==before)this.version++;return this.learning.forward(packet);}
   updateMemory(memory){this.planning?.invalidate('preferences_changed');this.memory=structuredClone(memory);this.language.updateMemory(memory);this.version++;}
   updateLearnerContext(context){this.planning?.updateContext(context);this.syncGoal();this.version++;}
+  releaseSpeechRequest(id){if(!this.speech.release(id))return false;this.speechInstructions=speechSpeedInstructions(this.speech.contextSpeed);this.version++;return true;}
   languageSnapshot(){return this.language.snapshot();}
   finalize(options={}) {
     this.closed=true;this.planning?.close();const summary=this.learning.finalize({...options,evidence:this.evidence});

@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { DoubaoJsonTransport, ReviewedDoubaoProvider, validateRealtimeProfile } from './realtime.js';
 import { validateProfile } from './probe.js';
-import { isSpeechPace } from '../agent-core/speech.js';
+import { isSpeechPace, isSpeechSpeed } from '../agent-core/speech.js';
 
 export const SEEDUPLEX_PROTOCOL = 'seeduplex-1.2.6.1';
 export const SEEDUPLEX_SOURCE = 'https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh';
@@ -67,6 +67,7 @@ export function createDoubaoProvider(options) {
  */
 export class SeeduplexProvider extends DoubaoJsonTransport {
   speechStartKind='asr_candidate';
+  speechControlSupported=true;
   constructor(options) {
     validateSeeduplexProfile(options.profile,{protocolProbe:options.protocolProbe===true});
     if (options.speechPace !== undefined && !isSpeechPace(options.speechPace)) throw new Error('INVALID_SPEECH_PACE');
@@ -95,24 +96,25 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
     if (typeof value !== 'string' || !value.length || value.length > 120) throw new Error('INVALID_PROVIDER_ID');
     return value;
   }
-  reply(raw,create=false) {
+  reply(raw,create=false,fixed=null) {
     const rawId = this.checkId(raw.response_id);
     const id = this.id(`reply:${rawId}`);
     let reply = this.replies.get(id);
     if (!reply) {
       if (!create) throw new Error('UNBOUND_PROVIDER_RESPONSE');
       if (this.activeReply) throw new Error('OVERLAPPING_PROVIDER_RESPONSE');
-      const turn = this.turn(raw.question_id);
-      reply = {id,rawId,turn:turn.id,status:'active',text:'',textStarted:false,textDone:false,audioDone:false};
+      const turnId=fixed?fixed.turn_id:this.turn(raw.question_id).id;
+      reply = {id,rawId,turn:turnId,status:'active',text:'',textStarted:false,textDone:false,audioDone:false,fixed};
       this.replies.set(id,reply); this.activeReply = reply;this.latestReply=reply;
       try{this.observeIdentity?.({response_id:reply.id,provider_response_id:reply.rawId,turn_id:reply.turn});}catch{}
-      this.onEvent({event:this.event('response.started',{},this.replyIds(reply))});
-    } else if (raw.question_id !== undefined && this.turn(raw.question_id).id !== reply.turn) throw new Error('FOREIGN_PROVIDER_TURN');
+      this.emitReply('response.started',reply);
+      if(fixed)this.emitReply('response.text.delta',reply,{text:fixed.text});
+    } else if (raw.question_id !== undefined && (reply.fixed?raw.question_id!==reply.fixed.rawQuestion:this.turn(raw.question_id).id!==reply.turn)) throw new Error('FOREIGN_PROVIDER_TURN');
     return reply;
   }
   replyIds(reply) { return {turn_id:reply.turn,response_id:reply.id}; }
   emitReply(type,reply,payload={},extra={}) {
-    this.onEvent({event:this.event(type,payload,this.replyIds(reply)),...extra});
+    this.onEvent({event:this.event(type,payload,this.replyIds(reply)),...(reply.fixed?{speech_control:{request_id:reply.fixed.request_id,phase:reply.fixed.phase}}:{}),...extra});
   }
   completeReply(reply) {
     if(reply.status!=='active')return;
@@ -130,7 +132,7 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
     if(raw.response_id!==undefined)return this.reply(raw,true);
     const reply=this.audioLane;
     if(!reply){if(this.audioFence)return null;throw new Error('UNBOUND_AUDIO_STREAM');}
-    if(raw.question_id!==undefined&&this.turn(raw.question_id).id!==reply.turn)throw new Error('FOREIGN_PROVIDER_TURN');
+    if(raw.question_id!==undefined&&(reply.fixed?raw.question_id!==reply.fixed.rawQuestion:this.turn(raw.question_id).id!==reply.turn))throw new Error('FOREIGN_PROVIDER_TURN');
     return reply;
   }
   receive(raw) {
@@ -154,6 +156,7 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
       const pending = this.pendingControl;
       if (!pending || pending.kind !== 'context' || raw.session?.id !== this.rawSessionId || raw.event_id === undefined) throw new Error('UNBOUND_CONTEXT_ACK');
       this.pendingControl = null;
+      if(pending.speed!==undefined){this.profile.session_create.session.audio.output.speed=pending.speed;this.speechPace=pending.speed===-20?'slow':pending.speed===0?'normal':undefined;}
       this.onEvent({control:'context.updated',version:pending.version});
       return this.drainCancels();
     }
@@ -205,12 +208,22 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
         const known=this.replies.get(this.ids.get(`reply:${rawId}`));
         if(known&&known.status!=='active')return; // a closed ID cannot reopen a lane
         if((this.audioLane&&this.audioLane.rawId!==rawId)||this.pendingControl?.kind==='cancel'||this.queuedCancels.length)throw new Error('AMBIGUOUS_AUDIO_STREAM');
-        const reply=this.reply(raw,true);
+        let fixed=null;
+        if(this.pendingFixed){
+          // Account probe: fixed synthesis has its own question_id; it does not
+          // echo our event_id. Bind only the explicitly reserved command after
+          // its automatic reply settled. A known ASR turn cannot take this lane.
+          this.checkId(raw.question_id);
+          if(this.ids.has(`turn:${raw.question_id}`))throw new Error('UNEXPECTED_PROVIDER_REPLY_DURING_FIXED');
+          fixed={...this.pendingFixed,rawQuestion:raw.question_id};this.pendingFixed=null;
+        }
+        const reply=this.reply(raw,true,fixed);
         this.audioLane=reply;this.audioFence=false;
         return;
       }
       const reply=raw.type==='response.output_audio.delta'?this.audioReply(raw):this.reply(raw,raw.type!=='response.done'&&raw.type!=='response.output_audio.done');
       if(!reply)return;
+      if(reply.fixed&&['response.output_text.delta','response.output_text.done'].includes(raw.type))return;
       if(raw.type==='response.done'){
         reply.wireDone=true;
         this.completeReply(reply);return;
@@ -261,9 +274,13 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
     if (!this.ready || this.closed) throw new Error('PROVIDER_NOT_OPEN');
     this.send({type:'input_audio_mute.commit',event_id:randomUUID()});
   }
-  speakFixedText(text) {
-    if (!this.ready || this.closed || this.pendingControl || this.activeReply || this.queuedCancels.length) throw new Error('PROVIDER_CONTROL_PENDING');
+  speakFixedText(text,control) {
+    if (!this.ready || this.closed || this.pendingControl || this.activeReply || this.pendingFixed || this.queuedCancels.length) throw new Error('PROVIDER_CONTROL_PENDING');
     if (typeof text!=='string' || !text.length || text.length>400) throw new Error('INVALID_SPOKEN_RECAP');
+    if(control){
+      if(!/^[a-zA-Z0-9_-]{1,128}$/.test(control.turn_id??'')||!this.turns.has(control.turn_id)||!/^[a-zA-Z0-9_-]{1,128}$/.test(control.request_id??'')||!['before','after'].includes(control.phase))throw new Error('INVALID_SPEECH_CONTROL');
+      this.pendingFixed={...control,text};
+    }
     this.send({type:'speech_text_buffer.commit',event_id:randomUUID(),text});
   }
   sendAudio(bytes) {
@@ -296,11 +313,15 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
       return;
     }
   }
-  updateContext({instructions,version,duringSilentReply=false}) {
+  updateContext({instructions,version,duringSilentReply=false,speechSpeed}) {
     const silent=duringSilentReply && this.activeReply && !this.activeReply.textStarted && this.audioLane!==this.activeReply;
-    if (!this.ready || this.pendingControl || this.queuedCancels.length || (this.activeReply && !silent) || typeof instructions !== 'string' || instructions.length > 16000 || !Number.isSafeInteger(version) || version < 1) throw new Error('PROVIDER_CONTROL_PENDING');
-    this.pendingControl = {kind:'context',version};
-    this.send({type:'session.update',event_id:randomUUID(),session:{id:this.rawSessionId,instructions}});
+    if (!this.ready || this.pendingControl || this.pendingFixed || this.queuedCancels.length || (this.activeReply && !silent) || typeof instructions !== 'string' || instructions.length > 16000 || !Number.isSafeInteger(version) || version < 1) throw new Error('PROVIDER_CONTROL_PENDING');
+    if(speechSpeed!==undefined&&!isSpeechSpeed(speechSpeed))throw new Error('INVALID_SPEECH_SPEED');
+    this.pendingControl = {kind:'context',version,speed:speechSpeed};
+    // Dynamic pace uses the full session shape verified by the live spike.
+    const session=speechSpeed===undefined?{id:this.rawSessionId,instructions}:{...structuredClone(this.profile.session_create.session),id:this.rawSessionId,instructions};
+    if(speechSpeed!==undefined)session.audio.output.speed=speechSpeed;
+    this.send({type:'session.update',event_id:randomUUID(),session});
   }
   close() {
     if(this.closed)return this.closeResult;
@@ -310,7 +331,7 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
     // Fence business events immediately, while waiting briefly for the actual
     // session.closed ACK on this connection. No model event can reopen output.
     this.closed=true;this.turns.clear();this.replies.clear();this.wireSeen.clear();this.pendingControl=null;
-    this.queuedCancels.length=0;this.latestReply=null;this.activeReply=null;this.audioLane=null;this.audioFence=true;
+    this.queuedCancels.length=0;this.latestReply=null;this.activeReply=null;this.audioLane=null;this.audioFence=true;this.pendingFixed=null;
     if(!sent){super.close();return this.closeResult=Promise.resolve({acknowledged:false});}
     this.closeResult=new Promise(resolve=>{
       let finished=false;

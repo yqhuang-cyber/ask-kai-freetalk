@@ -23,6 +23,7 @@ const staticFiles = new Map([
   ['/', ['index.html','text/html']], ['/web.js', ['web.js','text/javascript']], ['/web.css', ['web.css','text/css']],
   ['/audio.js',['audio.js','text/javascript']], ['/capture-worklet.js',['capture-worklet.js','text/javascript']],
   ['/failure-messages.js',['failure-messages.js','text/javascript']],
+  ['/speech-playback.js',['speech-playback.js','text/javascript']],
   ['/presentation.js',['presentation.js','text/javascript']],
   ['/caption-phrases.js',['caption-phrases.js','text/javascript']],
   ['/summary-cards.js',['summary-cards.js','text/javascript']],

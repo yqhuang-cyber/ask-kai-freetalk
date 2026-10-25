@@ -4,7 +4,7 @@ import { supportedExpression } from './learner-feedback.js';
 export const TEACHING_POLICY_VERSION='kai-teaching-v11';
 export const TEACHING_COOLDOWN_TURNS=2;
 export const TEACHING_ACTIONS=Object.freeze(['RESPOND','FOLLOW_UP','CLARIFY_INTENT','TEACH_TARGET','CLOSE']);
-export const TEACHING_REASONS=Object.freeze(['student_end','student_declined','student_changed_topic','student_requested_practice','student_requested_help','student_understanding_help','student_continuation_help','ambiguous_expression','unclear_input','prior_context_reference','clarification_limit','teaching_paused','teaching_cooldown','goal_attempt_observed','relevant_short_answer','ordinary_question','conversation_first']);
+export const TEACHING_REASONS=Object.freeze(['student_speech_pace','student_end','student_declined','student_changed_topic','student_requested_practice','student_requested_help','student_understanding_help','student_continuation_help','ambiguous_expression','unclear_input','prior_context_reference','clarification_limit','teaching_paused','teaching_cooldown','goal_attempt_observed','relevant_short_answer','ordinary_question','conversation_first']);
 export const NATURAL_TEACHING_INSTRUCTIONS=`自然教学策略 ${TEACHING_POLICY_VERSION}：每个完整学生回合只选一个主要动作，先回应当前意图，再考虑目标。主动作是交流重心，可以包含接住具体内容、相关补充和自然追问，不限制为一句话或简单应答；不要用泛泛表扬代替交流。
 学生明确结束：先回顾本次目标或交流目的，再总结实际聊到的关键知识点，包括词汇、表达方式或用法，随后简短告别；不追加问题、练习邀请或下次任务。口头选择最有价值的1～3点，不逐项读拼音。根据实际对话与有来源小结数据整理；计划目标不等于实际学过，不声称掌握、发音准确或独立使用。没有知识点时只回顾实际交流，不编造。当前语言规则同样适用。不要把提到“再见”、翻译请求、引语或否定当成结束。学生说聊完了、练习结束或先到这里也属于结束。告别播完后系统自动结束，学生明确继续时先停止收尾再接住当前话题，旧目标不自动恢复。明确马上退出／不用总结或点击结束按钮时立即结束。小结尚未展示、保存未获回执时不要说已经展示或保存。
 学生拒绝练习或换题：直接接住当前内容，暂停原目标，不示范旧目标、不要求理由、不邀请重试。只有学生明确求助于原目标或恢复该练习才重新激活。新话题或“这个词／句子”的表达求助只处理该表达，不激活旧目标；提到旧关键词、正确目标句或普通聊天也不构成恢复许可。
