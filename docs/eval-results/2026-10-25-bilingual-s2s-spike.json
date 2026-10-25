@@ -1,0 +1,2480 @@
+{
+  "kind": "authored_bilingual_s2s_aggregate",
+  "version": 1,
+  "human_listening_accepted": false,
+  "production_agent_changed": false,
+  "sources": [
+    {
+      "id": "bp01",
+      "sha256": "723f9579e89ee4d61261d284f7e84687880e6c3f656de0a9cc860b84d572da47",
+      "status": "inconclusive",
+      "samples": 6,
+      "error": null,
+      "stage": null,
+      "closed_sessions": 2,
+      "attempted_sessions": 2
+    },
+    {
+      "id": "bp01b",
+      "sha256": "85b64e0daabea05b5358bc5ac828cdfa1094cec5882d03a6449f20e69318da79",
+      "status": "inconclusive",
+      "samples": 9,
+      "error": null,
+      "stage": null,
+      "closed_sessions": 3,
+      "attempted_sessions": 3
+    },
+    {
+      "id": "bp02a",
+      "sha256": "c3dcc71f7a214eeba9c1f487fd5f9b3bfc150f331c9c7548ce175cddc0281c97",
+      "status": "measured",
+      "samples": 12,
+      "error": null,
+      "stage": null,
+      "closed_sessions": 6,
+      "attempted_sessions": 6
+    },
+    {
+      "id": "bp02b",
+      "sha256": "5c9467ddb1da6875d7659be0e3d8d3e5ca402ab1492dcb93897ffc1d95648232",
+      "status": "incomplete",
+      "samples": 4,
+      "error": "BILINGUAL_TRANSPORT_ERROR",
+      "stage": "bp02_uniform_fast_r3",
+      "closed_sessions": 2,
+      "attempted_sessions": 3
+    },
+    {
+      "id": "bp02retry",
+      "sha256": "c9ce1c526695255a0dfbb00331d60ba542996cd34585125a512d3ba80d751334",
+      "status": "measured",
+      "samples": 2,
+      "error": null,
+      "stage": null,
+      "closed_sessions": 1,
+      "attempted_sessions": 1
+    },
+    {
+      "id": "bp05a",
+      "sha256": "13d9cf67541eadbbf166ee3ec0b7de8e6a47a8c2d83f7ea622ee368f0866eca6",
+      "status": "measured",
+      "samples": 8,
+      "error": null,
+      "stage": null,
+      "closed_sessions": 4,
+      "attempted_sessions": 4
+    },
+    {
+      "id": "bp05b",
+      "sha256": "207748bd68e3c742dcb40c30e9fdea312ae095c45c13a4210235541875da29ea",
+      "status": "measured",
+      "samples": 8,
+      "error": null,
+      "stage": null,
+      "closed_sessions": 4,
+      "attempted_sessions": 4
+    },
+    {
+      "id": "bp03a",
+      "sha256": "93aa803c2264993eff1507c74549fe3df548a8f8f885539413810c427f91b27f",
+      "status": "measured",
+      "samples": 4,
+      "error": null,
+      "stage": null,
+      "closed_sessions": 2,
+      "attempted_sessions": 2
+    },
+    {
+      "id": "bp03b",
+      "sha256": "62d4b4ad8cf8ad8b039c94c7ffbf4e585bf8351c23285e1f15a8d929a8be8801",
+      "status": "measured",
+      "samples": 4,
+      "error": null,
+      "stage": null,
+      "closed_sessions": 2,
+      "attempted_sessions": 2
+    },
+    {
+      "id": "bp03c",
+      "sha256": "d6ecff74f2f47fb8c05c637511b439f24b90d36b0fb3db1e8d471a2add6c7f98",
+      "status": "measured",
+      "samples": 4,
+      "error": null,
+      "stage": null,
+      "closed_sessions": 2,
+      "attempted_sessions": 2
+    },
+    {
+      "id": "bp04a",
+      "sha256": "557940b4c76ee9b1be608b753a16f204243636e45ec3282fa44be36438b5e559",
+      "status": "measured",
+      "samples": 12,
+      "error": null,
+      "stage": null,
+      "closed_sessions": 2,
+      "attempted_sessions": 2
+    },
+    {
+      "id": "bp04b",
+      "sha256": "5631d684a51163e0d7f7ea50b99cb7c4fdfe6c87e0685755b0f02bbe5b620a56",
+      "status": "measured",
+      "samples": 6,
+      "error": null,
+      "stage": null,
+      "closed_sessions": 1,
+      "attempted_sessions": 1
+    }
+  ],
+  "groups": [
+    {
+      "group": "bp01_short_reference",
+      "kind": "zh",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 1,
+      "valid": 1,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 5402,
+          "min": 5402,
+          "max": 5402
+        },
+        "energy_span_ms": {
+          "median": 5280,
+          "min": 5280,
+          "max": 5280
+        },
+        "energy_active_ms": {
+          "median": 4190,
+          "min": 4190,
+          "max": 4190
+        },
+        "units_per_second": {
+          "median": 5.492,
+          "min": 5.492,
+          "max": 5.492
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1470,
+          "min": 1470,
+          "max": 1470
+        }
+      },
+      "review_clip_count": 1
+    },
+    {
+      "group": "bp01_short_reference",
+      "kind": "en",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 1,
+      "valid": 1,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 5981,
+          "min": 5981,
+          "max": 5981
+        },
+        "energy_span_ms": {
+          "median": 5820,
+          "min": 5820,
+          "max": 5820
+        },
+        "energy_active_ms": {
+          "median": 4640,
+          "min": 4640,
+          "max": 4640
+        },
+        "units_per_second": {
+          "median": 3.608,
+          "min": 3.608,
+          "max": 3.608
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1445,
+          "min": 1445,
+          "max": 1445
+        }
+      },
+      "review_clip_count": 1
+    },
+    {
+      "group": "bp01_short_reference",
+      "kind": "mixed",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 1,
+      "valid": 1,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 11971,
+          "min": 11971,
+          "max": 11971
+        },
+        "energy_span_ms": {
+          "median": 11851,
+          "min": 11851,
+          "max": 11851
+        },
+        "energy_active_ms": {
+          "median": 9111,
+          "min": 9111,
+          "max": 9111
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1571,
+          "min": 1571,
+          "max": 1571
+        }
+      },
+      "review_clip_count": 1
+    },
+    {
+      "group": "bp01_spoken_scope",
+      "kind": "zh",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 1,
+      "valid": 0,
+      "invalid": 1,
+      "metrics": {},
+      "review_clip_count": 1
+    },
+    {
+      "group": "bp01_spoken_scope",
+      "kind": "en",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 1,
+      "valid": 0,
+      "invalid": 1,
+      "metrics": {},
+      "review_clip_count": 1
+    },
+    {
+      "group": "bp01_spoken_scope",
+      "kind": "mixed",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 1,
+      "valid": 0,
+      "invalid": 1,
+      "metrics": {},
+      "review_clip_count": 1
+    },
+    {
+      "group": "bp01_han_scope",
+      "kind": "zh",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 1,
+      "valid": 1,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 5412,
+          "min": 5412,
+          "max": 5412
+        },
+        "energy_span_ms": {
+          "median": 5280,
+          "min": 5280,
+          "max": 5280
+        },
+        "energy_active_ms": {
+          "median": 4210,
+          "min": 4210,
+          "max": 4210
+        },
+        "units_per_second": {
+          "median": 5.492,
+          "min": 5.492,
+          "max": 5.492
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1440,
+          "min": 1440,
+          "max": 1440
+        }
+      },
+      "review_clip_count": 1
+    },
+    {
+      "group": "bp01_han_scope",
+      "kind": "en",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 1,
+      "valid": 1,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 7970,
+          "min": 7970,
+          "max": 7970
+        },
+        "energy_span_ms": {
+          "median": 7760,
+          "min": 7760,
+          "max": 7760
+        },
+        "energy_active_ms": {
+          "median": 5320,
+          "min": 5320,
+          "max": 5320
+        },
+        "units_per_second": {
+          "median": 2.706,
+          "min": 2.706,
+          "max": 2.706
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1815,
+          "min": 1815,
+          "max": 1815
+        }
+      },
+      "review_clip_count": 1
+    },
+    {
+      "group": "bp01_han_scope",
+      "kind": "mixed",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 1,
+      "valid": 1,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 12747,
+          "min": 12747,
+          "max": 12747
+        },
+        "energy_span_ms": {
+          "median": 12530,
+          "min": 12530,
+          "max": 12530
+        },
+        "energy_active_ms": {
+          "median": 9550,
+          "min": 9550,
+          "max": 9550
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1591,
+          "min": 1591,
+          "max": 1591
+        }
+      },
+      "review_clip_count": 1
+    },
+    {
+      "group": "bp01_english_scope",
+      "kind": "zh",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 1,
+      "valid": 0,
+      "invalid": 1,
+      "metrics": {},
+      "review_clip_count": 1
+    },
+    {
+      "group": "bp01_english_scope",
+      "kind": "en",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 1,
+      "valid": 1,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 7576,
+          "min": 7576,
+          "max": 7576
+        },
+        "energy_span_ms": {
+          "median": 7170,
+          "min": 7170,
+          "max": 7170
+        },
+        "energy_active_ms": {
+          "median": 5370,
+          "min": 5370,
+          "max": 5370
+        },
+        "units_per_second": {
+          "median": 2.929,
+          "min": 2.929,
+          "max": 2.929
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1437,
+          "min": 1437,
+          "max": 1437
+        }
+      },
+      "review_clip_count": 1
+    },
+    {
+      "group": "bp01_english_scope",
+      "kind": "mixed",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 1,
+      "valid": 1,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 13807,
+          "min": 13807,
+          "max": 13807
+        },
+        "energy_span_ms": {
+          "median": 13680,
+          "min": 13680,
+          "max": 13680
+        },
+        "energy_active_ms": {
+          "median": 10040,
+          "min": 10040,
+          "max": 10040
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1406,
+          "min": 1406,
+          "max": 1406
+        }
+      },
+      "review_clip_count": 1
+    },
+    {
+      "group": "bp01_short_diagnosis",
+      "kind": "zh",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 1,
+      "valid": 0,
+      "invalid": 1,
+      "metrics": {},
+      "review_clip_count": 1
+    },
+    {
+      "group": "bp01_short_diagnosis",
+      "kind": "en",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 1,
+      "valid": 0,
+      "invalid": 1,
+      "metrics": {},
+      "review_clip_count": 1
+    },
+    {
+      "group": "bp01_short_diagnosis",
+      "kind": "mixed",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 1,
+      "valid": 0,
+      "invalid": 1,
+      "metrics": {},
+      "review_clip_count": 1
+    },
+    {
+      "group": "bp02_neutral",
+      "kind": "zh",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 3,
+      "valid": 3,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 5179,
+          "min": 5177,
+          "max": 5180
+        },
+        "energy_span_ms": {
+          "median": 4950,
+          "min": 4880,
+          "max": 4980
+        },
+        "energy_active_ms": {
+          "median": 4000,
+          "min": 3910,
+          "max": 4060
+        },
+        "units_per_second": {
+          "median": 5.859,
+          "min": 5.823,
+          "max": 5.943
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1680,
+          "min": 1550,
+          "max": 1845
+        }
+      },
+      "review_clip_count": 3
+    },
+    {
+      "group": "bp02_neutral",
+      "kind": "en",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 3,
+      "valid": 3,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 6373,
+          "min": 6209,
+          "max": 6377
+        },
+        "energy_span_ms": {
+          "median": 6230,
+          "min": 5870,
+          "max": 6253
+        },
+        "energy_active_ms": {
+          "median": 4760,
+          "min": 4700,
+          "max": 4963
+        },
+        "units_per_second": {
+          "median": 3.371,
+          "min": 3.358,
+          "max": 3.578
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1619,
+          "min": 1424,
+          "max": 1629
+        }
+      },
+      "review_clip_count": 3
+    },
+    {
+      "group": "bp02_uniform_slow",
+      "kind": "zh",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 3,
+      "valid": 3,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 5405,
+          "min": 5364,
+          "max": 5593
+        },
+        "energy_span_ms": {
+          "median": 5190,
+          "min": 5090,
+          "max": 5300
+        },
+        "energy_active_ms": {
+          "median": 4170,
+          "min": 4070,
+          "max": 4180
+        },
+        "units_per_second": {
+          "median": 5.588,
+          "min": 5.472,
+          "max": 5.697
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1772,
+          "min": 1641,
+          "max": 2208
+        }
+      },
+      "review_clip_count": 3
+    },
+    {
+      "group": "bp02_uniform_slow",
+      "kind": "en",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 3,
+      "valid": 3,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 7001,
+          "min": 6601,
+          "max": 7406
+        },
+        "energy_span_ms": {
+          "median": 6881,
+          "min": 6440,
+          "max": 7130
+        },
+        "energy_active_ms": {
+          "median": 4821,
+          "min": 4680,
+          "max": 5250
+        },
+        "units_per_second": {
+          "median": 3.052,
+          "min": 2.945,
+          "max": 3.261
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1751,
+          "min": 1510,
+          "max": 1769
+        }
+      },
+      "review_clip_count": 3
+    },
+    {
+      "group": "bp02_uniform_fast",
+      "kind": "zh",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 3,
+      "valid": 3,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 5387,
+          "min": 5170,
+          "max": 5581
+        },
+        "energy_span_ms": {
+          "median": 5270,
+          "min": 4850,
+          "max": 5440
+        },
+        "energy_active_ms": {
+          "median": 4100,
+          "min": 3950,
+          "max": 4230
+        },
+        "units_per_second": {
+          "median": 5.503,
+          "min": 5.331,
+          "max": 5.979
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1570,
+          "min": 1566,
+          "max": 1685
+        }
+      },
+      "review_clip_count": 3
+    },
+    {
+      "group": "bp02_uniform_fast",
+      "kind": "en",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 3,
+      "valid": 3,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 6787,
+          "min": 6596,
+          "max": 7559
+        },
+        "energy_span_ms": {
+          "median": 6320,
+          "min": 6210,
+          "max": 7439
+        },
+        "energy_active_ms": {
+          "median": 5060,
+          "min": 5030,
+          "max": 5619
+        },
+        "units_per_second": {
+          "median": 3.323,
+          "min": 2.823,
+          "max": 3.382
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1469,
+          "min": 1444,
+          "max": 1537
+        }
+      },
+      "review_clip_count": 3
+    },
+    {
+      "group": "bp05_xiaotian2_neutral",
+      "kind": "zh",
+      "phase": "measurement",
+      "requested_voice": "zh_male_taocheng_uranus_bigtts",
+      "speed": 0,
+      "attempted": 2,
+      "valid": 2,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 5280.5,
+          "min": 5171,
+          "max": 5390
+        },
+        "energy_span_ms": {
+          "median": 5065,
+          "min": 4980,
+          "max": 5150
+        },
+        "energy_active_ms": {
+          "median": 4075,
+          "min": 4010,
+          "max": 4140
+        },
+        "units_per_second": {
+          "median": 5.727,
+          "min": 5.631,
+          "max": 5.823
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1784,
+          "min": 1550,
+          "max": 2018
+        }
+      },
+      "review_clip_count": 2
+    },
+    {
+      "group": "bp05_xiaotian2_neutral",
+      "kind": "en",
+      "phase": "measurement",
+      "requested_voice": "zh_male_taocheng_uranus_bigtts",
+      "speed": 0,
+      "attempted": 2,
+      "valid": 2,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 6875,
+          "min": 6779,
+          "max": 6971
+        },
+        "energy_span_ms": {
+          "median": 6520,
+          "min": 6520,
+          "max": 6520
+        },
+        "energy_active_ms": {
+          "median": 4900,
+          "min": 4840,
+          "max": 4960
+        },
+        "units_per_second": {
+          "median": 3.221,
+          "min": 3.221,
+          "max": 3.221
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1476.5,
+          "min": 1471,
+          "max": 1482
+        }
+      },
+      "review_clip_count": 2
+    },
+    {
+      "group": "bp05_xiaotian2_identity_short",
+      "kind": "zh",
+      "phase": "measurement",
+      "requested_voice": "zh_male_taocheng_uranus_bigtts",
+      "speed": 0,
+      "attempted": 2,
+      "valid": 2,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 5285.5,
+          "min": 5174,
+          "max": 5397
+        },
+        "energy_span_ms": {
+          "median": 5100,
+          "min": 5010,
+          "max": 5190
+        },
+        "energy_active_ms": {
+          "median": 4040,
+          "min": 3980,
+          "max": 4100
+        },
+        "units_per_second": {
+          "median": 5.688,
+          "min": 5.588,
+          "max": 5.788
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1588.5,
+          "min": 1585,
+          "max": 1592
+        }
+      },
+      "review_clip_count": 2
+    },
+    {
+      "group": "bp05_xiaotian2_identity_short",
+      "kind": "en",
+      "phase": "measurement",
+      "requested_voice": "zh_male_taocheng_uranus_bigtts",
+      "speed": 0,
+      "attempted": 2,
+      "valid": 2,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 7102,
+          "min": 6780,
+          "max": 7424
+        },
+        "energy_span_ms": {
+          "median": 6870,
+          "min": 6450,
+          "max": 7290
+        },
+        "energy_active_ms": {
+          "median": 5270,
+          "min": 5230,
+          "max": 5310
+        },
+        "units_per_second": {
+          "median": 3.068,
+          "min": 2.881,
+          "max": 3.256
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1621,
+          "min": 1572,
+          "max": 1670
+        }
+      },
+      "review_clip_count": 2
+    },
+    {
+      "group": "bp05_vivi2_neutral",
+      "kind": "zh",
+      "phase": "measurement",
+      "requested_voice": "zh_female_vv_uranus_bigtts",
+      "speed": 0,
+      "attempted": 2,
+      "valid": 2,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 6214,
+          "min": 6207,
+          "max": 6221
+        },
+        "energy_span_ms": {
+          "median": 5820,
+          "min": 5800,
+          "max": 5840
+        },
+        "energy_active_ms": {
+          "median": 4785,
+          "min": 4770,
+          "max": 4800
+        },
+        "units_per_second": {
+          "median": 4.983,
+          "min": 4.966,
+          "max": 5
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1726,
+          "min": 1661,
+          "max": 1791
+        }
+      },
+      "review_clip_count": 2
+    },
+    {
+      "group": "bp05_vivi2_neutral",
+      "kind": "en",
+      "phase": "measurement",
+      "requested_voice": "zh_female_vv_uranus_bigtts",
+      "speed": 0,
+      "attempted": 2,
+      "valid": 2,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 6901,
+          "min": 6792,
+          "max": 7010
+        },
+        "energy_span_ms": {
+          "median": 6555,
+          "min": 6370,
+          "max": 6740
+        },
+        "energy_active_ms": {
+          "median": 4995,
+          "min": 4950,
+          "max": 5040
+        },
+        "units_per_second": {
+          "median": 3.207,
+          "min": 3.116,
+          "max": 3.297
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1515,
+          "min": 1401,
+          "max": 1629
+        }
+      },
+      "review_clip_count": 2
+    },
+    {
+      "group": "bp05_vivi2_identity_short",
+      "kind": "zh",
+      "phase": "measurement",
+      "requested_voice": "zh_female_vv_uranus_bigtts",
+      "speed": 0,
+      "attempted": 2,
+      "valid": 2,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 5986,
+          "min": 5982,
+          "max": 5990
+        },
+        "energy_span_ms": {
+          "median": 5745,
+          "min": 5720,
+          "max": 5770
+        },
+        "energy_active_ms": {
+          "median": 4705,
+          "min": 4690,
+          "max": 4720
+        },
+        "units_per_second": {
+          "median": 5.048,
+          "min": 5.026,
+          "max": 5.07
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1603,
+          "min": 1574,
+          "max": 1632
+        }
+      },
+      "review_clip_count": 2
+    },
+    {
+      "group": "bp05_vivi2_identity_short",
+      "kind": "en",
+      "phase": "measurement",
+      "requested_voice": "zh_female_vv_uranus_bigtts",
+      "speed": 0,
+      "attempted": 2,
+      "valid": 2,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 7575.5,
+          "min": 7570,
+          "max": 7581
+        },
+        "energy_span_ms": {
+          "median": 7270,
+          "min": 7180,
+          "max": 7360
+        },
+        "energy_active_ms": {
+          "median": 5430,
+          "min": 5360,
+          "max": 5500
+        },
+        "units_per_second": {
+          "median": 2.889,
+          "min": 2.853,
+          "max": 2.925
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1396,
+          "min": 1280,
+          "max": 1512
+        }
+      },
+      "review_clip_count": 2
+    },
+    {
+      "group": "bp03_natural",
+      "kind": "zh",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 3,
+      "valid": 3,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 5396,
+          "min": 5393,
+          "max": 5781
+        },
+        "energy_span_ms": {
+          "median": 5220,
+          "min": 5110,
+          "max": 5620
+        },
+        "energy_active_ms": {
+          "median": 4020,
+          "min": 4010,
+          "max": 4400
+        },
+        "units_per_second": {
+          "median": 5.556,
+          "min": 5.16,
+          "max": 5.675
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1356,
+          "min": 1303,
+          "max": 1593
+        }
+      },
+      "review_clip_count": 3
+    },
+    {
+      "group": "bp03_natural",
+      "kind": "en",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 3,
+      "valid": 3,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 6773,
+          "min": 6601,
+          "max": 7025
+        },
+        "energy_span_ms": {
+          "median": 6610,
+          "min": 6410,
+          "max": 6860
+        },
+        "energy_active_ms": {
+          "median": 4910,
+          "min": 4740,
+          "max": 4960
+        },
+        "units_per_second": {
+          "median": 3.177,
+          "min": 3.061,
+          "max": 3.276
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1509,
+          "min": 1482,
+          "max": 1579
+        }
+      },
+      "review_clip_count": 3
+    },
+    {
+      "group": "bp03_zh_slow",
+      "kind": "zh",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 3,
+      "valid": 3,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 5183,
+          "min": 5172,
+          "max": 5399
+        },
+        "energy_span_ms": {
+          "median": 5050,
+          "min": 5020,
+          "max": 5240
+        },
+        "energy_active_ms": {
+          "median": 4110,
+          "min": 4060,
+          "max": 4110
+        },
+        "units_per_second": {
+          "median": 5.743,
+          "min": 5.534,
+          "max": 5.777
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1513,
+          "min": 1489,
+          "max": 1594
+        }
+      },
+      "review_clip_count": 3
+    },
+    {
+      "group": "bp03_zh_slow",
+      "kind": "en",
+      "phase": "measurement",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 3,
+      "valid": 3,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 7002,
+          "min": 5801,
+          "max": 7177
+        },
+        "energy_span_ms": {
+          "median": 6810,
+          "min": 5640,
+          "max": 7030
+        },
+        "energy_active_ms": {
+          "median": 5100,
+          "min": 4780,
+          "max": 5510
+        },
+        "units_per_second": {
+          "median": 3.084,
+          "min": 2.987,
+          "max": 3.723
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1430,
+          "min": 1422,
+          "max": 1502
+        }
+      },
+      "review_clip_count": 3
+    },
+    {
+      "group": "bp04_conversation",
+      "kind": "zh",
+      "phase": "baseline",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 3,
+      "valid": 3,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 5186,
+          "min": 5168,
+          "max": 5404
+        },
+        "energy_span_ms": {
+          "median": 5058,
+          "min": 4900,
+          "max": 5280
+        },
+        "energy_active_ms": {
+          "median": 4000,
+          "min": 3850,
+          "max": 4088
+        },
+        "units_per_second": {
+          "median": 5.733,
+          "min": 5.492,
+          "max": 5.918
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1561,
+          "min": 1505,
+          "max": 1644
+        }
+      },
+      "review_clip_count": 3
+    },
+    {
+      "group": "bp04_conversation",
+      "kind": "en",
+      "phase": "baseline",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 3,
+      "valid": 3,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 6779,
+          "min": 6587,
+          "max": 7003
+        },
+        "energy_span_ms": {
+          "median": 6650,
+          "min": 6420,
+          "max": 6870
+        },
+        "energy_active_ms": {
+          "median": 4920,
+          "min": 4850,
+          "max": 5230
+        },
+        "units_per_second": {
+          "median": 3.158,
+          "min": 3.057,
+          "max": 3.271
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1431,
+          "min": 1363,
+          "max": 1537
+        }
+      },
+      "review_clip_count": 3
+    },
+    {
+      "group": "bp04_conversation",
+      "kind": "request_slow",
+      "phase": "control",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 3,
+      "valid": 3,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 4212,
+          "min": 3980,
+          "max": 4597
+        },
+        "energy_span_ms": {
+          "median": 3910,
+          "min": 3870,
+          "max": 4220
+        },
+        "energy_active_ms": {
+          "median": 2840,
+          "min": 2770,
+          "max": 3070
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1466,
+          "min": 1439,
+          "max": 1598
+        }
+      },
+      "review_clip_count": 3
+    },
+    {
+      "group": "bp04_conversation",
+      "kind": "zh",
+      "phase": "after_control",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 6,
+      "valid": 6,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 5575,
+          "min": 5394,
+          "max": 5798
+        },
+        "energy_span_ms": {
+          "median": 5160,
+          "min": 4910,
+          "max": 5300
+        },
+        "energy_active_ms": {
+          "median": 4110,
+          "min": 4010,
+          "max": 4230
+        },
+        "units_per_second": {
+          "median": 5.62,
+          "min": 5.472,
+          "max": 5.906
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1360,
+          "min": 1337,
+          "max": 1531
+        }
+      },
+      "review_clip_count": 6
+    },
+    {
+      "group": "bp04_conversation",
+      "kind": "en",
+      "phase": "after_control",
+      "requested_voice": "zh_male_xiaotian_jupiter_bigtts",
+      "speed": 0,
+      "attempted": 3,
+      "valid": 3,
+      "invalid": 0,
+      "metrics": {
+        "pcm_ms": {
+          "median": 7399,
+          "min": 7195,
+          "max": 7810
+        },
+        "energy_span_ms": {
+          "median": 7000,
+          "min": 6670,
+          "max": 7470
+        },
+        "energy_active_ms": {
+          "median": 5130,
+          "min": 4940,
+          "max": 5370
+        },
+        "units_per_second": {
+          "median": 3,
+          "min": 2.811,
+          "max": 3.148
+        },
+        "first_pcm_after_input_ms": {
+          "median": 1524,
+          "min": 1333,
+          "max": 1624
+        }
+      },
+      "review_clip_count": 3
+    }
+  ],
+  "sample_evidence": [
+    {
+      "source": "bp01",
+      "condition": "bp01_short_reference",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5402,
+      "energy_span_ms": 5280,
+      "energy_active_ms": 4190,
+      "first_pcm_after_input_ms": 1470
+    },
+    {
+      "source": "bp01",
+      "condition": "bp01_short_reference",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5981,
+      "energy_span_ms": 5820,
+      "energy_active_ms": 4640,
+      "first_pcm_after_input_ms": 1445
+    },
+    {
+      "source": "bp01",
+      "condition": "bp01_short_reference",
+      "kind": "mixed",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 11971,
+      "energy_span_ms": 11851,
+      "energy_active_ms": 9111,
+      "first_pcm_after_input_ms": 1571
+    },
+    {
+      "source": "bp01",
+      "condition": "bp01_spoken_scope",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": false,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5573,
+      "energy_span_ms": 5360,
+      "energy_active_ms": 4090,
+      "first_pcm_after_input_ms": 1652
+    },
+    {
+      "source": "bp01",
+      "condition": "bp01_spoken_scope",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": false,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 7575,
+      "energy_span_ms": 7455,
+      "energy_active_ms": 5755,
+      "first_pcm_after_input_ms": 1439
+    },
+    {
+      "source": "bp01",
+      "condition": "bp01_spoken_scope",
+      "kind": "mixed",
+      "phase": "measurement",
+      "input_accepted": false,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 12775,
+      "energy_span_ms": 12600,
+      "energy_active_ms": 9620,
+      "first_pcm_after_input_ms": 1328
+    },
+    {
+      "source": "bp01b",
+      "condition": "bp01_han_scope",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5412,
+      "energy_span_ms": 5280,
+      "energy_active_ms": 4210,
+      "first_pcm_after_input_ms": 1440
+    },
+    {
+      "source": "bp01b",
+      "condition": "bp01_han_scope",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 7970,
+      "energy_span_ms": 7760,
+      "energy_active_ms": 5320,
+      "first_pcm_after_input_ms": 1815
+    },
+    {
+      "source": "bp01b",
+      "condition": "bp01_han_scope",
+      "kind": "mixed",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 12747,
+      "energy_span_ms": 12530,
+      "energy_active_ms": 9550,
+      "first_pcm_after_input_ms": 1591
+    },
+    {
+      "source": "bp01b",
+      "condition": "bp01_english_scope",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": false,
+      "language_matches": false,
+      "complete": true,
+      "pcm_ms": 12617,
+      "energy_span_ms": 12490,
+      "energy_active_ms": 9840,
+      "first_pcm_after_input_ms": 1347
+    },
+    {
+      "source": "bp01b",
+      "condition": "bp01_english_scope",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 7576,
+      "energy_span_ms": 7170,
+      "energy_active_ms": 5370,
+      "first_pcm_after_input_ms": 1437
+    },
+    {
+      "source": "bp01b",
+      "condition": "bp01_english_scope",
+      "kind": "mixed",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 13807,
+      "energy_span_ms": 13680,
+      "energy_active_ms": 10040,
+      "first_pcm_after_input_ms": 1406
+    },
+    {
+      "source": "bp01b",
+      "condition": "bp01_short_diagnosis",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": false,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5407,
+      "energy_span_ms": 5280,
+      "energy_active_ms": 4160,
+      "first_pcm_after_input_ms": 1711
+    },
+    {
+      "source": "bp01b",
+      "condition": "bp01_short_diagnosis",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": false,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 7826,
+      "energy_span_ms": 7706,
+      "energy_active_ms": 5396,
+      "first_pcm_after_input_ms": 1408
+    },
+    {
+      "source": "bp01b",
+      "condition": "bp01_short_diagnosis",
+      "kind": "mixed",
+      "phase": "measurement",
+      "input_accepted": false,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 13790,
+      "energy_span_ms": 13630,
+      "energy_active_ms": 9540,
+      "first_pcm_after_input_ms": 1529
+    },
+    {
+      "source": "bp02a",
+      "condition": "bp02_neutral_r1",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5179,
+      "energy_span_ms": 4880,
+      "energy_active_ms": 3910,
+      "first_pcm_after_input_ms": 1680
+    },
+    {
+      "source": "bp02a",
+      "condition": "bp02_neutral_r1",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 6209,
+      "energy_span_ms": 5870,
+      "energy_active_ms": 4700,
+      "first_pcm_after_input_ms": 1629
+    },
+    {
+      "source": "bp02a",
+      "condition": "bp02_uniform_slow_r1",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5593,
+      "energy_span_ms": 5300,
+      "energy_active_ms": 4070,
+      "first_pcm_after_input_ms": 1641
+    },
+    {
+      "source": "bp02a",
+      "condition": "bp02_uniform_slow_r1",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 6601,
+      "energy_span_ms": 6440,
+      "energy_active_ms": 4680,
+      "first_pcm_after_input_ms": 1510
+    },
+    {
+      "source": "bp02a",
+      "condition": "bp02_uniform_fast_r1",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5581,
+      "energy_span_ms": 5440,
+      "energy_active_ms": 4230,
+      "first_pcm_after_input_ms": 1566
+    },
+    {
+      "source": "bp02a",
+      "condition": "bp02_uniform_fast_r1",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 7559,
+      "energy_span_ms": 7439,
+      "energy_active_ms": 5619,
+      "first_pcm_after_input_ms": 1537
+    },
+    {
+      "source": "bp02a",
+      "condition": "bp02_neutral_r2",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5177,
+      "energy_span_ms": 4950,
+      "energy_active_ms": 4000,
+      "first_pcm_after_input_ms": 1845
+    },
+    {
+      "source": "bp02a",
+      "condition": "bp02_neutral_r2",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 6373,
+      "energy_span_ms": 6253,
+      "energy_active_ms": 4963,
+      "first_pcm_after_input_ms": 1424
+    },
+    {
+      "source": "bp02a",
+      "condition": "bp02_uniform_slow_r2",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5364,
+      "energy_span_ms": 5090,
+      "energy_active_ms": 4170,
+      "first_pcm_after_input_ms": 1772
+    },
+    {
+      "source": "bp02a",
+      "condition": "bp02_uniform_slow_r2",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 7001,
+      "energy_span_ms": 6881,
+      "energy_active_ms": 4821,
+      "first_pcm_after_input_ms": 1769
+    },
+    {
+      "source": "bp02a",
+      "condition": "bp02_uniform_fast_r2",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5387,
+      "energy_span_ms": 5270,
+      "energy_active_ms": 4100,
+      "first_pcm_after_input_ms": 1570
+    },
+    {
+      "source": "bp02a",
+      "condition": "bp02_uniform_fast_r2",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 6596,
+      "energy_span_ms": 6210,
+      "energy_active_ms": 5060,
+      "first_pcm_after_input_ms": 1469
+    },
+    {
+      "source": "bp02b",
+      "condition": "bp02_neutral_r3",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5180,
+      "energy_span_ms": 4980,
+      "energy_active_ms": 4060,
+      "first_pcm_after_input_ms": 1550
+    },
+    {
+      "source": "bp02b",
+      "condition": "bp02_neutral_r3",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 6377,
+      "energy_span_ms": 6230,
+      "energy_active_ms": 4760,
+      "first_pcm_after_input_ms": 1619
+    },
+    {
+      "source": "bp02b",
+      "condition": "bp02_uniform_slow_r3",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5405,
+      "energy_span_ms": 5190,
+      "energy_active_ms": 4180,
+      "first_pcm_after_input_ms": 2208
+    },
+    {
+      "source": "bp02b",
+      "condition": "bp02_uniform_slow_r3",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 7406,
+      "energy_span_ms": 7130,
+      "energy_active_ms": 5250,
+      "first_pcm_after_input_ms": 1751
+    },
+    {
+      "source": "bp02retry",
+      "condition": "bp02_uniform_fast_r3_retry",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5170,
+      "energy_span_ms": 4850,
+      "energy_active_ms": 3950,
+      "first_pcm_after_input_ms": 1685
+    },
+    {
+      "source": "bp02retry",
+      "condition": "bp02_uniform_fast_r3_retry",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 6787,
+      "energy_span_ms": 6320,
+      "energy_active_ms": 5030,
+      "first_pcm_after_input_ms": 1444
+    },
+    {
+      "source": "bp05a",
+      "condition": "bp05_xiaotian2_neutral_r1",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5171,
+      "energy_span_ms": 4980,
+      "energy_active_ms": 4140,
+      "first_pcm_after_input_ms": 1550
+    },
+    {
+      "source": "bp05a",
+      "condition": "bp05_xiaotian2_neutral_r1",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 6779,
+      "energy_span_ms": 6520,
+      "energy_active_ms": 4960,
+      "first_pcm_after_input_ms": 1482
+    },
+    {
+      "source": "bp05a",
+      "condition": "bp05_xiaotian2_identity_short_r1",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5174,
+      "energy_span_ms": 5010,
+      "energy_active_ms": 3980,
+      "first_pcm_after_input_ms": 1592
+    },
+    {
+      "source": "bp05a",
+      "condition": "bp05_xiaotian2_identity_short_r1",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 6780,
+      "energy_span_ms": 6450,
+      "energy_active_ms": 5230,
+      "first_pcm_after_input_ms": 1572
+    },
+    {
+      "source": "bp05a",
+      "condition": "bp05_xiaotian2_neutral_r2",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5390,
+      "energy_span_ms": 5150,
+      "energy_active_ms": 4010,
+      "first_pcm_after_input_ms": 2018
+    },
+    {
+      "source": "bp05a",
+      "condition": "bp05_xiaotian2_neutral_r2",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 6971,
+      "energy_span_ms": 6520,
+      "energy_active_ms": 4840,
+      "first_pcm_after_input_ms": 1471
+    },
+    {
+      "source": "bp05a",
+      "condition": "bp05_xiaotian2_identity_short_r2",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5397,
+      "energy_span_ms": 5190,
+      "energy_active_ms": 4100,
+      "first_pcm_after_input_ms": 1585
+    },
+    {
+      "source": "bp05a",
+      "condition": "bp05_xiaotian2_identity_short_r2",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 7424,
+      "energy_span_ms": 7290,
+      "energy_active_ms": 5310,
+      "first_pcm_after_input_ms": 1670
+    },
+    {
+      "source": "bp05b",
+      "condition": "bp05_vivi2_neutral_r1",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 6207,
+      "energy_span_ms": 5840,
+      "energy_active_ms": 4800,
+      "first_pcm_after_input_ms": 1791
+    },
+    {
+      "source": "bp05b",
+      "condition": "bp05_vivi2_neutral_r1",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 6792,
+      "energy_span_ms": 6370,
+      "energy_active_ms": 4950,
+      "first_pcm_after_input_ms": 1401
+    },
+    {
+      "source": "bp05b",
+      "condition": "bp05_vivi2_identity_short_r1",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5990,
+      "energy_span_ms": 5770,
+      "energy_active_ms": 4720,
+      "first_pcm_after_input_ms": 1632
+    },
+    {
+      "source": "bp05b",
+      "condition": "bp05_vivi2_identity_short_r1",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 7570,
+      "energy_span_ms": 7180,
+      "energy_active_ms": 5360,
+      "first_pcm_after_input_ms": 1512
+    },
+    {
+      "source": "bp05b",
+      "condition": "bp05_vivi2_neutral_r2",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 6221,
+      "energy_span_ms": 5800,
+      "energy_active_ms": 4770,
+      "first_pcm_after_input_ms": 1661
+    },
+    {
+      "source": "bp05b",
+      "condition": "bp05_vivi2_neutral_r2",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 7010,
+      "energy_span_ms": 6740,
+      "energy_active_ms": 5040,
+      "first_pcm_after_input_ms": 1629
+    },
+    {
+      "source": "bp05b",
+      "condition": "bp05_vivi2_identity_short_r2",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5982,
+      "energy_span_ms": 5720,
+      "energy_active_ms": 4690,
+      "first_pcm_after_input_ms": 1574
+    },
+    {
+      "source": "bp05b",
+      "condition": "bp05_vivi2_identity_short_r2",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 7581,
+      "energy_span_ms": 7360,
+      "energy_active_ms": 5500,
+      "first_pcm_after_input_ms": 1280
+    },
+    {
+      "source": "bp03a",
+      "condition": "bp03_natural_r1",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5396,
+      "energy_span_ms": 5110,
+      "energy_active_ms": 4020,
+      "first_pcm_after_input_ms": 1303
+    },
+    {
+      "source": "bp03a",
+      "condition": "bp03_natural_r1",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 7025,
+      "energy_span_ms": 6860,
+      "energy_active_ms": 4910,
+      "first_pcm_after_input_ms": 1579
+    },
+    {
+      "source": "bp03a",
+      "condition": "bp03_zh_slow_r1",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5183,
+      "energy_span_ms": 5020,
+      "energy_active_ms": 4110,
+      "first_pcm_after_input_ms": 1594
+    },
+    {
+      "source": "bp03a",
+      "condition": "bp03_zh_slow_r1",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 7177,
+      "energy_span_ms": 7030,
+      "energy_active_ms": 5100,
+      "first_pcm_after_input_ms": 1430
+    },
+    {
+      "source": "bp03b",
+      "condition": "bp03_natural_r2",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5781,
+      "energy_span_ms": 5620,
+      "energy_active_ms": 4400,
+      "first_pcm_after_input_ms": 1593
+    },
+    {
+      "source": "bp03b",
+      "condition": "bp03_natural_r2",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 6773,
+      "energy_span_ms": 6610,
+      "energy_active_ms": 4740,
+      "first_pcm_after_input_ms": 1509
+    },
+    {
+      "source": "bp03b",
+      "condition": "bp03_zh_slow_r2",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5172,
+      "energy_span_ms": 5050,
+      "energy_active_ms": 4110,
+      "first_pcm_after_input_ms": 1489
+    },
+    {
+      "source": "bp03b",
+      "condition": "bp03_zh_slow_r2",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5801,
+      "energy_span_ms": 5640,
+      "energy_active_ms": 4780,
+      "first_pcm_after_input_ms": 1422
+    },
+    {
+      "source": "bp03c",
+      "condition": "bp03_natural_r3",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5393,
+      "energy_span_ms": 5220,
+      "energy_active_ms": 4010,
+      "first_pcm_after_input_ms": 1356
+    },
+    {
+      "source": "bp03c",
+      "condition": "bp03_natural_r3",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 6601,
+      "energy_span_ms": 6410,
+      "energy_active_ms": 4960,
+      "first_pcm_after_input_ms": 1482
+    },
+    {
+      "source": "bp03c",
+      "condition": "bp03_zh_slow_r3",
+      "kind": "zh",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5399,
+      "energy_span_ms": 5240,
+      "energy_active_ms": 4060,
+      "first_pcm_after_input_ms": 1513
+    },
+    {
+      "source": "bp03c",
+      "condition": "bp03_zh_slow_r3",
+      "kind": "en",
+      "phase": "measurement",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 7002,
+      "energy_span_ms": 6810,
+      "energy_active_ms": 5510,
+      "first_pcm_after_input_ms": 1502
+    },
+    {
+      "source": "bp04a",
+      "condition": "bp04_conversation_r1",
+      "kind": "zh",
+      "phase": "baseline",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5186,
+      "energy_span_ms": 4900,
+      "energy_active_ms": 3850,
+      "first_pcm_after_input_ms": 1561
+    },
+    {
+      "source": "bp04a",
+      "condition": "bp04_conversation_r1",
+      "kind": "en",
+      "phase": "baseline",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 6779,
+      "energy_span_ms": 6650,
+      "energy_active_ms": 4850,
+      "first_pcm_after_input_ms": 1537
+    },
+    {
+      "source": "bp04a",
+      "condition": "bp04_conversation_r1",
+      "kind": "request_slow",
+      "phase": "control",
+      "input_accepted": true,
+      "target_matches": null,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 4212,
+      "energy_span_ms": 3870,
+      "energy_active_ms": 2840,
+      "first_pcm_after_input_ms": 1598
+    },
+    {
+      "source": "bp04a",
+      "condition": "bp04_conversation_r1",
+      "kind": "zh",
+      "phase": "after_control",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5573,
+      "energy_span_ms": 5110,
+      "energy_active_ms": 4120,
+      "first_pcm_after_input_ms": 1531
+    },
+    {
+      "source": "bp04a",
+      "condition": "bp04_conversation_r1",
+      "kind": "en",
+      "phase": "after_control",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 7810,
+      "energy_span_ms": 7470,
+      "energy_active_ms": 5370,
+      "first_pcm_after_input_ms": 1524
+    },
+    {
+      "source": "bp04a",
+      "condition": "bp04_conversation_r1",
+      "kind": "zh",
+      "phase": "after_control",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5581,
+      "energy_span_ms": 5270,
+      "energy_active_ms": 4100,
+      "first_pcm_after_input_ms": 1337
+    },
+    {
+      "source": "bp04a",
+      "condition": "bp04_conversation_r2",
+      "kind": "zh",
+      "phase": "baseline",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5404,
+      "energy_span_ms": 5280,
+      "energy_active_ms": 4000,
+      "first_pcm_after_input_ms": 1505
+    },
+    {
+      "source": "bp04a",
+      "condition": "bp04_conversation_r2",
+      "kind": "en",
+      "phase": "baseline",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 6587,
+      "energy_span_ms": 6420,
+      "energy_active_ms": 4920,
+      "first_pcm_after_input_ms": 1363
+    },
+    {
+      "source": "bp04a",
+      "condition": "bp04_conversation_r2",
+      "kind": "request_slow",
+      "phase": "control",
+      "input_accepted": true,
+      "target_matches": null,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 3980,
+      "energy_span_ms": 3910,
+      "energy_active_ms": 2770,
+      "first_pcm_after_input_ms": 1466
+    },
+    {
+      "source": "bp04a",
+      "condition": "bp04_conversation_r2",
+      "kind": "zh",
+      "phase": "after_control",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5394,
+      "energy_span_ms": 4910,
+      "energy_active_ms": 4010,
+      "first_pcm_after_input_ms": 1348
+    },
+    {
+      "source": "bp04a",
+      "condition": "bp04_conversation_r2",
+      "kind": "en",
+      "phase": "after_control",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 7195,
+      "energy_span_ms": 6670,
+      "energy_active_ms": 4940,
+      "first_pcm_after_input_ms": 1333
+    },
+    {
+      "source": "bp04a",
+      "condition": "bp04_conversation_r2",
+      "kind": "zh",
+      "phase": "after_control",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5577,
+      "energy_span_ms": 5300,
+      "energy_active_ms": 4230,
+      "first_pcm_after_input_ms": 1351
+    },
+    {
+      "source": "bp04b",
+      "condition": "bp04_conversation_r3",
+      "kind": "zh",
+      "phase": "baseline",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5168,
+      "energy_span_ms": 5058,
+      "energy_active_ms": 4088,
+      "first_pcm_after_input_ms": 1644
+    },
+    {
+      "source": "bp04b",
+      "condition": "bp04_conversation_r3",
+      "kind": "en",
+      "phase": "baseline",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 7003,
+      "energy_span_ms": 6870,
+      "energy_active_ms": 5230,
+      "first_pcm_after_input_ms": 1431
+    },
+    {
+      "source": "bp04b",
+      "condition": "bp04_conversation_r3",
+      "kind": "request_slow",
+      "phase": "control",
+      "input_accepted": true,
+      "target_matches": null,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 4597,
+      "energy_span_ms": 4220,
+      "energy_active_ms": 3070,
+      "first_pcm_after_input_ms": 1439
+    },
+    {
+      "source": "bp04b",
+      "condition": "bp04_conversation_r3",
+      "kind": "zh",
+      "phase": "after_control",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5798,
+      "energy_span_ms": 5210,
+      "energy_active_ms": 4160,
+      "first_pcm_after_input_ms": 1476
+    },
+    {
+      "source": "bp04b",
+      "condition": "bp04_conversation_r3",
+      "kind": "en",
+      "phase": "after_control",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 7399,
+      "energy_span_ms": 7000,
+      "energy_active_ms": 5130,
+      "first_pcm_after_input_ms": 1624
+    },
+    {
+      "source": "bp04b",
+      "condition": "bp04_conversation_r3",
+      "kind": "zh",
+      "phase": "after_control",
+      "input_accepted": true,
+      "target_matches": true,
+      "language_matches": true,
+      "complete": true,
+      "pcm_ms": 5408,
+      "energy_span_ms": 5080,
+      "energy_active_ms": 4070,
+      "first_pcm_after_input_ms": 1369
+    }
+  ]
+}
