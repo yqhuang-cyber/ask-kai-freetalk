@@ -87,6 +87,8 @@ flowchart TD
 
 会话中可以口头说“慢一点”“快一点”或“恢复正常”。Kai 先确认请求，播完后更新本场语速，配置确认成功后再用新语速说明结果；只影响当前会话。连续请求、打断和退出会隔离过期确认。分享与跨项目复用见[功能总结与移植说明](docs/spoken-speech-pace-feature-summary.md)、[独立 PRD](docs/prd/spoken-speech-pace-prd-v1.md)；工程追溯见[任务及结果](docs/spoken-speech-pace-tasking.md)。
 
+下一项「对话内控制 Slides」目前仅完成设计，尚未实现：定义“控制课件进度”意图，首版仅回看当前或更早且已展示内容；前往后续页仍识别并回应稍后会学到，不提供跳转或自动执行。可执行回看计划由豆包原生 Function Calling 操作三页演示展示框，并在浏览器执行回执后确认结果。完整流程、异常与验收见[独立 PRD](docs/prd/voice-slides-control-prd-v1.md)，模块改动及复用边界见[技术方案](docs/voice-slides-control-design.md)，执行顺序见[实施清单](docs/voice-slides-control-tasking.md)。
+
 ### 4.1 进入对话
 
 ```mermaid
