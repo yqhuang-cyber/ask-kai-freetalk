@@ -18,3 +18,9 @@
 .planning-observation-list li {margin:10px 0;overflow-wrap:anywhere;}
 .planning-observation-list summary {cursor:pointer;font-size:13px;line-height:1.7;}
 .planning-observation-list pre {white-space:pre-wrap;overflow-wrap:anywhere;max-height:420px;overflow:auto;background:#f4f5f6;padding:12px;font-size:12px;line-height:1.6;}
+
+#observation-reports h2 {font-size:18px;margin-bottom:12px;}
+#observation-reports details {margin:12px 0;padding:12px;border:1px solid #dce4d9;border-radius:8px;overflow-wrap:anywhere;}
+#observation-reports select {max-width:100%;}
+.observation-report-reply label {display:block;margin:10px 0;}
+.observation-report-reply textarea {display:block;width:100%;box-sizing:border-box;margin-top:5px;border:1px solid #cbd6c6;border-radius:6px;padding:8px;font:inherit;resize:vertical;}

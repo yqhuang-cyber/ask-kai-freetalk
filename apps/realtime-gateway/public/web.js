@@ -1,3 +1,4 @@
+import { ObservationReportsPanel } from './observation-reports.js';
 import { PlanningObserver } from './planning-observer.js';
 import { ClosingPlayback } from './closing-playback.js';
 import { AudioIO } from './audio.js';
@@ -35,6 +36,7 @@ function authorizedFetch(path,options={}) {
   // preparation, profile and session requests cannot borrow another learner's cookie.
   authorizationQueue=work.catch(()=>{});return work;
 }
+const observationReports=new ObservationReportsPanel(document.querySelector('#observation-reports'),{fetcher:authorizedFetch});
 const diagnosticPanel=document.querySelector('#diagnostics'),caseSelect=document.querySelector('#diagnostic-case'),outcomeSelect=document.querySelector('#diagnostic-outcome');
 let diagnosticCase='unselected';
 diagnosticPanel.hidden=!diagnosticsEnabled;
@@ -95,7 +97,7 @@ function learning(packet) {
 }
 function clearGoalDetails(){document.querySelector('#goal-details').hidden=true;document.querySelector('#goal-key-points').replaceChildren();document.querySelector('#goal-expression-task').textContent='';document.querySelector('#goal-state').textContent='';}
 const entry=()=>({mode:'free',...(paceSupported?{speech_pace:paceSelect.value}:{})});
-const preparer=new PreparationClient({fetcher:authorizedFetch,observe:observationEnabled,onObservation:report=>planningObserver.snapshot(report),onView:learning,onStatus:(state,details)=> {
+const preparer=new PreparationClient({fetcher:authorizedFetch,observe:true,onObservation:report=>planningObserver.snapshot(report),onView:learning,onStatus:(state,details)=> {
   if(state==='preparing'){clearGoalDetails();goal.textContent='正在规划本次对话……';promptHint.textContent='';document.querySelector('.word-card').hidden=true;message.textContent='正在准备对话……';}
   else if(state==='ready')message.textContent=preparationReadyMessage(details);
   else if(state==='failed'){clearGoalDetails();goal.textContent='本次对话尚未准备完成。';message.textContent='对话准备失败，请重新开始。';}
@@ -124,7 +126,7 @@ async function stop(text='对话已结束。',failed=false) {
   await audio?.close();
   observe('session.end',{state:'closed'});
   if(stopped!==generation)return;
-  controls(false);
+  controls(false);void observationReports.finish();
   document.querySelector('.preview').textContent='Web 对话 · 豆包未连接';
   muted=false;mute.setAttribute('aria-pressed','false');mute.textContent='静音';
 }
@@ -154,7 +156,7 @@ connect.addEventListener('click',async()=> {
     const response=await authorizedFetch('/api/sessions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...entry(),...(selectedPace?{speech_pace:selectedPace}:{}),...(preparationId?{preparation_id:preparationId}:{})}),signal:AbortSignal.timeout(8000)});
     const result=await response.json();if(current!==generation)return;
     if(!response.ok){await stop(response.status===501?'实时语音尚未开通。需完成豆包协议和服务端连接验证。':'会话无法创建，请检查授权或服务容量。');return;}
-    summaryCards.begin(result.session_id,'free');
+    summaryCards.begin(result.session_id,'free');observationReports.begin(result.session_id);
     config=null;status.textContent='连接中';
     ws=new WebSocket(`${location.protocol==='https:'?'wss:':'ws:'}//${location.host}${result.websocket_path}`,[result.protocol,`ticket.${result.ticket}`]);
     ws.onopen=()=>{if(current===generation && diagnosticsEnabled)ws.send(JSON.stringify({type:'diagnostics.enable'}));};
@@ -162,6 +164,7 @@ connect.addEventListener('click',async()=> {
       if(current!==generation)return;
       try {
         const packet=JSON.parse(event.data);
+        if(packet.type==='observation.report.saved'){observationReports.receipt(packet);return;}
         if(packet.type==='planning.observation'){planningObserver.record(packet.row);return;}
         if(packet.type==='diagnostics.event'){trace?.gateway(packet.row);refreshDiagnostics();return;}
         if(packet.type==='session.config'){config=packet.audio;paceHint.textContent=packet.speech?.supported && ['slow','normal'].includes(packet.speech.pace)?`本次语速：${packet.speech.pace==='slow'?'慢速':'正常'}；结束后可切换。`:'本次使用服务默认语速。';return;}
@@ -235,6 +238,7 @@ async function bootstrap() {
     if((await runtimeReady).backend==='mock_hskai')await loadLearnerProfile(epoch,{setPace:true});
     if(epoch!==learnerEpoch)return;
     if(dynamicPlanning)prepareSelected();else if(entryPreviews[mode])learning(entryPreviews[mode]);
+    void observationReports.refresh();
   }catch{if(epoch===learnerEpoch)memoryStatus.textContent='画像或偏好服务暂不可用。';}
 }
 document.querySelector('#memory-form').addEventListener('submit',async event=> {
@@ -286,7 +290,7 @@ learnerSelect.addEventListener('change',async()=> {
   try {
     await stop('正在切换学习者……');
     const revoked=await authorizedFetch('/api/authorization/revoke',{method:'POST'});if(!revoked.ok)throw new Error('REVOKE_FAILED');
-    learnerEpoch++;planningObserver.clear();selectedLearner=next;summaryCards.reset();entryPreviews=(await runtimeReady).entry_previews??{};
+    learnerEpoch++;planningObserver.clear();observationReports.reset();selectedLearner=next;summaryCards.reset();entryPreviews=(await runtimeReady).entry_previews??{};
     document.querySelector('#save-learning-input').checked=false;document.querySelector('#memory-list').replaceChildren();document.querySelector('#learner-profile-content').replaceChildren();document.querySelector('#learner-profile').hidden=true;document.querySelector('#learner-level').textContent='正在加载画像';
     goal.textContent='正在为当前学习者准备对话。';promptHint.textContent='';document.querySelector('.word-card').hidden=true;
     await bootstrap();

@@ -1,3 +1,5 @@
+import { ObservationReports } from '../apps/realtime-gateway/src/observation-reports.js';
+import { ObservationSummary } from '../packages/agent-core/observation-summary.js';
 import { chromium } from 'playwright';
 import { EventEmitter, once } from 'node:events';
 import { mkdir, readFile } from 'node:fs/promises';
@@ -299,6 +301,50 @@ try {
   await page.setViewportSize({width:390,height:844});
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   await page.locator('#planning-observation').screenshot({path:'.local/browser-check/planning-observation-mobile.png'});
+  // The conversation report workflow needs no query switch or manual event sorting.
+  const reportStore=new ObservationReports(),reportIdentity=dynamicBackend.bridge.verify(await dynamicBackend.pocPort.issue(),'session:create');
+  const reportSummary=new ObservationSummary({traceId:'browser-report-trace'});let reportSeq=0;
+  const reportEvent=(stage,data)=>reportSummary.consume({stage,data,seq:++reportSeq,at_ms:reportSeq});
+  reportEvent('planning.triggered',{input:{student_profile:{preferred_name:'Alex'},speaking_constraints:{profile_level:1}}});
+  reportEvent('preparation.ready',{plan:{conversation_purpose:'回应当天安排',strategy:{speaking_difficulty:{lexical_style:'everyday',sentence_structure:'simple',new_word_policy:'avoid'}}}});
+  reportEvent('voice.context.prepared',{session_id:'browser-report-session',provider_kind:'test',synthetic:true,context_version:1,context_hash:'a'.repeat(64),instructions:'完整的合成指令：普通主动用词不超过 HSK1。'});
+  reportEvent('voice.request.sent',{context_version:1,context_hash:'a'.repeat(64),body:{session:{instructions:'完整的合成指令：普通主动用词不超过 HSK1。',model:'synthetic-model'}}});
+  reportEvent('voice.connection',{log_id:'synthetic-log-for-browser'});
+  reportEvent('student.input.accepted',{turn_id:'browser-report-turn',source_event_id:'browser-report-input',text:'今天不踢球。'});
+  reportEvent('voice.reply.started',{turn_id:'browser-report-turn',response_id:'browser-report-reply',applied_context_version:1,applied_context_hash:'a'.repeat(64)});
+  reportEvent('voice.reply.forwarded',{response_id:'browser-report-reply',text:'<img src=x onerror="window.reportInjected=true">',status:'response.done'});
+  reportEvent('session.ended',{state:'closed'});await reportStore.save(reportIdentity,reportSummary.snapshot());
+  const reportServer=createGateway({...dynamicBackend,planningMode:'next_turn_advisory',observationReports:reportStore});servers.push(reportServer);reportServer.listen(0,'127.0.0.1');await once(reportServer,'listening');
+  await page.goto(`http://127.0.0.1:${reportServer.address().port}`);
+  await page.waitForFunction(()=>!document.querySelector('[data-report-export]').disabled);
+  assert.match(await page.locator('[data-report-status]').textContent(),/1\/5/);
+  assert.match(await page.locator('[data-report-content]').textContent(),/synthetic-log-for-browser/);
+  await page.locator('[data-report-content] summary').first().click();
+  assert.equal(await page.locator('[data-report-content] img').count(),0);assert.equal(await page.evaluate(()=>Boolean(window.reportInjected)),false);
+  await page.locator('[data-review-field="expected_response"]').fill('没关系。今天可以休息。');
+  await page.locator('[data-review-field="expected_effect"]').fill('只用 HSK1 词汇');
+  const summaryDownloadPromise=page.waitForEvent('download');await page.locator('[data-report-export]').click();
+  const summaryDownload=await summaryDownloadPromise,summaryStream=await summaryDownload.createReadStream(),summaryChunks=[];for await(const chunk of summaryStream)summaryChunks.push(chunk);
+  const summaryMarkdown=Buffer.concat(summaryChunks).toString();
+  for(const value of ['synthetic-log-for-browser','完整的合成指令','今天不踢球','没关系。今天可以休息。','只用 HSK1 词汇'])assert.ok(summaryMarkdown.includes(value));
+  assert.equal(summaryDownload.suggestedFilename(),'ask-kai-observation-browser-report-session.md');
+  await page.reload();await page.waitForFunction(()=>!document.querySelector('[data-report-export]').disabled);
+  assert.equal(await page.locator('[data-review-field="expected_response"]').inputValue(),'没关系。今天可以休息。');
+  await page.locator('[data-report-content] summary').first().click();await page.setViewportSize({width:390,height:844});
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+  await page.locator('#observation-reports').screenshot({path:'.local/browser-check/observation-report-mobile.png'});
+  // A missing new report must not silently export an older conversation.
+  const pendingReport=await page.evaluate(async()=>{
+    const {ObservationReportsPanel}=await import('/observation-reports.js');
+    const panel=new ObservationReportsPanel(document.querySelector('#observation-reports').cloneNode(true),{fetcher:path=>fetch(path)});
+    await panel.refresh();panel.begin('new-unpersisted-session');await panel.finish();
+    const pending={disabled:panel.exportButton.disabled,selection:panel.select.value,report:panel.report,status:panel.status.textContent};
+    await panel.load('browser-report-session');return {...pending,historical:panel.report.id};
+  });
+  assert.equal(pendingReport.disabled,true);assert.equal(pendingReport.selection,'');assert.equal(pendingReport.report,null);assert.match(pendingReport.status,/本场总结尚未保存/);assert.equal(pendingReport.historical,'browser-report-session');
+  await page.locator('#mock-learner-select').selectOption('mock-maya-hsk3');
+  await page.waitForFunction(()=>document.querySelector('[data-report-status]').textContent.includes('尚无会话观测总结'));
+  assert.equal(await page.locator('[data-report-export]').isDisabled(),true);assert.equal(await page.locator('[data-report-content]').textContent(),'');
   assert.equal(errors.length,0);
-  console.log(JSON.stringify({browser:'chromium',input:'synthetic_device',provider_connected:false,web_controls:true,mobile_overflow:false,microphone_before_readiness:false,audio_worklet_pcm:true,capture_continues_during_output_stop:true,progressive_captions:true,native_caption_clock:true,caption_pause_resume:true,caption_controls:true,diagnostics_export:true,audio_metadata:true,speech_pace_selection:true,speech_pace_session_lock:true,speech_pace_wire_payload:true,poc_mock_backend:true,four_learner_switching:true,three_learner_services:true,poc_cookie_refresh:true,poc_mission:true,poc_preferences:true,adaptive_language_preferences:true,summary_cards:true,summary_empty_partial_states:true,summary_session_isolation:true,summary_safety_revocation:true,summary_restart:true,summary_literal_text:true,planning_observation:true,planning_observation_literal_text:true,dynamic_preparations:true,dynamic_evidence_goal:true,dynamic_free_empty:true,dynamic_entry_race:true,dynamic_goal_history_summary:true,replay:true,page_errors:0}));
+  console.log(JSON.stringify({browser:'chromium',input:'synthetic_device',provider_connected:false,web_controls:true,mobile_overflow:false,microphone_before_readiness:false,audio_worklet_pcm:true,capture_continues_during_output_stop:true,progressive_captions:true,native_caption_clock:true,caption_pause_resume:true,caption_controls:true,diagnostics_export:true,audio_metadata:true,speech_pace_selection:true,speech_pace_session_lock:true,speech_pace_wire_payload:true,poc_mock_backend:true,four_learner_switching:true,three_learner_services:true,poc_cookie_refresh:true,poc_mission:true,poc_preferences:true,adaptive_language_preferences:true,summary_cards:true,summary_empty_partial_states:true,summary_session_isolation:true,summary_safety_revocation:true,summary_restart:true,summary_literal_text:true,observation_report_workflow:true,observation_report_authorization:true,observation_report_export:true,planning_observation:true,planning_observation_literal_text:true,dynamic_preparations:true,dynamic_evidence_goal:true,dynamic_free_empty:true,dynamic_entry_race:true,dynamic_goal_history_summary:true,replay:true,page_errors:0}));
 }finally{await browser?.close();for(const item of servers){item.stopRealtime();await new Promise(resolve=>{item.close(resolve);item.closeAllConnections();});}for(const backend of backends)await backend.close();}

@@ -14,13 +14,13 @@ function profile() {
   const p = structuredClone(template); p.reviewed = true; p.realtime.reviewed = true; p.realtime.ordered_acks_reviewed = true;
   return p; // Synthetic test attestation, never evidence about a real supplier account.
 }
-function setup({observeRequest}={}) {
+function setup({observeRequest,observeConnection}={}) {
   const socket = new EventEmitter(), sent = [], packets = [], failures = [];
   Object.assign(socket,{readyState:1,bufferedAmount:0,send:v=>sent.push(JSON.parse(v)),terminate:()=>socket.ended=true});
   const provider = createDoubaoProvider({profile:profile(),env:{DOUBAO_API_KEY:'synthetic-only'},socketFactory:(_url,options)=>{
     assert.equal(options.headers['X-Api-Key'],'synthetic-only'); assert.equal(options.maxPayload,131072); return socket;
   }});
-  provider.observeRequest=observeRequest;
+  provider.observeRequest=observeRequest;provider.observeConnection=observeConnection;
   provider.open({sessionId:'local-session',instructions:'trusted lesson',onEvent:p=>packets.push(p),onFailure:code=>failures.push(code)});
   socket.emit('open');
   let seq = 0;
@@ -333,4 +333,13 @@ test('voice request observation matches sent create/update/cancel bodies and exc
   x.provider.observeRequest=()=>{throw new Error('observer must not fail voice');};
   x.wire({type:'session.updated',session:{id:'private-session'}});
   x.provider.updateContext({version:3,instructions:'新要求'});assert.deepEqual(x.failures,[]);x.provider.close();
+});
+
+
+test('only the allowlisted upgrade Log ID is observed, independently of normalized identities',()=>{
+  const connections=[],x=setup({observeConnection:metadata=>connections.push(metadata)});
+  x.socket.emit('upgrade',{headers:{'x-tt-logid':'20261019-fixture-log','set-cookie':'PRIVATE_COOKIE',authorization:'PRIVATE_AUTH'}});
+  assert.deepEqual(connections,[{log_id:'20261019-fixture-log'}]);
+  x.socket.emit('upgrade',{headers:{'x-tt-logid':'invalid value with spaces'}});assert.deepEqual(connections.at(-1),{log_id:null});
+  x.provider.observeConnection=()=>{throw new Error('observer failed');};x.socket.emit('upgrade',{headers:{'x-tt-logid':'fixture'}});assert.deepEqual(x.failures,[]);x.provider.close();
 });

@@ -105,6 +105,7 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
       const turn = this.turn(raw.question_id);
       reply = {id,rawId,turn:turn.id,status:'active',text:'',textStarted:false,textDone:false,audioDone:false};
       this.replies.set(id,reply); this.activeReply = reply;this.latestReply=reply;
+      try{this.observeIdentity?.({response_id:reply.id,provider_response_id:reply.rawId,turn_id:reply.turn});}catch{}
       this.onEvent({event:this.event('response.started',{},this.replyIds(reply))});
     } else if (raw.question_id !== undefined && this.turn(raw.question_id).id !== reply.turn) throw new Error('FOREIGN_PROVIDER_TURN');
     return reply;
@@ -144,6 +145,7 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
     if (raw.type === 'session.created') {
       if (this.ready) throw new Error('DUPLICATE_PROVIDER_READY');
       this.rawSessionId = this.checkId(raw.session?.id); this.ready = true;
+      try{this.observeIdentity?.({provider_session_id:this.rawSessionId});}catch{}
       return this.onEvent({event:this.event('session.ready')});
     }
     if (!this.ready) throw new Error('PROVIDER_EVENT_BEFORE_READY');

@@ -1,3 +1,5 @@
+import { ObservationReports } from './observation-reports.js';
+import { observationMarkdown } from '../../../packages/agent-core/observation-summary.js';
 import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
@@ -24,7 +26,7 @@ const staticFiles = new Map([
   ['/presentation.js',['presentation.js','text/javascript']],
   ['/caption-phrases.js',['caption-phrases.js','text/javascript']],
   ['/summary-cards.js',['summary-cards.js','text/javascript']],
-  ['/diagnostics.js',['diagnostics.js','text/javascript']], ['/planning-observer.js',['planning-observer.js','text/javascript']], ['/experience-cases.json',['experience-cases.json','application/json']],
+  ['/diagnostics.js',['diagnostics.js','text/javascript']], ['/planning-observer.js',['planning-observer.js','text/javascript']], ['/observation-reports.js',['observation-reports.js','text/javascript']], ['/experience-cases.json',['experience-cases.json','application/json']],
   ['/preparation-client.js',['preparation-client.js','text/javascript']],
   ['/dev/replay', ['replay.html','text/html']], ['/app.js',['app.js','text/javascript']], ['/style.css',['style.css','text/css']]
 ]);
@@ -63,10 +65,11 @@ export async function readJson(req,maxBytes=4096) {
   for await(const chunk of req){size+=chunk.length;if(size>maxBytes)throw new Error('REQUEST_TOO_LARGE');chunks.push(chunk);}
   return JSON.parse(Buffer.concat(chunks).toString());
 }
-export function createGateway({ paceMs = 120, bridge, memoryPort, privacyPort, pocPort, planningPort, learnerDataPort, planner, planningMode='legacy', speechPaceSupported = false, ...realtimeOptions } = {}) {
+export function createGateway({ paceMs = 120, bridge, memoryPort, privacyPort, pocPort, planningPort, learnerDataPort, planner, planningMode='legacy', speechPaceSupported = false, observationDirectory=null, observationReports:providedObservationReports, ...realtimeOptions } = {}) {
   if(!PLANNING_MODES.includes(planningMode))throw new Error('INVALID_PLANNING_MODE');
   if(planningMode!=='legacy'&&!planningPort)throw new Error('PLANNING_PORT_REQUIRED');
   const preparations=planningMode!=='legacy'&&planningPort?new Preparations({initializer:new ConversationInitializer({port:planningPort,planner,mode:planningMode})}):null;
+  const observationReports=providedObservationReports??new ObservationReports({directory:observationDirectory});
   const metrics=realtimeOptions.metrics ?? new Metrics();
   const speechAvailable=speechPaceSupported===true && typeof realtimeOptions.providerFactory==='function';
   const authorize=(req,scope)=> {
@@ -93,6 +96,20 @@ export function createGateway({ paceMs = 120, bridge, memoryPort, privacyPort, p
       if (req.method === 'GET' && url.pathname === '/healthz') return json(res, 200, { service:'ask-kai', mode:pocPort?'standalone_poc':'synthetic_replay', provider_connected:false, status:'ok' });
       if (req.method === 'GET' && url.pathname === '/api/replays') return json(res, 200, { scenarios:SCENARIOS });
       if(req.method==='GET'&&url.pathname==='/api/topics'){if(!planningPort?.topics)return json(res,200,{managed:false,topics:[]});try{return json(res,200,{managed:true,topics:await planningPort.topics.list()});}catch{return json(res,503,{managed:true,topics:[],error:'TOPIC_SERVICE_UNAVAILABLE'});}}
+      if(url.pathname==='/api/observation-reports'||url.pathname.startsWith('/api/observation-reports/')) {
+        if(!['GET','POST'].includes(req.method))return json(res,405,{error:'METHOD_NOT_ALLOWED'});
+        if(req.method==='POST'&&req.headers.origin!==`http://${req.headers.host}`)return json(res,403,{error:'ORIGIN_REQUIRED'});
+        let identity;try{identity=authorize(req,'session:create');}catch{return json(res,401,{error:'HSKAI_AUTHORIZATION_REQUIRED'});}
+        const match=url.pathname.match(/^\/api\/observation-reports(?:\/([A-Za-z0-9_-]{1,128})(\/export)?)?$/);
+        if(!match||url.search)return json(res,400,{error:'INVALID_OBSERVATION_REQUEST'});
+        try {
+          if(!match[1]&&req.method==='GET')return json(res,200,{reports:await observationReports.list(identity),persistent:!!observationReports.directory});
+          if(!match[1]||match[2]&&req.method!=='GET')return json(res,400,{error:'INVALID_OBSERVATION_REQUEST'});
+          const report=req.method==='POST'?await observationReports.review(identity,match[1],await readJson(req,600000)):await observationReports.get(identity,match[1]);
+          if(match[2]){res.writeHead(200,{'Content-Type':'text/markdown; charset=utf-8','Content-Disposition':`attachment; filename="ask-kai-observation-${report.id}.md"`});return res.end(observationMarkdown(report));}
+          return json(res,200,{report});
+        }catch(error){return json(res,error.message==='OBSERVATION_REPORT_NOT_FOUND'?404:error.message==='INVALID_OBSERVATION_REVIEW'?400:503,{error:error.message==='OBSERVATION_REPORT_NOT_FOUND'?'OBSERVATION_REPORT_NOT_FOUND':error.message==='INVALID_OBSERVATION_REVIEW'?'INVALID_OBSERVATION_REVIEW':'OBSERVATION_REPORT_UNAVAILABLE'});}
+      }
       if(req.method==='GET'&&url.pathname.startsWith('/api/conversations/')) {
         const id=url.pathname.slice('/api/conversations/'.length);if(!/^[A-Za-z0-9_-]{1,128}$/.test(id)||url.search)return json(res,400,{error:'INVALID_CONVERSATION_ID'});
         let identity;try{identity=authorize(req,'context:read');}catch{return json(res,401,{error:'HSKAI_AUTHORIZATION_REQUIRED'});}
@@ -236,7 +253,7 @@ export function createGateway({ paceMs = 120, bridge, memoryPort, privacyPort, p
   });
   server.requestTimeout = 10000;
   server.headersTimeout = 5000;
-  const realtime=attachRealtime(server,{...realtimeOptions,planner,planningPort,metrics,businessSource:pocPort?'mock_hskai':bridge?'external_hskai':'unconfigured'});
+  const realtime=attachRealtime(server,{...realtimeOptions,planner,planningPort,metrics,observationReports,businessSource:pocPort?'mock_hskai':bridge?'external_hskai':'unconfigured'});
   server.stopRealtime=()=>{preparations?.close();realtime.close();};
   server.on('close',()=>{preparations?.close();realtime.close();});
   return server;

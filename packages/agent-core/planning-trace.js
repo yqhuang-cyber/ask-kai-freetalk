@@ -1,3 +1,4 @@
+import { ObservationSummary } from './observation-summary.js';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { randomUUID } from 'node:crypto';
 
@@ -14,7 +15,7 @@ function clean(value,depth=0) {
 }
 export class PlanningTrace {
   constructor({limit=160,maxBytes=2097152,maxRowBytes=131072,now=()=>performance.now()}={}) {
-    Object.assign(this,{limit,maxBytes,maxRowBytes,now});this.id=randomUUID();this.started=now();this.rows=[];this.bytes=0;this.seq=0;this.discarded=0;this.listeners=new Set();
+    Object.assign(this,{limit,maxBytes,maxRowBytes,now});this.id=randomUUID();this.summary=new ObservationSummary({traceId:this.id});this.started=now();this.rows=[];this.bytes=0;this.seq=0;this.discarded=0;this.listeners=new Set();
   }
   record(stage,data={}) {
     try {
@@ -25,12 +26,14 @@ export class PlanningTrace {
       while(this.rows.length&&(this.rows.length>=this.limit||this.bytes+bytes>this.maxBytes)){this.bytes-=this.rows.shift().bytes;this.discarded++;}
       if(bytes>this.maxBytes){this.discarded++;return;}
       this.rows.push({row,bytes});this.bytes+=bytes;
+      try{this.summary?.consume(row);}catch{/* Summary observation is best effort. */}
       for(const listener of this.listeners)try{listener(row);}catch{/* Observation cannot control the session. */}
     }catch{/* Observation cannot control the session. */}
   }
   snapshot(){return {trace_id:this.id,discarded:this.discarded,contains_text:true,contains_audio:false,storage:'memory_only',rows:this.rows.map(x=>x.row)};}
+  summarySnapshot(){return this.summary?.snapshot()??null;}
   subscribe(listener){this.listeners.add(listener);return ()=>this.listeners.delete(listener);}
-  clear(){this.closed=true;this.rows=[];this.bytes=0;this.listeners.clear();}
+  clear(){this.closed=true;this.summary=null;this.rows=[];this.bytes=0;this.listeners.clear();}
 }
 export function withPlanningTrace(trace,fields,work) {
   if(!trace)return work();

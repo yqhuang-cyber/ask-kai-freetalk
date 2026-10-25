@@ -59,6 +59,11 @@ export class DoubaoJsonTransport {
   open({sessionId,instructions='',onEvent,onFailure}) {
     this.sessionId = sessionId; this.started = performance.now(); this.onEvent = onEvent;
     this.socket = this.socketFactory(DUPLEX_ENDPOINT,{headers:this.headers,maxPayload:131072,perMessageDeflate:false,handshakeTimeout:5000,followRedirects:false});
+    this.socket.on('upgrade',response=>{
+      const value=response.headers?.['x-tt-logid'];
+      const logId=typeof value==='string'&&/^[a-zA-Z0-9_.:-]{1,256}$/.test(value)?value:null;
+      try{this.observeConnection?.({log_id:logId});}catch{/* No other headers enter observation. */}
+    });
     this.socket.on('open',() => {
       if(this.closed)return;
       try {

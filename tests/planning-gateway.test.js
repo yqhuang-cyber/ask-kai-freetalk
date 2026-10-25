@@ -224,3 +224,32 @@ test('diagnostic collection keeps an explicit goodbye reply without automatic br
   await until(()=>live.packets.some(p=>p.event?.type==='response.done'));assert.equal(live.packets.some(p=>p.type==='session.closing'),false);assert.equal(p.closed,undefined);
   live.ws.send(JSON.stringify({type:'session.end'}));await once(live.ws,'close');
 });
+
+
+test('a completed session exposes an authorized first-five-turn summary and one ready-to-read export',async t=>{
+  const f=await fixture(t),prepared=await f.prepare({mode:'free',observe:true});
+  const ticket=await(await f.call('POST','/api/sessions',{mode:'free',preparation_id:prepared.preparation_id})).json();
+  const {ws,provider,packets}=await f.open(ticket);provider.observeConnection({log_id:'fixture-doubao-log'});provider.emit('session.ready');
+  for(let n=1;n<=6;n++){
+    provider.emit('user.final',{text:`第${n}轮作者输入`},{turn_id:`report-turn-${n}`});
+    const ids={turn_id:`report-turn-${n}`,response_id:`report-reply-${n}`};provider.emit('response.started',{},ids);provider.emit('response.text.delta',{text:`第${n}轮作者回复`},ids);provider.emit('response.done',{},ids);
+  }
+  ws.send(JSON.stringify({type:'session.end'}));await once(ws,'close');
+  assert.equal(packets.find(p=>p.type==='observation.report.saved').status,'saved');
+  const index=await(await f.call('GET','/api/observation-reports')).json();assert.equal(index.reports.length,1);assert.equal(index.reports[0].turn_count,5);
+  const data=await(await f.call('GET',`/api/observation-reports/${ticket.session_id}`)).json();assert.equal(data.report.provider.log_id,'fixture-doubao-log');assert.equal(data.report.turns[4].responses[0].actual_response.text,'第5轮作者回复');assert.equal(data.report.coverage.omitted_turns,1);
+  assert.equal((await fetch(f.origin+`/api/observation-reports/${ticket.session_id}`)).status,401);
+  const patch={reviews:[{response_id:'report-reply-1',expected_response:'没关系。今天可以休息。',expected_effect:'只用一级词',notes:'人工补充'}]};
+  assert.equal((await f.call('POST',`/api/observation-reports/${ticket.session_id}`,patch)).status,200);
+  const exported=await f.call('GET',`/api/observation-reports/${ticket.session_id}/export`),markdown=await exported.text();assert.equal(exported.status,200);assert.match(exported.headers.get('content-type'),/text\/markdown/);
+  for(const value of ['fixture-doubao-log','第1轮作者输入','第5轮作者回复','只用一级词','说话要求'])assert.ok(markdown.includes(value));assert.ok(!markdown.includes('第6轮作者回复'));
+});
+test('abrupt termination archives the forwarded partial reply without reporting a completed response',async t=>{
+  const f=await fixture(t),prepared=await f.prepare({mode:'free',observe:true});
+  const ticket=await(await f.call('POST','/api/sessions',{mode:'free',preparation_id:prepared.preparation_id})).json();
+  const {ws,provider}=await f.open(ticket);provider.emit('session.ready');provider.emit('user.final',{text:'作者输入'},{turn_id:'partial-turn'});
+  provider.emit('response.started',{},{turn_id:'partial-turn',response_id:'partial-reply'});provider.emit('response.text.delta',{text:'尚未说完的作者回复'},{turn_id:'partial-turn',response_id:'partial-reply'});
+  provider.input.onFailure('PROVIDER_DISCONNECTED');await once(ws,'close');
+  const data=await(await f.call('GET',`/api/observation-reports/${ticket.session_id}`)).json(),reply=data.report.turns[0].responses[0];
+  assert.equal(reply.actual_response.text,'尚未说完的作者回复');assert.equal(reply.actual_response.complete,false);assert.equal(data.report.error_code,'PROVIDER_DISCONNECTED');assert.equal(data.report.provider.log_id,null);
+});
