@@ -11,11 +11,14 @@ test('fixed baseline permits evaluation changes and rejects runtime/dependency/d
   // Fixed archived manifest is not rewritten when the candidate runtime changes.
   // Exercise the original guard with isolated original bytes and drift probes.
   const key='packages/agent-core/original-fixture.js',bytes=Buffer.from('original runtime');
-  const pinned={...baseline,runtime_files:{[key]:sha256(bytes)}},read=(p,...args)=>p===key?bytes:readFile(p,...args),files=()=>[key];
+  const packageBytes=Buffer.from(JSON.stringify({dependencies:baseline.dependencies})),lockBytes=Buffer.from('original fixture lockfile');
+  const pinned={...baseline,runtime_files:{[key]:sha256(bytes)},lock_sha256:sha256(lockBytes)},read=(p,...args)=>p===key?bytes:p==='package.json'?packageBytes:p==='package-lock.json'?lockBytes:readFile(p,...args),files=()=>[key];
   const info=await verifyEvaluationBaseline({baseline:pinned,dataBytes,profileBytes,read,files});assert.equal(info.baseline_verified,true);
   await assert.rejects(verifyEvaluationBaseline({baseline:pinned,dataBytes:Buffer.from('changed'),profileBytes,read,files}),/INPUT_DRIFT/);
   await assert.rejects(verifyEvaluationBaseline({baseline:pinned,dataBytes,profileBytes,read:(p,...args)=>p===key?Buffer.from('changed'):readFile(p,...args),files}),/RUNTIME_DRIFT/);
   await assert.rejects(verifyEvaluationBaseline({baseline:pinned,dataBytes,profileBytes,read,files:()=>[]}),/FILE_SET_DRIFT/);
+  await assert.rejects(verifyEvaluationBaseline({baseline:pinned,dataBytes,profileBytes,read:(p,...args)=>p==='package.json'?Buffer.from('{"dependencies":{}}'):read(p,...args),files}),/DEPENDENCY_DRIFT/);
+  await assert.rejects(verifyEvaluationBaseline({baseline:pinned,dataBytes,profileBytes,read:(p,...args)=>p==='package-lock.json'?Buffer.from('changed lock'):read(p,...args),files}),/DEPENDENCY_DRIFT/);
 });
 
 test('candidate replay validates and copies exact authored PCM without synthesizing or silently repairing missing input',async t=>{

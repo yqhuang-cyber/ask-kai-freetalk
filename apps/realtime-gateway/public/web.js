@@ -1,3 +1,5 @@
+import { CaptionAnnotations } from './caption-annotations.js';
+import { CaptionSettingsView } from './caption-settings.js';
 import { ObservationReportsPanel } from './observation-reports.js';
 import { PlanningObserver } from './planning-observer.js';
 import { ClosingPlayback } from './closing-playback.js';
@@ -78,16 +80,20 @@ let entryPreviews={},dynamicPlanning=false,preparationPromise=null,preparationEp
 const saveLearning=document.querySelector('#save-learning');
 const interrupt=document.querySelector('#interrupt');
 const captionHint=document.querySelector('#caption-hint');
+const pinyinToggle=document.querySelector('#show-pinyin'),pinyinHint=document.querySelector('#pinyin-hint');
+const annotations=new CaptionAnnotations(caption,{onReady:ready=>{if(!ready)pinyinHint.textContent='拼音暂不可用，中文字幕会继续显示。';}});
+const previewAnnotations=new CaptionAnnotations(document.querySelector('#caption-preview-text'));
+previewAnnotations.render('你好，今天想聊什么？',{previous:'你好，今天想聊什么？',current:'',complete:true});
+const captionSettings=new CaptionSettingsView({annotations,preview:previewAnnotations,toggle:pinyinToggle,hint:pinyinHint,send:packet=>{if(ws?.readyState===WebSocket.OPEN)ws.send(JSON.stringify(packet));}});
 const presentation=new Presentation({render:(text,parts)=>{
-  const previous=document.createElement('span'),current=document.createElement('strong');
-  previous.className=parts?.complete?'caption-complete':'caption-previous';previous.textContent=parts?.previous??text;
-  current.className='caption-current';current.textContent=parts?.current??'';caption.replaceChildren(previous,current);
+  annotations.render(text,parts);
 },play:(audio,rate,id)=>io?.play(audio,rate,id),getPlayback:id=>io?.playback(id),stopAudio:()=>io?.stopPlayback(),onMode:(mode,details)=>{
-  if(mode==='complete'){closingPlayback.check();speechPlayback.check();}
+  if(mode==='complete'){closingPlayback.check();speechPlayback.check();captionPlayback.check();}
   captionHint.textContent=mode==='complete'?(details.has_text?details.text_only?'本轮仅有文字回复，已显示完毕。':'本轮回复已显示。':'本轮没有收到字幕。'):({idle:'字幕会随回复逐段出现。',waiting_audio:'等待语音开始……',playing:'当前字幕短语已加深显示。',paused:'播放已暂停，字幕会随播放继续。',text_only:'本轮未收到语音，正在显示文字回复。'})[mode];
 },onObserve:diagnosticsEnabled?observe:undefined});
 const closingPlayback=new ClosingPlayback({presentation,getPlayback:id=>io?.playback(id),isMuted:()=>muted,send:packet=>{if(ws?.readyState!==WebSocket.OPEN)return false;ws.send(JSON.stringify(packet));return true;}});
 const speechPlayback=new SpeechPlayback({presentation,getPlayback:id=>io?.playback(id),isMuted:()=>muted,send:packet=>{if(ws?.readyState!==WebSocket.OPEN)return false;ws.send(JSON.stringify(packet));return true;}});
+const captionPlayback=new SpeechPlayback({presentation,getPlayback:id=>io?.playback(id),isMuted:()=>muted,send:packet=>{if(ws?.readyState!==WebSocket.OPEN)return false;ws.send(JSON.stringify({...packet,type:'caption.playback'}));return true;}});
 function learning(packet) {
   goal.textContent=packet.goal;promptHint.textContent=packet.start_tip;
   const details=packet.goal_details;
@@ -109,7 +115,7 @@ const preparer=new PreparationClient({fetcher:authorizedFetch,observe:true,onObs
 function prepareSelected(){if(!dynamicPlanning)return;const epoch=++preparationEpoch;preparationPromise=preparer.prepare(entry()).then(id=>epoch===preparationEpoch?id:null);}
 function suppressLearning(reason){summaryCards.suppress(reason);clearGoalDetails();goal.textContent='';promptHint.textContent='';document.querySelector('.word-card').hidden=true;document.querySelector('#learning-attempts').textContent='本轮没有可展示的学习记录。';}
 void runtimeReady.then(runtime=>{entryPreviews=runtime.entry_previews??{};dynamicPlanning=runtime.planning?.available===true;saveLearning.hidden=!dynamicPlanning||runtime.planning.mode==='shadow';if(entryPreviews[mode])learning(entryPreviews[mode]);});
-function controls(active) {connect.disabled=active||learnerSwitching;learnerSelect.disabled=active||learnerSwitching;caseSelect.disabled=active;paceSelect.disabled=active||learnerSwitching || !paceSupported;if(!active)paceHint.textContent=paceSupported?'开聊前选择，结束后可切换。':'当前服务暂不支持选择语速。';for(const button of modes)button.disabled=active||learnerSwitching;end.disabled=!active;mute.disabled=!active;interrupt.disabled=!active;}
+function controls(active) {pinyinToggle.disabled=active;connect.disabled=active||learnerSwitching;learnerSelect.disabled=active||learnerSwitching;caseSelect.disabled=active;paceSelect.disabled=active||learnerSwitching || !paceSupported;if(!active)paceHint.textContent=paceSupported?'开聊前选择，结束后可切换。':'当前服务暂不支持选择语速。';for(const button of modes)button.disabled=active||learnerSwitching;end.disabled=!active;mute.disabled=!active;interrupt.disabled=!active;}
 async function loadSpeechPaces() {
   try {
     const response=await fetch('/api/speech-paces');if(!response.ok)throw new Error('PACE_UNAVAILABLE');
@@ -121,7 +127,7 @@ async function loadSpeechPaces() {
 }
 void loadSpeechPaces();
 async function stop(text='对话已结束。',failed=false) {
-  closingPlayback.reset();speechPlayback.reset();summaryCards.finish();slidesEpoch++;slidesViewer?.close();
+  closingPlayback.reset();speechPlayback.reset();captionPlayback.reset();captionSettings.reset();document.querySelector('#caption-preview').hidden=!document.querySelector('#show-subtitles').checked;summaryCards.finish();slidesEpoch++;slidesViewer?.close();
   const stopped=++generation;const previous=ws;ws=null;previous?.close();
   preparationEpoch++;preparer.cancel();preparationPromise=null;
   status.textContent=failed?'连接中断':'未连接';message.textContent=text;message.dataset.state=failed?'failed':'idle';
@@ -136,6 +142,7 @@ async function stop(text='对话已结束。',failed=false) {
 }
 connect.addEventListener('click',async()=> {
   clearCloseLog();
+  captionSettings.reset();captionPlayback.reset();document.querySelector('#caption-preview').hidden=true;
   summaryCards.reset();
   trace?.reset();diagnosticCase=caseSelect.value;outcomeSelect.value='not_run';refreshDiagnostics();
   const current=++generation;controls(true);status.textContent='检查连接';message.textContent='正在检查实时服务……';message.dataset.state='idle';
@@ -160,7 +167,7 @@ connect.addEventListener('click',async()=> {
     const response=await authorizedFetch('/api/sessions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...entry(),...(selectedPace?{speech_pace:selectedPace}:{}),...(preparationId?{preparation_id:preparationId}:{})}),signal:AbortSignal.timeout(8000)});
     const result=await response.json();if(current!==generation)return;
     if(!response.ok){await stop(response.status===501?'实时语音尚未开通。需完成豆包协议和服务端连接验证。':'会话无法创建，请检查授权或服务容量。');return;}
-    summaryCards.begin(result.session_id,'free');observationReports.begin(result.session_id);
+    summaryCards.begin(result.session_id,'free');captionSettings.reset(result.session_id);observationReports.begin(result.session_id);
     config=null;status.textContent='连接中';
     ws=new WebSocket(`${location.protocol==='https:'?'wss:':'ws:'}//${location.host}${result.websocket_path}`,[result.protocol,`ticket.${result.ticket}`]);
     ws.onopen=()=>{if(current===generation && diagnosticsEnabled)ws.send(JSON.stringify({type:'diagnostics.enable'}));};
@@ -182,6 +189,8 @@ connect.addEventListener('click',async()=> {
         }
         if(packet.type==='slides.unavailable'){slidesEpoch++;slidesViewer?.close();document.querySelector('#courseware-source').textContent='演示课件暂不可用，本次继续自由聊天。';return;}
         if(packet.type?.startsWith('slides.')){await slidesViewer?.receive(packet);return;}
+        if(packet.type==='caption.settings'){await captionSettings.receive(packet);return;}
+        if(packet.type==='caption.state'){captionSettings.state(packet);captionPlayback.update(packet);return;}
         if(packet.type==='session.config'){config=packet.audio;paceHint.textContent=packet.speech?.supported && ['slow','normal'].includes(packet.speech.pace)?`本次语速：${packet.speech.pace==='slow'?'慢速':'正常'}；可以说“慢一点”“快一点”或“恢复正常”。`:'本次使用服务默认语速。';return;}
         if(packet.type==='speech.state'){paceHint.textContent=speechStateMessage(packet);speechPlayback.update(packet);return;}
         if(packet.type==='close.trace'){appendCloseLog(packet.title??'收束',packet.note??'',packet.body);return;}
@@ -208,14 +217,14 @@ connect.addEventListener('click',async()=> {
         if(value.type==='session.ready') {
           const readiness=voiceReadiness(packet,config);
           if(!readiness){await stop('服务未完成真实就绪验证。');return;}
-          status.textContent=readiness.status;document.querySelector('.preview').textContent=readiness.preview;message.textContent=readiness.opening;
+          pinyinToggle.disabled=false;status.textContent=readiness.status;document.querySelector('.preview').textContent=readiness.preview;message.textContent=readiness.opening;
           observe('session.ready',{provider_ready:readiness.real_provider});
           await io.start(config);if(current===generation && !safetyMessage)message.textContent=readiness.capture;
         } else if(value.type==='response.started'){observe('response.started',{response_id:value.response_id,turn_id:value.turn_id});presentation.begin(value.response_id);}
         else if(value.type==='response.text.delta')presentation.append(value.response_id,value.payload.text);
         else if(value.type==='user.partial' || value.type==='user.final')student.textContent=value.payload.text;
         else if(value.type==='response.audio.chunk' && packet.audio)presentation.audio(value.response_id,packet.audio,packet.sample_rate);
-        else if(value.type==='response.done'){presentation.done(value.response_id);closingPlayback.check();speechPlayback.check();}
+        else if(value.type==='response.done'){presentation.done(value.response_id);closingPlayback.check();speechPlayback.check();captionPlayback.check();}
       } catch(error) {const code=failureCode(error?.message);observe('browser.failed',{code});await stop(safetyMessage ?? failureMessage(code),true);}
     };
     ws.onerror=()=>{if(current===generation)void stop(safetyMessage ?? '无法连接实时服务，请重试。',true);};
@@ -231,8 +240,12 @@ interrupt.addEventListener('click',()=> {
   const response_id=presentation.current;observe('manual.interrupt',{response_id});presentation.stop();
   if(ws?.readyState===WebSocket.OPEN)ws.send(JSON.stringify({type:'response.cancel',response_id:response_id ?? undefined}));
 });
-document.querySelector('#show-subtitles').addEventListener('change',event=>{caption.hidden=!event.target.checked;student.hidden=!event.target.checked;captionHint.hidden=!event.target.checked;});
-document.querySelector('#subtitle-size').addEventListener('change',event=>{caption.dataset.size=event.target.value;student.dataset.size=event.target.value;});
+document.querySelector('#show-subtitles').addEventListener('change',event=>{caption.hidden=!event.target.checked;student.hidden=!event.target.checked;captionHint.hidden=!event.target.checked;document.querySelector('#caption-preview').hidden=!event.target.checked||!!captionSettings.sessionId;});
+document.querySelector('#subtitle-size').addEventListener('change',event=>{caption.dataset.size=event.target.value;student.dataset.size=event.target.value;document.querySelector('#caption-preview-text').dataset.size=event.target.value;});
+pinyinToggle.addEventListener('change',()=>{
+  if(ws?.readyState===WebSocket.OPEN&&captionSettings.sessionId){pinyinHint.textContent='正在调整本次拼音显示……';ws.send(JSON.stringify({type:'caption.set',session_id:captionSettings.sessionId,pinyin_enabled:pinyinToggle.checked}));}
+  else captionSettings.apply(pinyinToggle.checked);
+});
 window.addEventListener('pagehide',()=>{void stop();});
 const memoryStatus=document.querySelector('#memory-status');
 async function loadMemory() {

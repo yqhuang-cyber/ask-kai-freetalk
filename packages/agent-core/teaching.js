@@ -1,3 +1,4 @@
+import {classifyCaptionPinyin,captionPinyinInstructions} from './caption-settings.js';
 import { validateEvent } from '../contracts/events.js';
 import { PERSONA_VERSION,PERSONA_ADAPTIVE_VERSION,SPORTS_LESSON } from './lessons.js';
 import { speechPaceInstructions, speechSpeedInstructions, SpeechPaceState } from './speech.js';
@@ -16,7 +17,7 @@ export class TeachingSession {
     if(!['sports','topic','free','mission'].includes(mode))throw new Error('INVALID_MODE');
     if(mode==='mission' && !mission)throw new Error('TRUSTED_MISSION_REQUIRED');
     this.speechInstructions=speechPaceInstructions(speechPace);
-    this.speech=new SpeechPaceState(speechPace);
+    this.speech=new SpeechPaceState(speechPace);this.captionControls=false;this.captionPinyin=true;this.captionRequest=null;
     Object.assign(this,{sessionId,mode,memory:structuredClone(memory),mission:mission?structuredClone(mission):null});this.stage='warmup';this.version=1;this.seen=new Set();this.evidence=[];this.completedReplyTurns=new Set();
     this.teaching=new NaturalTeaching({mode,mission});
     this.learning=new LearningSummary({sessionId,mode,mission});
@@ -47,7 +48,7 @@ export class TeachingSession {
   contextSnapshot() {
     const memory=this.language.validMemory().map(m=>({field:m.field,value:m.value,source:m.source,updated_at:m.updated_at}));
     return compileContextSnapshot({sessionId:this.sessionId,version:this.version,mode:this.mode,mission:this.mission,stage:this.stage,speechInstructions:this.speechInstructions,speech:this.speech.enabled?this.speech.snapshot():undefined,
-      languageInstructions:this.language.instructions(),language:this.language.snapshot(),decision:this.teaching.decision,teachingContext:this.teaching.context(),memory,sessionRecap:this.teaching.decision?.teaching_paused&&this.teaching.decision?.action!=='CLOSE'?null:this.recap?.snapshot(),planning:this.planning?.mode==='shadow'?null:this.planning});
+      captionInstructions:this.captionControls?captionPinyinInstructions(this.captionPinyin):'',captionSettings:this.captionControls?{pinyin_enabled:this.captionPinyin}:undefined,languageInstructions:this.language.instructions(),language:this.language.snapshot(),decision:this.teaching.decision,teachingContext:this.teaching.context(),memory,sessionRecap:this.teaching.decision?.teaching_paused&&this.teaching.decision?.action!=='CLOSE'?null:this.recap?.snapshot(),planning:this.planning?.mode==='shadow'?null:this.planning});
   }
   accept(event) {
     if(this.closed || !validateEvent(event) || event.session_id!==this.sessionId || event.type!=='user.final' || this.seen.has(event.turn_id))return false;
@@ -56,7 +57,10 @@ export class TeachingSession {
     this.seen.add(event.turn_id);
     this.version++;
     const decision=this.teaching.select(event,this.version);
-    const paceRequest=decision.action==='CLOSE'?null:this.speech.observe(event);
+    const captionTarget=this.captionControls?classifyCaptionPinyin(event.payload.text):null;
+    this.captionRequest=captionTarget===null?null:{enabled:captionTarget,turn_id:event.turn_id};
+    if(this.captionRequest){Object.assign(decision,{action:'RESPOND',reason:'student_caption_settings',interaction:'chat',support_level:'none',new_points:0,goal_id:null,goal_source:null});this.teaching.decision={...decision};this.planning?.invalidate('caption_settings_request');}
+    const paceRequest=this.captionRequest||decision.action==='CLOSE'?null:this.speech.observe(event);
     if(paceRequest){Object.assign(decision,{action:'RESPOND',reason:'student_speech_pace',interaction:'chat',support_level:'none',new_points:0,goal_id:null,goal_source:null});this.teaching.decision={...decision};this.planning?.invalidate('speech_pace_request');}
     this.recap.input(event,{closing:decision.action==='CLOSE',plan:this.planning?.plan});
     this.planning?.controls(event,decision);this.syncGoal();
@@ -67,6 +71,7 @@ export class TeachingSession {
     if(this.stage==='warmup')this.stage='conversation';
     if(decision.action==='CLOSE')this.stage='closing';
     else if(this.stage==='closing')this.stage='conversation';
+    if(this.captionRequest)return true; // A display preference is not a learning attempt.
     this.observations?.accept(event,{plan:this.planning.plan,resource:this.planning.resource,goal_status:this.teaching.decision.teaching_paused?'paused':this.planning.plan.goal_status,executions:this.planning.executions.values()});
     this.planning?.reduceSupport(event);
     if(this.planning&&this.planning.mode!=='shadow')this.learning.observeStudent(event);
@@ -78,7 +83,7 @@ export class TeachingSession {
     return true;
   }
   async planTurn(event) {
-    if(this.speech.request?.turn_id===event.turn_id)return null;
+    if(this.speech.request?.turn_id===event.turn_id||this.captionRequest?.turn_id===event.turn_id)return null;
     if(!this.planning||this.closed)return null;
     const plan=await this.planning.acceptInput(event,this.teaching.decision,this.language.snapshot());
     if(plan&&!this.closed){this.syncGoal();this.recap.goal(this.planning.plan);this.version++;return plan;}return null;
@@ -94,6 +99,7 @@ export class TeachingSession {
   updateMemory(memory){this.planning?.invalidate('preferences_changed');this.memory=structuredClone(memory);this.language.updateMemory(memory);this.version++;}
   updateLearnerContext(context){this.planning?.updateContext(context);this.syncGoal();this.version++;}
   releaseSpeechRequest(id){if(!this.speech.release(id))return false;this.speechInstructions=speechSpeedInstructions(this.speech.contextSpeed);this.version++;return true;}
+  setCaptionPinyin(enabled){if(typeof enabled!=='boolean'||enabled===this.captionPinyin)return;this.captionPinyin=enabled;this.version++;}
   languageSnapshot(){return this.language.snapshot();}
   finalize(options={}) {
     this.closed=true;this.planning?.close();const summary=this.learning.finalize({...options,evidence:this.evidence});

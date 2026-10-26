@@ -1,0 +1,17 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kai 拼音字幕 · 离线 Spike</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f5f6ef;color:#294937;font-family:system-ui,sans-serif}main{max-width:860px;margin:36px auto;padding:24px}h1{font-size:28px}.notice{font-size:13px;color:#66735a}.panel{background:white;border:1px solid #d8e0d1;border-radius:16px;padding:28px;margin:20px 0}#caption{font-size:27px;line-height:2.8;overflow-wrap:anywhere;white-space:pre-wrap}ruby{ruby-position:over}rt{font-size:.48em;color:#627d4c;font-weight:400;user-select:none}.current{background:#edf3e7;font-weight:650}body[data-pinyin=off] rt{display:none}button,select{font:inherit;padding:10px 14px;border:1px solid #bccbb4;border-radius:7px;background:#f5f8f0;color:inherit;margin:4px}#status{font-size:14px}.help{font-size:13px;line-height:1.8;color:#66735a}small{display:block}.samples{margin:8px 0}@media(max-width:500px){main{padding:12px;margin:10px auto}.panel{padding:18px}#caption{font-size:22px}}</style>
+<main><p class="notice">ASK KAI · 离线字幕呈现实验 · 豆包未连接</p><h1>中文字幕附上拼音，语音保持原样</h1><p class="help">这里仅验证注音排版和显示开关，不播放声音、不使用麦克风。下面的按钮模拟应用回执，不是语音识别。</p>
+<section class="panel"><p id="caption" aria-label="Kai 示例字幕"></p><p id="status" role="status"></p></section>
+<div class="samples"><label>作者示例 <select id="sample"><option value="music">中英混合</option><option value="bank">多音字</option><option value="return">经审核词语覆盖</option><option value="unsafe">保留原文字面内容</option></select></label></div>
+<button id="off">模拟执行：关闭拼音</button><button id="on">模拟执行：开启拼音</button><button id="new">模拟新会话</button>
+<p class="help">默认显示；关闭后中文、英文仍保留。当前示例与后续示例共同遵循本场设置，新会话恢复默认。拼音为文本推导的阅读辅助，不是逐字声学对齐或发音评测。</p>
+</main><script src="/pinyin-pro.js"></script><script>
+const examples={music:'我喜欢音乐，也很快乐。 I like music!',bank:'银行行长说：这样很行。',return:'我还没还书。',unsafe:'中文 <img src=x onerror=alert(1)> & English'};
+pinyinPro.customPinyin({'还书':'huán shū','还款':'huán kuǎn'});
+let enabled=true,revision=0;
+function render(){const target=document.querySelector('#caption');target.replaceChildren();const text=examples[document.querySelector('#sample').value];
+for(const r of pinyinPro.pinyin(text,{type:'all',toneSandhi:false})){if(!r.isZh||!r.pinyin){target.append(document.createTextNode(r.origin));continue;}const ruby=document.createElement('ruby'),rt=document.createElement('rt');ruby.append(document.createTextNode(r.origin));rt.textContent=r.pinyin;rt.setAttribute('aria-hidden','true');ruby.append(rt);target.append(ruby);}
+document.body.dataset.pinyin=enabled?'on':'off';document.querySelector('#status').textContent='本场拼音：'+(enabled?'显示':'隐藏')+' · 模拟确认版本 '+revision;}
+for(const [id,value] of [['off',false],['on',true],['new',true]])document.querySelector('#'+id).onclick=()=>{enabled=value;revision++;render();};document.querySelector('#sample').onchange=render;render();
+</script></html>

@@ -24,3 +24,7 @@
 #observation-reports select {max-width:100%;}
 .observation-report-reply label {display:block;margin:10px 0;}
 .observation-report-reply textarea {display:block;width:100%;box-sizing:border-box;margin-top:5px;border:1px solid #cbd6c6;border-radius:6px;padding:8px;font:inherit;resize:vertical;}
+
+/* Reading annotations never alter source text or the playback clock. */
+.annotated-caption{font-size:20px;line-height:2.7;white-space:pre-wrap;overflow-wrap:anywhere;text-align:left}.annotated-caption ruby{ruby-position:over;ruby-align:center}.annotated-caption rt{font-size:.52em;font-weight:400;color:#657b56;line-height:1.4;user-select:none}.annotated-caption ruby>span{color:inherit}.annotated-caption[data-size=small]{font-size:16px}.annotated-caption[data-size=large]{font-size:25px}#caption.annotated-caption{line-height:2.7}#caption-preview{margin:8px 0 18px}#caption-preview-text{margin:12px 0 4px;color:#506849}#caption-preview[hidden]{display:none}#pinyin-hint{font-size:11px;color:#6b7d62;line-height:1.7;margin:8px 0}.subtitle-settings .subtitle-toggle{display:inline-flex;gap:4px;align-items:center}
+#caption-preview-text{font-size:20px;line-height:2.7}#caption-preview-text[data-size=small]{font-size:16px}#caption-preview-text[data-size=large]{font-size:25px}

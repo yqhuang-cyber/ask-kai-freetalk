@@ -1,0 +1,264 @@
+{
+  "version": 1,
+  "date": "2026-10-26",
+  "status": "implemented_for_local_ui_trial",
+  "default_pinyin": true,
+  "voice_control": "accepted_final_explicit_commands",
+  "native_fc_in_production": false,
+  "persistent_preference": false,
+  "annotations_sent_to_speech": false,
+  "source_sha256": {
+    "package.json": "3f18f1b951932efe520888dd2b62f2140c94dc4f470e205277120b646a2f04fa",
+    "package-lock.json": "9c044da849236f714fd1199cc97bcc5199c0699cd79c2d398af1acb3a6054ecc",
+    "packages/agent-core/caption-settings.js": "c853be399d80a81df02514a5de5098e405fef522861a7568f49a08a3ac9ffbd6",
+    "packages/agent-core/teaching.js": "db76e6178c3a6567723b8b15522d54e0707b4d49de28be547a2c806ad9268a7e",
+    "packages/agent-core/context-snapshot.js": "90e41c839f4b0d42d4b9edcde56a7ee5f11197d1bd0fd1a181597fd35879950d",
+    "apps/realtime-gateway/src/caption-settings.js": "01b4e509f34a913f6afaccb5319fc23b5f6050306e1f43823ef225c80398125e",
+    "apps/realtime-gateway/src/realtime.js": "956b42cd1452037ab7a4234ffda5d0b45996315f9206265eb5d0ca726fabda1a",
+    "apps/realtime-gateway/src/server.js": "018ed70a22aa9cd64b9548717636ab9b4405fbb7453be547d0e0aaadce27e324",
+    "apps/realtime-gateway/public/caption-annotations.js": "ee7da05b780dad3c2929758c49c5f379d4100fd650f94c1f395a829c07e0ca4b",
+    "apps/realtime-gateway/public/caption-settings.js": "6cae4bf1d94592ddb8e9d0da0b9d79f6d96ac5c68c2a74965752cd87a81900f4",
+    "apps/realtime-gateway/public/web.js": "2ac8a342f669c5703894a9588b72946a43df764b93b783c68243a308b509180c",
+    "apps/realtime-gateway/public/web.css": "ed9e9b33a418e8f0da126a88c72e04ff95277804e11189e866a02e5ad0b781ba",
+    "apps/realtime-gateway/public/index.html": "187b58c1687476ac7fee838c30fa605aa88c32fcdff695fdc7d7ff379ed67f27",
+    "tests/caption-settings.test.js": "17b6116f00e34a8fe4cfb46a9c90832a49e6f687bd1a4a4eebaed5701b5a5ecc",
+    "tests/caption-settings-view.test.js": "8cbdab8748ed9a43e163dc7e648cfa0eefe754e1ef1009116492015017270e7f",
+    "tests/evaluation-batch.test.js": "5575c842b658ad176e234d7d41aef0e4e9d189bf1810ad0caa47682cd971ae1b",
+    "scripts/pinyin-captions/gateway-probe.js": "9da0dad8af1383c884d535552fd242b5a7987f81c093b63c8951ea1123bbf194",
+    "scripts/pinyin-captions/browser-checks.js": "7b2cf2f24345f64a41c3c6ef20453f7ca96ea521d81887d2a2ec9bd312f739d0",
+    "scripts/voice-slides-control/ordinary-web-host.js": "c95720b71e31dde595c673abb1da03730f328d47a6396b4f7a90c8dac616e65a",
+    "scripts/voice-slides-control/ordinary-web-checks.js": "25a8f47933749d358c7d19af081b64e7e89c06909a151f7636f7ab13d6521458"
+  },
+  "source_attestation": {
+    "gateway_and_browser": "final input-ownership fix; final browser suite before preview-only font specificity adjustment",
+    "actual_ui": "final preview CSS verified at 20px, 8 annotations, no overflow"
+  },
+  "synthetic": {
+    "verify": {
+      "passed": 636,
+      "failed": 0
+    },
+    "replays": [
+      {
+        "id": "normal",
+        "status": "closed"
+      },
+      {
+        "id": "interruption",
+        "status": "closed"
+      },
+      {
+        "id": "failure",
+        "status": "failed"
+      }
+    ],
+    "learning_evidence": "attempted_only"
+  },
+  "browser": {
+    "driver": "CUA_IAB",
+    "ordinary_web": true,
+    "synthetic_provider": true,
+    "synthetic_planner": true,
+    "real_audio_output": true,
+    "microphone": false,
+    "pinyin_cases": [
+      {
+        "id": "default_and_mixed_source",
+        "passed": true,
+        "elapsed_ms": 1514
+      },
+      {
+        "id": "manual_hide",
+        "passed": true,
+        "elapsed_ms": 468
+      },
+      {
+        "id": "later_reply_stays_hidden",
+        "passed": true,
+        "elapsed_ms": 1183
+      },
+      {
+        "id": "manual_restore",
+        "passed": true,
+        "elapsed_ms": 641
+      },
+      {
+        "id": "voice_disable_with_rendered_confirmation",
+        "passed": true,
+        "elapsed_ms": 1781
+      },
+      {
+        "id": "voice_enable_with_annotated_confirmation",
+        "passed": true,
+        "elapsed_ms": 1125
+      },
+      {
+        "id": "hide_all_subtitles",
+        "passed": true,
+        "elapsed_ms": 1146
+      },
+      {
+        "id": "new_session_defaults_on",
+        "passed": true,
+        "elapsed_ms": 1888
+      }
+    ],
+    "existing_regression": [
+      {
+        "id": "manual_voice",
+        "passed": true,
+        "elapsed_ms": 1828
+      },
+      {
+        "id": "append",
+        "passed": true,
+        "elapsed_ms": 1120
+      },
+      {
+        "id": "cancel",
+        "passed": true,
+        "elapsed_ms": 1249
+      },
+      {
+        "id": "correction",
+        "passed": true,
+        "elapsed_ms": 1332
+      },
+      {
+        "id": "late_confirmation",
+        "passed": true,
+        "elapsed_ms": 1545
+      },
+      {
+        "id": "pace",
+        "passed": true,
+        "elapsed_ms": 3644
+      },
+      {
+        "id": "planner_race",
+        "passed": true,
+        "elapsed_ms": 1813
+      },
+      {
+        "id": "lost_ack",
+        "passed": true,
+        "elapsed_ms": 3237
+      },
+      {
+        "id": "unknown_freeze",
+        "passed": true,
+        "elapsed_ms": 6358
+      },
+      {
+        "id": "reconnect_switch",
+        "passed": true,
+        "elapsed_ms": 2812
+      },
+      {
+        "id": "deck_fallback",
+        "passed": true,
+        "elapsed_ms": 5846
+      },
+      {
+        "id": "real_ready_guard",
+        "passed": true,
+        "elapsed_ms": 1504
+      }
+    ],
+    "pinyin_passed": 8,
+    "regression_passed": 12
+  },
+  "real_provider": {
+    "final": {
+      "version": 1,
+      "real_provider": true,
+      "ordinary_gateway": true,
+      "synthetic_renderer_receipts": true,
+      "synthetic_playback_receipts": true,
+      "microphone": false,
+      "browser_audio_tested": false,
+      "human_listening": false,
+      "sequence": [
+        "off",
+        "on",
+        "off"
+      ],
+      "steps": [
+        {
+          "id": "off",
+          "expected": false,
+          "actual": false,
+          "confirmed": true,
+          "asr_received": true,
+          "fixed_utterances": 1,
+          "all_spoken_after_synthetic_renderer_ack": true,
+          "fixed_audio_bytes": 396790,
+          "elapsed_ms": 5725
+        },
+        {
+          "id": "on",
+          "expected": true,
+          "actual": true,
+          "confirmed": true,
+          "asr_received": true,
+          "fixed_utterances": 1,
+          "all_spoken_after_synthetic_renderer_ack": true,
+          "fixed_audio_bytes": 214550,
+          "elapsed_ms": 4435
+        },
+        {
+          "id": "off",
+          "expected": false,
+          "actual": false,
+          "confirmed": true,
+          "asr_received": true,
+          "fixed_utterances": 1,
+          "all_spoken_after_synthetic_renderer_ack": true,
+          "fixed_audio_bytes": 395418,
+          "elapsed_ms": 5824
+        }
+      ],
+      "failure": null,
+      "passed": true
+    },
+    "earlier_three_turn_run_passed": true,
+    "earlier_run_precedes_final_only_race_fix": true,
+    "browser_audio_tested": false,
+    "human_listening": false
+  },
+  "actual_ui": {
+    "ordinary_poc": true,
+    "default_annotations": 8,
+    "font_px": 20,
+    "preview_toggle_checked": true,
+    "original_port_4310_preserved": true,
+    "preview_port": 4311,
+    "microphone": false
+  },
+  "retained_issues": [
+    {
+      "id": "archived_guard_fixture",
+      "detail": "Initial verify failed because original baseline test read current changed dependencies. Isolated dependency/lock fixtures and explicit drift rejection assertions added; archived baseline untouched."
+    },
+    {
+      "id": "cua_click_observation",
+      "detail": "Two earlier unknown-result to end transitions timed out; direct end and isolated rerun worked. Added current UI observation before/after CUA clicks; final complete 12-case run passed."
+    },
+    {
+      "id": "final_only_voice_ownership",
+      "detail": "First pinyin browser run passed off but timed out awaiting on. Old fixed-reply barge-in cancelled the newly accepted final-only setting confirmation; ownership guard and Gateway regression added. Final 8 pinyin and 12 existing cases rerun passed."
+    },
+    {
+      "id": "preview_font_specificity",
+      "detail": "Actual preview inherited 12px from existing paragraph styles; fixed to match 20px caption and verified final computed style."
+    }
+  ],
+  "not_verified": [
+    "human microphone and listening on ordinary Web",
+    "joint real-provider and real-browser audio end-to-end",
+    "held-out open-text reading accuracy, names and rare characters",
+    "mobile layouts and low-end performance",
+    "mixed-task voice control and broad semantic intent variants",
+    "extreme real-provider interruption and rapid setting stress"
+  ]
+}

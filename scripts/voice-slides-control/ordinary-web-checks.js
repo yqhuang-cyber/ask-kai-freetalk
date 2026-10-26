@@ -2,9 +2,11 @@
 // Browser mutations are clicks/selects/reload only; all authored wire faults use the test host.
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const assert=(condition,message)=>{if(!condition)throw new Error(message);};
-export function ordinaryWebChecks({page,reload,control}){
-  const text=selector=>page.locator(selector).textContent();
-  const click=selector=>page.locator(selector).click();
+export function ordinaryWebChecks({page,reload,control,observe=async()=>{}}){
+  const text=selector=>selector==='#caption'?page.locator(selector).evaluate(root=>{
+    const plain=node=>node.nodeType===3?node.textContent:node.nodeName==='RT'?'':[...node.childNodes].map(plain).join('');return plain(root);
+  }):page.locator(selector).textContent();
+  const click=async selector=>{await observe();await page.locator(selector).click();await observe();};
   const inspect=()=>control({command:'inspect'});
   const current=async()=>(await inspect()).sessions.at(-1);
   async function until(check,message,ms=12000){const end=Date.now()+ms;do{if(await check())return;await sleep(40);}while(Date.now()<end);throw new Error('WEB_CHECK_TIMEOUT: '+message);}

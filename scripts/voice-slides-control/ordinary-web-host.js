@@ -23,7 +23,7 @@ export async function startOrdinaryWebHost(){
   profile.reviewed=true;Object.assign(profile.realtime,{reviewed:true,ordered_acks_reviewed:true});
   const gateway=createGateway({...backend,providerKind:'test',speechPaceSupported:true,slidesControls:true,slidesDemoHistory:true,planningMode:'next_turn_advisory',planner,
     providerFactory:ticket=>{
-      const session={index:sessions.length,closed:false,sent:[],results:[],commands:[],states:[],speechPhases:[],held:[],frames:0,bindings:null,callQuestions:new Map()};sessions.push(session);
+      const session={index:sessions.length,closed:false,sent:[],results:[],commands:[],states:[],speechPhases:[],captionPhases:[],held:[],frames:0,bindings:null,callQuestions:new Map()};sessions.push(session);
       const socket=new EventEmitter(),wire=raw=>socket.emit('message',Buffer.from(JSON.stringify({event_id:'fixture-'+(++seq),...raw})),false);
       session.wire=wire;
       const output=(question,text,{id='fixture-reply-'+(++replySeq),audioMs=200,done=true}={})=>{
@@ -100,6 +100,7 @@ export async function startOrdinaryWebHost(){
         if(!binary){const packet=JSON.parse(data.toString());if(packet.type==='slides.bind')session.bindings=Object.fromEntries(['session_id','viewer_instance_id','generation','deck_id','deck_version'].map(key=>[key,packet[key]]));
           if(packet.type==='slides.state')session.states.push(packet);
           if(packet.type==='speech.state')session.speechPhases.push(packet.phase);
+          if(packet.type==='caption.state')session.captionPhases.push(packet.phase);
           if(packet.type==='slides.command'){session.commands.push(packet);if(faults.holdCommands&&packet.revision>=4){session.held.push(data);return;}}
           if(packet.type==='session.failed')session.failure=packet.code;
         }if(client.readyState===1)client.send(data,{binary});
@@ -109,7 +110,7 @@ export async function startOrdinaryWebHost(){
     });
   });
   front.listen(0,'127.0.0.1');await once(front,'listening');
-  const inspect=()=>({synthetic:true,real_provider:false,pending_plans:pendingPlans.length,sessions:sessions.map(session=>({index:session.index,closed:session.closed,frames:session.frames,failure:session.failure??null,held:session.held.length,speech_phase:session.speechPhases.at(-1)??null,results:session.results.map(({status,reason,page,confirmed,cancelled_count,in_flight})=>({status,reason,page,confirmed,cancelled_count,in_flight})),commands:session.commands.map(({page,revision})=>({page,revision})),state:session.states.at(-1)?{page:session.states.at(-1).page,confirmed:session.states.at(-1).confirmed,pending:session.states.at(-1).pending,queued:session.states.at(-1).queued}:null,contexts:session.sent.filter(packet=>packet.type==='session.update').map(packet=>({page:/最新组件确认快照：\{"page":(\d+)/.exec(packet.session.instructions)?.[1]??null,speed:packet.session.audio?.output?.speed,tool_count:packet.session.tools?.length??0,latest_input_advisory:!!session.lastQuestion&&packet.session.instructions.includes('"source_turn_id":"'+session.provider.turn(session.lastQuestion).id+'"')})),native_cancels:session.sent.filter(packet=>packet.type==='response.cancel').length}))});
+  const inspect=()=>({synthetic:true,real_provider:false,pending_plans:pendingPlans.length,sessions:sessions.map(session=>({index:session.index,closed:session.closed,frames:session.frames,failure:session.failure??null,held:session.held.length,speech_phase:session.speechPhases.at(-1)??null,caption_phase:session.captionPhases.at(-1)??null,results:session.results.map(({status,reason,page,confirmed,cancelled_count,in_flight})=>({status,reason,page,confirmed,cancelled_count,in_flight})),commands:session.commands.map(({page,revision})=>({page,revision})),state:session.states.at(-1)?{page:session.states.at(-1).page,confirmed:session.states.at(-1).confirmed,pending:session.states.at(-1).pending,queued:session.states.at(-1).queued}:null,contexts:session.sent.filter(packet=>packet.type==='session.update').map(packet=>({page:/最新组件确认快照：\{"page":(\d+)/.exec(packet.session.instructions)?.[1]??null,speed:packet.session.audio?.output?.speed,tool_count:packet.session.tools?.length??0,latest_input_advisory:!!session.lastQuestion&&packet.session.instructions.includes('"source_turn_id":"'+session.provider.turn(session.lastQuestion).id+'"')})),native_cancels:session.sent.filter(packet=>packet.type==='response.cancel').length}))});
   async function control(input){
     if(input.command==='inspect')return inspect();
     if(input.command==='faults'){for(const [key,value] of Object.entries(input.values??{})){if(!Object.hasOwn(faults,key)||typeof value!=='boolean')throw new Error('INVALID_FIXTURE_FAULT');faults[key]=value;}return inspect();}
@@ -120,7 +121,9 @@ export async function startOrdinaryWebHost(){
     if(input.command==='disconnect'){session.upstream.terminate();return inspect();}
     if(input.command==='scenario'){
       const name=input.name,question='fixture-input-'+(++callSeq);
-      if(name==='review'){session.input(question,'回到上一页。');session.call(question);}
+      if(name==='caption_sentence'){session.input(question,'我想聊音乐。');session.output(question,'我喜欢音乐，也很快乐。 I like music!',{audioMs:500});}
+      else if(name==='caption_off'||name==='caption_on'){session.input(question,name==='caption_off'?'关闭拼音。':'重新打开拼音。');session.output(question,'这条自动回复不应该显示。');}
+      else if(name==='review'){session.input(question,'回到上一页。');session.call(question);}
       else if(name==='pace_review'){session.input(question,'慢一点，帮我回上一页。');session.call(question);}
       else if(name==='queue_cancel'||name==='queue_correct'||name==='queue_add'){
         faults.holdCommands=true;session.input(question,'回上一页。');session.call(question,undefined,{reply:false});session.call(question,undefined,{reply:false});

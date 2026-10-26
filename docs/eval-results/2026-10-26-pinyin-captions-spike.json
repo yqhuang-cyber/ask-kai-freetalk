@@ -1,0 +1,1197 @@
+{
+  "version": 1,
+  "date": "2026-10-26",
+  "status": "feasible_with_reading_quality_limitations",
+  "scope": "isolated_pinyin_caption_and_native_setting_control_spike",
+  "production_agent_changed": false,
+  "production_dependencies_changed": false,
+  "production_prompt_changed": false,
+  "requirement": {
+    "default_caption_pinyin": true,
+    "spoken_annotations": false,
+    "voice_disable_current_session": true,
+    "voice_reenable": true,
+    "new_session_resets": true
+  },
+  "source_sha256": {
+    "scripts/pinyin-captions/cases.js": "39a3317460aaf25509888daff51afff6bf282dfc1ab18796009c91ff0dc0c313",
+    "scripts/pinyin-captions/conversion-spike.js": "79b9480aa59828b6e09dd0a7e8be3138ff0f3586427b95e77bfddd02a90ed239",
+    "scripts/pinyin-captions/demo-host.js": "534ba166a385ffce680748a8a36799ffb515e825ef1cb36cb0719c3522152201",
+    "scripts/pinyin-captions/demo.html": "d1bc6e3537f6ef16edb8663d329f392f8c0a40a4dc8f609f0a8c98fd5d9cdecd",
+    "scripts/pinyin-captions/native-control-spike.js": "88b1012f14e5e43ed69867c33a540b247453919932b297b8ba902c146bb30131"
+  },
+  "offline_conversion": [
+    {
+      "version": 1,
+      "kind": "offline_authored_conversion_spike",
+      "mode": "base",
+      "pinyin_pro": "3.29.5",
+      "data_package": null,
+      "production_agent_changed": false,
+      "real_provider": false,
+      "browser_tested": false,
+      "audio_tested": false,
+      "policy": {
+        "toneSandhi": false,
+        "description": "dictionary tones; not measured audio pronunciation"
+      },
+      "passed": 13,
+      "total": 16,
+      "source_preserved": true,
+      "results": [
+        {
+          "id": "greeting",
+          "passed": true,
+          "expected": "nǐ hǎo wǒ shì",
+          "actual": "nǐ hǎo wǒ shì",
+          "source_preserved": true
+        },
+        {
+          "id": "english",
+          "passed": true,
+          "expected": "",
+          "actual": "",
+          "source_preserved": true
+        },
+        {
+          "id": "numbers",
+          "passed": true,
+          "expected": "wǒ yǒu gè píng guǒ jià gé shì",
+          "actual": "wǒ yǒu gè píng guǒ jià gé shì",
+          "source_preserved": true
+        },
+        {
+          "id": "music",
+          "passed": true,
+          "expected": "wǒ xǐ huan yīn yuè yě hěn kuài lè",
+          "actual": "wǒ xǐ huan yīn yuè yě hěn kuài lè",
+          "source_preserved": true
+        },
+        {
+          "id": "bank",
+          "passed": true,
+          "expected": "yín háng háng zhǎng shuō zhè yàng hěn xíng",
+          "actual": "yín háng háng zhǎng shuō zhè yàng hěn xíng",
+          "source_preserved": true
+        },
+        {
+          "id": "repeat",
+          "passed": true,
+          "expected": "chóng fù yī cì rán hòu qù chóng qìng",
+          "actual": "chóng fù yī cì rán hòu qù chóng qìng",
+          "source_preserved": true
+        },
+        {
+          "id": "return-book",
+          "passed": false,
+          "expected": "wǒ hái méi huán shū",
+          "actual": "wǒ hái méi hái shū",
+          "source_preserved": true
+        },
+        {
+          "id": "headteacher",
+          "passed": true,
+          "expected": "wǒ xiǎng zhǎng dà hòu dāng xiào zhǎng",
+          "actual": "wǒ xiǎng zhǎng dà hòu dāng xiào zhǎng",
+          "source_preserved": true
+        },
+        {
+          "id": "neutral",
+          "passed": true,
+          "expected": "mā ma shuō hái zi yǐ jīng shuì zháo le",
+          "actual": "mā ma shuō hái zi yǐ jīng shuì zháo le",
+          "source_preserved": true
+        },
+        {
+          "id": "base-tones",
+          "passed": true,
+          "expected": "yī gè bù shì dì yī",
+          "actual": "yī gè bù shì dì yī",
+          "source_preserved": true
+        },
+        {
+          "id": "back",
+          "passed": true,
+          "expected": "bēi bāo fàng zài bèi shàng",
+          "actual": "bēi bāo fàng zài bèi shàng",
+          "source_preserved": true
+        },
+        {
+          "id": "loan",
+          "passed": false,
+          "expected": "chóng qìng yín háng háng zhǎng chóng xīn huán kuǎn",
+          "actual": "chóng qìng yín háng háng zhǎng chóng xīn hái kuǎn",
+          "source_preserved": true
+        },
+        {
+          "id": "mixed",
+          "passed": true,
+          "expected": "wǒ xǐ huan yě xǐ huan pǎo bù",
+          "actual": "wǒ xǐ huan yě xǐ huan pǎo bù",
+          "source_preserved": true
+        },
+        {
+          "id": "security",
+          "passed": true,
+          "expected": "zhōng wén",
+          "actual": "zhōng wén",
+          "source_preserved": true
+        },
+        {
+          "id": "line-breaks",
+          "passed": true,
+          "expected": "nǐ hǎo jīn tiān zěn me yàng",
+          "actual": "nǐ hǎo jīn tiān zěn me yàng",
+          "source_preserved": true
+        },
+        {
+          "id": "traditional",
+          "passed": false,
+          "expected": "yín háng de yīn yuè hěn hǎo tīng",
+          "actual": "yín xíng de yīn lè hěn hǎo tīng",
+          "source_preserved": true
+        }
+      ],
+      "streaming": [
+        {
+          "text": "我想去银行，找银行行长。",
+          "parts": [
+            "我想去银行，",
+            "找银行行长。"
+          ],
+          "whole": "wǒ xiǎng qù yín háng zhǎo yín háng háng zhǎng",
+          "per_phrase": "wǒ xiǎng qù yín háng zhǎo yín háng háng zhǎng",
+          "per_character": "wǒ xiǎng qù yín xíng zhǎo yín xíng xíng cháng"
+        },
+        {
+          "text": "我还没还书。",
+          "parts": [
+            "我还没还书。"
+          ],
+          "whole": "wǒ hái méi hái shū",
+          "per_phrase": "wǒ hái méi hái shū",
+          "per_character": "wǒ hái méi hái shū"
+        },
+        {
+          "text": "重复一次，再去重庆。",
+          "parts": [
+            "重复一次，",
+            "再去重庆。"
+          ],
+          "whole": "chóng fù yī cì zài qù chóng qìng",
+          "per_phrase": "chóng fù yī cì zài qù chóng qìng",
+          "per_character": "zhòng fù yī cì zài qù zhòng qìng"
+        }
+      ],
+      "metrics": {
+        "node_boot_ms": 19.274666999999994,
+        "iterations": 1200,
+        "conversion_p50_ms": 0.018582999999992467,
+        "conversion_p95_ms": 0.05054199999999298,
+        "conversion_max_ms": 0.41408399999998835
+      },
+      "assets": {
+        "dist/index.mjs": {
+          "bytes": 33,
+          "gzip_bytes": 53
+        },
+        "dist/index.js": {
+          "bytes": 325698,
+          "gzip_bytes": 142896
+        }
+      },
+      "fixture_sha256": "1a76359118aa3bbe3c4a73448cbbaea6c6b9ab6364cdab27665ef9157e4ddcc0",
+      "custom_readings_are_in_sample": false
+    },
+    {
+      "version": 1,
+      "kind": "offline_authored_conversion_spike",
+      "mode": "modern",
+      "pinyin_pro": "3.29.5",
+      "data_package": "1.3.1",
+      "production_agent_changed": false,
+      "real_provider": false,
+      "browser_tested": false,
+      "audio_tested": false,
+      "policy": {
+        "toneSandhi": false,
+        "description": "dictionary tones; not measured audio pronunciation"
+      },
+      "passed": 13,
+      "total": 16,
+      "source_preserved": true,
+      "results": [
+        {
+          "id": "greeting",
+          "passed": true,
+          "expected": "nǐ hǎo wǒ shì",
+          "actual": "nǐ hǎo wǒ shì",
+          "source_preserved": true
+        },
+        {
+          "id": "english",
+          "passed": true,
+          "expected": "",
+          "actual": "",
+          "source_preserved": true
+        },
+        {
+          "id": "numbers",
+          "passed": true,
+          "expected": "wǒ yǒu gè píng guǒ jià gé shì",
+          "actual": "wǒ yǒu gè píng guǒ jià gé shì",
+          "source_preserved": true
+        },
+        {
+          "id": "music",
+          "passed": true,
+          "expected": "wǒ xǐ huan yīn yuè yě hěn kuài lè",
+          "actual": "wǒ xǐ huan yīn yuè yě hěn kuài lè",
+          "source_preserved": true
+        },
+        {
+          "id": "bank",
+          "passed": true,
+          "expected": "yín háng háng zhǎng shuō zhè yàng hěn xíng",
+          "actual": "yín háng háng zhǎng shuō zhè yàng hěn xíng",
+          "source_preserved": true
+        },
+        {
+          "id": "repeat",
+          "passed": true,
+          "expected": "chóng fù yī cì rán hòu qù chóng qìng",
+          "actual": "chóng fù yī cì rán hòu qù chóng qìng",
+          "source_preserved": true
+        },
+        {
+          "id": "return-book",
+          "passed": false,
+          "expected": "wǒ hái méi huán shū",
+          "actual": "wǒ hái méi hái shū",
+          "source_preserved": true
+        },
+        {
+          "id": "headteacher",
+          "passed": true,
+          "expected": "wǒ xiǎng zhǎng dà hòu dāng xiào zhǎng",
+          "actual": "wǒ xiǎng zhǎng dà hòu dāng xiào zhǎng",
+          "source_preserved": true
+        },
+        {
+          "id": "neutral",
+          "passed": true,
+          "expected": "mā ma shuō hái zi yǐ jīng shuì zháo le",
+          "actual": "mā ma shuō hái zi yǐ jīng shuì zháo le",
+          "source_preserved": true
+        },
+        {
+          "id": "base-tones",
+          "passed": true,
+          "expected": "yī gè bù shì dì yī",
+          "actual": "yī gè bù shì dì yī",
+          "source_preserved": true
+        },
+        {
+          "id": "back",
+          "passed": true,
+          "expected": "bēi bāo fàng zài bèi shàng",
+          "actual": "bēi bāo fàng zài bèi shàng",
+          "source_preserved": true
+        },
+        {
+          "id": "loan",
+          "passed": false,
+          "expected": "chóng qìng yín háng háng zhǎng chóng xīn huán kuǎn",
+          "actual": "chóng qìng yín háng háng zhǎng chóng xīn hái kuǎn",
+          "source_preserved": true
+        },
+        {
+          "id": "mixed",
+          "passed": true,
+          "expected": "wǒ xǐ huan yě xǐ huan pǎo bù",
+          "actual": "wǒ xǐ huan yě xǐ huan pǎo bù",
+          "source_preserved": true
+        },
+        {
+          "id": "security",
+          "passed": true,
+          "expected": "zhōng wén",
+          "actual": "zhōng wén",
+          "source_preserved": true
+        },
+        {
+          "id": "line-breaks",
+          "passed": true,
+          "expected": "nǐ hǎo jīn tiān zěn me yàng",
+          "actual": "nǐ hǎo jīn tiān zěn me yàng",
+          "source_preserved": true
+        },
+        {
+          "id": "traditional",
+          "passed": false,
+          "expected": "yín háng de yīn yuè hěn hǎo tīng",
+          "actual": "yín xíng de yīn lè hěn hǎo tīng",
+          "source_preserved": true
+        }
+      ],
+      "streaming": [
+        {
+          "text": "我想去银行，找银行行长。",
+          "parts": [
+            "我想去银行，",
+            "找银行行长。"
+          ],
+          "whole": "wǒ xiǎng qù yín háng zhǎo yín háng háng zhǎng",
+          "per_phrase": "wǒ xiǎng qù yín háng zhǎo yín háng háng zhǎng",
+          "per_character": "wǒ xiǎng qù yín xíng zhǎo yín xíng xíng cháng"
+        },
+        {
+          "text": "我还没还书。",
+          "parts": [
+            "我还没还书。"
+          ],
+          "whole": "wǒ hái méi hái shū",
+          "per_phrase": "wǒ hái méi hái shū",
+          "per_character": "wǒ hái méi hái shū"
+        },
+        {
+          "text": "重复一次，再去重庆。",
+          "parts": [
+            "重复一次，",
+            "再去重庆。"
+          ],
+          "whole": "chóng fù yī cì zài qù chóng qìng",
+          "per_phrase": "chóng fù yī cì zài qù chóng qìng",
+          "per_character": "zhòng fù yī cì zài qù zhòng qìng"
+        }
+      ],
+      "metrics": {
+        "node_boot_ms": 146.80649999999997,
+        "iterations": 1200,
+        "conversion_p50_ms": 0.022249999999985448,
+        "conversion_p95_ms": 0.05358300000000327,
+        "conversion_max_ms": 6.7051250000000095
+      },
+      "assets": {
+        "dist/index.mjs": {
+          "bytes": 33,
+          "gzip_bytes": 53
+        },
+        "dist/index.js": {
+          "bytes": 325698,
+          "gzip_bytes": 142896
+        },
+        "dictionary_json": {
+          "bytes": 1919699,
+          "gzip_bytes": 633299,
+          "entries": 58907
+        }
+      },
+      "fixture_sha256": "1a76359118aa3bbe3c4a73448cbbaea6c6b9ab6364cdab27665ef9157e4ddcc0",
+      "custom_readings_are_in_sample": false
+    },
+    {
+      "version": 1,
+      "kind": "offline_authored_conversion_spike",
+      "mode": "complete",
+      "pinyin_pro": "3.29.5",
+      "data_package": "1.3.1",
+      "production_agent_changed": false,
+      "real_provider": false,
+      "browser_tested": false,
+      "audio_tested": false,
+      "policy": {
+        "toneSandhi": false,
+        "description": "dictionary tones; not measured audio pronunciation"
+      },
+      "passed": 14,
+      "total": 16,
+      "source_preserved": true,
+      "results": [
+        {
+          "id": "greeting",
+          "passed": true,
+          "expected": "nǐ hǎo wǒ shì",
+          "actual": "nǐ hǎo wǒ shì",
+          "source_preserved": true
+        },
+        {
+          "id": "english",
+          "passed": true,
+          "expected": "",
+          "actual": "",
+          "source_preserved": true
+        },
+        {
+          "id": "numbers",
+          "passed": true,
+          "expected": "wǒ yǒu gè píng guǒ jià gé shì",
+          "actual": "wǒ yǒu gè píng guǒ jià gé shì",
+          "source_preserved": true
+        },
+        {
+          "id": "music",
+          "passed": true,
+          "expected": "wǒ xǐ huan yīn yuè yě hěn kuài lè",
+          "actual": "wǒ xǐ huan yīn yuè yě hěn kuài lè",
+          "source_preserved": true
+        },
+        {
+          "id": "bank",
+          "passed": true,
+          "expected": "yín háng háng zhǎng shuō zhè yàng hěn xíng",
+          "actual": "yín háng háng zhǎng shuō zhè yàng hěn xíng",
+          "source_preserved": true
+        },
+        {
+          "id": "repeat",
+          "passed": true,
+          "expected": "chóng fù yī cì rán hòu qù chóng qìng",
+          "actual": "chóng fù yī cì rán hòu qù chóng qìng",
+          "source_preserved": true
+        },
+        {
+          "id": "return-book",
+          "passed": false,
+          "expected": "wǒ hái méi huán shū",
+          "actual": "wǒ hái méi hái shū",
+          "source_preserved": true
+        },
+        {
+          "id": "headteacher",
+          "passed": true,
+          "expected": "wǒ xiǎng zhǎng dà hòu dāng xiào zhǎng",
+          "actual": "wǒ xiǎng zhǎng dà hòu dāng xiào zhǎng",
+          "source_preserved": true
+        },
+        {
+          "id": "neutral",
+          "passed": true,
+          "expected": "mā ma shuō hái zi yǐ jīng shuì zháo le",
+          "actual": "mā ma shuō hái zi yǐ jīng shuì zháo le",
+          "source_preserved": true
+        },
+        {
+          "id": "base-tones",
+          "passed": true,
+          "expected": "yī gè bù shì dì yī",
+          "actual": "yī gè bù shì dì yī",
+          "source_preserved": true
+        },
+        {
+          "id": "back",
+          "passed": true,
+          "expected": "bēi bāo fàng zài bèi shàng",
+          "actual": "bēi bāo fàng zài bèi shàng",
+          "source_preserved": true
+        },
+        {
+          "id": "loan",
+          "passed": true,
+          "expected": "chóng qìng yín háng háng zhǎng chóng xīn huán kuǎn",
+          "actual": "chóng qìng yín háng háng zhǎng chóng xīn huán kuǎn",
+          "source_preserved": true
+        },
+        {
+          "id": "mixed",
+          "passed": true,
+          "expected": "wǒ xǐ huan yě xǐ huan pǎo bù",
+          "actual": "wǒ xǐ huan yě xǐ huan pǎo bù",
+          "source_preserved": true
+        },
+        {
+          "id": "security",
+          "passed": true,
+          "expected": "zhōng wén",
+          "actual": "zhōng wén",
+          "source_preserved": true
+        },
+        {
+          "id": "line-breaks",
+          "passed": true,
+          "expected": "nǐ hǎo jīn tiān zěn me yàng",
+          "actual": "nǐ hǎo jīn tiān zěn me yàng",
+          "source_preserved": true
+        },
+        {
+          "id": "traditional",
+          "passed": false,
+          "expected": "yín háng de yīn yuè hěn hǎo tīng",
+          "actual": "yín xíng de yīn lè hěn hǎo tīng",
+          "source_preserved": true
+        }
+      ],
+      "streaming": [
+        {
+          "text": "我想去银行，找银行行长。",
+          "parts": [
+            "我想去银行，",
+            "找银行行长。"
+          ],
+          "whole": "wǒ xiǎng qù yín háng zhǎo yín háng háng zhǎng",
+          "per_phrase": "wǒ xiǎng qù yín háng zhǎo yín háng háng zhǎng",
+          "per_character": "wǒ xiǎng qù yín xíng zhǎo yín xíng xíng cháng"
+        },
+        {
+          "text": "我还没还书。",
+          "parts": [
+            "我还没还书。"
+          ],
+          "whole": "wǒ hái méi hái shū",
+          "per_phrase": "wǒ hái méi hái shū",
+          "per_character": "wǒ hái méi hái shū"
+        },
+        {
+          "text": "重复一次，再去重庆。",
+          "parts": [
+            "重复一次，",
+            "再去重庆。"
+          ],
+          "whole": "chóng fù yī cì zài qù chóng qìng",
+          "per_phrase": "chóng fù yī cì zài qù chóng qìng",
+          "per_character": "zhòng fù yī cì zài qù zhòng qìng"
+        }
+      ],
+      "metrics": {
+        "node_boot_ms": 989.163834,
+        "iterations": 1200,
+        "conversion_p50_ms": 0.03479199999992488,
+        "conversion_p95_ms": 0.07316599999990103,
+        "conversion_max_ms": 10.900499999999965
+      },
+      "assets": {
+        "dist/index.mjs": {
+          "bytes": 33,
+          "gzip_bytes": 53
+        },
+        "dist/index.js": {
+          "bytes": 325698,
+          "gzip_bytes": 142896
+        },
+        "dictionary_json": {
+          "bytes": 12965806,
+          "gzip_bytes": 3681437,
+          "entries": 348838
+        }
+      },
+      "fixture_sha256": "1a76359118aa3bbe3c4a73448cbbaea6c6b9ab6364cdab27665ef9157e4ddcc0",
+      "custom_readings_are_in_sample": false
+    },
+    {
+      "version": 1,
+      "kind": "offline_authored_conversion_spike",
+      "mode": "custom",
+      "pinyin_pro": "3.29.5",
+      "data_package": null,
+      "production_agent_changed": false,
+      "real_provider": false,
+      "browser_tested": false,
+      "audio_tested": false,
+      "policy": {
+        "toneSandhi": false,
+        "description": "dictionary tones; not measured audio pronunciation"
+      },
+      "passed": 15,
+      "total": 16,
+      "source_preserved": true,
+      "results": [
+        {
+          "id": "greeting",
+          "passed": true,
+          "expected": "nǐ hǎo wǒ shì",
+          "actual": "nǐ hǎo wǒ shì",
+          "source_preserved": true
+        },
+        {
+          "id": "english",
+          "passed": true,
+          "expected": "",
+          "actual": "",
+          "source_preserved": true
+        },
+        {
+          "id": "numbers",
+          "passed": true,
+          "expected": "wǒ yǒu gè píng guǒ jià gé shì",
+          "actual": "wǒ yǒu gè píng guǒ jià gé shì",
+          "source_preserved": true
+        },
+        {
+          "id": "music",
+          "passed": true,
+          "expected": "wǒ xǐ huan yīn yuè yě hěn kuài lè",
+          "actual": "wǒ xǐ huan yīn yuè yě hěn kuài lè",
+          "source_preserved": true
+        },
+        {
+          "id": "bank",
+          "passed": true,
+          "expected": "yín háng háng zhǎng shuō zhè yàng hěn xíng",
+          "actual": "yín háng háng zhǎng shuō zhè yàng hěn xíng",
+          "source_preserved": true
+        },
+        {
+          "id": "repeat",
+          "passed": true,
+          "expected": "chóng fù yī cì rán hòu qù chóng qìng",
+          "actual": "chóng fù yī cì rán hòu qù chóng qìng",
+          "source_preserved": true
+        },
+        {
+          "id": "return-book",
+          "passed": true,
+          "expected": "wǒ hái méi huán shū",
+          "actual": "wǒ hái méi huán shū",
+          "source_preserved": true
+        },
+        {
+          "id": "headteacher",
+          "passed": true,
+          "expected": "wǒ xiǎng zhǎng dà hòu dāng xiào zhǎng",
+          "actual": "wǒ xiǎng zhǎng dà hòu dāng xiào zhǎng",
+          "source_preserved": true
+        },
+        {
+          "id": "neutral",
+          "passed": true,
+          "expected": "mā ma shuō hái zi yǐ jīng shuì zháo le",
+          "actual": "mā ma shuō hái zi yǐ jīng shuì zháo le",
+          "source_preserved": true
+        },
+        {
+          "id": "base-tones",
+          "passed": true,
+          "expected": "yī gè bù shì dì yī",
+          "actual": "yī gè bù shì dì yī",
+          "source_preserved": true
+        },
+        {
+          "id": "back",
+          "passed": true,
+          "expected": "bēi bāo fàng zài bèi shàng",
+          "actual": "bēi bāo fàng zài bèi shàng",
+          "source_preserved": true
+        },
+        {
+          "id": "loan",
+          "passed": true,
+          "expected": "chóng qìng yín háng háng zhǎng chóng xīn huán kuǎn",
+          "actual": "chóng qìng yín háng háng zhǎng chóng xīn huán kuǎn",
+          "source_preserved": true
+        },
+        {
+          "id": "mixed",
+          "passed": true,
+          "expected": "wǒ xǐ huan yě xǐ huan pǎo bù",
+          "actual": "wǒ xǐ huan yě xǐ huan pǎo bù",
+          "source_preserved": true
+        },
+        {
+          "id": "security",
+          "passed": true,
+          "expected": "zhōng wén",
+          "actual": "zhōng wén",
+          "source_preserved": true
+        },
+        {
+          "id": "line-breaks",
+          "passed": true,
+          "expected": "nǐ hǎo jīn tiān zěn me yàng",
+          "actual": "nǐ hǎo jīn tiān zěn me yàng",
+          "source_preserved": true
+        },
+        {
+          "id": "traditional",
+          "passed": false,
+          "expected": "yín háng de yīn yuè hěn hǎo tīng",
+          "actual": "yín xíng de yīn lè hěn hǎo tīng",
+          "source_preserved": true
+        }
+      ],
+      "streaming": [
+        {
+          "text": "我想去银行，找银行行长。",
+          "parts": [
+            "我想去银行，",
+            "找银行行长。"
+          ],
+          "whole": "wǒ xiǎng qù yín háng zhǎo yín háng háng zhǎng",
+          "per_phrase": "wǒ xiǎng qù yín háng zhǎo yín háng háng zhǎng",
+          "per_character": "wǒ xiǎng qù yín xíng zhǎo yín xíng xíng cháng"
+        },
+        {
+          "text": "我还没还书。",
+          "parts": [
+            "我还没还书。"
+          ],
+          "whole": "wǒ hái méi huán shū",
+          "per_phrase": "wǒ hái méi huán shū",
+          "per_character": "wǒ hái méi hái shū"
+        },
+        {
+          "text": "重复一次，再去重庆。",
+          "parts": [
+            "重复一次，",
+            "再去重庆。"
+          ],
+          "whole": "chóng fù yī cì zài qù chóng qìng",
+          "per_phrase": "chóng fù yī cì zài qù chóng qìng",
+          "per_character": "zhòng fù yī cì zài qù zhòng qìng"
+        }
+      ],
+      "metrics": {
+        "node_boot_ms": 25.661083000000005,
+        "iterations": 1200,
+        "conversion_p50_ms": 0.018875000000008413,
+        "conversion_p95_ms": 0.05099999999998772,
+        "conversion_max_ms": 0.6699579999999941
+      },
+      "assets": {
+        "dist/index.mjs": {
+          "bytes": 33,
+          "gzip_bytes": 53
+        },
+        "dist/index.js": {
+          "bytes": 325698,
+          "gzip_bytes": 142896
+        }
+      },
+      "fixture_sha256": "1a76359118aa3bbe3c4a73448cbbaea6c6b9ab6364cdab27665ef9157e4ddcc0",
+      "custom_readings_are_in_sample": true
+    },
+    {
+      "version": 1,
+      "kind": "offline_authored_conversion_spike",
+      "mode": "custom-traditional",
+      "pinyin_pro": "3.29.5",
+      "data_package": "1.3.1",
+      "production_agent_changed": false,
+      "real_provider": false,
+      "browser_tested": false,
+      "audio_tested": false,
+      "policy": {
+        "toneSandhi": false,
+        "description": "dictionary tones; not measured audio pronunciation"
+      },
+      "passed": 16,
+      "total": 16,
+      "source_preserved": true,
+      "results": [
+        {
+          "id": "greeting",
+          "passed": true,
+          "expected": "nǐ hǎo wǒ shì",
+          "actual": "nǐ hǎo wǒ shì",
+          "source_preserved": true
+        },
+        {
+          "id": "english",
+          "passed": true,
+          "expected": "",
+          "actual": "",
+          "source_preserved": true
+        },
+        {
+          "id": "numbers",
+          "passed": true,
+          "expected": "wǒ yǒu gè píng guǒ jià gé shì",
+          "actual": "wǒ yǒu gè píng guǒ jià gé shì",
+          "source_preserved": true
+        },
+        {
+          "id": "music",
+          "passed": true,
+          "expected": "wǒ xǐ huan yīn yuè yě hěn kuài lè",
+          "actual": "wǒ xǐ huan yīn yuè yě hěn kuài lè",
+          "source_preserved": true
+        },
+        {
+          "id": "bank",
+          "passed": true,
+          "expected": "yín háng háng zhǎng shuō zhè yàng hěn xíng",
+          "actual": "yín háng háng zhǎng shuō zhè yàng hěn xíng",
+          "source_preserved": true
+        },
+        {
+          "id": "repeat",
+          "passed": true,
+          "expected": "chóng fù yī cì rán hòu qù chóng qìng",
+          "actual": "chóng fù yī cì rán hòu qù chóng qìng",
+          "source_preserved": true
+        },
+        {
+          "id": "return-book",
+          "passed": true,
+          "expected": "wǒ hái méi huán shū",
+          "actual": "wǒ hái méi huán shū",
+          "source_preserved": true
+        },
+        {
+          "id": "headteacher",
+          "passed": true,
+          "expected": "wǒ xiǎng zhǎng dà hòu dāng xiào zhǎng",
+          "actual": "wǒ xiǎng zhǎng dà hòu dāng xiào zhǎng",
+          "source_preserved": true
+        },
+        {
+          "id": "neutral",
+          "passed": true,
+          "expected": "mā ma shuō hái zi yǐ jīng shuì zháo le",
+          "actual": "mā ma shuō hái zi yǐ jīng shuì zháo le",
+          "source_preserved": true
+        },
+        {
+          "id": "base-tones",
+          "passed": true,
+          "expected": "yī gè bù shì dì yī",
+          "actual": "yī gè bù shì dì yī",
+          "source_preserved": true
+        },
+        {
+          "id": "back",
+          "passed": true,
+          "expected": "bēi bāo fàng zài bèi shàng",
+          "actual": "bēi bāo fàng zài bèi shàng",
+          "source_preserved": true
+        },
+        {
+          "id": "loan",
+          "passed": true,
+          "expected": "chóng qìng yín háng háng zhǎng chóng xīn huán kuǎn",
+          "actual": "chóng qìng yín háng háng zhǎng chóng xīn huán kuǎn",
+          "source_preserved": true
+        },
+        {
+          "id": "mixed",
+          "passed": true,
+          "expected": "wǒ xǐ huan yě xǐ huan pǎo bù",
+          "actual": "wǒ xǐ huan yě xǐ huan pǎo bù",
+          "source_preserved": true
+        },
+        {
+          "id": "security",
+          "passed": true,
+          "expected": "zhōng wén",
+          "actual": "zhōng wén",
+          "source_preserved": true
+        },
+        {
+          "id": "line-breaks",
+          "passed": true,
+          "expected": "nǐ hǎo jīn tiān zěn me yàng",
+          "actual": "nǐ hǎo jīn tiān zěn me yàng",
+          "source_preserved": true
+        },
+        {
+          "id": "traditional",
+          "passed": true,
+          "expected": "yín háng de yīn yuè hěn hǎo tīng",
+          "actual": "yín háng de yīn yuè hěn hǎo tīng",
+          "source_preserved": true
+        }
+      ],
+      "streaming": [
+        {
+          "text": "我想去银行，找银行行长。",
+          "parts": [
+            "我想去银行，",
+            "找银行行长。"
+          ],
+          "whole": "wǒ xiǎng qù yín háng zhǎo yín háng háng zhǎng",
+          "per_phrase": "wǒ xiǎng qù yín háng zhǎo yín háng háng zhǎng",
+          "per_character": "wǒ xiǎng qù yín xíng zhǎo yín xíng xíng cháng"
+        },
+        {
+          "text": "我还没还书。",
+          "parts": [
+            "我还没还书。"
+          ],
+          "whole": "wǒ hái méi huán shū",
+          "per_phrase": "wǒ hái méi huán shū",
+          "per_character": "wǒ hái méi hái shū"
+        },
+        {
+          "text": "重复一次，再去重庆。",
+          "parts": [
+            "重复一次，",
+            "再去重庆。"
+          ],
+          "whole": "chóng fù yī cì zài qù chóng qìng",
+          "per_phrase": "chóng fù yī cì zài qù chóng qìng",
+          "per_character": "zhòng fù yī cì zài qù zhòng qìng"
+        }
+      ],
+      "metrics": {
+        "node_boot_ms": 32.57175000000001,
+        "iterations": 1200,
+        "conversion_p50_ms": 0.019499999999993634,
+        "conversion_p95_ms": 0.05174999999999841,
+        "conversion_max_ms": 0.44899999999999807
+      },
+      "assets": {
+        "dist/index.mjs": {
+          "bytes": 33,
+          "gzip_bytes": 53
+        },
+        "dist/index.js": {
+          "bytes": 325698,
+          "gzip_bytes": 142896
+        },
+        "traditional_json": {
+          "bytes": 20941,
+          "gzip_bytes": 9370,
+          "entries": 1745
+        }
+      },
+      "fixture_sha256": "1a76359118aa3bbe3c4a73448cbbaea6c6b9ab6364cdab27665ef9157e4ddcc0",
+      "custom_readings_are_in_sample": true
+    }
+  ],
+  "real_provider": {
+    "connected_sessions": 6,
+    "passed": 6,
+    "asr_exact_authored_matches": 5,
+    "single_input_sessions_only": true,
+    "synthetic_caption_renderer": true,
+    "cases": [
+      {
+        "id": "off",
+        "real_provider": true,
+        "synthetic_caption_renderer": true,
+        "browser_tested": false,
+        "microphone": false,
+        "human_listening": false,
+        "production_agent_changed": false,
+        "input_source": "local_os_authored_speech",
+        "input_sha256": "3538986e2dcafc6af5b6d9e16f8448a09aff246ca7599a7e11ea7f4778e38b7a",
+        "instruction_sha256": "4bc0a694bac7367434f7f69fb6fee12dda2f7edc8ce2b0a385c1c59fc845b019",
+        "initial": true,
+        "expected": false,
+        "final": false,
+        "asr_final_count": 1,
+        "asr_matches_authored": true,
+        "tool_calls": [
+          {
+            "enabled": false
+          }
+        ],
+        "tool_results": 1,
+        "output_events_before_result": 0,
+        "audio_bytes": 239154,
+        "text_done": true,
+        "audio_done": true,
+        "native_fc_input_identity_verified": false,
+        "reply_contains_tone_marked_pinyin": false,
+        "session_closed_ack": true,
+        "ended": "reply_done",
+        "passed": true
+      },
+      {
+        "id": "on",
+        "real_provider": true,
+        "synthetic_caption_renderer": true,
+        "browser_tested": false,
+        "microphone": false,
+        "human_listening": false,
+        "production_agent_changed": false,
+        "input_source": "local_os_authored_speech",
+        "input_sha256": "81ee20d7223a331e597f1253dce5d5742b4bcb2860108a8d6340c8d923f8dad3",
+        "instruction_sha256": "69d19c140cecbca14dd7108f38f1ffc32361184fe5ac239d5c3a9cdbd1fdfe3c",
+        "initial": false,
+        "expected": true,
+        "final": true,
+        "asr_final_count": 1,
+        "asr_matches_authored": true,
+        "tool_calls": [
+          {
+            "enabled": true
+          }
+        ],
+        "tool_results": 1,
+        "output_events_before_result": 0,
+        "audio_bytes": 252164,
+        "text_done": true,
+        "audio_done": true,
+        "native_fc_input_identity_verified": false,
+        "reply_contains_tone_marked_pinyin": false,
+        "session_closed_ack": true,
+        "ended": "reply_done",
+        "passed": true
+      },
+      {
+        "id": "keep",
+        "real_provider": true,
+        "synthetic_caption_renderer": true,
+        "browser_tested": false,
+        "microphone": false,
+        "human_listening": false,
+        "production_agent_changed": false,
+        "input_source": "local_os_authored_speech",
+        "input_sha256": "e4b6d8ce70379a5640d53bccccc1dc15b73eeae2dfa115d5e2287013930bb1d1",
+        "instruction_sha256": "4bc0a694bac7367434f7f69fb6fee12dda2f7edc8ce2b0a385c1c59fc845b019",
+        "initial": true,
+        "expected": null,
+        "final": true,
+        "asr_final_count": 1,
+        "asr_matches_authored": true,
+        "tool_calls": [],
+        "tool_results": 0,
+        "output_events_before_result": 16,
+        "audio_bytes": 155610,
+        "text_done": true,
+        "audio_done": true,
+        "native_fc_input_identity_verified": false,
+        "reply_contains_tone_marked_pinyin": false,
+        "session_closed_ack": true,
+        "ended": "reply_done",
+        "passed": true
+      },
+      {
+        "id": "quote",
+        "real_provider": true,
+        "synthetic_caption_renderer": true,
+        "browser_tested": false,
+        "microphone": false,
+        "human_listening": false,
+        "production_agent_changed": false,
+        "input_source": "local_os_authored_speech",
+        "input_sha256": "f9c960881330115cbcb43ce4cc2c30d7dde73a672f301e62074f9f5e5b87ef53",
+        "instruction_sha256": "4bc0a694bac7367434f7f69fb6fee12dda2f7edc8ce2b0a385c1c59fc845b019",
+        "initial": true,
+        "expected": null,
+        "final": true,
+        "asr_final_count": 1,
+        "asr_matches_authored": true,
+        "tool_calls": [],
+        "tool_results": 0,
+        "output_events_before_result": 43,
+        "audio_bytes": 526004,
+        "text_done": true,
+        "audio_done": true,
+        "native_fc_input_identity_verified": false,
+        "reply_contains_tone_marked_pinyin": false,
+        "session_closed_ack": true,
+        "ended": "reply_done",
+        "passed": true
+      },
+      {
+        "id": "off-en",
+        "real_provider": true,
+        "synthetic_caption_renderer": true,
+        "browser_tested": false,
+        "microphone": false,
+        "human_listening": false,
+        "production_agent_changed": false,
+        "input_source": "local_os_authored_speech",
+        "input_sha256": "4d44d3c2148064f6f1d6b5e8a33da9d4a9600e6d56a2eaad3b3762e62cd8e9f5",
+        "instruction_sha256": "4bc0a694bac7367434f7f69fb6fee12dda2f7edc8ce2b0a385c1c59fc845b019",
+        "initial": true,
+        "expected": false,
+        "final": false,
+        "asr_final_count": 1,
+        "asr_matches_authored": false,
+        "tool_calls": [
+          {
+            "enabled": false
+          }
+        ],
+        "tool_results": 1,
+        "output_events_before_result": 0,
+        "audio_bytes": 347588,
+        "text_done": true,
+        "audio_done": true,
+        "native_fc_input_identity_verified": false,
+        "reply_contains_tone_marked_pinyin": false,
+        "session_closed_ack": true,
+        "ended": "reply_done",
+        "passed": true
+      },
+      {
+        "id": "off-question",
+        "real_provider": true,
+        "synthetic_caption_renderer": true,
+        "browser_tested": false,
+        "microphone": false,
+        "human_listening": false,
+        "production_agent_changed": false,
+        "input_source": "local_os_authored_speech",
+        "input_sha256": "7170d64ea683bbe9974d7292e2bd6f205e895998db236cd25b7f581e3d9fdd35",
+        "instruction_sha256": "4bc0a694bac7367434f7f69fb6fee12dda2f7edc8ce2b0a385c1c59fc845b019",
+        "initial": true,
+        "expected": false,
+        "final": false,
+        "asr_final_count": 1,
+        "asr_matches_authored": true,
+        "tool_calls": [
+          {
+            "enabled": false
+          }
+        ],
+        "tool_results": 1,
+        "output_events_before_result": 0,
+        "audio_bytes": 718664,
+        "text_done": true,
+        "audio_done": true,
+        "native_fc_input_identity_verified": false,
+        "reply_contains_tone_marked_pinyin": false,
+        "session_closed_ack": true,
+        "ended": "reply_done",
+        "passed": true
+      }
+    ]
+  },
+  "browser": {
+    "driver": "CUA_IAB",
+    "isolated_demo": true,
+    "ordinary_web": false,
+    "real_provider": false,
+    "audio": false,
+    "cases": [
+      {
+        "id": "default_mixed",
+        "passed": true
+      },
+      {
+        "id": "hide_keeps_text",
+        "passed": true
+      },
+      {
+        "id": "later_sample_stays_hidden",
+        "passed": true
+      },
+      {
+        "id": "new_session_defaults_on",
+        "passed": true
+      },
+      {
+        "id": "source_is_literal_text",
+        "passed": true
+      },
+      {
+        "id": "restore_and_desktop_fit",
+        "passed": true
+      }
+    ],
+    "earlier_driver_issue": "Initial assertion miscounted nine Han characters as ten; fixed expected count without changing UI.",
+    "passed": 6
+  },
+  "checks": {
+    "npm_check_passed": true,
+    "verify_and_replay": "not rerun: no runtime or contract changes"
+  },
+  "not_verified": [
+    "ordinary Agent or ordinary Web integration",
+    "continuous native multi-turn control and source ordering",
+    "real browser ACK before native confirmation",
+    "native tools composition with slides and pace",
+    "human microphone, listening, or pronunciation matching",
+    "production browser cold load, mobile line wrapping and performance",
+    "held-out reading accuracy, names, uncommon characters and open-domain ambiguity",
+    "plain Latin pinyin absence in spoken audio"
+  ],
+  "interpretation": [
+    "native sample pass is bounded tool structure and output ordering, not full semantic or listening acceptance",
+    "custom corrections are in-sample fixes, not held-out quality results",
+    "pinyin derived from written text is not actual phonetic alignment"
+  ]
+}

@@ -18,6 +18,11 @@ import { LEARNER_PARTS } from '../../../packages/contracts/learner-data.js';
 
 const publicDir = new URL('../public/', import.meta.url);
 const staticFiles = new Map([
+  ['/caption-annotations.js',['caption-annotations.js','text/javascript']],
+  ['/caption-settings.js',['caption-settings.js','text/javascript']],
+  ['/vendor/pinyin-pro.js',['../../../node_modules/pinyin-pro/dist/index.js','text/javascript']],
+  ['/vendor/pinyin-traditional.js',['../../../node_modules/@pinyin-pro/data/dist/traditional.mjs','text/javascript']],
+  ['/vendor/pinyin-pro.LICENSE',['../../../node_modules/pinyin-pro/LICENSE','text/plain']],
   ['/slides-viewer.js',['slides-viewer.js','text/javascript']],
   ['/voice-readiness.js',['voice-readiness.js','text/javascript']],
   ['/slides-viewer.css',['slides-viewer.css','text/css']],
