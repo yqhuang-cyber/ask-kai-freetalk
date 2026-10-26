@@ -45,7 +45,9 @@
     "test:teacher": "node --test tests/teacher-assistant-*.test.js",
     "test:teacher:browser": "node scripts/teacher-assistant/browser-check.js",
     "check:teacher:isolation": "node scripts/teacher-assistant/check-isolation.js",
-    "probe:teacher:browser": "node --env-file-if-exists=.env scripts/teacher-assistant/live-browser-check.js"
+    "probe:teacher:browser": "node --env-file-if-exists=.env scripts/teacher-assistant/live-browser-check.js",
+    "test:teacher:planning:browser": "node scripts/teacher-assistant/planning-browser-check.js",
+    "probe:teacher:planning": "node --env-file-if-exists=.env scripts/teacher-assistant/planning-live-check.js"
   },
   "dependencies": {
     "@earendil-works/pi-agent-core": "1.2.0",

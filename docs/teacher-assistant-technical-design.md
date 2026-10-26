@@ -2,6 +2,8 @@
 
 日期：2026-10-26（Asia/Shanghai）。状态：完整架构设计保留；最小 Demo 切片已实现，真人设备走查待验。
 
+教师端 AI 前置备课首个子集已实现，实际 v2 契约、单学生任务 / 草案、模型预算、配置及未实现的完整平台能力见[AI 备课实施说明](teacher-assistant-ai-planning-implementation.md)。该子集已按用户要求合并回原 4330 Demo；4331 继续作为独立开发验收入口。
+
 输入：[PRD v0.2](prd/teacher-assigned-conversation-homework-prd-v0.2.md)、[User Journey](teacher-homework-user-journey.md)、[前置规划与原仓库核对](teacher-homework-planning-design.md)。执行顺序及逐项完成条件见[实施计划 / tasking](teacher-assistant-tasking.md)。本文描述完整目标架构；已经实现的最小切片、实际端口 / schema / 配置及与完整设计的差异，以[Demo 实施说明](teacher-assistant-demo-implementation.md)为准；不将未实现的完整平台能力视为已交付。
 
 v0.2 按用户要求改为 **G0 → 最小 Demo → 分角色完善**，完整目标架构保持。当前切片以[最小 Demo 蓝图](teacher-homework-minimal-service-blueprint.md)及[MD-01～MD-08](teacher-assistant-minimal-demo-tasking.md)为准；本文的通用 Worker、AI 生成、多人个性化、语义抽取和评分是后续能力，不要求在 Demo 前全部实现。

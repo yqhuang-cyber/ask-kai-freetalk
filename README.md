@@ -1,14 +1,16 @@
 # Ask Kai 自由对话
 
+教师端 AI 前置备课第一阶段已合并回主干：主题与课后要求 → AI 教学包 / 个人目标 → 教师编辑确认 → 发布执行。原 Demo 4330 同时提供 AI 备课与预置点餐任务；4331 保留独立开发试用。见[实施与配置](docs/teacher-assistant-ai-planning-implementation.md)、[分层验收](docs/eval-results/2026-10-26-teacher-ai-planning.md)。当前只参考获准 Mock 等级，近期学习证据 / 多人分层 / 教学质量仍后续验证。
+
 教师助教最小 Demo 已有独立入口：`npm run poc:teacher` → [本机 4330](http://127.0.0.1:4330)。预置点餐作业的发布、主题对话、明确提交与双端反馈已连通；不改 FreeTalk 流程。648 项回归 / 新旧浏览器通过，真实豆包经新页面与测试麦克风闭环通过，真人听感待验。见[试用与实现边界](docs/teacher-assistant-demo-implementation.md)、[验收记录](docs/eval-results/2026-10-26-teacher-assistant-demo.md)。
 
 学生从自己想说的事开始，和 Kai 用中文实时聊天。Kai 先接住当前意思，再按需要澄清、示范或轻轻练习。普通交流可以没有教学目标；计划或关键词命中不能证明学生已经掌握。
 
 这是从 Ask Kai 分出的自由对话仓库。页面只有这一个入口。身份、偏好和学习记录使用本地模拟数据；语音使用已配置的豆包实时全双工。它是本机试验，不是已上线的课程服务。
 
-教师助教方向已整理独立的[需求分析](docs/teacher-assistant-requirements-analysis.md)、[师生 User Journey](docs/teacher-homework-user-journey.md)、[PRD v0.2](docs/prd/teacher-assigned-conversation-homework-prd-v0.2.md)及[前置规划与原仓库核对](docs/teacher-homework-planning-design.md)。方案为教师定主题、AI 提前准备资源和按人作业计划，在独立新场景开展主题对话并生成双端反馈；尚未实施，现有 FreeTalk 的入口、规划与行为保持现状，A/B/C/D 仅供教师查看。
+教师助教方向已整理独立的[需求分析](docs/teacher-assistant-requirements-analysis.md)、[师生 User Journey](docs/teacher-homework-user-journey.md)、[PRD v0.2](docs/prd/teacher-assigned-conversation-homework-prd-v0.2.md)及[前置规划与原仓库核对](docs/teacher-homework-planning-design.md)。方案为教师定主题、AI 提前准备资源和按人作业计划，在独立新场景开展主题对话并生成双端反馈；最小 Demo 与 AI 备课首个子集已实施，其他能力仍按 tasking 完善；现有 FreeTalk 的入口、规划与行为保持现状，A/B/C/D 仅供教师查看。
 
-对应的[技术方案 v0.2](docs/teacher-assistant-technical-design.md)与[实施计划 / tasking](docs/teacher-assistant-tasking.md)已交付。当前优先 **G0 → [最小 Demo / MD-01～MD-08](docs/teacher-assistant-minimal-demo-tasking.md)**：一位教师、一位学生、预置点餐计划，打通发布 / 对话 / 提交 / 双端事实反馈；完整架构保留，之后完善教师 / 学生 / Kai 能力。所有实现任务尚未开始，FreeTalk 保持现状，自动评级独立验收。
+对应的[技术方案 v0.2](docs/teacher-assistant-technical-design.md)与[实施计划 / tasking](docs/teacher-assistant-tasking.md)已交付。当前优先 **G0 → [最小 Demo / MD-01～MD-08](docs/teacher-assistant-minimal-demo-tasking.md)**：一位教师、一位学生、预置点餐计划，打通发布 / 对话 / 提交 / 双端事实反馈；完整架构保留，之后完善教师 / 学生 / Kai 能力。当前完成范围见上述最小 Demo 与 AI 备课实施记录；完整 TA backlog 未整体完成，FreeTalk 保持现状，自动评级独立验收。
 
 [背景](#1-背景说明) · [内容](#2-内容模块) · [架构](#3-架构设计) · [使用](#4-使用方式自由聊天) · [规划与小结](#5-动态规划语言支架与学习小结) · [评测](#6-评测机制与现有结果) · [启动](#7-启动) · [观测](#8-planner-与语音模型观测)
 

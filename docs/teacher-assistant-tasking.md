@@ -2,6 +2,8 @@
 
 日期：2026-10-26（Asia/Shanghai）。状态：**G0 通过，MD-01～MD-07 最小功能完成；MD-08 工程 / 真实豆包浏览器链路通过，真人走查待验。完整 TA backlog 仅完成这些最小子集。**
 
+2026-10-26 更新：教师端 AI 前置备课的单学生子集已在隔离分支实现，覆盖 TA-04～TA-08 的必要部分；不是上述完整任务整体完成。见[当前实现 / 剩余范围](teacher-assistant-ai-planning-implementation.md)、[验收](eval-results/2026-10-26-teacher-ai-planning.md)。上述子集现已合并回主干，原 Demo 同时保留预置路径供真人走查。
+
 输入：[PRD v0.2](prd/teacher-assigned-conversation-homework-prd-v0.2.md)、[User Journey](teacher-homework-user-journey.md)、[前置规划需求](teacher-homework-planning-design.md)、[技术方案](teacher-assistant-technical-design.md)。实际最小实现及命令见[实施说明](teacher-assistant-demo-implementation.md)，分层证据见[验收记录](eval-results/2026-10-26-teacher-assistant-demo.md)。其余完整 TA 模块仍为后续产物。
 
 ## 1. 实施原则与阶段成果
