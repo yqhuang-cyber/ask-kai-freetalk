@@ -1,0 +1,13 @@
+{
+  "commit": "daba25e394c83d309b073747cc39c5b24965d41b",
+  "files": {
+    "apps/realtime-gateway/public/web.js": "2ac8a342f669c5703894a9588b72946a43df764b93b783c68243a308b509180c",
+    "apps/realtime-gateway/public/index.html": "187b58c1687476ac7fee838c30fa605aa88c32fcdff695fdc7d7ff379ed67f27",
+    "packages/agent-core/teaching.js": "db76e6178c3a6567723b8b15522d54e0707b4d49de28be547a2c806ad9268a7e",
+    "packages/agent-core/context-snapshot.js": "90e41c839f4b0d42d4b9edcde56a7ee5f11197d1bd0fd1a181597fd35879950d",
+    "packages/agent-core/natural-teaching.js": "63dae4f49a16e53300af7dba182c5a0017205443ec089ff82548612cd6cdc23d",
+    "packages/agent-core/conversation-initializer.js": "2b45c2c7ed425c903e4e64d94c3304cf296f769953473d54f4edcfba5cc215d2",
+    "apps/realtime-gateway/src/server.js": "018ed70a22aa9cd64b9548717636ab9b4405fbb7453be547d0e0aaadce27e324",
+    "apps/realtime-gateway/src/main.js": "8b77dd27a2f58f6e627216a34b638a974d08afd7f9e89c569a3f98fc0e6b2ed4"
+  }
+}

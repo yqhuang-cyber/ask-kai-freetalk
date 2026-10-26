@@ -1,5 +1,11 @@
 # Incremental delivery
 
+2026-10-26 教师助教最小 Demo 已实施：G0 通过，MD-01～MD-07 最小子交付完成，MD-08 工程及真实豆包浏览器音频闭环通过，真人麦克风 / 听感走查待验。独立入口 `npm run poc:teacher`（4330），本地 Mock 业务子进程与 SQLite；预置点餐计划 → 发布 → 作业对话 → 明确提交 → 双端事实反馈，无等级。648 项回归、三项合成回放、Node 22.19.0 新场景 12 项检查及新旧浏览器通过；8 个冻结 FreeTalk 文件 hash 不变，共享 realtime 仅加默认不变的可选注入。实际实现 / 限制见[试用说明](teacher-assistant-demo-implementation.md)、[验收](eval-results/2026-10-26-teacher-assistant-demo.md)。下面此前“未实施”记录为历史阶段状态。
+
+2026-10-26 教师助教交付顺序调整：用户确认先实现[最小 Demo 蓝图](teacher-homework-minimal-service-blueprint.md)。已将[技术方案](teacher-assistant-technical-design.md)和[完整 tasking](teacher-assistant-tasking.md)更新至 v0.2，执行顺序为 **G0 最小隔离 / 架构基线 → [MD-01～MD-08](teacher-assistant-minimal-demo-tasking.md) 完整 Demo → 教师 / 学生 / Kai 分角色完善**。Demo 用一位教师、一位学生、一份明确标注的预置点餐计划，发布、真实主题对话、明确提交和双端事实反馈实际连通；不等待完整 AI 备课 / 四人分层，不做等级。保留正式计划 / 版本 / 授权 / 尝试 / 提交 / 报告边界；原 G1～G4 改作完整能力验收标号。**目前只更新方案，G0、MD 和完整 TA 任务均未实施，FreeTalk 运行代码未改。**
+
+2026-10-26 教师助教作业主题对话初版方案：已交付[技术方案](teacher-assistant-technical-design.md)及[TA-00～TA-21 实施计划](teacher-assistant-tasking.md)，依据[PRD v0.2](prd/teacher-assigned-conversation-homework-prd-v0.2.md)与[师生 Journey](teacher-homework-user-journey.md)。拟新增独立 TA 应用 / 页面、本地 Mock 授课授权与持久化业务、前置主题包及按人计划、作业对话与双端报告；原 FreeTalk 的入口、初始无目标规划、提示词、学习记录及新服务零依赖为硬边界。共享 realtime 注入点先做旧行为差分，自动等级按语义 / 机会 / 支持能力独立准入。该条保留初版完整架构范围，执行顺序已由上方 Demo 优先方案取代；**未修改运行代码或新增模型 / provider / 浏览器验收结论。**
+
 2026-10-26 拼音字幕首版：普通 Web 默认显示中文声调拼音，保留原 S2S 音频／渐进字幕；明确 ASR final 指令与手动开关共用本场设置、版本和页面 ACK，之后一次固定语音确认。修复连续 final-only 指令误取消新确认，636 verify 与三个 synthetic replay 通过；普通 IAB 8 项拼音＋12 项既有场景通过，真实豆包普通网关三轮开关通过但页面／播放回执模拟。原始画像、学习记录和归档评测基线不变；真人麦克风／听感、开放读音质量仍待验。详见[实施记录](pinyin-captions-implementation.md)。
 
 2026-10-26 拼音字幕隔离 spike：确认默认中文字幕附带拼音、拼音不送语音、学习者可在本场口头关闭。基础库 16 个作者读音样本通过 13 项，经两条样本内覆盖＋繁体映射通过 16 项；不能视为开放文本准确率。真实豆包 6 个独立语音开关样本符合预期，应用执行器 synthetic；离线 IAB 6 项呈现检查通过，无麦克风／听感。普通 Agent／Web、工程依赖及生产提示词未改，尚未实施；后续选择明确 ASR 控制或完善原生 FC 归属，见[Spike 报告](pinyin-captions-spike.md)。

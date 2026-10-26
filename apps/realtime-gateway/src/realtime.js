@@ -15,30 +15,31 @@ import { ReplyAudit,REPLY_POLICY_VERSION } from '../../../packages/agent-core/re
 import { sameLanguageSupport } from '../../../packages/agent-core/language-support.js';
 import { assistantFarewell,providerExitSuppressed,controlText } from '../../../packages/agent-core/natural-teaching.js';
 
-export function attachRealtime(server,{providerFactory,providerKind='doubao',businessSource='unconfigured',planner,planningPort,maxConnections=8,readyTimeoutMs=8000,maxSessionMs=600000,cancelTimeoutMs=1500,contextTimeoutMs=8000,replyGraceMs=350,turnWaitMs=5000,closingWaitMs=12000,closingPlaybackMs=35000,safeguardingPort,metrics,observationReports,slidesControls=false,slidesDemoHistory=false,slidesHandshakeMs=5000}={}) {
+export function attachRealtime(server,{providerFactory,providerKind='doubao',businessSource='unconfigured',planner,planningPort,maxConnections=8,readyTimeoutMs=8000,maxSessionMs=600000,cancelTimeoutMs=1500,contextTimeoutMs=8000,replyGraceMs=350,turnWaitMs=5000,closingWaitMs=12000,closingPlaybackMs=35000,safeguardingPort,metrics,observationReports,slidesControls=false,slidesDemoHistory=false,slidesHandshakeMs=5000,websocketPath='/api/realtime',protocol='ask-kai.v1',conversationFactory,sessionLifecycle}={}) {
   const tickets = new Map();
   const connections = new Set();
   const sessions=new Map();
-  const wss = new WebSocketServer({noServer:true,maxPayload:65536,perMessageDeflate:false,handleProtocols:protocols=>protocols.has('ask-kai.v1') ? 'ask-kai.v1' : false});
+  const wss = new WebSocketServer({noServer:true,maxPayload:65536,perMessageDeflate:false,handleProtocols:protocols=>protocols.has(protocol) ? protocol : false});
   const sweep = setInterval(() => { for(const [key,item] of tickets) if(item.expires <= Date.now()) tickets.delete(key); },1000);
   sweep.unref();
   const reject = (socket,status) => socket.end(`HTTP/1.1 ${status}\r\nConnection: close\r\nContent-Length: 0\r\n\r\n`);
-  server.on('upgrade',(req,socket,head) => {
+  server.on('upgrade',async(req,socket,head) => {
     if (!providerFactory) return reject(socket,'501 Not Implemented');
     const expectedOrigin = `http://${req.headers.host}`;
     if (!/^(127\.0\.0\.1|localhost|\[::1\])(?::\d+)?$/.test(req.headers.host ?? '') || req.headers.origin !== expectedOrigin) return reject(socket,'403 Forbidden');
-    if (req.url !== '/api/realtime' || !providerFactory) return reject(socket,'501 Not Implemented');
+    if (req.url !== websocketPath || !providerFactory) return reject(socket,'501 Not Implemented');
     const protocols = (req.headers['sec-websocket-protocol'] ?? '').split(',').map(p=>p.trim());
     const token = protocols.find(p=>p.startsWith('ticket.'))?.slice(7);
     const ticket = tickets.get(token);
     tickets.delete(token); // one use, including a failed attempt
-    if (!protocols.includes('ask-kai.v1') || !ticket || ticket.expires <= Date.now() || ticket.identity.expires<=Date.now() || ticket.origin !== expectedOrigin) return reject(socket,'401 Unauthorized');
+    if (!protocols.includes(protocol) || !ticket || ticket.expires <= Date.now() || ticket.identity.expires<=Date.now() || ticket.origin !== expectedOrigin) return reject(socket,'401 Unauthorized');
+    if(sessionLifecycle?.authorize){try{await sessionLifecycle.authorize(ticket);}catch{return reject(socket,'401 Unauthorized');}}
     if (connections.size >= maxConnections) return reject(socket,'429 Too Many Requests');
     wss.handleUpgrade(req,socket,head,ws => {
       connections.add(ws);
       const observation=ticket.planning?.trace;
       const runtime = new SessionRuntime(ticket.session_id,{target:null});
-      const teaching=new TeachingSession({sessionId:ticket.session_id,mode:ticket.mode,memory:ticket.identity.memory,mission:ticket.identity.mission,speechPace:ticket.speech_pace,planning:ticket.planning,planner,resourceVerifier:planningPort?.checkResource?(resource,options)=>planningPort.checkResource(ticket.identity,resource,options):null,onPlanningRecord:(name,fields)=>diagnose(name,fields)});
+      const teaching=conversationFactory?conversationFactory(ticket):new TeachingSession({sessionId:ticket.session_id,mode:ticket.mode,memory:ticket.identity.memory,mission:ticket.identity.mission,speechPace:ticket.speech_pace,planning:ticket.planning,planner,resourceVerifier:planningPort?.checkResource?(resource,options)=>planningPort.checkResource(ticket.identity,resource,options):null,onPlanningRecord:(name,fields)=>diagnose(name,fields)});
       const policy=new SafetyPolicy();
       const started=performance.now();metrics?.count(providerKind,'sessions');
       let restricted=false,controlCount=0,controlAt=Date.now(),replyAt=null,firstAudio=false;
@@ -138,12 +139,14 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         const summary=teaching.finalize({outcome:code?'failed':'ended',endReason:reason,businessSource,providerKind,ready});
         diagnose('summary.finalized',{summary_policy_version:summary.policy_version,summary_focus:summary.focus,summary_outcome:summary.outcome,summary_partial:summary.partial,summary_attempts:summary.counts.attempts,summary_items:summary.learning_items.length});
         clearTimeout(readyTimer); clearTimeout(lifetime);
-        clearInterval(heartbeat);
+        clearInterval(heartbeat);clearInterval(authorizationLease);
         if(code)metrics?.count(providerKind,'failures');
         for(const pending of pendingCancel.values())clearTimeout(pending.timer);
         pendingCancel.clear();
         if(pendingContext)clearTimeout(pendingContext.timer);
         try { provider?.close(); } catch {}
+        let homeworkReceipt=null;
+        if(sessionLifecycle?.finalize){try{homeworkReceipt=await sessionLifecycle.finalize({ticket,controller:teaching,summary,code,reason});}catch{homeworkReceipt={state:'pending',attempt_id:ticket.homework?.attempt_id};}}
         let observationReceipt=null;
         if(observationReport&&observationReports&&!['AUTHORIZATION_REVOKED','SAFETY_RESTRICTED'].includes(code)){try{observationReceipt=await observationReports.save(ticket.identity,observationReport);}catch{observationReceipt={status:'failed'};}}
         let receipt={status:'unavailable',session_id:ticket.session_id};
@@ -157,6 +160,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
           finally{clearTimeout(deadline);}
         }
         if (ws.readyState === ws.OPEN) {
+          if(homeworkReceipt)ws.send(JSON.stringify({type:'homework.attempt.receipt',...homeworkReceipt}));
           if(observationReceipt)ws.send(JSON.stringify({type:'observation.report.saved',session_id:ticket.session_id,...observationReceipt}));
           ws.send(JSON.stringify({type:'conversation.record.receipt',...receipt}));
           const view=summary.focus==='unavailable'?{mode:ticket.mode,goal:'',start_tip:'',cards:[],attempts:[],attempt_count:0,attempts_truncated:false,notice:'本轮总结不可用。'}:teaching.view();
@@ -173,6 +177,8 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
       let alive=true;
       const heartbeat=setInterval(()=>{if(!alive){finish('CLIENT_HEARTBEAT_TIMEOUT');ws.terminate();return;}alive=false;if(ws.readyState===ws.OPEN)ws.ping();},15000);
       ws.on('pong',()=>{alive=true;});
+      let leaseChecking=false;
+      const authorizationLease=sessionLifecycle?.authorize?setInterval(async()=>{if(ended||leaseChecking)return;leaseChecking=true;try{await sessionLifecycle.authorize(ticket);}catch{void finish('AUTHORIZATION_REVOKED');}finally{leaseChecking=false;}},3000):undefined;
       const flushContext = () => {
         if(ended || ending || !ready || runtime.active || provider?.pendingFixed || provider?.uiBusy || pendingCancel.size || pendingContext || speech?.blocksContext() || captions?.blocksContext() || appliedVersion===teaching.version&&!slides?.dirty){if(!ended&&!ending&&appliedVersion!==teaching.version)observation?.record('voice.context.waiting',{context_version:teaching.version,applied_context_version:appliedVersion,active_reply:!!runtime.active,pending_cancel:pendingCancel.size>0,pending_context:!!pendingContext,ready});return;}
         let ui;try{ui=slides?.configuration();}catch{return finish('SLIDES_CAPABILITY_LIMIT');}
@@ -515,15 +521,17 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
   });
   return {
     available:!!providerFactory,
-    async create({origin,mode,identity,speechPace,planning,bindPlanning}) {
+    async create({origin,mode,identity,speechPace,planning,bindPlanning,homework}) {
       if (!providerFactory) return null;
       if (tickets.size+connections.size >= maxConnections) throw new Error('SESSION_CAPACITY');
       const token = randomUUID();
       const ticket = {session_id:randomUUID(),mode,speech_pace:speechPace,origin,identity,expires:Math.min(Date.now()+30000,identity.expires)};
+      if(homework)ticket.homework=homework;
+      if(sessionLifecycle?.open)await sessionLifecycle.open(ticket);
       if(planning)ticket.planning=bindPlanning(planning,ticket.session_id);
       tickets.set(token,ticket);
       try{if(planningPort?.openConversation){await planningPort.openConversation(identity,ticket.session_id,mode);ticket.conversation_registered=true;}}catch{tickets.delete(token);throw new Error('CONVERSATION_RECORD_UNAVAILABLE');}
-      return {session_id:ticket.session_id,ticket:token,websocket_path:'/api/realtime',protocol:'ask-kai.v1',expires_in:30,provider_connected:false};
+      return {session_id:ticket.session_id,ticket:token,websocket_path:websocketPath,protocol,expires_in:30,provider_connected:false};
     },
     async updateMemory(identity,memory) {
       const matches=[...sessions.values()].filter(s=>s.identity.owner_id===identity.owner_id&&s.identity.learner_id===identity.learner_id);

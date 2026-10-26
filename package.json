@@ -40,7 +40,12 @@
     "eval:agent:long": "node scripts/long-session-eval.js",
     "test:browser:closing": "node scripts/closing-browser-check.js",
     "probe:closing": "node --env-file-if-exists=.env scripts/closing-voice-probe.js",
-    "test:browser:slides": "node scripts/voice-slides-control/ordinary-web-browser-check.js"
+    "test:browser:slides": "node scripts/voice-slides-control/ordinary-web-browser-check.js",
+    "poc:teacher": "node --env-file-if-exists=.env apps/teacher-assistant/src/main.js",
+    "test:teacher": "node --test tests/teacher-assistant-*.test.js",
+    "test:teacher:browser": "node scripts/teacher-assistant/browser-check.js",
+    "check:teacher:isolation": "node scripts/teacher-assistant/check-isolation.js",
+    "probe:teacher:browser": "node --env-file-if-exists=.env scripts/teacher-assistant/live-browser-check.js"
   },
   "dependencies": {
     "@earendil-works/pi-agent-core": "1.2.0",
