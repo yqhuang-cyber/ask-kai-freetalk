@@ -12,9 +12,9 @@ export function observeDining(raw){
   return found;
 }
 export class EvidenceRecorder {
-  constructor({attemptId,sessionId,planHash}){Object.assign(this,{attemptId,sessionId,planHash});this.seen=new Set();this.observations=[];this.help=[];this.responses=new Map();this.replies=[];this.truncated=false;}
+  constructor({attemptId,sessionId,planHash,plan}){Object.assign(this,{attemptId,sessionId,planHash});this.plan=plan;this.seen=new Set();this.observations=[];this.help=[];this.responses=new Map();this.replies=[];this.truncated=false;}
   input(event){if(this.closed||event.type!=='user.final'||this.seen.has(event.turn_id))return false;this.seen.add(event.turn_id);
-    for(const fact of observeDining(event.payload.text)){if(this.observations.length<24)this.observations.push({...fact,event_id:event.event_id,turn_id:event.turn_id,support_basis:'unknown'});else this.truncated=true;}
+    for(const fact of observeDining(event.payload.text)){if(this.plan&&!this.plan.goals.some(g=>g.id===fact.goal_id&&g.observation_rule!=='unassessed'))continue;if(this.observations.length<24)this.observations.push({...fact,event_id:event.event_id,turn_id:event.turn_id,support_basis:'unknown'});else this.truncated=true;}
     if(!/[“”「」『』"‘’]|他说|她说|老师说/u.test(event.payload.text)&&/^(?:请|可以|能不能)?(?:帮我|我不会说|给我示范|示范|这(?:句|个).{0,20}怎么说|用中文怎么说|can you help|help|how (?:do|can) I say)/iu.test(event.payload.text)){if(this.help.length<12)this.help.push({event_id:event.event_id,turn_id:event.turn_id});else this.truncated=true;}return true;
   }
   forward(packet){if(this.closed)return;const e=packet.type==='event'?packet.event:null;if(!e)return;

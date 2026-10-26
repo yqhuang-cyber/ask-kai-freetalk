@@ -1,5 +1,9 @@
 # Incremental delivery
 
+2026-10-26 AI 备课合并：按用户明确要求，将 `codex/teacher-ai-planning` 的教师端前置备课合并回主干与原 Demo。4330 启用 AI 备课并保留预置点餐路径和原作业记录；4331 继续作为隔离试用入口。最小 Demo / G0 的历史标记不改动，FreeTalk 冻结基线保留。下方“原 4330 未改或重启”是合并前隔离开发阶段的记录。
+
+2026-10-26 教师端完善第一阶段：已在 `codex/teacher-ai-planning` 独立工作树接入 MiniMax 前置教学包与个人目标生成、持久草案 / 委托 / 取消 / 显式重试、教师目标编辑和精确 hash 发布；新主题交给同一作业 controller，未知反馈继续未评估。655 项回归、三项回放、Node 22.19 的 19 项新场景检查与合成浏览器通过；真实 MiniMax 昆虫 / 指定句式、真实 AI 点餐备课到 Doubao 浏览器提交反馈通过，真人 / 教学质量另验。原 4330 Demo 未改或重启，独立 4331 使用另一数据库 / cookie。当前仅 Mock 等级，不宣称已接入近期学习证据或完整多人分层；[实施](teacher-assistant-ai-planning-implementation.md)、[验收](eval-results/2026-10-26-teacher-ai-planning.md)。
+
 2026-10-26 教师助教最小 Demo 已实施：G0 通过，MD-01～MD-07 最小子交付完成，MD-08 工程及真实豆包浏览器音频闭环通过，真人麦克风 / 听感走查待验。独立入口 `npm run poc:teacher`（4330），本地 Mock 业务子进程与 SQLite；预置点餐计划 → 发布 → 作业对话 → 明确提交 → 双端事实反馈，无等级。648 项回归、三项合成回放、Node 22.19.0 新场景 12 项检查及新旧浏览器通过；8 个冻结 FreeTalk 文件 hash 不变，共享 realtime 仅加默认不变的可选注入。实际实现 / 限制见[试用说明](teacher-assistant-demo-implementation.md)、[验收](eval-results/2026-10-26-teacher-assistant-demo.md)。下面此前“未实施”记录为历史阶段状态。
 
 2026-10-26 教师助教交付顺序调整：用户确认先实现[最小 Demo 蓝图](teacher-homework-minimal-service-blueprint.md)。已将[技术方案](teacher-assistant-technical-design.md)和[完整 tasking](teacher-assistant-tasking.md)更新至 v0.2，执行顺序为 **G0 最小隔离 / 架构基线 → [MD-01～MD-08](teacher-assistant-minimal-demo-tasking.md) 完整 Demo → 教师 / 学生 / Kai 分角色完善**。Demo 用一位教师、一位学生、一份明确标注的预置点餐计划，发布、真实主题对话、明确提交和双端事实反馈实际连通；不等待完整 AI 备课 / 四人分层，不做等级。保留正式计划 / 版本 / 授权 / 尝试 / 提交 / 报告边界；原 G1～G4 改作完整能力验收标号。**目前只更新方案，G0、MD 和完整 TA 任务均未实施，FreeTalk 运行代码未改。**
