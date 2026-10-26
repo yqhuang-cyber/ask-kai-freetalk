@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { DoubaoJsonTransport, ReviewedDoubaoProvider, validateRealtimeProfile } from './realtime.js';
 import { validateProfile } from './probe.js';
 import { isSpeechPace, isSpeechSpeed } from '../agent-core/speech.js';
+import { validateSlidesToolSet, validateSlidesIntent } from '../contracts/ui-actions.js';
 
 export const SEEDUPLEX_PROTOCOL = 'seeduplex-1.2.6.1';
 export const SEEDUPLEX_SOURCE = 'https://docs.volcengine.com/docs/DoubaoVoice/endtoend-realtime-voice-full-duplex-version?lang=zh';
@@ -50,7 +51,7 @@ export function validateSeeduplexProfile(profile,{protocolProbe=false}={}) {
   // The PDF identifies ACK types, but does not prove their ordering/identity on an account.
   // Do not enable this policy solely because the static mapping has been reviewed.
   if (rt.ordered_acks_reviewed !== true) throw new Error('SEEDUPLEX_ACK_REVIEW_REQUIRED');
-  if (session.id !== undefined || session.tools?.length || !isSeeduplexExitExtension(profile.session_create.extension)) throw new Error('UNREVIEWED_SEEDUPLEX_FEATURE');
+  if (session.id !== undefined || session.tools!==undefined&&(!Array.isArray(session.tools)||session.tools.length>0) || !isSeeduplexExitExtension(profile.session_create.extension)) throw new Error('UNREVIEWED_SEEDUPLEX_FEATURE');
   return profile;
 }
 export function validateDoubaoRealtimeProfile(profile) {
@@ -82,6 +83,22 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
     // A PCM lane is opened only by an identified audio.started boundary, never
     // by latestReply. It survives a cancel request as a discard-only old lane.
     this.audioLane=null;this.audioFence=false;
+    this.uiToolsEnabled=false;this.uiCalls=new Set();this.uiCallSignatures=new Map();this.uiAwaitingReply=false;
+  }
+  // Explicit, session-local opt-in. Reviewed source profiles still reject embedded tools.
+  enableSlidesTools(tools){
+    if(this.socket||this.closed||!validateSlidesToolSet(tools))throw new Error('INVALID_SLIDES_TOOLS');
+    this.uiToolsEnabled=true;this.profile.session_create.session.tools=structuredClone(tools);
+  }
+  get uiBusy(){return this.uiCalls.size>0||this.uiAwaitingReply;}
+  sendUiResults(results){
+    if(!this.uiToolsEnabled||!this.ready||this.closed||!Array.isArray(results)||!results.length||results.length>4||
+      new Set(results.map(result=>result.callId)).size!==results.length||results.some(result=>!this.uiCalls.has(result.callId)||!result.outcome||typeof result.outcome!=='object'))throw new Error('INVALID_UI_TOOL_RESULT');
+    const items=results.map(({callId,outcome})=>({call_id:callId,role:'tool',content:[{type:'input_text',text:JSON.stringify(outcome)}]}));
+    if(JSON.stringify(items).length>16000)throw new Error('UI_TOOL_RESULT_LIMIT');
+    // Results may pass a pending context/cancel ACK: blocking them creates a native tool deadlock.
+    this.send({type:'conversation.item.create',event_id:randomUUID(),items});
+    for(const result of results)this.uiCalls.delete(result.callId);
   }
   text(value) {
     if (typeof value !== 'string' || !value.length || value.length > 2000) throw new Error('INVALID_PROVIDER_TEXT');
@@ -117,16 +134,20 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
     this.onEvent({event:this.event(type,payload,this.replyIds(reply)),...(reply.fixed?{speech_control:{request_id:reply.fixed.request_id,phase:reply.fixed.phase}}:{}),...extra});
   }
   completeReply(reply) {
-    if(reply.status!=='active')return;
+    if(reply.status!=='active'){
+      if(reply.status==='cancelled'&&this.uiAwaitingReply&&!this.uiCalls.size){this.uiAwaitingReply=false;this.onEvent({control:'ui.reply.settled'});}
+      return;
+    }
     reply.status='done';reply.wireDone=true;reply.text='';
     if(this.activeReply===reply)this.activeReply=null;
     if(this.audioLane===reply){this.audioLane=null;this.audioFence=true;}
+    if(!this.uiCalls.size)this.uiAwaitingReply=false;
     this.emitReply('response.done',reply);
   }
   completeOutput(reply) {
     // Identified output boundaries close our reply output. ID-less usage is
     // separate telemetry and can never close a reply or create learning evidence.
-    if(reply.audioDone&&(!reply.textStarted||reply.textDone))this.completeReply(reply);
+    if(reply.audioDone&&(reply.status==='cancelled'||!reply.textStarted||reply.textDone))this.completeReply(reply);
   }
   audioReply(raw) {
     if(raw.response_id!==undefined)return this.reply(raw,true);
@@ -156,6 +177,7 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
       const pending = this.pendingControl;
       if (!pending || pending.kind !== 'context' || raw.session?.id !== this.rawSessionId || raw.event_id === undefined) throw new Error('UNBOUND_CONTEXT_ACK');
       this.pendingControl = null;
+      if(pending.uiTools!==undefined)this.profile.session_create.session.tools=pending.uiTools;
       if(pending.speed!==undefined){this.profile.session_create.session.audio.output.speed=pending.speed;this.speechPace=pending.speed===-20?'slow':pending.speed===0?'normal':undefined;}
       this.onEvent({control:'context.updated',version:pending.version});
       return this.drainCancels();
@@ -206,7 +228,15 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
       if(raw.type==='response.output_audio.started'){
         const rawId=this.checkId(raw.response_id);
         const known=this.replies.get(this.ids.get(`reply:${rawId}`));
-        if(known&&known.status!=='active')return; // a closed ID cannot reopen a lane
+        if(known&&known.status!=='active'){
+          // A locally discarded text-first reply may announce audio later. Bind
+          // its unfinished lane for discard only, never to the newer reply.
+          if(known.status==='cancelled'&&!known.wireDone){
+            if(this.audioLane&&this.audioLane!==known)throw new Error('AMBIGUOUS_AUDIO_STREAM');
+            this.audioLane=known;this.audioFence=false;
+          }
+          return; // a completed ID cannot reopen a lane
+        }
         if((this.audioLane&&this.audioLane.rawId!==rawId)||this.pendingControl?.kind==='cancel'||this.queuedCancels.length)throw new Error('AMBIGUOUS_AUDIO_STREAM');
         let fixed=null;
         if(this.pendingFixed){
@@ -268,7 +298,30 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
       }
       return;
     }
-    if (raw.type === 'response.function_call_arguments.done') throw new Error('UNEXPECTED_PROVIDER_TOOL');
+    if (raw.type === 'response.function_call_arguments.done') {
+      if(!this.uiToolsEnabled)throw new Error('UNEXPECTED_PROVIDER_TOOL');
+      if(!Array.isArray(raw.items)||!raw.items.length||raw.items.length>4)throw new Error('INVALID_UI_TOOL_BATCH');
+      const calls=raw.items.map(item=>{
+        if(!item||Object.keys(item).some(key=>!['name','arguments','call_id'].includes(key))||!/^(navigate_slides|cancel_pending_slides)_[a-z0-9]{8,32}$/.test(item.name??'')||typeof item.arguments!=='string'||item.arguments.length>1024)throw new Error('INVALID_UI_TOOL_CALL');
+        const callId=this.checkId(item.call_id);let args=null;try{args=JSON.parse(item.arguments);}catch{}
+        return {name:item.name,callId,args};
+      });
+      if(new Set(calls.map(call=>call.callId)).size!==calls.length||this.uiCalls.size+calls.filter(call=>!this.uiCalls.has(call.callId)).length>16)throw new Error('UI_TOOL_CALL_LIMIT');
+      const signatures=calls.map(call=>{
+        const args=validateSlidesIntent(call.args)?{action:call.args.action,...(call.args.action==='goto'?{page:call.args.page}:{}),...(call.args.replace_pending===true?{replace_pending:true}:{})}:call.args;
+        return JSON.stringify({name:call.name,args});
+      });
+      // A retransmission attaches to the existing transaction. It must not create
+      // two result waiters that race to consume the same native call identity.
+      calls.forEach((call,index)=>{const previous=this.uiCallSignatures.get(call.callId);if(previous!==undefined&&previous!==signatures[index])throw new Error('UI_CALL_ID_CONFLICT');});
+      const fresh=calls.filter(call=>!this.uiCallSignatures.has(call.callId));
+      if(this.uiCallSignatures.size+fresh.length>64)throw new Error('UI_TOOL_CALL_LIMIT');
+      if(!fresh.length)return;
+      calls.forEach((call,index)=>{this.uiCallSignatures.set(call.callId,signatures[index]);});
+      this.uiAwaitingReply=true;for(const call of fresh)this.uiCalls.add(call.callId);
+      // A separate session control port. No fabricated learner turn/response event.
+      return this.onEvent({control:'ui.calls',calls:fresh});
+    }
   }
   mute() {
     if (!this.ready || this.closed) throw new Error('PROVIDER_NOT_OPEN');
@@ -291,10 +344,21 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
     const reply = this.replies.get(responseId);
     if(reply?.status==='cancel_pending')return 'queued';
     if (!reply || reply.status !== 'active' || this.activeReply !== reply) throw new Error('UNKNOWN_RESPONSE');
+    if(this.uiBusy){
+      // Native waiting tools must receive their results. Stop this voice lane locally;
+      // ordinary barge-in never cancels the accepted page transaction or waits for a wire ACK.
+      return this.discardReply(responseId);
+    }
     if(this.queuedCancels.length>=32)throw new Error('PROVIDER_CONTROL_LIMIT');
     reply.status = 'cancel_pending'; this.activeReply = null;
     this.queuedCancels.push(reply);this.drainCancels();
     return this.pendingControl?.kind==='cancel' && this.pendingControl.reply===reply?'sent':'queued';
+  }
+  discardReply(responseId){
+    const reply=this.replies.get(responseId);
+    if(!reply||reply.status!=='active'||this.activeReply!==reply)throw new Error('UNKNOWN_RESPONSE');
+    reply.status='cancelled';reply.text='';this.activeReply=null;
+    this.emitReply('response.cancelled',reply);return 'local';
   }
   drainCancels() {
     if(this.closed || this.pendingControl)return;
@@ -313,19 +377,22 @@ export class SeeduplexProvider extends DoubaoJsonTransport {
       return;
     }
   }
-  updateContext({instructions,version,duringSilentReply=false,speechSpeed}) {
+  updateContext({instructions,version,duringSilentReply=false,speechSpeed,uiTools}) {
     const silent=duringSilentReply && this.activeReply && !this.activeReply.textStarted && this.audioLane!==this.activeReply;
-    if (!this.ready || this.pendingControl || this.pendingFixed || this.queuedCancels.length || (this.activeReply && !silent) || typeof instructions !== 'string' || instructions.length > 16000 || !Number.isSafeInteger(version) || version < 1) throw new Error('PROVIDER_CONTROL_PENDING');
+    if (!this.ready || this.pendingControl || this.pendingFixed || this.queuedCancels.length || this.uiBusy || (this.activeReply && !silent) || typeof instructions !== 'string' || instructions.length > 16000 || !Number.isSafeInteger(version) || version < 1) throw new Error('PROVIDER_CONTROL_PENDING');
+    if(uiTools!==undefined&&(!this.uiToolsEnabled||!validateSlidesToolSet(uiTools)))throw new Error('INVALID_SLIDES_TOOLS');
     if(speechSpeed!==undefined&&!isSpeechSpeed(speechSpeed))throw new Error('INVALID_SPEECH_SPEED');
-    this.pendingControl = {kind:'context',version,speed:speechSpeed};
+    this.pendingControl = {kind:'context',version,speed:speechSpeed,uiTools:uiTools===undefined?undefined:structuredClone(uiTools)};
     // Dynamic pace uses the full session shape verified by the live spike.
-    const session=speechSpeed===undefined?{id:this.rawSessionId,instructions}:{...structuredClone(this.profile.session_create.session),id:this.rawSessionId,instructions};
+    const session=speechSpeed===undefined&&!this.uiToolsEnabled?{id:this.rawSessionId,instructions}:{...structuredClone(this.profile.session_create.session),id:this.rawSessionId,instructions};
+    if(uiTools!==undefined)session.tools=structuredClone(uiTools);
     if(speechSpeed!==undefined)session.audio.output.speed=speechSpeed;
     this.send({type:'session.update',event_id:randomUUID(),session});
   }
   close() {
     if(this.closed)return this.closeResult;
     const socket=this.socket;
+    this.uiCalls.clear();this.uiCallSignatures.clear();this.uiAwaitingReply=false;
     let sent=false;
     try{if(this.ready){this.send({type:'session.close',event_id:randomUUID()});sent=true;}}catch{}
     // Fence business events immediately, while waiting briefly for the actual

@@ -1,0 +1,357 @@
+{
+  "version": 1,
+  "date": "2026-10-26",
+  "scope": "VS-07 ordinary Web automation and complex integration; partial VS-08 native interruption",
+  "default_enabled": false,
+  "overall_acceptance": false,
+  "source_sha256": {
+    "packages/contracts/ui-actions.js": "f8d918379edee6ced8288296af43e0379a506ef2d26d0301e2e75a608f925ad3",
+    "packages/provider-doubao/seeduplex.js": "2eae17758b9c526dd5975d1f024940277d38d58dccd1224ca4e5ef8fdd220818",
+    "apps/realtime-gateway/src/slides-command-gate.js": "bd6930b4afd6cc00236c23f887b6f173f72c6fa8ee0560949be9f6f6748143f0",
+    "apps/realtime-gateway/src/slides-coordinator.js": "2cffcfe00bf9621f6496abc98ac8aa934ff06b32fa7160587cd3174e9e78f4ab",
+    "apps/realtime-gateway/src/slides-session.js": "d82030e3000a6948d5c843c90c9c7e6d8609d9dd4fa39e6e8f379420f0e8fde6",
+    "apps/realtime-gateway/src/slides-instructions.js": "ef65155dbd1621aa192d0d6862b92458a0284d9c5d9a4a2120be7f50579a7f05",
+    "apps/realtime-gateway/src/realtime.js": "3bbb62cfc6ab50fa9a3f09bbb3e4263df9e91a1739a922e20a0d77e3b9a6d06f",
+    "apps/realtime-gateway/src/config.js": "d5a54f6c50aed949fe6f7c187f184e785b61940416a5cf7d0efcbd7ad615845b",
+    "apps/realtime-gateway/src/main.js": "8b77dd27a2f58f6e627216a34b638a974d08afd7f9e89c569a3f98fc0e6b2ed4",
+    "apps/realtime-gateway/src/server.js": "c0a104a22d4bcde193714ce64cee980595636f307f262e40a5ab347f017bcacc",
+    "apps/realtime-gateway/public/slides-viewer.js": "cd6b53d105b7b2130c47e979dc55681a352a84be37d443e5067d0c377702b7f3",
+    "apps/realtime-gateway/public/web.js": "3cadac948e86d147904b2a5289fa5d148d509c04226879a8d727dae1416b542c",
+    "apps/realtime-gateway/public/index.html": "b7cb77feec4dfa76e42dbd3a70c7a831b1ba694ba6da1d093ca5152494de0fb1",
+    "apps/realtime-gateway/public/voice-readiness.js": "6d8ed3b7386e8ebbf1581ae36226a2d6d362263d8ff7517133d9082e6ff13f0c",
+    "scripts/voice-slides-control/ordinary-web-host.js": "ec8b30aa61c9b746704f5088bec144d041c19fe7827d773a0b6490d05c6de9dd",
+    "scripts/voice-slides-control/ordinary-web-checks.js": "b8b5f2b86c5ae2e42c503144e2ecb16c5df798c9d53b9e63598d9693cbca7a66",
+    "scripts/voice-slides-control/ordinary-web-browser-check.js": "38abc2af6078ffbbbe47ce0ee401f3629e0453b5e2ea67a7a1de66e11f0457c9",
+    "scripts/voice-slides-control/web-test-audio.js": "909e5ae3dbb226cdcd3692ae948a358daf9c5bf6f6baa65d215b7af850f558e6",
+    "scripts/voice-slides-control/web-test-readiness.js": "2d971cd713533521382b64a3c6eaedd12b4d940ee1b823a8e485fce12f631067",
+    "scripts/voice-slides-control/gateway-probe.js": "8781f0629f377ce113e22395a1abde922523e210ff417c5404888cb31a17d148",
+    "tests/helpers/slides-gateway.js": "8db37457ab7507bcf6fd2ff2cff54257d5b911aaaead281694b212eadbd0bf2d",
+    "tests/slides-races.test.js": "68adf2d52070e6f34b4a3442601c16debf73bc3a4190805b1e433411f715d741",
+    "tests/slides-provider.test.js": "5a6c97d2ab625f2b98d02b577c8ede5295ff88d9398152cd759397d1d12e06fe",
+    "tests/voice-readiness.test.js": "f406dd01ad29be4807dd537404e99fded978416fcd4ce32a9c56eb8381214d3b",
+    "scripts/voice-slides-control/tests/ordinary-web-host.test.js": "ea68891d52f28ff95c22099b37654b138acf7d743113c8530cbf0be89a2645e2"
+  },
+  "source_attestation": {
+    "synthetic_and_browser": "final runtime hashes; CUA used exact ordinary web.js",
+    "native_interruption": "final runtime hashes; final probe adds stale audio count; initial two runs precede discard-only PCM lane patch"
+  },
+  "synthetic": {
+    "provider_connected": false,
+    "verify": {
+      "passed": 624,
+      "failed": 0
+    },
+    "new_tests_since_stage5": 7,
+    "replays": [
+      {
+        "id": "normal",
+        "status": "closed"
+      },
+      {
+        "id": "interruption",
+        "status": "closed"
+      },
+      {
+        "id": "failure",
+        "status": "failed"
+      }
+    ],
+    "learning_evidence": "attempted_only"
+  },
+  "browser": {
+    "driver": "CUA_IAB",
+    "ordinary_web": true,
+    "unmodified_web_module": true,
+    "synthetic_provider": true,
+    "synthetic_planner": true,
+    "real_provider": false,
+    "real_component_receipts": true,
+    "real_browser_audio_output": true,
+    "microphone": false,
+    "human_listening": false,
+    "cases": [
+      {
+        "id": "manual_voice",
+        "passed": true,
+        "elapsed_ms": 1161
+      },
+      {
+        "id": "append",
+        "passed": true,
+        "elapsed_ms": 826
+      },
+      {
+        "id": "cancel",
+        "passed": true,
+        "elapsed_ms": 849
+      },
+      {
+        "id": "correction",
+        "passed": true,
+        "elapsed_ms": 811
+      },
+      {
+        "id": "late_confirmation",
+        "passed": true,
+        "elapsed_ms": 1129
+      },
+      {
+        "id": "pace",
+        "passed": true,
+        "elapsed_ms": 3239
+      },
+      {
+        "id": "planner_race",
+        "passed": true,
+        "elapsed_ms": 1099
+      },
+      {
+        "id": "lost_ack",
+        "passed": true,
+        "elapsed_ms": 2722
+      },
+      {
+        "id": "unknown_freeze",
+        "passed": true,
+        "elapsed_ms": 5754
+      },
+      {
+        "id": "reconnect_switch",
+        "passed": true,
+        "elapsed_ms": 1677
+      },
+      {
+        "id": "deck_fallback",
+        "passed": true,
+        "elapsed_ms": 5512
+      },
+      {
+        "id": "real_ready_guard",
+        "passed": true,
+        "elapsed_ms": 840
+      }
+    ],
+    "passed": 12,
+    "failed": 0,
+    "final_suite_sessions": 14,
+    "additional_pace_screenshot_repeat": {
+      "passed": true,
+      "included_in_suite": false
+    },
+    "chromium_cli_driver_executed": false,
+    "earlier_attempt_issues": [
+      "CUA Node loopback fetch unavailable; isolated fixture mailbox added",
+      "ambiguous preview locator; narrowed selector",
+      "queued state not published while dispatch pending; runtime fixed",
+      "fixture released text commands as binary frames; fixture fixed and regression added",
+      "mailbox callback retained old host path after restart; driver rebound"
+    ]
+  },
+  "real_provider": {
+    "connected_runs": 4,
+    "initial_runs": [
+      {
+        "passed": true,
+        "interruption": {
+          "id": "quote",
+          "injected": true,
+          "second_final_received": true,
+          "second_started_before_receipt": true,
+          "stale_text_forwarded_after_second_input": 0,
+          "synthetic_receipt_hold_ms": 1500
+        }
+      },
+      {
+        "passed": true,
+        "interruption": {
+          "id": "add-previous",
+          "injected": true,
+          "second_final_received": true,
+          "second_started_before_receipt": true,
+          "stale_text_forwarded_after_second_input": 0,
+          "synthetic_receipt_hold_ms": 1500
+        }
+      }
+    ],
+    "final_runs": [
+      {
+        "version": 1,
+        "real_provider_connected": true,
+        "ordinary_gateway": true,
+        "ordinary_provider": true,
+        "synthetic_viewer": true,
+        "synthetic_history": true,
+        "browser_audio_tested": false,
+        "human_listening_tested": false,
+        "provider_input_ownership_verified": false,
+        "default_enabled": false,
+        "passed": true,
+        "failure": null,
+        "steps": [
+          {
+            "id": "previous",
+            "expected_page": 2,
+            "actual_page": 2,
+            "page_matches": true,
+            "tool_calls": 1,
+            "tool_results": [
+              {
+                "status": "applied",
+                "reason": "PAGE_CHANGED",
+                "page": 2,
+                "confirmed": true
+              }
+            ],
+            "component_commands": 1,
+            "asr_received": true,
+            "elapsed_ms": 8019
+          }
+        ],
+        "tool_calls": 1,
+        "component_commands": [
+          {
+            "page": 1,
+            "revision": 1
+          },
+          {
+            "page": 2,
+            "revision": 2
+          },
+          {
+            "page": 3,
+            "revision": 3
+          },
+          {
+            "page": 2,
+            "revision": 4
+          }
+        ],
+        "tool_results": [
+          {
+            "status": "applied",
+            "reason": "PAGE_CHANGED",
+            "page": 2,
+            "confirmed": true
+          }
+        ],
+        "interruption": {
+          "id": "quote",
+          "injected": true,
+          "second_final_received": true,
+          "second_started_before_receipt": true,
+          "stale_text_forwarded_after_second_input": 0,
+          "stale_audio_chunks_forwarded_after_second_input": 0,
+          "synthetic_receipt_hold_ms": 1500
+        }
+      },
+      {
+        "version": 1,
+        "real_provider_connected": true,
+        "ordinary_gateway": true,
+        "ordinary_provider": true,
+        "synthetic_viewer": true,
+        "synthetic_history": true,
+        "browser_audio_tested": false,
+        "human_listening_tested": false,
+        "provider_input_ownership_verified": false,
+        "default_enabled": false,
+        "passed": true,
+        "failure": null,
+        "steps": [
+          {
+            "id": "previous",
+            "expected_page": 1,
+            "actual_page": 1,
+            "page_matches": true,
+            "tool_calls": 2,
+            "tool_results": [
+              {
+                "status": "applied",
+                "reason": "PAGE_CHANGED",
+                "page": 2,
+                "confirmed": true
+              },
+              {
+                "status": "applied",
+                "reason": "PAGE_CHANGED",
+                "page": 1,
+                "confirmed": true
+              }
+            ],
+            "component_commands": 2,
+            "asr_received": true,
+            "elapsed_ms": 7848
+          }
+        ],
+        "tool_calls": 2,
+        "component_commands": [
+          {
+            "page": 1,
+            "revision": 1
+          },
+          {
+            "page": 2,
+            "revision": 2
+          },
+          {
+            "page": 3,
+            "revision": 3
+          },
+          {
+            "page": 2,
+            "revision": 4
+          },
+          {
+            "page": 1,
+            "revision": 5
+          }
+        ],
+        "tool_results": [
+          {
+            "status": "applied",
+            "reason": "PAGE_CHANGED",
+            "page": 2,
+            "confirmed": true
+          },
+          {
+            "status": "applied",
+            "reason": "PAGE_CHANGED",
+            "page": 1,
+            "confirmed": true
+          }
+        ],
+        "interruption": {
+          "id": "add-previous",
+          "injected": true,
+          "second_final_received": true,
+          "second_started_before_receipt": true,
+          "stale_text_forwarded_after_second_input": 0,
+          "stale_audio_chunks_forwarded_after_second_input": 0,
+          "synthetic_receipt_hold_ms": 1500
+        }
+      }
+    ],
+    "author_pcm_only": true,
+    "new_browser_native_run": false,
+    "human_listening": false
+  },
+  "fixed_defects": [
+    "late first response from older native speech turn is locally discarded after newer meaningful input without cancelling accepted UI transaction",
+    "unfinished locally discarded text-first reply reserves later anonymous PCM for discard; overlapping unfinished lanes fail closed",
+    "queued action publishes pending and queued state immediately"
+  ],
+  "retained_failures": [
+    "new late-first-response race initially failed before runtime fix",
+    "browser append case initially failed before queue publication fix",
+    "first discard-lane patch rejected a previously supported completed old audio start; narrowed to unfinished locally discarded replies and full regression rerun"
+  ],
+  "not_verified": [
+    "ordinary Web real microphone and human listening",
+    "complete real-provider and real-browser correction/revoke/interruption matrix",
+    "real MiniMax Planner late-result competition with native voice",
+    "full 23-case model quality suite on final integrated version",
+    "native FC input identity and missing same-epoch source ordering",
+    "stable quality and latency across larger repetitions",
+    "human visibility or learning mastery"
+  ]
+}

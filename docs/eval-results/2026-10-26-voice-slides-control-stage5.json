@@ -1,0 +1,217 @@
+{
+  "version": 1,
+  "date": "2026-10-26",
+  "scope": "VS-04 to VS-06 implementation; partial VS-07 and VS-08 acceptance",
+  "default_enabled": false,
+  "overall_acceptance": false,
+  "source_sha256": {
+    "packages/contracts/ui-actions.js": "f8d918379edee6ced8288296af43e0379a506ef2d26d0301e2e75a608f925ad3",
+    "packages/provider-doubao/seeduplex.js": "86586056a9df4d5609c0f175ee9db8902c6ad9aecc46f2ea282c7bf000bd4c1f",
+    "apps/realtime-gateway/src/slides-command-gate.js": "bd6930b4afd6cc00236c23f887b6f173f72c6fa8ee0560949be9f6f6748143f0",
+    "apps/realtime-gateway/src/slides-coordinator.js": "1b3d8c8ebe85b126700df72b1f06726f85be80b4605f7fe83d70b8c2904c0857",
+    "apps/realtime-gateway/src/slides-session.js": "d82030e3000a6948d5c843c90c9c7e6d8609d9dd4fa39e6e8f379420f0e8fde6",
+    "apps/realtime-gateway/src/slides-instructions.js": "ef65155dbd1621aa192d0d6862b92458a0284d9c5d9a4a2120be7f50579a7f05",
+    "apps/realtime-gateway/src/realtime.js": "35d93ced20580d2925f370e82a9e60f75331f02b1ce2da3bf0273f49fc067a43",
+    "apps/realtime-gateway/src/config.js": "d5a54f6c50aed949fe6f7c187f184e785b61940416a5cf7d0efcbd7ad615845b",
+    "apps/realtime-gateway/src/main.js": "8b77dd27a2f58f6e627216a34b638a974d08afd7f9e89c569a3f98fc0e6b2ed4",
+    "apps/realtime-gateway/src/server.js": "b7fe5e650e1358666cdf97d741db944e7906a64633db41842584af1f484d8ab9",
+    "apps/realtime-gateway/public/slides-viewer.js": "cd6b53d105b7b2130c47e979dc55681a352a84be37d443e5067d0c377702b7f3",
+    "apps/realtime-gateway/public/web.js": "1cc72399b03b1d37fdd9d432a22abc4d95eeb273bb991fc0a770844cde3d3792",
+    "apps/realtime-gateway/public/index.html": "b7cb77feec4dfa76e42dbd3a70c7a831b1ba694ba6da1d093ca5152494de0fb1",
+    "scripts/voice-slides-control/gateway-probe.js": "cb2ed5c38f73da0d18430966c5f39c3e60486261224eba2d1745c5a46ec0235d",
+    "scripts/voice-slides-control/gateway-viewer-fixture.js": "8ccb8ee4cf30e1d22d06c838e54b56ddcca3fddd6808e0bd38973c51176a5ee0",
+    "scripts/voice-slides-control/gateway-viewer-fixture-browser.js": "0718e044abd049d5b8deba468dcc5ffb3c4a7d95e1b3bada31d389cf033a60d3"
+  },
+  "source_attestation": {
+    "final_synthetic_and_native_cli": "final runtime hashes above",
+    "browser": "host loaded before final handshake-fallback, native-retransmission and full-context-hash patches; those patches have final synthetic and CLI coverage"
+  },
+  "synthetic": {
+    "verify": {
+      "passed": 617,
+      "failed": 0
+    },
+    "new_integration_tests": 21,
+    "replays": [
+      {
+        "id": "normal",
+        "status": "closed"
+      },
+      {
+        "id": "interruption",
+        "status": "closed"
+      },
+      {
+        "id": "failure",
+        "status": "failed"
+      }
+    ],
+    "provider_connected": false,
+    "learning_evidence": "attempted_only"
+  },
+  "real_provider": {
+    "cli_attempts": 4,
+    "pre_ticket_failure_without_provider": 1,
+    "connected_runs": 3,
+    "earlier_connected_three_step_pass": true,
+    "final_run": {
+      "version": 1,
+      "real_provider_connected": true,
+      "ordinary_gateway": true,
+      "ordinary_provider": true,
+      "synthetic_viewer": true,
+      "synthetic_history": true,
+      "browser_audio_tested": false,
+      "human_listening_tested": false,
+      "provider_input_ownership_verified": false,
+      "default_enabled": false,
+      "passed": true,
+      "failure": null,
+      "steps": [
+        {
+          "id": "previous",
+          "expected_page": 2,
+          "actual_page": 2,
+          "page_matches": true,
+          "tool_calls": 1,
+          "tool_results": [
+            {
+              "status": "applied",
+              "reason": "PAGE_CHANGED",
+              "page": 2,
+              "confirmed": true
+            }
+          ],
+          "component_commands": 1,
+          "asr_received": true,
+          "elapsed_ms": 5963
+        },
+        {
+          "id": "forward-goto",
+          "expected_page": 2,
+          "actual_page": 2,
+          "page_matches": true,
+          "tool_calls": 0,
+          "tool_results": [],
+          "component_commands": 0,
+          "asr_received": true,
+          "elapsed_ms": 4971
+        },
+        {
+          "id": "return-first",
+          "expected_page": 1,
+          "actual_page": 1,
+          "page_matches": true,
+          "tool_calls": 1,
+          "tool_results": [
+            {
+              "status": "applied",
+              "reason": "PAGE_CHANGED",
+              "page": 1,
+              "confirmed": true
+            }
+          ],
+          "component_commands": 1,
+          "asr_received": true,
+          "elapsed_ms": 7609
+        }
+      ],
+      "tool_calls": 2,
+      "component_commands": [
+        {
+          "page": 1,
+          "revision": 1
+        },
+        {
+          "page": 2,
+          "revision": 2
+        },
+        {
+          "page": 3,
+          "revision": 3
+        },
+        {
+          "page": 2,
+          "revision": 4
+        },
+        {
+          "page": 1,
+          "revision": 5
+        }
+      ],
+      "tool_results": [
+        {
+          "status": "applied",
+          "reason": "PAGE_CHANGED",
+          "page": 2,
+          "confirmed": true
+        },
+        {
+          "status": "applied",
+          "reason": "PAGE_CHANGED",
+          "page": 1,
+          "confirmed": true
+        }
+      ]
+    },
+    "earlier_connected_runs": 2
+  },
+  "browser": {
+    "surface": "real IAB",
+    "ordinary_gateway": true,
+    "ordinary_provider": true,
+    "ordinary_web": false,
+    "http_host": "isolated_fixture",
+    "real_component_receipts": true,
+    "real_audio_playback_queue": true,
+    "microphone": false,
+    "human_listening": false,
+    "author_audio_only": true,
+    "history_source": "synthetic_author_demo_with_component_receipts",
+    "connected_sessions": 3,
+    "authored_inputs": 8,
+    "sessions": [
+      {
+        "input_count": 2,
+        "observed_pages": [
+          2,
+          2
+        ],
+        "end": "SESSION_DURATION_LIMIT",
+        "test_host_limit_seconds": 180
+      },
+      {
+        "input_count": 3,
+        "observed_pages": [
+          2,
+          2,
+          1
+        ],
+        "end": "SESSION_DURATION_LIMIT",
+        "test_host_limit_seconds": 180
+      },
+      {
+        "input_count": 3,
+        "observed_pages": [
+          2,
+          2,
+          1
+        ],
+        "end": "normal_user_end",
+        "received_audio_chunks": 45,
+        "playback_queue_observed_drained": true
+      }
+    ],
+    "expected_defer_without_page_change": true,
+    "source_input_identity_verified": false,
+    "locator_wait_timeout_followed_by_observed_success": true
+  },
+  "not_verified": [
+    "ordinary Web real microphone and human listening",
+    "full real-browser interruption/correction/revoke matrix",
+    "Planner and page-context races under real provider",
+    "missing native FC input ownership and same-epoch source ordering",
+    "stable model quality across larger repeated samples",
+    "human visibility or learning mastery"
+  ]
+}

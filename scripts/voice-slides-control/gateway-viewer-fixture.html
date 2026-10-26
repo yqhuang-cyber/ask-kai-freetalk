@@ -1,0 +1,7 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>Kai 课件 · 原生链路检查</title>
+<link rel="stylesheet" href="/slides-viewer.css"><style>body{max-width:58rem;margin:2rem auto;padding:0 1rem;font:16px/1.6 system-ui;color:#25362b}button{padding:.65rem;margin:.3rem}#reply{min-height:3rem}#log{max-height:12rem;overflow:auto}fieldset{margin:1rem 0}</style>
+<h1>Kai 课件 · 原生链路检查</h1><p>真实豆包＋普通 Gateway／Provider＋实际展示组件。身份是本地 Mock，展示历史由作者演示建立；输入使用固定作者录音，不开启麦克风。播放进度不代表真人听见或学会。</p>
+<button id="start">连接真实语音</button><button id="end" disabled>结束检查</button><p id="status" role="status">尚未连接</p>
+<div id="viewer"></div><fieldset><legend>作者测试输入（真实语音识别）</legend>
+<button data-input="previous" disabled>作者录音：回到上一页</button><button data-input="forward-goto" disabled>作者录音：请求第三页</button><button data-input="return-first" disabled>作者录音：回到第一页</button><button data-input="add-previous" disabled>作者录音：再往前一页</button>
+</fieldset><p id="input"></p><p id="reply" aria-live="polite"></p><p id="audio">尚无输出音频</p><ol id="log"></ol><script type="module" src="/fixture.js"></script></html>

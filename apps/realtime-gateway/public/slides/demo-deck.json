@@ -1,0 +1,10 @@
+{
+  "id": "kai-demo",
+  "version": "1",
+  "source": "authored_demo",
+  "slides": [
+    {"page": 1, "title": "水果", "body": "你喜欢什么水果？\n我喜欢苹果。"},
+    {"page": 2, "title": "运动", "body": "你喜欢什么运动？\n我喜欢打篮球。"},
+    {"page": 3, "title": "旅行", "body": "你想去哪里旅行？\n我想去海边。"}
+  ]
+}

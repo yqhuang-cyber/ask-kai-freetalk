@@ -18,6 +18,10 @@ import { LEARNER_PARTS } from '../../../packages/contracts/learner-data.js';
 
 const publicDir = new URL('../public/', import.meta.url);
 const staticFiles = new Map([
+  ['/slides-viewer.js',['slides-viewer.js','text/javascript']],
+  ['/voice-readiness.js',['voice-readiness.js','text/javascript']],
+  ['/slides-viewer.css',['slides-viewer.css','text/css']],
+  ['/slides/demo-deck.json',['slides/demo-deck.json','application/json']],
   ['/closing-playback.js',['closing-playback.js','text/javascript']],
   ['/packages/contracts/conversation-record.js',['../../../packages/contracts/conversation-record.js','text/javascript']],
   ['/', ['index.html','text/html']], ['/web.js', ['web.js','text/javascript']], ['/web.css', ['web.css','text/css']],

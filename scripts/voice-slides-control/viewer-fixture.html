@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>课件回看 · 隔离组件验证</title><link rel="stylesheet" href="/slides-viewer.css"></head>
+<body style="margin:2rem;background:#f2f5f2;font-family:system-ui,sans-serif">
+<h1>课件回看 · 隔离组件验证</h1><p>真实浏览器组件＋合成宿主。无豆包连接、无真实学习者资料，测试推进不是普通学习者功能。</p>
+<section id="viewer" aria-label="演示课件"></section>
+<section style="margin-top:2rem"><h2>作者测试控制</h2>
+<button id="present-two">测试宿主：展示第 2 页</button> <button id="present-three">测试宿主：展示第 3 页</button>
+<button id="drop-ack">测试：丢弃下一次回执</button> <button id="hold-receipts">测试：暂停回执及核对</button> <button id="release">测试：释放回执</button>
+<button id="forward">测试：伪造后续页请求</button> <button id="duplicate">测试：重发上条命令</button>
+<p id="result" role="status"></p><pre id="state" aria-label="合成宿主状态"></pre></section>
+<script type="module">
+import {SlidesViewer} from '/slides-viewer.js';
+const deck=await(await fetch('/demo-deck.json')).json(),viewer=new SlidesViewer(document.querySelector('#viewer'),deck);
+const ws=new WebSocket(`ws://${location.host}/fixture`);let binding;
+const send=value=>ws.send(JSON.stringify(value));
+ws.addEventListener('message',async event=>{const packet=JSON.parse(event.data);
+  if(packet.type==='fixture.config'){binding=packet.binding;viewer.bind(binding,send);return;}
+  if(packet.type==='fixture.result'){document.querySelector('#result').textContent=JSON.stringify(packet.result);return;}
+  if(packet.type==='slides.state')document.querySelector('#state').textContent=JSON.stringify(packet,null,2);
+  await viewer.receive(packet);
+});
+ws.addEventListener('close',()=>viewer.close());
+for(const [selector,command] of [['#present-two',{type:'fixture.present',page:2}],['#present-three',{type:'fixture.present',page:3}],['#drop-ack',{type:'fixture.drop_ack'}],['#hold-receipts',{type:'fixture.hold'}],['#release',{type:'fixture.release'}],['#forward',{type:'fixture.forward'}],['#duplicate',{type:'fixture.duplicate'}]])document.querySelector(selector).addEventListener('click',()=>send(command));
+</script></body></html>

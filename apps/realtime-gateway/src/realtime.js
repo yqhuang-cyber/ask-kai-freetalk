@@ -1,5 +1,6 @@
 import { ClosingCoordinator } from './closing-coordinator.js';
 import { SpeechPaceCoordinator } from './speech-pace-coordinator.js';
+import { SlidesSession } from './slides-session.js';
 import { randomUUID } from 'node:crypto';
 import { WebSocketServer } from 'ws';
 import { SessionRuntime } from '../../../packages/agent-core/session.js';
@@ -13,7 +14,7 @@ import { ReplyAudit,REPLY_POLICY_VERSION } from '../../../packages/agent-core/re
 import { sameLanguageSupport } from '../../../packages/agent-core/language-support.js';
 import { assistantFarewell,providerExitSuppressed,controlText } from '../../../packages/agent-core/natural-teaching.js';
 
-export function attachRealtime(server,{providerFactory,providerKind='doubao',businessSource='unconfigured',planner,planningPort,maxConnections=8,readyTimeoutMs=8000,maxSessionMs=600000,cancelTimeoutMs=1500,contextTimeoutMs=8000,replyGraceMs=350,turnWaitMs=5000,closingWaitMs=12000,closingPlaybackMs=35000,safeguardingPort,metrics,observationReports}={}) {
+export function attachRealtime(server,{providerFactory,providerKind='doubao',businessSource='unconfigured',planner,planningPort,maxConnections=8,readyTimeoutMs=8000,maxSessionMs=600000,cancelTimeoutMs=1500,contextTimeoutMs=8000,replyGraceMs=350,turnWaitMs=5000,closingWaitMs=12000,closingPlaybackMs=35000,safeguardingPort,metrics,observationReports,slidesControls=false,slidesDemoHistory=false,slidesHandshakeMs=5000}={}) {
   const tickets = new Map();
   const connections = new Set();
   const sessions=new Map();
@@ -41,12 +42,13 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
       const started=performance.now();metrics?.count(providerKind,'sessions');
       let restricted=false,controlCount=0,controlAt=Date.now(),replyAt=null,firstAudio=false;
       let provider;
-      let outputGate,closing,speech;
+      let outputGate,closing,speech,slides,initialUi,uiReplyTimer,slidesOffered=false;
+      let contextWireVersion=1;
       const speechReplies=new Set();
       let ended = false;
       let ending=false;
       const finalText=new Map(),exitReplies=new Set(),replyText=new Map();
-      let latestInputTurn=null;
+      let latestInputTurn=null,latestSpokenTurn=null;
       let recordController;
       let ready = false;
       let lastResponse = null;
@@ -126,7 +128,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         for(const [responseId,reply] of observedReplies)observation?.record('voice.reply.forwarded',{response_id:responseId,turn_id:reply.turn_id,text:reply.text,truncated:reply.truncated,status:'interrupted',playback_confirmed:false});
         observation?.record('session.ended',{state:code?'failed':'closed',code:code??null});const observationReport=observation?.summarySnapshot();unsubscribeObservation?.();observation?.clear();observedReplies.clear();
         ended = true;ending=true;
-        speech?.close();speechReplies.clear();
+        speech?.close();speechReplies.clear();slides?.close();clearTimeout(uiReplyTimer);
         const delivery=closing?.delivery??'skipped';closing?.close();
         outputGate?.close();speechCandidates.clear();
         finalText.clear();exitReplies.clear();replyText.clear();
@@ -164,18 +166,19 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         sessions.delete(ws);
       };
       closing=new ClosingCoordinator({sessionId:ticket.session_id,send,finish:()=>void finish(),waitMs:closingWaitMs,playbackMs:closingPlaybackMs});
-      const readyTimer = setTimeout(()=>finish('PROVIDER_READY_TIMEOUT'),readyTimeoutMs);
+      let readyTimer = setTimeout(()=>finish('PROVIDER_READY_TIMEOUT'),readyTimeoutMs+(slidesControls?slidesHandshakeMs:0));
       const lifetime = setTimeout(()=>finish('SESSION_DURATION_LIMIT'),Math.min(maxSessionMs,ticket.identity.authorization_until-Date.now()));
       let alive=true;
       const heartbeat=setInterval(()=>{if(!alive){finish('CLIENT_HEARTBEAT_TIMEOUT');ws.terminate();return;}alive=false;if(ws.readyState===ws.OPEN)ws.ping();},15000);
       ws.on('pong',()=>{alive=true;});
       const flushContext = () => {
-        if(ended || ending || !ready || runtime.active || provider?.pendingFixed || pendingCancel.size || pendingContext || speech?.blocksContext() || appliedVersion===teaching.version){if(!ended&&!ending&&appliedVersion!==teaching.version)observation?.record('voice.context.waiting',{context_version:teaching.version,applied_context_version:appliedVersion,active_reply:!!runtime.active,pending_cancel:pendingCancel.size>0,pending_context:!!pendingContext,ready});return;}
-        const snapshot=teaching.contextSnapshot(),version=snapshot.version,decision=snapshot.decision;
+        if(ended || ending || !ready || runtime.active || provider?.pendingFixed || provider?.uiBusy || pendingCancel.size || pendingContext || speech?.blocksContext() || appliedVersion===teaching.version&&!slides?.dirty){if(!ended&&!ending&&appliedVersion!==teaching.version)observation?.record('voice.context.waiting',{context_version:teaching.version,applied_context_version:appliedVersion,active_reply:!!runtime.active,pending_cancel:pendingCancel.size>0,pending_context:!!pendingContext,ready});return;}
+        let ui;try{ui=slides?.configuration();}catch{return finish('SLIDES_CAPABILITY_LIMIT');}
+        const base=teaching.contextSnapshot(),snapshot=slides?slides.contextSnapshot(base,ui):base,version=slides?++contextWireVersion:snapshot.version,decision=snapshot.decision;
         diagnose('context.requested',{context_version:version,turn_id:decision?.turn_id,context_hash:snapshot.hash,context_policy_version:snapshot.policy_version,context_scope:snapshot.scope});
         observation?.record('voice.context.requested',{context_version:version,context_hash:snapshot.hash,turn_id:decision?.turn_id??null,instructions:snapshot.instructions,advisory_turn_id:teaching.planning?.accepted?.turn_id??null,advisory_proposal_id:teaching.planning?.accepted?.proposal_id??null,speaking_constraints:teaching.planning?.speaking?.constraints()??null});
-        pendingContext={version,decision,language:snapshot.language,snapshot,timer:setTimeout(()=>finish('CONTEXT_ACK_TIMEOUT'),contextTimeoutMs)};
-        try{provider.updateContext({version,instructions:snapshot.instructions,...(teaching.speech.enabled?{speechSpeed:snapshot.speech.speed}:{})});}catch{finish('PROVIDER_CONTEXT_FAILED');}
+        pendingContext={version,decision,language:snapshot.language,snapshot,ui,timer:setTimeout(()=>finish('CONTEXT_ACK_TIMEOUT'),contextTimeoutMs)};
+        try{provider.updateContext({version,instructions:snapshot.instructions,...(ui?{uiTools:ui.tools}:{}),...(teaching.speech.enabled?{speechSpeed:snapshot.speech.speed}:{})});}catch{finish('PROVIDER_CONTEXT_FAILED');}
       };
       const cancelSent=id=> {
         const pending=pendingCancel.get(id);if(!pending || pending.timer!==undefined)return;
@@ -214,6 +217,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
       sessions.set(ws,{identity:ticket.identity,teaching,finish,flushContext});
       const restrict = (risk,event) => {
         restricted=true;metrics?.count(providerKind,'restricted');
+        slides?.close();
         outputGate?.close();
         diagnose('cancel.requested',{response_id:runtime.active?.id??lastResponse?.id,source:'safety',active:!!runtime.active,pending_context:!!pendingContext});
         send({type:'output.stop',response_id:runtime.active?.id ?? lastResponse?.id});
@@ -243,6 +247,10 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             if(++controlCount>20){metrics?.count(providerKind,'control_rate_limited');return finish('CONTROL_RATE_LIMIT');}
             if (bytes.length > 1024) throw new Error('CONTROL_TOO_LARGE');
             const value = JSON.parse(bytes.toString());
+            if(value?.type?.startsWith('slides.')){
+              if(!slides){if(slidesOffered)return;throw new Error('SLIDES_DISABLED');}
+              slides.receive(value);return;
+            }
           if (value?.type === 'session.end' && Object.keys(value).every(k=>['type','save_learning'].includes(k)) && (value.save_learning===undefined||typeof value.save_learning==='boolean')) {
             // Explicit opt-in only. Submitted facts remain attempted-only mock
             // observations; no transcript/audio, automatic mastery or retries.
@@ -271,21 +279,37 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
       });
       try {
         provider = providerFactory(ticket);
+        if(slidesControls){
+          if(typeof provider.enableSlidesTools!=='function'||typeof provider.sendUiResults!=='function')throw new Error('SLIDES_PROVIDER_UNSUPPORTED');
+          slides=new SlidesSession({sessionId:ticket.session_id,send,changed:flushContext,observe:diagnose,demoHistory:slidesDemoHistory,handshakeMs:slidesHandshakeMs,
+            isAuthorized:()=>!ended&&!ending&&!restricted&&!closing.current&&ticket.identity.authorization_until>Date.now()});
+        }
         if(provider.speechControlSupported===true){
           teaching.speech.enable(provider.profile?.session_create?.session?.audio?.output?.speed??(ticket.speech_pace==='normal'?0:-20));
           appliedContext=teaching.contextSnapshot();
           speech=new SpeechPaceCoordinator({sessionId:ticket.session_id,teaching,send,fail:finish,
             speak:(text,control)=>provider.speakFixedText(text,control),apply:flushContext,
-            available:()=>ready&&!ended&&!ending&&!restricted&&!runtime.active&&!pendingContext&&!pendingCancel.size&&!provider.pendingFixed,
+            available:()=>ready&&!ended&&!ending&&!restricted&&!runtime.active&&!pendingContext&&!pendingCancel.size&&!provider.pendingFixed&&!provider.uiBusy,
             settled:turn=>[...runtime.responses].some(([id,r])=>r.turn===turn&&!speechReplies.has(id)&&['done','cancelled'].includes(r.status))});
         }
         if(observation)provider.observeIdentity=identity=>observation.record('voice.provider.identity',identity);
         if(observation)provider.observeConnection=metadata=>observation.record('voice.connection',metadata);
         if(observation)provider.observeRequest=body=>observation.record('voice.request.sent',{provider_kind:providerKind,synthetic:providerKind!=='doubao',context_version:pendingContext?.version??appliedVersion,context_hash:pendingContext?.snapshot.hash??appliedContext.hash,body});
         if(provider.speechStartKind==='asr_candidate')outputGate=new TurnOutputGate({send,fail:finish,observe:diagnose,graceMs:replyGraceMs,maxWaitMs:turnWaitMs});
-        provider.open({sessionId:ticket.session_id,instructions:appliedContext.instructions,onFailure:code=>finish(code),onEvent:packet=> {
+        const openProvider=()=>{
+          clearTimeout(readyTimer);readyTimer=setTimeout(()=>finish('PROVIDER_READY_TIMEOUT'),readyTimeoutMs);
+          return provider.open({sessionId:ticket.session_id,instructions:appliedContext.instructions,onFailure:code=>finish(code),onEvent:packet=> {
           if (ended || ending || restricted) return;
+          if(packet.control==='ui.calls'){
+            if(!slides)return finish('UNEXPECTED_PROVIDER_TOOL');
+            clearTimeout(uiReplyTimer);uiReplyTimer=setTimeout(()=>finish('UI_REPLY_TIMEOUT'),30000);
+            const results=slides.calls(packet.calls);
+            void Promise.all(results).then(values=>{if(!ended&&!ending&&!restricted)provider.sendUiResults(values);}).catch(()=>finish('UI_TOOL_RESULT_FAILED'));
+            return;
+          }
+          if(packet.control==='ui.reply.settled'){clearTimeout(uiReplyTimer);speech?.advance();flushContext();return;}
           if(packet.control==='user.speech.candidate') {
+            slides?.observeStarted(packet.turn_id);
             if(!ready || !/^[a-zA-Z0-9_-]{1,128}$/.test(packet.turn_id??'') || runtime.finalTurns.has(packet.turn_id))return;
             const candidate=captureSpeech(packet.turn_id);outputGate?.candidate(packet.turn_id);
             diagnose('speech.candidate',{turn_id:packet.turn_id,response_id:candidate?.target,source:'asr_start'});return;
@@ -318,7 +342,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             return;
           }
           if(packet.control==='context.updated') {
-            if(pendingContext && packet.version===pendingContext.version){clearTimeout(pendingContext.timer);appliedContext=pendingContext.snapshot;appliedVersion=packet.version;appliedDecision=appliedContext.decision;appliedLanguage=appliedContext.language;pendingContext=null;teaching.speech.confirm(appliedContext.speech);observation?.record('voice.context.confirmed',{context_version:appliedVersion,context_hash:appliedContext.hash,turn_id:appliedDecision?.turn_id??null});diagnose('context.applied',{context_version:appliedVersion,turn_id:appliedDecision?.turn_id,context_hash:appliedContext.hash,context_policy_version:appliedContext.policy_version});send({type:'teaching.context.applied',version:appliedVersion,context_hash:appliedContext.hash});speech?.confirmed(appliedContext);speech?.advance();flushContext();}
+            if(pendingContext && packet.version===pendingContext.version){clearTimeout(pendingContext.timer);if(pendingContext.ui)slides.confirm(pendingContext.ui);appliedContext=pendingContext.snapshot;appliedVersion=appliedContext.version;appliedDecision=appliedContext.decision;appliedLanguage=appliedContext.language;pendingContext=null;teaching.speech.confirm(appliedContext.speech);observation?.record('voice.context.confirmed',{context_version:appliedVersion,context_hash:appliedContext.hash,turn_id:appliedDecision?.turn_id??null});diagnose('context.applied',{context_version:appliedVersion,turn_id:appliedDecision?.turn_id,context_hash:appliedContext.hash,context_policy_version:appliedContext.policy_version});send({type:'teaching.context.applied',version:appliedVersion,context_hash:appliedContext.hash});speech?.confirmed(appliedContext);speech?.advance();flushContext();}
             else diagnose('context.confirmation.ignored',{reason:pendingContext?'wrong_version':'no_pending'});
             return;
           }
@@ -329,6 +353,14 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             metrics?.count(providerKind,'dropped_events');
             if (result.reason === 'event_limit' || result.reason === 'invalid_event') finish('PROVIDER_PROTOCOL_ERROR');
             return;
+          }
+          if(slides&&!packet.speech_control&&packet.event.type==='response.started'&&latestSpokenTurn&&packet.event.turn_id!==latestSpokenTurn&&
+            (runtime.finalTurns.has(packet.event.turn_id)||speechCandidates.has(packet.event.turn_id))){
+            const event=packet.event;
+            runtime.ingest({version:1,event_id:randomUUID(),session_id:ticket.session_id,seq:0,at_ms:0,type:'response.cancel.requested',turn_id:event.turn_id,response_id:event.response_id,payload:{}});
+            outputGate?.stop(event.response_id);send({type:'output.stop',response_id:event.response_id});
+            diagnose('event.dropped',{turn_id:event.turn_id,response_id:event.response_id,reason:'ownership'});
+            try{provider.discardReply(event.response_id);}catch{finish('PROVIDER_CANCEL_FAILED');}return;
           }
           if(packet.speech_control){
             const event=packet.event;
@@ -347,7 +379,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             }
             return;
           }
-          if (packet.event.type === 'session.ready') {ready=true;clearTimeout(readyTimer);metrics?.count(providerKind,'ready');metrics?.observe(providerKind,'ready_ms',performance.now()-started);}
+          if (packet.event.type === 'session.ready') {ready=true;if(initialUi)slides.confirm(initialUi);clearTimeout(readyTimer);metrics?.count(providerKind,'ready');metrics?.observe(providerKind,'ready_ms',performance.now()-started);}
           if(packet.event.type==='session.ready')observation?.record('voice.ready',{provider_kind:providerKind,synthetic:providerKind!=='doubao',context_version:appliedVersion,context_hash:appliedContext.hash,provider_session_id:packet.provider_session_id??null});
           if(packet.event.type==='session.ready')diagnose('session.ready',{provider_ready:true,elapsed_ms:performance.now()-started});
           if(packet.event.type==='session.closed'){finish(undefined,'provider_closed');return;}
@@ -385,6 +417,8 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             const risk=policy.inspect(packet.event.payload.text,{output:packet.event.type==='response.text.delta'});
             if(risk.restricted){restrict(risk,packet.event);return;}
           }
+          if(['user.partial','user.final'].includes(event.type)&&hasSpeechText(event.payload.text))latestSpokenTurn=event.turn_id;
+          if(event.type==='user.final')slides?.observeFinal(event.turn_id);
           if(packet.event.type==='response.audio.chunk' && !firstAudio && replyAt!==null){firstAudio=true;metrics?.observe(providerKind,'first_audio_ms',performance.now()-replyAt);}
           // Register accepted input/request provenance after safety, before a
           // final releases held teacher text. Plans alone remain no evidence.
@@ -438,9 +472,18 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             send({type:'teaching.state',...teaching.view()});
             diagnose('language.reply.completed',{turn_id:event.turn_id,context_version:teaching.version});
           }
-          if(['response.done','response.cancelled'].includes(packet.event.type)){speech?.advance();flushContext();}
-        }});
+          if(['response.done','response.cancelled'].includes(packet.event.type)){if(!provider.uiBusy)clearTimeout(uiReplyTimer);speech?.advance();flushContext();}
+        }});};
         send({type:'session.config',session_id:ticket.session_id,audio:provider.audio,speech:{supported:provider.profile?.realtime?.protocol===SEEDUPLEX_PROTOCOL,pace:provider.speechPace??null,output_speed:provider.profile?.session_create?.session?.audio?.output?.speed??null},provider_connected:false,synthetic:providerKind!=='doubao'});
+        if(slides){
+          slidesOffered=true;
+          void slides.ready.then(configuration=>{if(ended)return;try{initialUi=configuration;appliedContext=slides.contextSnapshot(teaching.contextSnapshot(),configuration);provider.enableSlidesTools(configuration.tools);observation?.record('voice.context.prepared',{session_id:ticket.session_id,provider_kind:providerKind,synthetic:providerKind!=='doubao',context_version:appliedVersion,context_hash:appliedContext.hash,instructions:appliedContext.instructions,slides_revision:configuration.revision});openProvider();}catch{finish('PROVIDER_CONFIGURATION_ERROR');}},()=>{
+            if(ended)return;slides?.close();slides=null;initialUi=null;
+            send({type:'slides.unavailable',reason:'VIEWER_UNAVAILABLE'});
+            try{openProvider();}catch{finish('PROVIDER_CONFIGURATION_ERROR');}
+          });
+          slides.offer();
+        }else openProvider();
         send({type:'teaching.state',...teaching.view()});
       } catch { finish('PROVIDER_CONFIGURATION_ERROR'); }
     });

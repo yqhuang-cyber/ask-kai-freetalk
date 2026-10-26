@@ -39,7 +39,8 @@
     "review:planning": "node --env-file-if-exists=.env scripts/review-planning.js",
     "eval:agent:long": "node scripts/long-session-eval.js",
     "test:browser:closing": "node scripts/closing-browser-check.js",
-    "probe:closing": "node --env-file-if-exists=.env scripts/closing-voice-probe.js"
+    "probe:closing": "node --env-file-if-exists=.env scripts/closing-voice-probe.js",
+    "test:browser:slides": "node scripts/voice-slides-control/ordinary-web-browser-check.js"
   },
   "dependencies": {
     "@earendil-works/pi-agent-core": "1.2.0",

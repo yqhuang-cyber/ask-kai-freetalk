@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ask Kai · 和 Kai 聊一聊</title>
-  <link rel="stylesheet" href="/web.css"><script src="/web.js" type="module"></script>
+  <link rel="stylesheet" href="/web.css"><link rel="stylesheet" href="/slides-viewer.css"><script src="/web.js" type="module"></script>
 </head>
 <body>
   <header class="topbar"><a class="brand" href="/">ASK KAI<span>中文，一起慢慢说。</span></a><a class="dev-link" href="/dev/replay">工程回放 ↗</a></header>
@@ -26,6 +26,7 @@
       </section>
       <aside class="learning" aria-labelledby="word-title"><p class="eyebrow">ONE WORD AT A TIME</p><h2 id="word-title">本次词卡</h2><div class="word-card" hidden><span class="card-label">练习提示</span><h3 id="word-chinese"></h3><p id="word-pinyin" class="pinyin"></p><p id="word-english" class="translation"></p><div id="word-example" class="word-example"></div></div><h2>本轮学习尝试</h2><p id="learning-attempts" class="learning-note">尚无对话记录。</p><p class="learning-note">词卡是练习提示。学习尝试不代表已经掌握或发音准确。</p></aside>
     </div>
+    <section id="courseware" aria-label="演示课件" hidden><p id="courseware-source" class="preview"></p><div id="slides-container"></div></section>
     <section id="session-summary" class="session-summary" aria-labelledby="summary-title" hidden></section>
     <details id="close-log" class="memory" open><summary>这次收束过程</summary><p>只显示在这个页面里，不保存。音频结束那一帧会展开当时收到的 JSON。</p><ol id="close-log-list"></ol></details>
     <details id="learner-profile" class="learner-profile" hidden><summary>当前学习者的三类 Mock 资料</summary><p>完整档案按 HSK 大纲累计，交流技能摘要单独列出。“模拟掌握”为作者设定的背景证据，不是本轮学习成果或真实考试证明。</p><div id="learner-profile-content"></div></details>

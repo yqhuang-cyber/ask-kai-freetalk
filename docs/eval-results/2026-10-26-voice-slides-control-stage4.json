@@ -1,0 +1,2284 @@
+{
+  "version": 1,
+  "date": "2026-10-26",
+  "status": "session_capability_path_feasible_default_off",
+  "ordinary_agent_enabled": false,
+  "provider_input_identity_verified": false,
+  "admission_strategy": "session_call_with_revocable_tool_capability",
+  "real_provider_attempts": 62,
+  "provider_ready": 62,
+  "echo_suite": {
+    "samples": 23,
+    "valid_review_cases": 12,
+    "applied_reviews": 7,
+    "structural_observations": 18,
+    "not_selected_for_integration": true
+  },
+  "capability_suite": {
+    "samples": 23,
+    "structural_observations": 23,
+    "applied_reviews": 12
+  },
+  "retained_capability_failures": [
+    "missing_first_tool_once",
+    "identical_pending_request_not_treated_as_additive"
+  ],
+  "synthetic_checks": {
+    "verify_tests": 596,
+    "coordinator_tests": 14,
+    "protocol_tests": 18,
+    "lifecycle_tests": 17,
+    "source_evidence_tests": 9,
+    "command_capability_tests": 8,
+    "replay_scenarios": 3
+  },
+  "synthetic_viewer": true,
+  "synthetic_history": true,
+  "real_browser_checks": 0,
+  "browser_audio_tested": false,
+  "human_listening_tested": false,
+  "contains_raw_provider_trace": false,
+  "contains_audio": false,
+  "contains_transcripts": false,
+  "same_final_version_suite": false,
+  "source_sets": [
+    {
+      "scripts/voice-slides-control/cases.js": "5f2e08b6d47981948b518b21f7781ae807bc53f22a775e1a862ee4c13152c875",
+      "scripts/voice-slides-control/batch-cases.js": "111b10fa926d477c0008373c7303c5e511545fc2e8d890e65339b9e1741d2357",
+      "scripts/voice-slides-control/protocol-probe.js": "4f19ad728f58cecf9ea8f110231589f92af811e9ddbcd057ad77599da38b23c2",
+      "scripts/voice-slides-control/probe.js": "aa5faa47443daaabe27933dd1e8a12f320f597768b94ef3c32e06927c96aad2e",
+      "scripts/voice-slides-control/source-evidence.js": "885b56f28602628762ad783dd27856474d4d70075c595de9c36c08084ed8c2ed",
+      "packages/contracts/ui-actions.js": "065fb0330718905bb6b09f739c05bb51c0392c08f854524aa2b3a1a3f45a661d"
+    },
+    {
+      "scripts/voice-slides-control/cases.js": "5f2e08b6d47981948b518b21f7781ae807bc53f22a775e1a862ee4c13152c875",
+      "scripts/voice-slides-control/batch-cases.js": "111b10fa926d477c0008373c7303c5e511545fc2e8d890e65339b9e1741d2357",
+      "scripts/voice-slides-control/protocol-probe.js": "4f19ad728f58cecf9ea8f110231589f92af811e9ddbcd057ad77599da38b23c2",
+      "scripts/voice-slides-control/probe.js": "aa5faa47443daaabe27933dd1e8a12f320f597768b94ef3c32e06927c96aad2e",
+      "scripts/voice-slides-control/source-evidence.js": "2bd9bd74308f499ad75690361c1f6aa77074982344c78da497100de040155d2c",
+      "packages/contracts/ui-actions.js": "065fb0330718905bb6b09f739c05bb51c0392c08f854524aa2b3a1a3f45a661d"
+    },
+    {
+      "scripts/voice-slides-control/lifecycle-probe.js": "d18d39543c57c80a87bb08e64e913097e37483ef08324c2207c5d81aa71e8ddb",
+      "scripts/voice-slides-control/source-evidence.js": "2bd9bd74308f499ad75690361c1f6aa77074982344c78da497100de040155d2c",
+      "scripts/voice-slides-control/cases.js": "5f2e08b6d47981948b518b21f7781ae807bc53f22a775e1a862ee4c13152c875",
+      "scripts/voice-slides-control/control-cases.js": "7102aa6576ac46b5bed0aa86bf9a23296e75249f0128f2ae05170c5e3fe739fd",
+      "packages/contracts/ui-actions.js": "065fb0330718905bb6b09f739c05bb51c0392c08f854524aa2b3a1a3f45a661d"
+    },
+    {
+      "scripts/voice-slides-control/cases.js": "5f2e08b6d47981948b518b21f7781ae807bc53f22a775e1a862ee4c13152c875",
+      "scripts/voice-slides-control/batch-cases.js": "111b10fa926d477c0008373c7303c5e511545fc2e8d890e65339b9e1741d2357",
+      "scripts/voice-slides-control/protocol-probe.js": "ebe08e5d8f953e4f23e81e009101ca0caffd70d874fda2cc5918364da66489d5",
+      "scripts/voice-slides-control/probe.js": "229e4c38e1dbf6307dd7e7b52383b60aa82b3b74803310103a8efe37102a8980",
+      "scripts/voice-slides-control/source-evidence.js": "961555e0c6651b09d9c92b9cc1a4954f694d0e97d1b69413a4c86c45d695d231",
+      "scripts/voice-slides-control/command-capabilities.js": "ffd0b95c2fc7fa641d7499cb3e2b7732682599f2438dd166ccc53ae881189971",
+      "packages/contracts/ui-actions.js": "065fb0330718905bb6b09f739c05bb51c0392c08f854524aa2b3a1a3f45a661d"
+    },
+    {
+      "scripts/voice-slides-control/lifecycle-probe.js": "f9aca130a80176e118df49efb6048bf2f8344692fca3df0e605e908d3588e7b6",
+      "scripts/voice-slides-control/source-evidence.js": "961555e0c6651b09d9c92b9cc1a4954f694d0e97d1b69413a4c86c45d695d231",
+      "scripts/voice-slides-control/command-capabilities.js": "df5bf0148f204af71969e4b6b9d87109d384431e473da2490a249067e56db5c1",
+      "scripts/voice-slides-control/cases.js": "5f2e08b6d47981948b518b21f7781ae807bc53f22a775e1a862ee4c13152c875",
+      "scripts/voice-slides-control/control-cases.js": "7102aa6576ac46b5bed0aa86bf9a23296e75249f0128f2ae05170c5e3fe739fd",
+      "packages/contracts/ui-actions.js": "065fb0330718905bb6b09f739c05bb51c0392c08f854524aa2b3a1a3f45a661d"
+    },
+    {
+      "scripts/voice-slides-control/lifecycle-probe.js": "9b3a88804019c63c8c540f363929e63ac1d4467a5a7f0360959b47251f8ef551",
+      "scripts/voice-slides-control/source-evidence.js": "961555e0c6651b09d9c92b9cc1a4954f694d0e97d1b69413a4c86c45d695d231",
+      "scripts/voice-slides-control/command-capabilities.js": "ffd0b95c2fc7fa641d7499cb3e2b7732682599f2438dd166ccc53ae881189971",
+      "scripts/voice-slides-control/cases.js": "5f2e08b6d47981948b518b21f7781ae807bc53f22a775e1a862ee4c13152c875",
+      "scripts/voice-slides-control/control-cases.js": "7102aa6576ac46b5bed0aa86bf9a23296e75249f0128f2ae05170c5e3fe739fd",
+      "packages/contracts/ui-actions.js": "065fb0330718905bb6b09f739c05bb51c0392c08f854524aa2b3a1a3f45a661d"
+    },
+    {
+      "scripts/voice-slides-control/lifecycle-probe.js": "ebb93fb093701b21a4a740a7508d76b52828db28eaf602bfb3d86ebda4017a92",
+      "scripts/voice-slides-control/source-evidence.js": "961555e0c6651b09d9c92b9cc1a4954f694d0e97d1b69413a4c86c45d695d231",
+      "scripts/voice-slides-control/command-capabilities.js": "ffd0b95c2fc7fa641d7499cb3e2b7732682599f2438dd166ccc53ae881189971",
+      "scripts/voice-slides-control/cases.js": "5f2e08b6d47981948b518b21f7781ae807bc53f22a775e1a862ee4c13152c875",
+      "scripts/voice-slides-control/control-cases.js": "9021fea59aef9cf0ce5ce8a3d9898375aafe642eb874059237af87fa190247a5",
+      "packages/contracts/ui-actions.js": "065fb0330718905bb6b09f739c05bb51c0392c08f854524aa2b3a1a3f45a661d"
+    }
+  ],
+  "groups": [
+    {
+      "label": "echo-preflight",
+      "source_set": 0,
+      "samples": [
+        {
+          "id": "previous",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "previous"
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 2,
+          "source_evidence_enabled": true,
+          "source_evidence": [
+            {
+              "status": "matched",
+              "reason": null,
+              "matched_reserved_input": true
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        }
+      ]
+    },
+    {
+      "label": "echo-suite",
+      "source_set": 1,
+      "samples": [
+        {
+          "id": "previous",
+          "status": "needs_review",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "previous"
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 0,
+          "final_page": 3,
+          "source_evidence_enabled": true,
+          "source_evidence": [
+            {
+              "status": "rejected",
+              "reason": "SOURCE_NOT_RECOGNIZED",
+              "matched_reserved_input": false
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "recent",
+          "status": "needs_review",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "recent"
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 0,
+          "final_page": 3,
+          "source_evidence_enabled": true,
+          "source_evidence": [
+            {
+              "status": "rejected",
+              "reason": "SOURCE_NOT_RECOGNIZED",
+              "matched_reserved_input": false
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "goto-one",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "goto",
+              "page": 1
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 1,
+          "source_evidence_enabled": true,
+          "source_evidence": [
+            {
+              "status": "matched",
+              "reason": null,
+              "matched_reserved_input": true
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "goto-two",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "goto",
+              "page": 2
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 2,
+          "source_evidence_enabled": true,
+          "source_evidence": [
+            {
+              "status": "matched",
+              "reason": null,
+              "matched_reserved_input": true
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "earlier-title",
+          "status": "needs_review",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "goto",
+              "page": 1
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 0,
+          "final_page": 3,
+          "source_evidence_enabled": true,
+          "source_evidence": [
+            {
+              "status": "rejected",
+              "reason": "SOURCE_NOT_RECOGNIZED",
+              "matched_reserved_input": false
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "back-one",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "previous"
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 2,
+          "source_evidence_enabled": true,
+          "source_evidence": [
+            {
+              "status": "matched",
+              "reason": null,
+              "matched_reserved_input": true
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "again-previous",
+          "status": "needs_review",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "previous"
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 0,
+          "final_page": 3,
+          "source_evidence_enabled": true,
+          "source_evidence": [
+            {
+              "status": "rejected",
+              "reason": "SOURCE_NOT_RECOGNIZED",
+              "matched_reserved_input": false
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "return-first",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "goto",
+              "page": 1
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 1,
+          "source_evidence_enabled": true,
+          "source_evidence": [
+            {
+              "status": "matched",
+              "reason": null,
+              "matched_reserved_input": true
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "review-two",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "goto",
+              "page": 2
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 2,
+          "source_evidence_enabled": true,
+          "source_evidence": [
+            {
+              "status": "matched",
+              "reason": null,
+              "matched_reserved_input": true
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "recent-again",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "recent"
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 2,
+          "source_evidence_enabled": true,
+          "source_evidence": [
+            {
+              "status": "matched",
+              "reason": null,
+              "matched_reserved_input": true
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "previous-from-two",
+          "status": "needs_review",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "previous"
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 0,
+          "final_page": 2,
+          "source_evidence_enabled": true,
+          "source_evidence": [
+            {
+              "status": "rejected",
+              "reason": "SOURCE_NOT_RECOGNIZED",
+              "matched_reserved_input": false
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "first-from-two",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "goto",
+              "page": 1
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 1,
+          "source_evidence_enabled": true,
+          "source_evidence": [
+            {
+              "status": "matched",
+              "reason": null,
+              "matched_reserved_input": true
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "forward-next",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 2,
+          "source_evidence_enabled": true,
+          "source_evidence": [],
+          "pre_result_output_events": 17,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "forward-goto",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 2,
+          "source_evidence_enabled": true,
+          "source_evidence": [],
+          "pre_result_output_events": 17,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "forward-vague",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 2,
+          "source_evidence_enabled": true,
+          "source_evidence": [],
+          "pre_result_output_events": 17,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "comprehension-only",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 2,
+          "source_evidence_enabled": true,
+          "source_evidence": [],
+          "pre_result_output_events": 35,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "continue",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 2,
+          "source_evidence_enabled": true,
+          "source_evidence": [],
+          "pre_result_output_events": 25,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "ambiguous",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 2,
+          "source_evidence_enabled": true,
+          "source_evidence": [],
+          "pre_result_output_events": 31,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "forward-already-shown",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 1,
+          "source_evidence_enabled": true,
+          "source_evidence": [],
+          "pre_result_output_events": 17,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "out-of-range",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 2,
+          "source_evidence_enabled": true,
+          "source_evidence": [],
+          "pre_result_output_events": 18,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "last-page",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 3,
+          "source_evidence_enabled": true,
+          "source_evidence": [],
+          "pre_result_output_events": 26,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "negation",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 2,
+          "source_evidence_enabled": true,
+          "source_evidence": [],
+          "pre_result_output_events": 21,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "quote",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 2,
+          "source_evidence_enabled": true,
+          "source_evidence": [],
+          "pre_result_output_events": 14,
+          "production_ownership_verified": false
+        }
+      ]
+    },
+    {
+      "label": "echo-source-delayed-old",
+      "source_set": 2,
+      "samples": [
+        {
+          "mode": "source-delayed-old",
+          "ended": "source_delayed_call_fenced",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_finals": 2,
+          "asr_matches_authored": [
+            true,
+            true
+          ],
+          "tool_batches": [
+            {
+              "name": "navigate_slides",
+              "action": "previous",
+              "input_finals_at_call": 1,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            },
+            {
+              "name": "cancel_pending_slides",
+              "action": "cancel_pending",
+              "input_finals_at_call": 2,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            }
+          ],
+          "results_sent": 2,
+          "synthetic_actions_applied": 0,
+          "final_page": 3,
+          "source_evidence_enabled": true,
+          "source_evidence": [
+            {
+              "status": "rejected",
+              "reason": "SOURCE_NOT_CURRENT"
+            },
+            {
+              "status": "matched",
+              "reason": null,
+              "input_index": 1
+            }
+          ],
+          "local_delivery_delay_injected": true,
+          "scoped_tools_update_ack": false,
+          "output_while_tool_waiting": 0,
+          "reply_owners": [
+            1
+          ],
+          "production_ownership_verified": false,
+          "enable_allowed": false
+        }
+      ]
+    },
+    {
+      "label": "echo-source-repeat",
+      "source_set": 2,
+      "samples": [
+        {
+          "mode": "source-repeat",
+          "ended": "two_replies_observed",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_finals": 2,
+          "asr_matches_authored": [
+            true,
+            true
+          ],
+          "tool_batches": [
+            {
+              "name": "navigate_slides",
+              "action": "previous",
+              "input_finals_at_call": 1,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            },
+            {
+              "name": "navigate_slides",
+              "action": "previous",
+              "input_finals_at_call": 2,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            }
+          ],
+          "results_sent": 2,
+          "synthetic_actions_applied": 1,
+          "final_page": 2,
+          "source_evidence_enabled": true,
+          "source_evidence": [
+            {
+              "status": "matched",
+              "reason": null,
+              "input_index": 0
+            },
+            {
+              "status": "rejected",
+              "reason": "SOURCE_AMBIGUOUS"
+            }
+          ],
+          "local_delivery_delay_injected": false,
+          "scoped_tools_update_ack": false,
+          "output_while_tool_waiting": 0,
+          "reply_owners": [
+            0,
+            1
+          ],
+          "production_ownership_verified": false,
+          "enable_allowed": false
+        }
+      ]
+    },
+    {
+      "label": "echo-interrupt-finish",
+      "source_set": 2,
+      "samples": [
+        {
+          "mode": "interrupt-finish",
+          "ended": "LIFECYCLE_SOURCE_REJECTED",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_finals": 1,
+          "asr_matches_authored": [
+            false
+          ],
+          "tool_batches": [
+            {
+              "name": "navigate_slides",
+              "action": "previous",
+              "input_finals_at_call": 1,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            }
+          ],
+          "results_sent": 1,
+          "synthetic_actions_applied": 0,
+          "final_page": 3,
+          "source_evidence_enabled": true,
+          "source_evidence": [
+            {
+              "status": "rejected",
+              "reason": "SOURCE_NOT_RECOGNIZED"
+            }
+          ],
+          "local_delivery_delay_injected": false,
+          "scoped_tools_update_ack": false,
+          "output_while_tool_waiting": 0,
+          "reply_owners": [
+            0
+          ],
+          "production_ownership_verified": false,
+          "enable_allowed": false
+        }
+      ]
+    },
+    {
+      "label": "capability-suite",
+      "source_set": 3,
+      "samples": [
+        {
+          "id": "previous",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "previous"
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "recent",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "previous"
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "goto-one",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "goto",
+              "page": 1
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 1,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "goto-two",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "goto",
+              "page": 2
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "earlier-title",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "goto",
+              "page": 1
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 1,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "back-one",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "previous"
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "again-previous",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "previous"
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "return-first",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "goto",
+              "page": 1
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 1,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "review-two",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "goto",
+              "page": 2
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "recent-again",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "recent"
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "previous-from-two",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "previous"
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 1,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "first-from-two",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [
+            {
+              "name": "navigate_slides",
+              "action": "goto",
+              "page": 1
+            }
+          ],
+          "tool_batches": 1,
+          "tool_results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 1,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0
+            }
+          ],
+          "pre_result_output_events": 0,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "forward-next",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [],
+          "pre_result_output_events": 17,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "forward-goto",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [],
+          "pre_result_output_events": 17,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "forward-vague",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [],
+          "pre_result_output_events": 17,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "comprehension-only",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [],
+          "pre_result_output_events": 35,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "continue",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [],
+          "pre_result_output_events": 33,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "ambiguous",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [],
+          "pre_result_output_events": 26,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "forward-already-shown",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 1,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [],
+          "pre_result_output_events": 17,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "out-of-range",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [],
+          "pre_result_output_events": 18,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "last-page",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 3,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [],
+          "pre_result_output_events": 23,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "negation",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": true,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [],
+          "pre_result_output_events": 21,
+          "production_ownership_verified": false
+        },
+        {
+          "id": "quote",
+          "status": "sample_observed",
+          "ended": "reply_done",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_final_count": 1,
+          "asr_matches_authored": false,
+          "tool_calls": [],
+          "tool_batches": 0,
+          "tool_results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [],
+          "pre_result_output_events": 14,
+          "production_ownership_verified": false
+        }
+      ]
+    },
+    {
+      "label": "capability-repeat",
+      "source_set": 4,
+      "samples": [
+        {
+          "mode": "epoch-repeat",
+          "ended": "two_replies_observed",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_finals": 2,
+          "asr_matches_authored": [
+            true,
+            true
+          ],
+          "tool_batches": [
+            {
+              "name": "navigate_slides",
+              "action": "previous",
+              "input_finals_at_call": 1,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            },
+            {
+              "name": "navigate_slides",
+              "action": "previous",
+              "input_finals_at_call": 2,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            }
+          ],
+          "results_sent": 2,
+          "synthetic_actions_applied": 2,
+          "final_page": 1,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0,
+              "rotated": false
+            },
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0,
+              "rotated": false
+            }
+          ],
+          "local_delivery_delay_injected": false,
+          "scoped_tools_update_ack": false,
+          "output_while_tool_waiting": 0,
+          "reply_owners": [
+            0,
+            1
+          ],
+          "production_ownership_verified": false,
+          "enable_allowed": false
+        }
+      ]
+    },
+    {
+      "label": "capability-resume",
+      "source_set": 4,
+      "samples": [
+        {
+          "mode": "epoch-resume",
+          "ended": "epoch_cancelled_and_resumed",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_finals": 3,
+          "asr_matches_authored": [
+            true,
+            true,
+            true
+          ],
+          "tool_batches": [
+            {
+              "name": "navigate_slides",
+              "action": "previous",
+              "input_finals_at_call": 1,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            },
+            {
+              "name": "cancel_pending_slides",
+              "action": "cancel_pending",
+              "input_finals_at_call": 2,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            },
+            {
+              "name": "navigate_slides",
+              "action": "previous",
+              "input_finals_at_call": 3,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            }
+          ],
+          "results_sent": 3,
+          "synthetic_actions_applied": 1,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0,
+              "rotated": false
+            },
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "cancel",
+              "epoch_index": 0,
+              "rotated": true
+            },
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 1,
+              "rotated": false
+            }
+          ],
+          "local_delivery_delay_injected": false,
+          "scoped_tools_update_ack": true,
+          "output_while_tool_waiting": 0,
+          "reply_owners": [
+            1,
+            2
+          ],
+          "production_ownership_verified": false,
+          "enable_allowed": false
+        }
+      ]
+    },
+    {
+      "label": "capability-delay-first",
+      "source_set": 4,
+      "samples": [
+        {
+          "mode": "epoch-delayed-old",
+          "ended": "epoch_old_call_fenced_and_resumed",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_finals": 3,
+          "asr_matches_authored": [
+            true,
+            true,
+            true
+          ],
+          "tool_batches": [
+            {
+              "name": "navigate_slides",
+              "action": "previous",
+              "input_finals_at_call": 1,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            },
+            {
+              "name": "cancel_pending_slides",
+              "action": "cancel_pending",
+              "input_finals_at_call": 2,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            },
+            {
+              "name": "navigate_slides",
+              "action": "previous",
+              "input_finals_at_call": 3,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            }
+          ],
+          "results_sent": 3,
+          "synthetic_actions_applied": 1,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "cancel",
+              "epoch_index": 0,
+              "rotated": true
+            },
+            {
+              "status": "rejected",
+              "reason": "CAPABILITY_REVOKED",
+              "kind": "navigate",
+              "epoch_index": null,
+              "rotated": false
+            },
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 1,
+              "rotated": false
+            }
+          ],
+          "delayed_old_reason": "CAPABILITY_REVOKED",
+          "local_delivery_delay_injected": true,
+          "scoped_tools_update_ack": true,
+          "output_while_tool_waiting": 0,
+          "reply_owners": [
+            1,
+            2
+          ],
+          "production_ownership_verified": false,
+          "enable_allowed": false
+        }
+      ]
+    },
+    {
+      "label": "capability-delay-final",
+      "source_set": 5,
+      "samples": [
+        {
+          "mode": "epoch-delayed-old",
+          "ended": "epoch_old_call_fenced_and_resumed",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_finals": 3,
+          "asr_matches_authored": [
+            false,
+            true,
+            false
+          ],
+          "tool_batches": [
+            {
+              "name": "navigate_slides",
+              "action": "previous",
+              "input_finals_at_call": 1,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            },
+            {
+              "name": "cancel_pending_slides",
+              "action": "cancel_pending",
+              "input_finals_at_call": 2,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            },
+            {
+              "name": "navigate_slides",
+              "action": "previous",
+              "input_finals_at_call": 3,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            }
+          ],
+          "results_sent": 3,
+          "synthetic_actions_applied": 1,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "cancel",
+              "epoch_index": 0,
+              "rotated": true
+            },
+            {
+              "status": "rejected",
+              "reason": "CAPABILITY_REVOKED",
+              "kind": "navigate",
+              "epoch_index": null,
+              "rotated": false
+            },
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 1,
+              "rotated": false
+            }
+          ],
+          "delayed_old_reason": "CAPABILITY_REVOKED",
+          "local_delivery_delay_injected": true,
+          "scoped_tools_update_ack": true,
+          "output_while_tool_waiting": 0,
+          "reply_owners": [
+            1,
+            2
+          ],
+          "production_ownership_verified": false,
+          "enable_allowed": false
+        }
+      ]
+    },
+    {
+      "label": "capability-control-correct-queued",
+      "source_set": 5,
+      "samples": [
+        {
+          "mode": "control-correct-queued",
+          "ended": "control_requests_settled",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_finals": 2,
+          "asr_matches_authored": [
+            true,
+            true
+          ],
+          "tool_batches": [
+            {
+              "name": "navigate_slides",
+              "action": "previous",
+              "input_finals_at_call": 1,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            },
+            {
+              "name": "navigate_slides",
+              "action": "goto",
+              "page": 1,
+              "replace_pending": true,
+              "input_finals_at_call": 2,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            }
+          ],
+          "results_sent": 2,
+          "synthetic_actions_applied": 1,
+          "final_page": 1,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0,
+              "rotated": false
+            },
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0,
+              "rotated": true
+            }
+          ],
+          "local_delivery_delay_injected": false,
+          "scoped_tools_update_ack": false,
+          "output_while_tool_waiting": 0,
+          "reply_owners": [
+            1
+          ],
+          "production_ownership_verified": false,
+          "enable_allowed": false
+        }
+      ]
+    },
+    {
+      "label": "capability-control-correct-dispatched",
+      "source_set": 5,
+      "samples": [
+        {
+          "mode": "control-correct-dispatched",
+          "ended": "control_requests_settled",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_finals": 2,
+          "asr_matches_authored": [
+            true,
+            true
+          ],
+          "tool_batches": [
+            {
+              "name": "navigate_slides",
+              "action": "previous",
+              "input_finals_at_call": 1,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            },
+            {
+              "name": "navigate_slides",
+              "action": "goto",
+              "page": 1,
+              "replace_pending": true,
+              "input_finals_at_call": 2,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            }
+          ],
+          "results_sent": 2,
+          "synthetic_actions_applied": 2,
+          "final_page": 1,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0,
+              "rotated": false
+            },
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0,
+              "rotated": true
+            }
+          ],
+          "local_delivery_delay_injected": false,
+          "scoped_tools_update_ack": false,
+          "output_while_tool_waiting": 0,
+          "reply_owners": [
+            1
+          ],
+          "production_ownership_verified": false,
+          "enable_allowed": false
+        }
+      ]
+    },
+    {
+      "label": "capability-control-revoke-queued",
+      "source_set": 5,
+      "samples": [
+        {
+          "mode": "control-revoke-queued",
+          "ended": "control_requests_settled",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_finals": 2,
+          "asr_matches_authored": [
+            true,
+            true
+          ],
+          "tool_batches": [
+            {
+              "name": "navigate_slides",
+              "action": "previous",
+              "input_finals_at_call": 1,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            },
+            {
+              "name": "cancel_pending_slides",
+              "action": "cancel_pending",
+              "input_finals_at_call": 2,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            }
+          ],
+          "results_sent": 2,
+          "synthetic_actions_applied": 0,
+          "final_page": 3,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0,
+              "rotated": false
+            },
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "cancel",
+              "epoch_index": 0,
+              "rotated": true
+            }
+          ],
+          "local_delivery_delay_injected": false,
+          "scoped_tools_update_ack": false,
+          "output_while_tool_waiting": 0,
+          "reply_owners": [
+            1
+          ],
+          "production_ownership_verified": false,
+          "enable_allowed": false
+        }
+      ]
+    },
+    {
+      "label": "capability-control-revoke-dispatched",
+      "source_set": 5,
+      "samples": [
+        {
+          "mode": "control-revoke-dispatched",
+          "ended": "control_requests_settled",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_finals": 2,
+          "asr_matches_authored": [
+            false,
+            true
+          ],
+          "tool_batches": [
+            {
+              "name": "navigate_slides",
+              "action": "previous",
+              "input_finals_at_call": 1,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            },
+            {
+              "name": "cancel_pending_slides",
+              "action": "cancel_pending",
+              "input_finals_at_call": 2,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            }
+          ],
+          "results_sent": 2,
+          "synthetic_actions_applied": 1,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0,
+              "rotated": false
+            },
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "cancel",
+              "epoch_index": 0,
+              "rotated": true
+            }
+          ],
+          "local_delivery_delay_injected": false,
+          "scoped_tools_update_ack": false,
+          "output_while_tool_waiting": 0,
+          "reply_owners": [
+            1
+          ],
+          "production_ownership_verified": false,
+          "enable_allowed": false
+        }
+      ]
+    },
+    {
+      "label": "capability-interrupt-add",
+      "source_set": 5,
+      "samples": [
+        {
+          "mode": "interrupt-add",
+          "ended": "LIFECYCLE_WAIT_TIMEOUT",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_finals": 2,
+          "asr_matches_authored": [
+            true,
+            true
+          ],
+          "tool_batches": [
+            {
+              "name": "navigate_slides",
+              "action": "previous",
+              "input_finals_at_call": 1,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            }
+          ],
+          "results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0,
+              "rotated": false
+            }
+          ],
+          "local_delivery_delay_injected": false,
+          "scoped_tools_update_ack": false,
+          "output_while_tool_waiting": 0,
+          "reply_owners": [
+            1
+          ],
+          "production_ownership_verified": false,
+          "enable_allowed": false
+        }
+      ]
+    },
+    {
+      "label": "capability-interrupt-question",
+      "source_set": 5,
+      "samples": [
+        {
+          "mode": "interrupt-question",
+          "ended": "new_question_reply_observed",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_finals": 2,
+          "asr_matches_authored": [
+            true,
+            true
+          ],
+          "tool_batches": [
+            {
+              "name": "navigate_slides",
+              "action": "previous",
+              "input_finals_at_call": 1,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            }
+          ],
+          "results_sent": 1,
+          "synthetic_actions_applied": 1,
+          "final_page": 2,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0,
+              "rotated": false
+            }
+          ],
+          "local_delivery_delay_injected": false,
+          "scoped_tools_update_ack": false,
+          "output_while_tool_waiting": 0,
+          "reply_owners": [
+            1
+          ],
+          "production_ownership_verified": false,
+          "enable_allowed": false
+        }
+      ]
+    },
+    {
+      "label": "capability-epoch-add-explicit",
+      "source_set": 6,
+      "samples": [
+        {
+          "mode": "epoch-add-explicit",
+          "ended": "overlapping_inputs_settled",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_finals": 2,
+          "asr_matches_authored": [
+            false,
+            true
+          ],
+          "tool_batches": [
+            {
+              "name": "navigate_slides",
+              "action": "previous",
+              "input_finals_at_call": 1,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            },
+            {
+              "name": "navigate_slides",
+              "action": "previous",
+              "input_finals_at_call": 2,
+              "after_cancel": false,
+              "input_identity_present": false,
+              "input_identity_matches": false
+            }
+          ],
+          "results_sent": 2,
+          "synthetic_actions_applied": 2,
+          "final_page": 1,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0,
+              "rotated": false
+            },
+            {
+              "status": "accepted",
+              "reason": null,
+              "kind": "navigate",
+              "epoch_index": 0,
+              "rotated": false
+            }
+          ],
+          "local_delivery_delay_injected": false,
+          "scoped_tools_update_ack": false,
+          "output_while_tool_waiting": 0,
+          "reply_owners": [
+            1
+          ],
+          "production_ownership_verified": false,
+          "enable_allowed": false
+        }
+      ]
+    },
+    {
+      "label": "capability-revoke-first-missing-tool",
+      "source_set": 5,
+      "samples": [
+        {
+          "mode": "control-revoke-dispatched",
+          "ended": "LIFECYCLE_WAIT_TIMEOUT",
+          "provider_ready": true,
+          "session_closed_ack": true,
+          "asr_finals": 1,
+          "asr_matches_authored": [
+            true
+          ],
+          "tool_batches": [],
+          "results_sent": 0,
+          "synthetic_actions_applied": 0,
+          "final_page": 3,
+          "source_evidence_enabled": false,
+          "source_evidence": [],
+          "epoch_capabilities_enabled": true,
+          "action_scope": "session_call",
+          "capability_admissions": [],
+          "local_delivery_delay_injected": false,
+          "scoped_tools_update_ack": false,
+          "output_while_tool_waiting": 0,
+          "reply_owners": [
+            0
+          ],
+          "production_ownership_verified": false,
+          "enable_allowed": false
+        }
+      ]
+    }
+  ]
+}

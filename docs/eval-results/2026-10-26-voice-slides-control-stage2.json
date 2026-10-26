@@ -1,0 +1,259 @@
+{
+  "version": 1,
+  "date": "2026-10-26",
+  "status": "supplement_observed_admission_not_passed",
+  "ordinary_agent_enabled": false,
+  "real_provider_attempts": 12,
+  "final_observations": 7,
+  "strict_argument_failures": 3,
+  "pre_ready_provider_errors": 2,
+  "model": "1.2.6.1",
+  "same_final_version_suite": false,
+  "synthetic_checks": {
+    "verify_tests": 558,
+    "coordinator_tests": 14,
+    "lifecycle_tests": 8,
+    "protocol_tests": 6,
+    "replay_scenarios": 3
+  },
+  "new_browser_checks": 0,
+  "human_listening_tested": false,
+  "contains_raw_provider_trace": false,
+  "contains_audio": false,
+  "contains_transcripts": false,
+  "results": [
+    {
+      "source_hashes": {
+        "scripts/voice-slides-control/lifecycle-probe.js": "81ac371712801b6b5b3d33a05e1a8b047ba0bad9d8ab70ca1581201609c5a934",
+        "scripts/voice-slides-control/cases.js": "0578a63243740c77c5f6c7a552e9e483034789e41a6ee25093cdbbd9b64baee9",
+        "packages/contracts/ui-actions.js": "99ca490425634021ca2e844628a0dae444b034b86080d5e6e1e90f2fcab7cc66"
+      },
+      "mode": "interrupt-finish",
+      "ended": "overlapping_inputs_settled",
+      "provider_ready": true,
+      "session_closed_ack": true,
+      "synthetic_viewer": true,
+      "synthetic_history": true,
+      "production_ownership_verified": false,
+      "enable_allowed": false,
+      "inputs_started": 2,
+      "asr_finals": 2,
+      "results_sent": 2,
+      "synthetic_actions_applied": 2,
+      "final_page": 1,
+      "cancel_sent": false,
+      "output_while_tool_waiting": 0,
+      "reply_owners": [
+        1
+      ],
+      "new_audio_chunks": 8,
+      "stale_text_events_discarded": 0,
+      "stale_audio_chunks_discarded": 0,
+      "audio_lane_conflict": false,
+      "duration_ms": 12812
+    },
+    {
+      "source_hashes": {
+        "scripts/voice-slides-control/lifecycle-probe.js": "81ac371712801b6b5b3d33a05e1a8b047ba0bad9d8ab70ca1581201609c5a934",
+        "scripts/voice-slides-control/cases.js": "0578a63243740c77c5f6c7a552e9e483034789e41a6ee25093cdbbd9b64baee9",
+        "packages/contracts/ui-actions.js": "99ca490425634021ca2e844628a0dae444b034b86080d5e6e1e90f2fcab7cc66"
+      },
+      "mode": "interrupt-add",
+      "ended": "overlapping_inputs_settled",
+      "provider_ready": true,
+      "session_closed_ack": true,
+      "synthetic_viewer": true,
+      "synthetic_history": true,
+      "production_ownership_verified": false,
+      "enable_allowed": false,
+      "inputs_started": 2,
+      "asr_finals": 2,
+      "results_sent": 2,
+      "synthetic_actions_applied": 2,
+      "final_page": 1,
+      "cancel_sent": false,
+      "output_while_tool_waiting": 0,
+      "reply_owners": [
+        1
+      ],
+      "new_audio_chunks": 9,
+      "stale_text_events_discarded": 0,
+      "stale_audio_chunks_discarded": 0,
+      "audio_lane_conflict": false,
+      "duration_ms": 12275
+    },
+    {
+      "source_hashes": {
+        "scripts/voice-slides-control/lifecycle-probe.js": "81ac371712801b6b5b3d33a05e1a8b047ba0bad9d8ab70ca1581201609c5a934",
+        "scripts/voice-slides-control/cases.js": "0578a63243740c77c5f6c7a552e9e483034789e41a6ee25093cdbbd9b64baee9",
+        "packages/contracts/ui-actions.js": "99ca490425634021ca2e844628a0dae444b034b86080d5e6e1e90f2fcab7cc66"
+      },
+      "mode": "interrupt-question",
+      "ended": "new_question_reply_observed",
+      "provider_ready": true,
+      "session_closed_ack": true,
+      "synthetic_viewer": true,
+      "synthetic_history": true,
+      "production_ownership_verified": false,
+      "enable_allowed": false,
+      "inputs_started": 2,
+      "asr_finals": 2,
+      "results_sent": 1,
+      "synthetic_actions_applied": 1,
+      "final_page": 2,
+      "cancel_sent": false,
+      "output_while_tool_waiting": 0,
+      "reply_owners": [
+        1
+      ],
+      "new_audio_chunks": 8,
+      "stale_text_events_discarded": 0,
+      "stale_audio_chunks_discarded": 0,
+      "audio_lane_conflict": false,
+      "duration_ms": 9478
+    },
+    {
+      "source_hashes": {
+        "scripts/voice-slides-control/lifecycle-probe.js": "6f14144447e03607387f761e18c8de4a332c334b984de9c95add3ef9be363843",
+        "scripts/voice-slides-control/cases.js": "0578a63243740c77c5f6c7a552e9e483034789e41a6ee25093cdbbd9b64baee9",
+        "scripts/voice-slides-control/control-cases.js": "7102aa6576ac46b5bed0aa86bf9a23296e75249f0128f2ae05170c5e3fe739fd",
+        "packages/contracts/ui-actions.js": "34ab9820d1ad1c97f7f7196f06647be11fcfd2d5288ccf65e4fc648510c96862"
+      },
+      "mode": "control-correct-queued",
+      "ended": "control_requests_settled",
+      "provider_ready": true,
+      "session_closed_ack": true,
+      "synthetic_viewer": true,
+      "synthetic_history": true,
+      "production_ownership_verified": false,
+      "enable_allowed": false,
+      "inputs_started": 2,
+      "asr_finals": 2,
+      "results_sent": 2,
+      "synthetic_actions_applied": 1,
+      "first_action_dispatched": false,
+      "correction_flag_observed": true,
+      "cancelled_queued_actions": 1,
+      "final_page": 1,
+      "cancel_sent": false,
+      "output_while_tool_waiting": 0,
+      "reply_owners": [
+        1
+      ],
+      "new_audio_chunks": 11,
+      "stale_text_events_discarded": 0,
+      "stale_audio_chunks_discarded": 0,
+      "audio_lane_conflict": false,
+      "duration_ms": 11470
+    },
+    {
+      "source_hashes": {
+        "scripts/voice-slides-control/lifecycle-probe.js": "6f14144447e03607387f761e18c8de4a332c334b984de9c95add3ef9be363843",
+        "scripts/voice-slides-control/cases.js": "0578a63243740c77c5f6c7a552e9e483034789e41a6ee25093cdbbd9b64baee9",
+        "scripts/voice-slides-control/control-cases.js": "7102aa6576ac46b5bed0aa86bf9a23296e75249f0128f2ae05170c5e3fe739fd",
+        "packages/contracts/ui-actions.js": "34ab9820d1ad1c97f7f7196f06647be11fcfd2d5288ccf65e4fc648510c96862"
+      },
+      "mode": "control-correct-dispatched",
+      "ended": "control_requests_settled",
+      "provider_ready": true,
+      "session_closed_ack": true,
+      "synthetic_viewer": true,
+      "synthetic_history": true,
+      "production_ownership_verified": false,
+      "enable_allowed": false,
+      "inputs_started": 2,
+      "asr_finals": 2,
+      "results_sent": 2,
+      "synthetic_actions_applied": 2,
+      "first_action_dispatched": true,
+      "correction_flag_observed": true,
+      "cancelled_queued_actions": 0,
+      "final_page": 1,
+      "cancel_sent": false,
+      "output_while_tool_waiting": 0,
+      "reply_owners": [
+        1
+      ],
+      "new_audio_chunks": 11,
+      "stale_text_events_discarded": 0,
+      "stale_audio_chunks_discarded": 0,
+      "audio_lane_conflict": false,
+      "duration_ms": 12833
+    },
+    {
+      "source_hashes": {
+        "scripts/voice-slides-control/lifecycle-probe.js": "07c81e0552283afb0741e80ca11dddf9c5a6af8b23944673b3dadb2450ebc4a3",
+        "scripts/voice-slides-control/cases.js": "0578a63243740c77c5f6c7a552e9e483034789e41a6ee25093cdbbd9b64baee9",
+        "scripts/voice-slides-control/control-cases.js": "08b48db96baca54d15f99a6da13c8cbe241d353da186f7e476b808b7faece885",
+        "packages/contracts/ui-actions.js": "9d69fa74c3e0aa9b327d88a6d87736cb3870a1dd4603c304d1ce07d9039ad885"
+      },
+      "mode": "control-revoke-queued",
+      "ended": "control_requests_settled",
+      "provider_ready": true,
+      "session_closed_ack": true,
+      "synthetic_viewer": true,
+      "synthetic_history": true,
+      "production_ownership_verified": false,
+      "enable_allowed": false,
+      "inputs_started": 2,
+      "asr_finals": 2,
+      "results_sent": 2,
+      "synthetic_actions_applied": 0,
+      "first_action_dispatched": false,
+      "correction_flag_observed": null,
+      "cancelled_queued_actions": 1,
+      "final_page": 3,
+      "cancel_sent": false,
+      "output_while_tool_waiting": 0,
+      "reply_owners": [
+        1
+      ],
+      "new_audio_chunks": 12,
+      "stale_text_events_discarded": 0,
+      "stale_audio_chunks_discarded": 0,
+      "audio_lane_conflict": false,
+      "duration_ms": 11017
+    },
+    {
+      "source_hashes": {
+        "scripts/voice-slides-control/lifecycle-probe.js": "07c81e0552283afb0741e80ca11dddf9c5a6af8b23944673b3dadb2450ebc4a3",
+        "scripts/voice-slides-control/cases.js": "0578a63243740c77c5f6c7a552e9e483034789e41a6ee25093cdbbd9b64baee9",
+        "scripts/voice-slides-control/control-cases.js": "08b48db96baca54d15f99a6da13c8cbe241d353da186f7e476b808b7faece885",
+        "packages/contracts/ui-actions.js": "9d69fa74c3e0aa9b327d88a6d87736cb3870a1dd4603c304d1ce07d9039ad885"
+      },
+      "mode": "control-revoke-dispatched",
+      "ended": "control_requests_settled",
+      "provider_ready": true,
+      "session_closed_ack": true,
+      "synthetic_viewer": true,
+      "synthetic_history": true,
+      "production_ownership_verified": false,
+      "enable_allowed": false,
+      "inputs_started": 2,
+      "asr_finals": 2,
+      "results_sent": 2,
+      "synthetic_actions_applied": 1,
+      "first_action_dispatched": true,
+      "correction_flag_observed": null,
+      "cancelled_queued_actions": 0,
+      "final_page": 2,
+      "cancel_sent": false,
+      "output_while_tool_waiting": 0,
+      "reply_owners": [
+        1
+      ],
+      "new_audio_chunks": 11,
+      "stale_text_events_discarded": 0,
+      "stale_audio_chunks_discarded": 0,
+      "audio_lane_conflict": false,
+      "duration_ms": 11963
+    }
+  ],
+  "remaining": [
+    "native_fc_input_ownership",
+    "delayed_or_missing_final_lifecycle",
+    "native_multi_call_batch",
+    "forward_shown_page_unnecessary_tool",
+    "real_browser_and_voice_integration"
+  ]
+}

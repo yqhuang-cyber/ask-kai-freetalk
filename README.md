@@ -87,7 +87,7 @@ flowchart TD
 
 会话中可以口头说“慢一点”“快一点”或“恢复正常”。Kai 先确认请求，播完后更新本场语速，配置确认成功后再用新语速说明结果；只影响当前会话。连续请求、打断和退出会隔离过期确认。分享与跨项目复用见[功能总结与移植说明](docs/spoken-speech-pace-feature-summary.md)、[独立 PRD](docs/prd/spoken-speech-pace-prd-v1.md)；工程追溯见[任务及结果](docs/spoken-speech-pace-tasking.md)。
 
-下一项「对话内控制 Slides」目前仅完成设计，尚未实现：定义“控制课件进度”意图，首版仅回看当前或更早且已展示内容；前往后续页仍识别并回应稍后会学到，不提供跳转或自动执行。可执行回看计划由豆包原生 Function Calling 操作三页演示展示框，并在浏览器执行回执后确认结果。完整流程、异常与验收见[独立 PRD](docs/prd/voice-slides-control-prd-v1.md)，模块改动及复用边界见[技术方案](docs/voice-slides-control-design.md)，执行顺序见[实施清单](docs/voice-slides-control-tasking.md)。
+「对话内控制 Slides」已接入普通 Provider／Gateway／Web，**默认关闭，整体质量验收尚未通过**。只回看当前或更早且已展示的页，后续页自然暂缓；组件确认后才返回执行结果。已通过 624 项回归、三个 synthetic replay、普通 Web 的 12 项 CUA 自动化（合成语音／Planner、真实组件／播放），以及真实豆包经普通网关的基础三轮和两种插话补验；真人麦克风、听感与真实 Planner 竞争矩阵待验。开启使用 `ASK_KAI_SLIDES_CONTROL=true npm run poc`；新会话从第 1 页开始，尚无回看历史。仅本地 Mock 演示可另设 `ASK_KAI_SLIDES_DEMO_HISTORY=true`，由作者流程依次展示三页并收回执，页面明确标注测试历史，不代表已经学习。展示框不可用时降级普通聊天。实现与验证边界见[第六阶段报告](docs/eval-results/2026-10-26-voice-slides-control-stage6.md)、[实施清单](docs/voice-slides-control-tasking.md)、[PRD](docs/prd/voice-slides-control-prd-v1.md)和[技术方案](docs/voice-slides-control-design.md)。
 
 ### 4.1 进入对话
 

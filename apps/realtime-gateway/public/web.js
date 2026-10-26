@@ -3,6 +3,7 @@ import { PlanningObserver } from './planning-observer.js';
 import { ClosingPlayback } from './closing-playback.js';
 import { SpeechPlayback, speechStateMessage } from './speech-playback.js';
 import { AudioIO } from './audio.js';
+import { voiceReadiness } from './voice-readiness.js';
 import { Presentation } from './presentation.js';
 import { ExperienceTrace } from './diagnostics.js';
 import { SummaryCards } from './summary-cards.js';
@@ -72,6 +73,7 @@ const paceSelect=document.querySelector('#speech-pace'),paceHint=document.queryS
 const learnerSelect=document.querySelector('#mock-learner-select'),learnerHint=document.querySelector('#mock-learner-hint');
 let paceSupported=false;
 let mode='free',ws,io,generation=0,config,muted=false,safetyMessage=null;
+let slidesViewer=null,slidesEpoch=0;
 let entryPreviews={},dynamicPlanning=false,preparationPromise=null,preparationEpoch=0;
 const saveLearning=document.querySelector('#save-learning');
 const interrupt=document.querySelector('#interrupt');
@@ -119,7 +121,7 @@ async function loadSpeechPaces() {
 }
 void loadSpeechPaces();
 async function stop(text='对话已结束。',failed=false) {
-  closingPlayback.reset();speechPlayback.reset();summaryCards.finish();
+  closingPlayback.reset();speechPlayback.reset();summaryCards.finish();slidesEpoch++;slidesViewer?.close();
   const stopped=++generation;const previous=ws;ws=null;previous?.close();
   preparationEpoch++;preparer.cancel();preparationPromise=null;
   status.textContent=failed?'连接中断':'未连接';message.textContent=text;message.dataset.state=failed?'failed':'idle';
@@ -169,6 +171,17 @@ connect.addEventListener('click',async()=> {
         if(packet.type==='observation.report.saved'){observationReports.receipt(packet);return;}
         if(packet.type==='planning.observation'){planningObserver.record(packet.row);return;}
         if(packet.type==='diagnostics.event'){trace?.gateway(packet.row);refreshDiagnostics();return;}
+        if(packet.type==='slides.bind'){
+          const viewerEpoch=++slidesEpoch;
+          try{const [{SlidesViewer},deck]=await Promise.all([import('/slides-viewer.js'),fetch('/slides/demo-deck.json').then(response=>{if(!response.ok)throw new Error('SLIDES_DECK_UNAVAILABLE');return response.json();})]);
+          if(current!==generation||viewerEpoch!==slidesEpoch)return;
+          slidesViewer?.close();document.querySelector('#courseware').hidden=false;
+          document.querySelector('#courseware-source').textContent=packet.demo_history?'作者演示课件 · 正在依次展示三页以建立测试历史；不代表已经学习。':'作者演示课件 · 只可回看已展示内容。';
+          slidesViewer=new SlidesViewer(document.querySelector('#slides-container'),deck);
+          const socket=ws;slidesViewer.bind(packet,value=>{if(current===generation&&socket.readyState===WebSocket.OPEN)socket.send(JSON.stringify(value));});}catch{if(current!==generation||viewerEpoch!==slidesEpoch)return;slidesViewer?.close();document.querySelector('#courseware-source').textContent='演示课件暂不可用，本次继续自由聊天。';}return;
+        }
+        if(packet.type==='slides.unavailable'){slidesEpoch++;slidesViewer?.close();document.querySelector('#courseware-source').textContent='演示课件暂不可用，本次继续自由聊天。';return;}
+        if(packet.type?.startsWith('slides.')){await slidesViewer?.receive(packet);return;}
         if(packet.type==='session.config'){config=packet.audio;paceHint.textContent=packet.speech?.supported && ['slow','normal'].includes(packet.speech.pace)?`本次语速：${packet.speech.pace==='slow'?'慢速':'正常'}；可以说“慢一点”“快一点”或“恢复正常”。`:'本次使用服务默认语速。';return;}
         if(packet.type==='speech.state'){paceHint.textContent=speechStateMessage(packet);speechPlayback.update(packet);return;}
         if(packet.type==='close.trace'){appendCloseLog(packet.title??'收束',packet.note??'',packet.body);return;}
@@ -193,10 +206,11 @@ connect.addEventListener('click',async()=> {
         if(safetyMessage)return;
         const value=packet.event;
         if(value.type==='session.ready') {
-          if(packet.synthetic || !packet.provider_connected || !config){await stop('服务未完成真实就绪验证。');return;}
-          status.textContent='已连接';document.querySelector('.preview').textContent='Web 对话 · 实时服务已就绪';message.textContent='正在开启麦克风……';
-          observe('session.ready',{provider_ready:true});
-          await io.start(config);if(current===generation && !safetyMessage)message.textContent='麦克风持续开启，你可以自然地说话。';
+          const readiness=voiceReadiness(packet,config);
+          if(!readiness){await stop('服务未完成真实就绪验证。');return;}
+          status.textContent=readiness.status;document.querySelector('.preview').textContent=readiness.preview;message.textContent=readiness.opening;
+          observe('session.ready',{provider_ready:readiness.real_provider});
+          await io.start(config);if(current===generation && !safetyMessage)message.textContent=readiness.capture;
         } else if(value.type==='response.started'){observe('response.started',{response_id:value.response_id,turn_id:value.turn_id});presentation.begin(value.response_id);}
         else if(value.type==='response.text.delta')presentation.append(value.response_id,value.payload.text);
         else if(value.type==='user.partial' || value.type==='user.final')student.textContent=value.payload.text;
