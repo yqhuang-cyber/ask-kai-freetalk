@@ -8,6 +8,8 @@
 
 2026-10-27 优先级更新：最小 Demo 和 AI 备课单学生切片之后，优先推进[报告分析细化与首个切片](teacher-assistant-report-analysis-tasking.md)：RA-01～04、LST-01～03、SPK-01～02、AUD-01～02 映射 TA-12 / TA-15 及独立听说音频任务。当前仅有限证据 / 分析 / 双端呈现子集已实现，完整 TA-12 / TA-15 继续开放；自动等级不是这些反馈的前置条件。
 
+2026-10-27 最新范围：深入报告的发音评测已按用户要求列为 **P0 / must-have**，见[DR-01～10 与 AUD-01～04](conversation-report-deep-analysis-tasking.md)。学生音频记录 / 对齐和专业发音验收属于整体完成门，不能仅完成文本报告后将发音排为后续可选；不回溯改变已验收最小 Demo 的历史范围。
+
 ## 1. 实施原则与阶段成果
 
 用户已明确优先完成[最小 Demo 服务蓝图](teacher-homework-minimal-service-blueprint.md)，同时保持整体架构完整可扩展。新的执行顺序为 **G0 → G-Demo → 教师 / 学生 / Kai 分角色完善 → 完整质量与评级准入**。最小 Demo 的逐项依赖与完成条件见[MD-01～MD-08](teacher-assistant-minimal-demo-tasking.md)。

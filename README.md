@@ -1,6 +1,6 @@
 # Ask Kai 自由对话
 
-主题对话报告下一阶段的[完整文本与深入分析任务清单](docs/conversation-report-deep-analysis-tasking.md)已规划：记录授权的学生转写与 Kai 回复，再用模型结合上下文分析；当前尚未实施，旧会话缺失文本不能还原。
+主题对话报告下一阶段的[文本、发音与深入分析任务清单 v1.1](docs/conversation-report-deep-analysis-tasking.md)已规划：记录授权的师生文本和必要学生音频，结合上下文模型与真实音频评测生成报告；**发音为 P0 / must-have，文本和发音均验收后才算 feature 完成**。当前尚未实施，旧会话缺失文本 / 音频不能还原。
 
 报告分析首个切片已在 `codex/report-analysis` 实现：双端报告新增情境问答观察、表达信息 / 组织、求助策略和最多两项具体练习建议；教师可核对来源。点餐问答与部分跨主题组织形式使用有限规则，通用语义与真实听力 / 发音 / 语流仍独立验证。见[任务细化与实现边界](docs/teacher-assistant-report-analysis-tasking.md)、[本轮验收](docs/eval-results/2026-10-27-report-analysis.md)。
 

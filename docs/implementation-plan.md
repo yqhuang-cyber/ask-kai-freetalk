@@ -1,5 +1,7 @@
 # Incremental delivery
 
+2026-10-27 范围更正：用户明确发音评测为“对话报告深入分析”的 must-have，已将[Tasking 升级为 v1.1](conversation-report-deep-analysis-tasking.md)：AUD-01～04 为 P0 必交付，覆盖自然对话能力验证、学生音频记录 / 归属 / 对齐、真实评测与可回听证据、专业声音验收。文本路径可先交阶段成果，缺少发音能力不能宣布整体完成；自动等级仍非前置。当前仅修订规划，未采集新增音频、未选择 / 调用新评测服务，也未新增验收结论。下方此前“发音独立 / 后续”记录不再代表新 feature 的可选优先级。
+
 2026-10-27 报告深入分析规划：按用户要求新增[完整对话文本与模型分析 Tasking](conversation-report-deep-analysis-tasking.md)，将记录师生文本、模型语义分析、可追溯校验与双端反馈列为优先任务；发音专项单独验收，自动等级不作为前置。本文仅完成任务规划，尚未实施全文记录、报告模型或新增验收。旧会话未保存的文本无法还原；本地 Mock / FreeTalk 边界保持。
 
 2026-10-27 报告分析优先切片：用户要求在 `codex/report-analysis` 细化并实施 TA-12 / TA-15，新增独立 LST / SPK / AUD 任务，先完成有来源的情境理解与口语表达观察，发音单独准入，不等待自动等级。当前已实现有界问答 / 组织证据、版本化有限分析、提交前来源与语义校验、双端投影和练习建议；完整 TA-12 / TA-15、通用语义模型、真实听觉理解、音频评测与教学质量仍未验收。保留已合入 AI 备课与 FreeTalk 边界。详见[细化任务](teacher-assistant-report-analysis-tasking.md)、[分层验收](eval-results/2026-10-27-report-analysis.md)。
