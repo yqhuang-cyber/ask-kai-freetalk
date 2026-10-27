@@ -1,5 +1,7 @@
 # Incremental delivery
 
+2026-10-27 M4 架构与供应商确认：用户明确本次对话教学记录及分析结果属于 Module 4 学习者资料，报告异步离线执行。已新增[技术架构确认](conversation-report-m4-architecture.md)和更新[Tasking v1.2](conversation-report-deep-analysis-tasking.md)：M4 权威数据服务 + 独立分析 Worker，唯一 SQLite writer，提交事务只入队，语义 / 声学后台并行并按依赖汇总；腾讯云智聆口语评测新版为已选方案，P0 接入任务 AUD-03-TX01。当前只更新设计与任务，未实施新 Worker / 完整记录 / 腾讯适配器或实际调用，未新增验收结果。此前“未选择供应商”为历史记录。
+
 2026-10-27 范围更正：用户明确发音评测为“对话报告深入分析”的 must-have，已将[Tasking 升级为 v1.1](conversation-report-deep-analysis-tasking.md)：AUD-01～04 为 P0 必交付，覆盖自然对话能力验证、学生音频记录 / 归属 / 对齐、真实评测与可回听证据、专业声音验收。文本路径可先交阶段成果，缺少发音能力不能宣布整体完成；自动等级仍非前置。当前仅修订规划，未采集新增音频、未选择 / 调用新评测服务，也未新增验收结论。下方此前“发音独立 / 后续”记录不再代表新 feature 的可选优先级。
 
 2026-10-27 报告深入分析规划：按用户要求新增[完整对话文本与模型分析 Tasking](conversation-report-deep-analysis-tasking.md)，将记录师生文本、模型语义分析、可追溯校验与双端反馈列为优先任务；发音专项单独验收，自动等级不作为前置。本文仅完成任务规划，尚未实施全文记录、报告模型或新增验收。旧会话未保存的文本无法还原；本地 Mock / FreeTalk 边界保持。

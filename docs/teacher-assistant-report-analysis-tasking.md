@@ -8,6 +8,8 @@
 
 2026-10-27 最新范围更正：用户确认发音是深入报告的 **P0 / must-have**。执行以[新版任务清单 v1.1](conversation-report-deep-analysis-tasking.md)为准，文本和音频两条路径均必须完成。AUD-01 保留能力验证，原 AUD-02 的职责细分为 AUD-02 音频记录 / 对齐和 AUD-03 评测接入，再增加 AUD-04 专业验收；“独立验证”不代表后续可选。当前运行实现仍未评发音。
 
+2026-10-27 架构补充：教学记录、任务与结果归 M4，新增独立离线 Worker；腾讯智聆新版选型已确认，P0 接入任务 AUD-03-TX01，M4 进程隔离任务 M4-02。见[架构](conversation-report-m4-architecture.md)与[新版执行清单](conversation-report-deep-analysis-tasking.md)，当前均待实施。
+
 ## 1. 报告要解决什么
 
 每条分析按“具体表现 → 对应证据 → 解释及限制 → 下次练习”组织。报告分别回答：

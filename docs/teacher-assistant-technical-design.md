@@ -8,6 +8,8 @@
 
 v0.2 按用户要求改为 **G0 → 最小 Demo → 分角色完善**，完整目标架构保持。当前切片以[最小 Demo 蓝图](teacher-homework-minimal-service-blueprint.md)及[MD-01～MD-08](teacher-assistant-minimal-demo-tasking.md)为准；本文的通用 Worker、AI 生成、多人个性化、语义抽取和评分是后续能力，不要求在 Demo 前全部实现。
 
+2026-10-27 架构增补（用户已确认方向）：深入报告的文本 / 音频教学记录、分析任务与结果归 M4；M4 数据 / 权限 API 与独立分析 Worker 分进程，提交后异步调用 M5 文本模型与腾讯智聆新版，校验汇总后存回 M4。腾讯接入为 P0 的 AUD-03-TX01，详见[技术架构确认](conversation-report-m4-architecture.md)和[Tasking v1.2](conversation-report-deep-analysis-tasking.md)。本增补在新 feature 范围内取代下文 §11.2 的“只存片段”默认建议；不把现有同进程规则轮询当成已实现新 Worker。原 FreeTalk / Mock 边界及历史验收不变。
+
 ## 1. 结论与技术决策
 
 新增独立的 Teacher Assistant 应用，承载“教师定主题 → AI 前置备课 → 教师发布 → 学生按计划主题对话 → 双端反馈”。原 FreeTalk 的入口、默认配置、初始无目标 Planner、逐轮自愿练习及学习记录保持原契约。
@@ -344,6 +346,12 @@ TA-10 必须做真实协议 / 普通浏览器小实验，确认可用的输入�
 ReportAnalyzer 读取发布计划、fence 内的持久证据和覆盖缺口，逐目标生成 opportunity / performance / support 候选及合法 refs。Validator 拒绝虚构引用、跨目标 / 学生拼接、未支持的发音诊断、把计划当执行及缺失当失败；无法确定语义正确的部分保留 unknown / review_required。
 
 学生反馈生成器只接收已接受的事实、建议与未知，不接收 A/B/C/D、数值映射或教师内部评语。教师评估另存 teacher_assessments，可引用同一事实，不将其整体 JSON 发给学生。会话收尾语也不接收教师等级。
+
+### 13.1.1 M4 离线分析服务与腾讯接入（目标设计）
+
+M4 是本次教学记录与报告的事实来源；Worker 是 M4 内部独立分析进程，通过最小任务委托和权威数据 API claim / read / heartbeat / commit，不直接打开 SQLite，也不再实例化会重置活动尝试的 `HomeworkService`。M4 数据服务保持唯一 writer。结束只做记录封口，明确提交在短事务写 submission / job 后立即回执；M4 Worker 并行运行语义 / 发音分支，按依赖校验汇总。未知外呼状态不静默重发，退出页面不阻断后台报告；失败 / 撤回 / 删除与旧结果仍隔离。
+
+M5 的腾讯云智聆口语评测新版由 AUD-03-TX01 明确接入，模式 / 字段与自然对话质量分别验证，离线片段评测不改变实时豆包链路。实际当前 `worker.js` 是业务 API 子进程，规则报告仍在该进程中轮询；新独立 Worker 与腾讯能力尚未实现。详细进程、存储、协议资料、状态机和验收见[专项架构](conversation-report-m4-architecture.md)。
 
 ### 13.2 评级门槛
 

@@ -10,6 +10,8 @@
 
 2026-10-27 最新范围：深入报告的发音评测已按用户要求列为 **P0 / must-have**，见[DR-01～10 与 AUD-01～04](conversation-report-deep-analysis-tasking.md)。学生音频记录 / 对齐和专业发音验收属于整体完成门，不能仅完成文本报告后将发音排为后续可选；不回溯改变已验收最小 Demo 的历史范围。
 
+2026-10-27 技术架构与选型确认：[M4 教学记录 + 独立离线分析 Worker](conversation-report-m4-architecture.md)归入 Module 4；任务 M4-02 负责进程与内部 API / lease / commit，**AUD-03-TX01** 明确接入用户确认的腾讯云智聆口语评测新版。完整顺序见[Tasking v1.2](conversation-report-deep-analysis-tasking.md)。当前为规划确认，代码 / 真实调用未完成。
+
 ## 1. 实施原则与阶段成果
 
 用户已明确优先完成[最小 Demo 服务蓝图](teacher-homework-minimal-service-blueprint.md)，同时保持整体架构完整可扩展。新的执行顺序为 **G0 → G-Demo → 教师 / 学生 / Kai 分角色完善 → 完整质量与评级准入**。最小 Demo 的逐项依赖与完成条件见[MD-01～MD-08](teacher-assistant-minimal-demo-tasking.md)。

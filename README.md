@@ -1,6 +1,8 @@
 # Ask Kai 自由对话
 
-主题对话报告下一阶段的[文本、发音与深入分析任务清单 v1.1](docs/conversation-report-deep-analysis-tasking.md)已规划：记录授权的师生文本和必要学生音频，结合上下文模型与真实音频评测生成报告；**发音为 P0 / must-have，文本和发音均验收后才算 feature 完成**。当前尚未实施，旧会话缺失文本 / 音频不能还原。
+主题报告的[技术架构已确认](docs/conversation-report-m4-architecture.md)：教学记录、分析任务与报告归 **M4 学习者资料模块**，由 M4 独立 Worker 在明确提交后离线分析；腾讯云智聆口语评测**新版**选型已确认，接入任务 **AUD-03-TX01** 待实施。实时对话与提交回执不等待模型。
+
+主题对话报告下一阶段的[文本、发音与深入分析任务清单 v1.2](docs/conversation-report-deep-analysis-tasking.md)已规划：记录授权的师生文本和必要学生音频，结合上下文模型与真实音频评测生成报告；**发音为 P0 / must-have，文本和发音均验收后才算 feature 完成**。当前尚未实施，旧会话缺失文本 / 音频不能还原。
 
 报告分析首个切片已在 `codex/report-analysis` 实现：双端报告新增情境问答观察、表达信息 / 组织、求助策略和最多两项具体练习建议；教师可核对来源。点餐问答与部分跨主题组织形式使用有限规则，通用语义与真实听力 / 发音 / 语流仍独立验证。见[任务细化与实现边界](docs/teacher-assistant-report-analysis-tasking.md)、[本轮验收](docs/eval-results/2026-10-27-report-analysis.md)。
 
@@ -77,6 +79,10 @@ flowchart TD
 | **M3 Agent 核心** | 人设、语言支架、初始计划、逐轮计划、校验、教学状态和小结 | 初始目标为空；明确持续练习才使用通用技能目录 |
 | **M4 学习者资料** | 身份、三类资料、偏好、自愿保存的尝试 | 本地模拟，按学习者和会话隔离；只存在进程内存，重启重置 |
 | **M5 语音与规划模型** | 豆包全双工；MiniMax M3 提出计划 | 语音是实时全双工；规划失败时改用规则计划，并在页面标明 |
+
+### 3.2.1 主题教学记录与 M4 离线分析（已确认设计，待实施）
+
+M4 的目标职责新增本次主题对话教学记录：完整可用文本、必要学生音频、来源与覆盖、提交 / 分析任务及报告。M4 数据服务负责权威存储与授权，独立 M4 分析 Worker 在明确提交后并行调用 M5 的 MiniMax 文本分析和腾讯智聆新版发音评测，校验汇总后存回 M4；M1 经授权接口查询。此处是新 feature 的架构，FreeTalk 的现有内存资料 / 默认行为仍按上表；当前规则 report job 尚未升级为新 Worker，腾讯也尚未接入。详见[架构与现状核对](docs/conversation-report-m4-architecture.md)、[实施任务](docs/conversation-report-deep-analysis-tasking.md)。
 
 ### 3.3 支撑与治理
 
