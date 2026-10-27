@@ -9,7 +9,7 @@ function showError(error){message(errorLabels[error.message]??`操作暂未完�
 function node(tag,text,className){const e=document.createElement(tag);e.textContent=text;if(className)e.className=className;return e;}
 function action(label,fn,secondary=false){const b=node('button',label,secondary?'secondary':'');b.onclick=()=>{b.disabled=true;Promise.resolve().then(fn).catch(showError).finally(()=>b.disabled=false);};return b;}
 function send(packet){if(ws?.readyState!==WebSocket.OPEN)return false;ws.send(JSON.stringify(packet));return true;}
-const planningPanel=new TeacherPlanningPanel({api,onPublished:refresh,onError:showError});
+const planningPanel=new TeacherPlanningPanel({api,onPublished:refresh,onError:showError,onStatus:message});
 const annotations=new CaptionAnnotations($('caption'));
 const captionSettings=new CaptionSettingsView({annotations,toggle:$('show-pinyin'),hint:$('pinyin-hint'),send});
 const presentation=new Presentation({render:(text,parts)=>annotations.render(text,parts),play:(audio,rate,id)=>io?.play(audio,rate,id),getPlayback:id=>io?.playback(id),stopAudio:()=>io?.stopPlayback(),onMode:mode=>{if(mode==='complete'){closing.check();speech.check();captionPlayback.check();}}});
