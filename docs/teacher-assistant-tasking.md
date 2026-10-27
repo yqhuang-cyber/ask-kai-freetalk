@@ -174,6 +174,8 @@ TA-10 未取得可靠支持归因不阻止 Demo 的保守描述反馈，但阻�
 
 ### TA-12：账本、证据窗口与封口
 
+- **2026-10-27 优先子计划：**[完整文本记录与模型分析 DR-01～DR-10](conversation-report-deep-analysis-tasking.md)；该计划尚未实施。
+
 - **范围：**`packages/teacher-assistant/evidence/`、业务 ledger / evidence tables、后台 extractor。
 - **工作：**在实际接受 / 安全 / 输出门边界记账；全任务事件覆盖与语义覆盖分开；异步抽取最小必要上下文与候选；有界缓存 / 持久化、末尾 flush 和 end_fence。
 - **完成条件：**第六轮以后目标有来源；新旧目标 / 会话 / generation 不串；控制语音不记成果；取消 / 未完整 / 过期输出不能变成示范事实；最终快照可追溯并标缺口。
@@ -197,6 +199,8 @@ TA-10 未取得可靠支持归因不阻止 Demo 的保守描述反馈，但阻�
 - **首版选择：**重连另开新 attempt，保留旧 partial；不做跨 provider session 的隐式证据合并。
 
 ### TA-15：分析与双端反馈
+
+- **2026-10-27 优先子计划：**[完整文本记录与模型分析 DR-01～DR-10](conversation-report-deep-analysis-tasking.md)；模型候选与来源校验均需单独验收。
 
 - **范围：**`packages/teacher-assistant/reports/{analyzer,validator,student-projector,teacher-projector,grade-policy}.js`、reports / feedback / assessments tables。
 - **工作：**固定计划 + 证据 manifest → 目标机会 / 表现 / 支持及未知 → 来源校验 → 学生事实反馈 / 具体建议与教师专属评估；异步可重试。

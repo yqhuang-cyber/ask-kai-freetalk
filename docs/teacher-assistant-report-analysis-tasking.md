@@ -4,6 +4,8 @@
 
 依据：[当前实施边界](implementation-plan.md)、[教师作业 PRD §9–11](prd/teacher-assigned-conversation-homework-prd-v0.2.md)、[完整任务](teacher-assistant-tasking.md)。保留已合入的教师 AI 备课和原 FreeTalk 行为。本地 Mock 身份 / 授课 / 学习记录与真实 Doubao 就绪分别说明。
 
+2026-10-27 后续优先级：用户要求记录完整对话文本，并使用模型基于上下文进行深入分析。新的执行顺序、任务依赖与验收见[完整文本与深入分析 Tasking v1](conversation-report-deep-analysis-tasking.md)；本文件保留首版历史和专项任务。
+
 ## 1. 报告要解决什么
 
 每条分析按“具体表现 → 对应证据 → 解释及限制 → 下次练习”组织。报告分别回答：

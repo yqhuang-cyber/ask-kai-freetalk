@@ -1,5 +1,7 @@
 # Ask Kai 自由对话
 
+主题对话报告下一阶段的[完整文本与深入分析任务清单](docs/conversation-report-deep-analysis-tasking.md)已规划：记录授权的学生转写与 Kai 回复，再用模型结合上下文分析；当前尚未实施，旧会话缺失文本不能还原。
+
 报告分析首个切片已在 `codex/report-analysis` 实现：双端报告新增情境问答观察、表达信息 / 组织、求助策略和最多两项具体练习建议；教师可核对来源。点餐问答与部分跨主题组织形式使用有限规则，通用语义与真实听力 / 发音 / 语流仍独立验证。见[任务细化与实现边界](docs/teacher-assistant-report-analysis-tasking.md)、[本轮验收](docs/eval-results/2026-10-27-report-analysis.md)。
 
 教师端 AI 前置备课第一阶段已合并回主干：主题与课后要求 → AI 教学包 / 个人目标 → 教师编辑确认 → 发布执行。原 Demo 4330 同时提供 AI 备课与预置点餐任务；4331 保留独立开发试用。见[实施与配置](docs/teacher-assistant-ai-planning-implementation.md)、[分层验收](docs/eval-results/2026-10-26-teacher-ai-planning.md)。当前只参考获准 Mock 等级，近期学习证据 / 多人分层 / 教学质量仍后续验证。
