@@ -1,4 +1,5 @@
 import {HomeworkPreparations} from './preparations.js';
+import {RecordingPermissions} from './recording-permissions.js';
 import {homeworkActors} from './fixtures.js';
 import {randomUUID,randomBytes,createHash} from 'node:crypto';
 import {HomeworkRepository} from './repository.js';
@@ -7,12 +8,13 @@ import {ReportAnalyzer,projectReport,validateReport} from '../../../../packages/
 import {requireThat,id,key,validPlan,validEvidence,digest} from '../../../../packages/teacher-assistant/contracts.js';
 const hash=token=>createHash('sha256').update(token).digest('hex');
 export class HomeworkService {
-  constructor({path=':memory:',analyzer=new ReportAnalyzer(),planSource=new PresetPlanSource(),actors=homeworkActors,aiPlanSource,now=()=>Date.now()}={}){this.repo=new HomeworkRepository(path);this.analyzer=analyzer;this.now=now;this.plans=planSource;
+  constructor({path=':memory:',analyzer=new ReportAnalyzer(),planSource=new PresetPlanSource(),actors=homeworkActors,aiPlanSource,recordingPolicy,now=()=>Date.now()}={}){this.repo=new HomeworkRepository(path);this.analyzer=analyzer;this.now=now;this.plans=planSource;
     for(const actor of actors)if(!this.repo.get('actors',actor.id))this.repo.put('actors',{...actor,active:true,auth_epoch:1,deletion_epoch:1});
     // A crashed running session cannot be resumed or submitted without its evidence fence.
     for(const a of this.repo.all('attempts'))if(a.state==='active')this.repo.put('attempts',{...a,state:'interrupted',version:a.version+1});
     for(const j of this.repo.all('jobs'))if(j.state==='running')this.repo.put('jobs',{...j,state:'pending'});
     this.preparations=new HomeworkPreparations(this,aiPlanSource);
+    this.recordingPermissions=new RecordingPermissions(this,recordingPolicy);
   }
   publicActor(a){return {id:a.id,name:a.name,role:a.role,source:'mock_hskai',level:a.level};}
   actor(token){requireThat(typeof token==='string'&&token.length<=128,'UNAUTHORIZED');const s=this.repo.get('sessions',hash(token)),a=s&&this.repo.get('actors',s.actor_id);requireThat(s&&a?.active&&s.expires>this.now()&&s.auth_epoch===a.auth_epoch&&s.deletion_epoch===a.deletion_epoch,'UNAUTHORIZED');return a;}
@@ -25,6 +27,7 @@ export class HomeworkService {
   async call(op,token,input={}){
     if(op==='login'){const a=this.repo.get('actors',id(input.actor_id));requireThat(a?.active,'UNAUTHORIZED');const opaque=randomBytes(32).toString('hex');this.repo.put('sessions',{id:hash(opaque),actor_id:a.id,auth_epoch:a.auth_epoch,deletion_epoch:a.deletion_epoch,expires:this.now()+3600000});return {token:opaque,actor:this.publicActor(a)};}
     const a=this.actor(token);
+    if(this.recordingPermissions.handles(op))return this.recordingPermissions.call(op,a,input);
     if(this.preparations.handles(op))return this.preparations.call(op,a,input);
     if(op==='me')return {actor:this.publicActor(a),learners:a.role==='teacher'?a.learners.map(l=>this.publicActor(this.repo.get('actors',l))):[]};
     if(op==='logout'){this.repo.remove('sessions',hash(token));return {ok:true};}
@@ -66,7 +69,7 @@ export class HomeworkService {
     if(op==='submission'){let s=input.submission_id?this.repo.get('submissions',id(input.submission_id)):this.repo.all('submissions').find(s=>s.attempt_id===input.attempt_id);requireThat(s,'NOT_FOUND');this.assignment(a,s.assignment_id);return this.submissionView(s,a);}
     if(op==='retry_report'){this.role(a,'teacher');const s=this.repo.get('submissions',id(input.submission_id));requireThat(s,'NOT_FOUND');this.assignment(a,s.assignment_id);const job=this.repo.get('jobs',s.id);requireThat(job.state==='failed','REPORT_NOT_FAILED');this.repo.put('jobs',{...job,state:'pending'});return {state:'pending'};}
     if(op==='revoke_learner'){this.role(a,'teacher');requireThat(a.learners.includes(input.learner_id),'FORBIDDEN');const l=this.repo.get('actors',input.learner_id);this.repo.put('actors',{...l,active:false,auth_epoch:l.auth_epoch+1});return {ok:true};}
-    if(op==='delete_my_data'){this.role(a,'learner');this.preparations.eraseLearner(a.id);return this.repo.transaction(()=>{for(const table of ['attempts','submissions','reports'])for(const row of this.repo.all(table))if(row.learner_id===a.id||table==='reports'&&this.repo.get('submissions',row.submission_id)?.learner_id===a.id){if(table==='submissions'){this.repo.remove('jobs',row.id);this.repo.remove('reports',row.id);}this.repo.remove(table,row.id);}this.repo.put('actors',{...a,active:false,auth_epoch:a.auth_epoch+1,deletion_epoch:a.deletion_epoch+1});return {ok:true};});}
+    if(op==='delete_my_data'){this.role(a,'learner');this.preparations.eraseLearner(a.id);return this.repo.transaction(()=>{this.recordingPermissions.eraseLearner(a.id);for(const table of ['attempts','submissions','reports'])for(const row of this.repo.all(table))if(row.learner_id===a.id||table==='reports'&&this.repo.get('submissions',row.submission_id)?.learner_id===a.id){if(table==='submissions'){this.repo.remove('jobs',row.id);this.repo.remove('reports',row.id);}this.repo.remove(table,row.id);}this.repo.put('actors',{...a,active:false,auth_epoch:a.auth_epoch+1,deletion_epoch:a.deletion_epoch+1});return {ok:true};});}
     throw new Error('NOT_FOUND');
   }
   submissionView(s,a){const job=this.repo.get('jobs',s.id),r=this.repo.get('reports',s.id);return {id:s.id,attempt_id:s.attempt_id,assignment_id:s.assignment_id,state:'submitted',submitted_at:s.submitted_at,report_state:job?.state??'pending',report:r?projectReport(r,a.role):null};}

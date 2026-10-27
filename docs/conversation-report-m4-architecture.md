@@ -1,6 +1,6 @@
 # 对话教学记录与异步报告：M4 技术架构确认
 
-日期：2026-10-27（Asia/Shanghai）。状态：**用户确认架构方向与腾讯选型；本文件是技术设计，新增存储 / Worker / 腾讯评测尚未实现或验收。** 关联：[深入报告 Tasking](conversation-report-deep-analysis-tasking.md)、[五个模块](../README.md#32-五个核心工程模块)、[教师助教技术方案](teacher-assistant-technical-design.md)。
+日期：2026-10-27（Asia/Shanghai）。状态：**用户确认架构方向与腾讯选型；阶段 A 本地契约 / 选择策略已实施，全文 / 音频存储、独立 Worker 与腾讯评测待实现或验收。** 关联：[深入报告 Tasking](conversation-report-deep-analysis-tasking.md)、[五个模块](../README.md#32-五个核心工程模块)、[教师助教技术方案](teacher-assistant-technical-design.md)。
 
 ## 1. 已确认的架构决策
 
@@ -118,7 +118,9 @@ AUD-03-TX01 的交付：
 - 有界超时、取消、节流、额度、鉴权 / 服务未开通、空音频、编码错、过长、断开、局部成功、旧结果和已删音频全覆盖。日志只含允许元数据，Worker 不泄露真实学习者材料。
 - 分层验收：合成协议 / 适配与故障 → 作者音频真实腾讯 API → 新入口浏览器采集到 M4 离线 job 到报告 → 中文语音专业 holdout；每层报告配置 / 版本、分母、失败与未覆盖。真实接入是完成条件，不能以“适配器已写”代替，也不能把“服务接通”当 AUD-04 的准确性已通过。
 
-拟议配置：`ASK_KAI_PRONUNCIATION_PROVIDER=tencent_soe_v2`、`TENCENT_SOE_APP_ID / SECRET_ID / SECRET_KEY` 和独立的报告文本配置。**这些是待实现配置名，当前程序尚未读取。** 密钥不写本文件 / Git / 浏览器；不在文档阶段开通、购买、创建账号或外传用户音频。
+拟议配置：`ASK_KAI_PRONUNCIATION_PROVIDER=tencent_soe_v2`、`TENCENT_SOE_APP_ID / TENCENT_SOE_SECRET_ID / TENCENT_SOE_SECRET_KEY` 和独立的报告文本配置。**生产评测配置仍待实现；阶段 A 仅由 `probe:teacher:pronunciation` 预检读取 `TENCENT_SOE_APP_ID` / `TENCENT_SOE_SECRET_ID` / `TENCENT_SOE_SECRET_KEY` 是否存在，不发起调用。** 密钥不写本文件 / Git / 浏览器；不在文档阶段开通、购买、创建账号或外传用户音频。
+
+阶段 A 实际实现与验证见[本地实施](conversation-report-stage-a.md)及[验收记录](eval-results/2026-10-27-report-stage-a.md)。
 
 ## 9. 实施任务映射与架构验收
 

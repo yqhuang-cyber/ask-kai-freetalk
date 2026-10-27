@@ -4,7 +4,7 @@ import {HomeworkConversationController} from '../../../packages/teacher-assistan
 import {readJson,json,errorStatus} from '../../../packages/teacher-assistant/http.js';import {requireThat} from '../../../packages/teacher-assistant/contracts.js';
 const publicRoot=new URL('../public/',import.meta.url),shared=new URL('../../realtime-gateway/public/',import.meta.url);
 const sharedNames=['audio.js','capture-worklet.js','diagnostics.js','presentation.js','caption-phrases.js','closing-playback.js','speech-playback.js','voice-readiness.js','caption-annotations.js','caption-settings.js'];
-const browserOps=new Set(['me','preview','publish','list','attempt','submit','submission','retry_report','delete_my_data','planning_config','draft_create','draft_read','draft_edit','draft_cancel','draft_retry','draft_list']);
+const browserOps=new Set(['recording_notice','recording_choice','recording_choice_update','me','preview','publish','list','attempt','submit','submission','retry_report','delete_my_data','planning_config','draft_create','draft_read','draft_edit','draft_cancel','draft_retry','draft_list']);
 export function createTeacherApp({port,providerFactory,providerKind='doubao',readyTimeoutMs=8000,cookieName='ask_kai_ta_session'}={}){
   requireThat(/^ask_kai_ta_[a-z0-9_]{1,40}$/.test(cookieName),'INVALID_COOKIE_NAME');
   const server=createServer(async(req,res)=>{

@@ -27,7 +27,23 @@ function renderTasks(tasks){const teacher=actor.role==='teacher';$('list-label')
     $('task-list').append(card);
   }
 }
+async function showRecordingNotice({root,api,isCurrent}){
+  root.hidden=true;root.replaceChildren();
+  let notice;try{notice=await api('recording_notice');}catch{return;}
+  if(!isCurrent())return;
+  let target=root;const add=(tag,text)=>{const e=document.createElement(tag);e.textContent=text;target.append(e);};
+  add('h2',notice.title+' · 准备中');add('p',notice.current);
+  const details=document.createElement('details');root.append(details);target=details;add('summary','查看记录用途和保留说明');
+  for(const [kind,label] of [['text','对话文本'],['audio','学生语音']]){
+    add('h3',label);add('p',notice[kind].purpose);add('p',notice[kind].recipient);
+    add('p',`启用后的本地保留期：${notice[kind].retention_days} 天。`);
+  }
+  add('p',notice.choice);add('p',notice.deletion);root.hidden=false;
+}
+
 async function enter(){config=await fetch('/api/ta/config').then(r=>r.json());const me=await api('me');actor=me.actor;$('login').hidden=true;$('workspace').hidden=false;$('actor-label').textContent=`${actor.name} · Mock ${actor.role==='teacher'?'教师':'学生'}`;$('view-title').textContent=actor.role==='teacher'?'教师端':'学生端';$('teacher').hidden=actor.role!=='teacher';$('conversation').hidden=true;$('report').hidden=true;
+  $('recording-notice').hidden=true;
+  if(actor.role==='learner'){const identity=actor.id,epoch=generation;await showRecordingNotice({root:$('recording-notice'),api,isCurrent:()=>actor?.id===identity&&generation===epoch});}
   current=null;try{const saved=JSON.parse(sessionStorage.getItem('ta-attempt'));if(saved?.actor_id===actor.id&&actor.role==='learner')current=saved;}catch{/* invalid local hint is not authority */}
   if(actor.role==='teacher'){const learner=me.learners[0];await planningPanel.activate(actor,learner);if(!$('ai-due').value)$('ai-due').value=new Date(Date.now()+86400000+8*3600000).toISOString().slice(0,16);$('recipient').value=[learner.name,learner.level].filter(Boolean).join(' · ');plan=await api('preview',{topic:'dining',learner_id:learner.id});$('plan-ref').textContent=`${plan.id} · ${plan.hash.slice(0,16)}`;if(!$('due').value){const local=new Date(Date.now()+86400000+8*3600000).toISOString().slice(0,16);$('due').value=local;}}
   if(current){$('conversation').hidden=false;$('voice-state').textContent='恢复本地练习记录，查询服务端状态';$('query-attempt').hidden=false;}
