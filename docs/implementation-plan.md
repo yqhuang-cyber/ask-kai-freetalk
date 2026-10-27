@@ -1,5 +1,7 @@
 # Incremental delivery
 
+2026-10-27 报告分析优先切片：用户要求在 `codex/report-analysis` 细化并实施 TA-12 / TA-15，新增独立 LST / SPK / AUD 任务，先完成有来源的情境理解与口语表达观察，发音单独准入，不等待自动等级。当前已实现有界问答 / 组织证据、版本化有限分析、提交前来源与语义校验、双端投影和练习建议；完整 TA-12 / TA-15、通用语义模型、真实听觉理解、音频评测与教学质量仍未验收。保留已合入 AI 备课与 FreeTalk 边界。详见[细化任务](teacher-assistant-report-analysis-tasking.md)、[分层验收](eval-results/2026-10-27-report-analysis.md)。
+
 2026-10-26 AI 备课合并：按用户明确要求，将 `codex/teacher-ai-planning` 的教师端前置备课合并回主干与原 Demo。4330 启用 AI 备课并保留预置点餐路径和原作业记录；4331 继续作为隔离试用入口。最小 Demo / G0 的历史标记不改动，FreeTalk 冻结基线保留。下方“原 4330 未改或重启”是合并前隔离开发阶段的记录。
 
 2026-10-26 教师端完善第一阶段：已在 `codex/teacher-ai-planning` 独立工作树接入 MiniMax 前置教学包与个人目标生成、持久草案 / 委托 / 取消 / 显式重试、教师目标编辑和精确 hash 发布；新主题交给同一作业 controller，未知反馈继续未评估。655 项回归、三项回放、Node 22.19 的 19 项新场景检查与合成浏览器通过；真实 MiniMax 昆虫 / 指定句式、真实 AI 点餐备课到 Doubao 浏览器提交反馈通过，真人 / 教学质量另验。原 4330 Demo 未改或重启，独立 4331 使用另一数据库 / cookie。当前仅 Mock 等级，不宣称已接入近期学习证据或完整多人分层；[实施](teacher-assistant-ai-planning-implementation.md)、[验收](eval-results/2026-10-26-teacher-ai-planning.md)。

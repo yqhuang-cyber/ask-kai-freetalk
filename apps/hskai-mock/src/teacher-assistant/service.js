@@ -3,7 +3,7 @@ import {homeworkActors} from './fixtures.js';
 import {randomUUID,randomBytes,createHash} from 'node:crypto';
 import {HomeworkRepository} from './repository.js';
 import {PresetPlanSource} from '../../../../packages/teacher-assistant/preset.js';
-import {ReportAnalyzer,projectReport} from '../../../../packages/teacher-assistant/report.js';
+import {ReportAnalyzer,projectReport,validateReport} from '../../../../packages/teacher-assistant/report.js';
 import {requireThat,id,key,validPlan,validEvidence,digest} from '../../../../packages/teacher-assistant/contracts.js';
 const hash=token=>createHash('sha256').update(token).digest('hex');
 export class HomeworkService {
@@ -71,7 +71,7 @@ export class HomeworkService {
   }
   submissionView(s,a){const job=this.repo.get('jobs',s.id),r=this.repo.get('reports',s.id);return {id:s.id,attempt_id:s.attempt_id,assignment_id:s.assignment_id,state:'submitted',submitted_at:s.submitted_at,report_state:job?.state??'pending',report:r?projectReport(r,a.role):null};}
   async runReports(){if(this.processing)return;this.processing=true;try{for(const job of this.repo.all('jobs').filter(j=>j.state==='pending').slice(0,4)){
-    this.repo.put('jobs',{...job,state:'running',tries:job.tries+1});try{const s=this.repo.get('submissions',job.submission_id),attempt=this.repo.get('attempts',s.attempt_id);this.verifyEpoch(attempt);const item=this.repo.get('assignments',s.assignment_id),p=this.publication(item);requireThat(digest(attempt.evidence)===s.evidence_hash,'EVIDENCE_CONFLICT');const report=await this.analyzer.analyze(p.plan,attempt.evidence,attempt);this.repo.transaction(()=>{this.verifyEpoch(attempt);this.publication(item);requireThat(this.repo.get('submissions',s.id)?.evidence_hash===s.evidence_hash,'SOURCE_CHANGED');requireThat(report.plan_hash===s.plan_hash&&report.attempt_id===attempt.id&&report.evidence_hash===s.evidence_hash&&report.grade===null,'INVALID_REPORT');this.repo.put('reports',{...report,id:s.id,submission_id:s.id,learner_id:s.learner_id});this.repo.put('jobs',{...job,state:'complete',tries:job.tries+1});});}catch{if(this.repo.get('jobs',job.id))this.repo.put('jobs',{...job,state:'failed',tries:job.tries+1,error:'REPORT_ANALYSIS_FAILED'});}
+    this.repo.put('jobs',{...job,state:'running',tries:job.tries+1});try{const s=this.repo.get('submissions',job.submission_id),attempt=this.repo.get('attempts',s.attempt_id);this.verifyEpoch(attempt);const item=this.repo.get('assignments',s.assignment_id),p=this.publication(item);requireThat(digest(attempt.evidence)===s.evidence_hash,'EVIDENCE_CONFLICT');const report=await this.analyzer.analyze(p.plan,attempt.evidence,attempt);validateReport(report,p.plan,attempt.evidence,attempt);this.repo.transaction(()=>{this.verifyEpoch(attempt);this.publication(item);requireThat(this.repo.get('submissions',s.id)?.evidence_hash===s.evidence_hash,'SOURCE_CHANGED');requireThat(report.plan_hash===s.plan_hash&&report.attempt_id===attempt.id&&report.evidence_hash===s.evidence_hash&&report.grade===null,'INVALID_REPORT');this.repo.put('reports',{...report,id:s.id,submission_id:s.id,learner_id:s.learner_id});this.repo.put('jobs',{...job,state:'complete',tries:job.tries+1});});}catch{if(this.repo.get('jobs',job.id))this.repo.put('jobs',{...job,state:'failed',tries:job.tries+1,error:'REPORT_ANALYSIS_FAILED'});}
   }}finally{this.processing=false;}}
   close(){this.preparations.close();this.repo.close();}
 }

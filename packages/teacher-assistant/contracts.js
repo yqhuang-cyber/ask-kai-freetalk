@@ -1,5 +1,6 @@
 import {CAPABILITIES} from './capabilities.js';
 import {createHash} from 'node:crypto';
+import {ANALYSIS_VERSION,diningQuestion,diningAnswer,observeDining,observeOrganization} from './report-observations.js';
 export const SCENARIO='teacher_homework';
 export const VERSION='homework-v1';
 export const digest=value=>createHash('sha256').update(JSON.stringify(value)).digest('hex');
@@ -26,5 +27,21 @@ export function validEvidence(e,attempt,plan){
   requireThat(Array.isArray(e.help_requests)&&e.help_requests.length<=12&&e.help_requests.every(r=>typeof r.event_id==='string'&&typeof r.turn_id==='string'),'INVALID_EVIDENCE');
   requireThat(Array.isArray(e.replies)&&e.replies.length<=24&&e.replies.every(r=>typeof r.response_id==='string'&&typeof r.turn_id==='string'&&['done','cancelled','interrupted'].includes(r.status)&&r.playback_confirmed===false),'INVALID_EVIDENCE');
   requireThat(['student_end','transport_closed','provider_closed','service_failure','session_limit','authorization_revoked','safety_restricted'].includes(e.end_reason),'INVALID_EVIDENCE');
-  requireThat(typeof e.truncated==='boolean','INVALID_EVIDENCE');return e;
+  requireThat(typeof e.truncated==='boolean','INVALID_EVIDENCE');
+  for(const o of e.observations)requireThat(observeDining(o.excerpt).some(f=>f.goal_id===o.goal_id),'INVALID_OBSERVATION');
+  if(e.analysis_version!==undefined){
+    requireThat(e.analysis_version===ANALYSIS_VERSION&&Array.isArray(e.interactions)&&e.interactions.length<=24&&Number.isSafeInteger(e.recognized_questions)&&e.recognized_questions>=e.interactions.length&&e.recognized_questions<=1000,'INVALID_ANALYSIS_EVIDENCE');
+    const turns=new Set();
+    for(const pair of e.interactions){
+      const p=pair?.prompt,a=pair?.answer;
+      requireThat(p&&a&&typeof p.event_id==='string'&&typeof a.event_id==='string'&&typeof a.turn_id==='string'&&a.turn_id!==p.turn_id&&!turns.has(a.turn_id)&&typeof p.excerpt==='string'&&p.excerpt.length<=120&&typeof a.excerpt==='string'&&a.excerpt.length<=160,'INVALID_INTERACTION');
+      requireThat(diningQuestion(p.excerpt)?.kind===p.kind&&pair.relation==='delivery_order_only'&&pair.support_basis==='unknown'&&e.replies.some(r=>r.response_id===p.response_id&&r.turn_id===p.turn_id&&r.status==='done'),'INVALID_INTERACTION_SOURCE');
+      requireThat(diningAnswer(p.kind,a.excerpt,observeDining(a.excerpt))===pair.interpretation&&typeof pair.interpretation==='string','INVALID_INTERACTION_MEANING');
+      turns.add(a.turn_id);
+    }
+    requireThat(turns.size<=e.final_turns,'INVALID_ANALYSIS_EVIDENCE');
+    requireThat(Array.isArray(e.organization_observations)&&e.organization_observations.length<=24&&e.organization_observations.every(o=>typeof o.event_id==='string'&&typeof o.turn_id==='string'&&observeOrganization(o.excerpt).some(f=>f.feature_id===o.feature_id)),'INVALID_ORGANIZATION_EVIDENCE');
+    requireThat(!plan||plan.pack.topic==='点餐'||e.interactions.length===0,'INVALID_INTERACTION_SCOPE');
+  }else requireThat(e.interactions===undefined&&e.recognized_questions===undefined&&e.organization_observations===undefined,'INVALID_ANALYSIS_EVIDENCE');
+  return e;
 }

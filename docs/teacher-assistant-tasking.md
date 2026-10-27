@@ -6,6 +6,8 @@
 
 输入：[PRD v0.2](prd/teacher-assigned-conversation-homework-prd-v0.2.md)、[User Journey](teacher-homework-user-journey.md)、[前置规划需求](teacher-homework-planning-design.md)、[技术方案](teacher-assistant-technical-design.md)。实际最小实现及命令见[实施说明](teacher-assistant-demo-implementation.md)，分层证据见[验收记录](eval-results/2026-10-26-teacher-assistant-demo.md)。其余完整 TA 模块仍为后续产物。
 
+2026-10-27 优先级更新：最小 Demo 和 AI 备课单学生切片之后，优先推进[报告分析细化与首个切片](teacher-assistant-report-analysis-tasking.md)：RA-01～04、LST-01～03、SPK-01～02、AUD-01～02 映射 TA-12 / TA-15 及独立听说音频任务。当前仅有限证据 / 分析 / 双端呈现子集已实现，完整 TA-12 / TA-15 继续开放；自动等级不是这些反馈的前置条件。
+
 ## 1. 实施原则与阶段成果
 
 用户已明确优先完成[最小 Demo 服务蓝图](teacher-homework-minimal-service-blueprint.md)，同时保持整体架构完整可扩展。新的执行顺序为 **G0 → G-Demo → 教师 / 学生 / Kai 分角色完善 → 完整质量与评级准入**。最小 Demo 的逐项依赖与完成条件见[MD-01～MD-08](teacher-assistant-minimal-demo-tasking.md)。

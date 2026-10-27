@@ -1,5 +1,7 @@
 # Ask Kai 自由对话
 
+报告分析首个切片已在 `codex/report-analysis` 实现：双端报告新增情境问答观察、表达信息 / 组织、求助策略和最多两项具体练习建议；教师可核对来源。点餐问答与部分跨主题组织形式使用有限规则，通用语义与真实听力 / 发音 / 语流仍独立验证。见[任务细化与实现边界](docs/teacher-assistant-report-analysis-tasking.md)、[本轮验收](docs/eval-results/2026-10-27-report-analysis.md)。
+
 教师端 AI 前置备课第一阶段已合并回主干：主题与课后要求 → AI 教学包 / 个人目标 → 教师编辑确认 → 发布执行。原 Demo 4330 同时提供 AI 备课与预置点餐任务；4331 保留独立开发试用。见[实施与配置](docs/teacher-assistant-ai-planning-implementation.md)、[分层验收](docs/eval-results/2026-10-26-teacher-ai-planning.md)。当前只参考获准 Mock 等级，近期学习证据 / 多人分层 / 教学质量仍后续验证。
 
 教师助教最小 Demo 已有独立入口：`npm run poc:teacher` → [本机 4330](http://127.0.0.1:4330)。预置点餐作业的发布、主题对话、明确提交与双端反馈已连通；不改 FreeTalk 流程。648 项回归 / 新旧浏览器通过，真实豆包经新页面与测试麦克风闭环通过，真人听感待验。见[试用与实现边界](docs/teacher-assistant-demo-implementation.md)、[验收记录](docs/eval-results/2026-10-26-teacher-assistant-demo.md)。
