@@ -3,3 +3,5 @@ ruby{ruby-position:over}rt{font-size:.48em;color:#788f7d;font-weight:400}ruby sp
 .analysis-card{margin:20px 0;padding:20px;border:1px solid #dce5d8;border-radius:12px;background:#fafcf7;overflow-wrap:anywhere}.analysis-card h3{margin-top:0}.analysis-observation{border-top:1px solid #e2e9dc;padding:8px 0}.example{color:#225d50}.analysis-evidence{font-size:12px;color:#62776f;overflow-wrap:anywhere}.practice-step{border-left:3px solid #94af80;padding:4px 18px;margin:18px 0}.practice-step p{margin:8px 0}
 button:disabled{cursor:not-allowed}
 textarea,select{width:100%;font:inherit;line-height:1.6;color:#244c42;padding:12px;border:1px solid #dce4d7;border-radius:8px;background:#fafbf7;margin-top:6px}textarea{resize:vertical}.ai-goal{margin:14px 0}hr{border:0;border-top:1px solid #e0e5dc;margin:28px 0}
+
+.preset-option{border-top:1px solid #e0e5dc;margin-top:28px;padding-top:20px}.preset-option summary{cursor:pointer;color:#275448;font-weight:600}.preset-option .section-head{margin-top:18px}

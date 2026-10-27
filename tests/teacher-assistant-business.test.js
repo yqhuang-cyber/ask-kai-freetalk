@@ -16,3 +16,28 @@ test('report jobs reject invented analysis even when all outer source hashes mat
   const attempt=await end(f),receipt=await f.service.call('submit',f.learner,{attempt_id:attempt.id,expected_version:attempt.version,idempotency_key:'reject-analysis-1'});await f.service.runReports();
   const result=await f.service.call('submission',f.teacher,{submission_id:receipt.id});assert.equal(result.state,'submitted');assert.equal(result.report_state,'failed');assert.equal(result.report,null);
 });
+
+test('ending has one fixed lease that live heartbeats and retries cannot change or revive',async t=>{
+  let now=Date.now();const f=await fixture({now:()=>now});t.after(()=>f.service.close());
+  const {attempt}=await f.service.call('prepare',f.learner,{assignment_id:f.assignment.id}),input={attempt_id:attempt.id,session_id:'ending-session'};
+  await f.service.call('bind_session',f.learner,input);await f.service.call('authorize_attempt',f.learner,input);now+=2900;
+  await assert.rejects(f.service.call('begin_finalize',f.teacher,input),/FORBIDDEN/);
+  await assert.rejects(f.service.call('begin_finalize',f.learner,{...input,session_id:'other'}),/NOT_ACTIVE/);
+  const ending=await f.service.call('begin_finalize',f.learner,input);now+=3300;
+  await f.service.call('authorize_attempt',f.learner,input);assert.equal(f.service.repo.get('attempts',attempt.id).lease_until,ending.lease_until);
+  assert.equal((await f.service.call('begin_finalize',f.learner,input)).lease_until,ending.lease_until);
+  now=ending.lease_until;await assert.rejects(f.service.call('begin_finalize',f.learner,input),/NOT_ACTIVE/);await assert.rejects(f.service.call('authorize_attempt',f.learner,input),/NOT_ACTIVE/);
+  const ledger=new EvidenceRecorder({attemptId:attempt.id,sessionId:input.session_id,planHash:f.plan.hash});ledger.input({type:'user.final',event_id:'ending-e',turn_id:'ending-t',payload:{text:'我要面条'}});
+  await assert.rejects(f.service.call('finalize',f.learner,{attempt_id:attempt.id,evidence:ledger.finalize({providerKind:'test',ready:true})}),/NOT_ACTIVE/);
+});
+test('ending window does not bypass revocation, deletion or superseded attempts',async t=>{
+  for(const action of ['revoke_learner','delete_my_data','prepare']){
+    const f=await fixture();try{
+      const {attempt}=await f.service.call('prepare',f.learner,{assignment_id:f.assignment.id}),input={attempt_id:attempt.id,session_id:'ending-session'};
+      await f.service.call('bind_session',f.learner,input);await f.service.call('begin_finalize',f.learner,input);
+      await f.service.call(action,action==='revoke_learner'?f.teacher:f.learner,{learner_id:f.plan.learner_id,assignment_id:f.assignment.id});
+      await assert.rejects(f.service.call('begin_finalize',f.learner,input),/UNAUTHORIZED|NOT_ACTIVE/);
+      await assert.rejects(f.service.call('authorize_attempt',f.learner,input),/UNAUTHORIZED|NOT_ACTIVE/);
+    }finally{f.service.close();}
+  }
+});

@@ -118,7 +118,9 @@ AUD-03-TX01 的交付：
 - 有界超时、取消、节流、额度、鉴权 / 服务未开通、空音频、编码错、过长、断开、局部成功、旧结果和已删音频全覆盖。日志只含允许元数据，Worker 不泄露真实学习者材料。
 - 分层验收：合成协议 / 适配与故障 → 作者音频真实腾讯 API → 新入口浏览器采集到 M4 离线 job 到报告 → 中文语音专业 holdout；每层报告配置 / 版本、分母、失败与未覆盖。真实接入是完成条件，不能以“适配器已写”代替，也不能把“服务接通”当 AUD-04 的准确性已通过。
 
-拟议配置：`ASK_KAI_PRONUNCIATION_PROVIDER=tencent_soe_v2`、`TENCENT_SOE_APP_ID / TENCENT_SOE_SECRET_ID / TENCENT_SOE_SECRET_KEY` 和独立的报告文本配置。**生产评测配置仍待实现；阶段 A 仅由 `probe:teacher:pronunciation` 预检读取 `TENCENT_SOE_APP_ID` / `TENCENT_SOE_SECRET_ID` / `TENCENT_SOE_SECRET_KEY` 是否存在，不发起调用。** 密钥不写本文件 / Git / 浏览器；不在文档阶段开通、购买、创建账号或外传用户音频。
+阶段 C 配置：`ASK_KAI_PRONUNCIATION_PROVIDER=tencent_soe_v2`、`TENCENT_SOE_APP_ID / TENCENT_SOE_SECRET_ID / TENCENT_SOE_SECRET_KEY` 和独立的报告文本配置。**阶段 C 已实现独立服务端配置和适配器，真实评测准入仍未完成；阶段 A 的 `probe:teacher:pronunciation` 预检读取 `TENCENT_SOE_APP_ID` / `TENCENT_SOE_SECRET_ID` / `TENCENT_SOE_SECRET_KEY` 是否存在，不发起调用。阶段 C 的音频 probe 需明确作者授权和格式参数，默认仍不连接。** 密钥不写本文件 / Git / 浏览器；不在文档阶段开通、购买、创建账号或外传用户音频。
+
+阶段 C 的实际实现、版本与尚未完成项见[阶段 C 实施](conversation-report-stage-c.md)。
 
 阶段 A 实际实现与验证见[本地实施](conversation-report-stage-a.md)及[验收记录](eval-results/2026-10-27-report-stage-a.md)。
 
@@ -127,11 +129,11 @@ AUD-03-TX01 的交付：
 | Task | 交付 | 依赖 / 状态 |
 | --- | --- | --- |
 | M4-01 | 本文件：教学记录与异步分析的模块 / 进程边界，腾讯选型与实际现状核对 | 本轮设计已确认；运行未改变 |
-| M4-02 | 从 M4 数据 API 分离分析 Worker；内部任务委托 / claim / lease / 阶段状态 / commit 与唯一 DB writer | DR-01 / 02；待实现 |
-| DR-03 / AUD-02 | M2 生成文本 / 学生音频段，经授权端口写入 M4 教学记录 | 待实现；不落 M2 长期本地档案 |
-| DR-04 / DR-05 | 提交事务与 job、Worker 异步分支、版本固定 / 故障恢复 | 依赖 M4-02；待实现 |
-| AUD-03-TX01 | 腾讯智聆新版真实接入 / 配置 / 模式适配 / 错误处理 / 离线片段评测 | AUD-01 / 02、M4-02、DR-04；P0 待实现 |
-| DR-07 / DR-08 | M4 校验 / 汇总 / 持久报告，M1 经授权查询与回听 | 待实现 |
+| M4-02 | 从 M4 数据 API 分离分析 Worker；内部任务委托 / claim / lease / 阶段状态 / commit 与唯一 DB writer | B / C 工程已接入；实际边界见阶段 C |
+| DR-03 / AUD-02 | M2 生成文本 / 学生音频段，经授权端口写入 M4 教学记录 | 文本账本及实验音频已接入；可靠声源 / 对齐仍待验证 |
+| DR-04 / DR-05 | 提交事务与 job、Worker 异步分支、版本固定 / 故障恢复 | B / C 已接入提交 / 版本 / 分支恢复；验收边界见阶段 C |
+| AUD-03-TX01 | 腾讯智聆新版真实接入 / 配置 / 模式适配 / 错误处理 / 离线片段评测 | 适配器 / 合成协议已实现；P0 真实腾讯及声学准入待验 |
+| DR-07 / DR-08 | M4 校验 / 汇总 / 持久报告，M1 经授权查询与回听 | 已有来源校验和最小双端候选展示；回听 / 完整审阅待 D |
 | DR-09 / AUD-04 | 独立 Worker 故障和负载不影响对话 / 数据 API；真实腾讯、MiniMax及教学质量验收 | 各层分开报告，待执行 |
 
 核心架构验收：Worker 不启动仍可对话 / 保存 / 明确提交并保留 queued；关页后 Worker 可完成报告；Worker 停止 / 重启不关闭学生会话；M4 唯一 DB writer 与权限边界保持；慢腾讯 / 慢文本模型不拖慢 M2；重复领取 / 迟到 / 取消 / 删除不会产生错学生、错提交、错版本或复活的数据。整体 feature 完成仍要求文本、发音两条 P0 路径均通过。

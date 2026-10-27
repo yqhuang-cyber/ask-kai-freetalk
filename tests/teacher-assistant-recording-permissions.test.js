@@ -8,7 +8,7 @@ async function fixture(options={}){
   const plan=await service.call('preview',teacher,{learner_id:'mock-maya-hsk3',topic:'dining'});
   const published=await service.call('publish',teacher,{learner_id:plan.learner_id,topic:'dining',plan_hash:plan.hash,due_at:new Date(Date.now()+86400000).toISOString(),timezone:'Asia/Shanghai',idempotency_key:'record-choice-publish'});
   const prepared=await service.call('prepare',learner,{assignment_id:published.assignment_id});
-  const input={attempt_id:prepared.attempt.id,notice_version:'deep-report-notice-v3',expected_revision:0,text:true,audio:false};
+  const input={attempt_id:prepared.attempt.id,notice_version:'deep-report-notice-v4',expected_revision:0,text:true,audio:false};
   return {service,teacher,learner,prepared,input};
 }
 test('M4 stores per-attempt choices separately from attempts and rejects teacher / other learner writes',async t=>{

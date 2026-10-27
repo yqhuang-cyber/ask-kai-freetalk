@@ -1,4 +1,4 @@
-// Documentation-backed experiment plan. This module never opens a connection or reads audio.
+// Readiness remains conservative even after adapter implementation. No network or audio access here.
 export const TENCENT_PROFILE='tencent-soe-v2-zh-validation-v1';
 export const TENCENT_CASES=Object.freeze([
   {id:'natural-free',mode:3,reference:'none',question:'自然语音准确度、流利度及可用定位字段',required:true},
@@ -10,11 +10,11 @@ export const TENCENT_CASES=Object.freeze([
 ]);
 export function tencentReadiness(env={}){
   const credentials=Object.fromEntries(['TENCENT_SOE_APP_ID','TENCENT_SOE_SECRET_ID','TENCENT_SOE_SECRET_KEY'].map(k=>[k,typeof env[k]==='string'&&env[k].trim().length>0]));
-  return {profile:TENCENT_PROFILE,source:'documentation_only',credentials_present:credentials,service_enabled:'unverified',author_audio:'not_provided',
+  return {profile:TENCENT_PROFILE,source:'adapter_implemented_live_validation_pending',credentials_present:credentials,service_enabled:'unverified',author_audio:'not_provided',
     live_call_performed:false,acoustic_validation:'pending',ready_for_learner_reports:false,
     missing_configuration:Object.keys(credentials).filter(k=>!credentials[k]),
     format:{sample_rate:16000,bits:16,channels:1},
     modes:{free_speech:{eval_mode:3,reference_required:false,phoneme:'unverified',tone:'unverified',fluency:'documented_not_validated'},sentence:{eval_mode:1,max_hanzi:30,phoneme:'documented_not_validated',tone:'documented_not_validated',reference:'must_be_independently_verified'}},
     transport:{recording_mode_max_seconds:60,mode_combination:'requires_live_test',streaming:'paced_40ms_frames_not_instant_upload'},
-    cases:TENCENT_CASES,decision:'Stage A local preparation only; AUD-01 live capability validation remains open'};
+    cases:TENCENT_CASES,decision:'Stage C adapter implemented; credentials, author audio and AUD-01 / AUD-02 live admission remain required'};
 }

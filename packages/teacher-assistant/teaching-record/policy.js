@@ -1,7 +1,7 @@
 import {requireThat} from '../contracts.js';
 import {recordHash} from './contracts.js';
 
-export const NOTICE_VERSION='deep-report-notice-v3';
+export const NOTICE_VERSION='deep-report-notice-v4';
 export const POLICY_VERSION='deep-report-retention-v1';
 const DAY=86400000;
 export function recordingPolicy({textDays=7,audioDays=7}={}){
@@ -27,7 +27,7 @@ function owner(choice,context){
 }
 export function newRecordingChoice(attempt,policy,now){
   return {id:attempt.id,learner_id:attempt.learner_id,attempt_id:attempt.id,auth_epoch:attempt.auth_epoch,deletion_epoch:attempt.deletion_epoch,revision:0,notice_version:NOTICE_VERSION,policy:structuredClone(policy),created_at:now,
-    text:{allowed:false,state:'not_selected',expires_at:now+policy.text_days*DAY},audio:{allowed:false,state:'not_selected',expires_at:now+policy.audio_days*DAY},updated_at:now};
+    text:{allowed:false,state:'not_selected',grant_revision:0,processing:'local-only',expires_at:now+policy.text_days*DAY},audio:{allowed:false,state:'not_selected',grant_revision:0,processing:'local-only',expires_at:now+policy.audio_days*DAY},updated_at:now};
 }
 export function updateRecordingChoice(choice,input,context,now){
   owner(choice,context);requireThat(input.notice_version===NOTICE_VERSION&&choice.notice_version===NOTICE_VERSION,'RECORD_NOTICE_CHANGED');
@@ -36,13 +36,14 @@ export function updateRecordingChoice(choice,input,context,now){
   const next=structuredClone(choice);next.revision++;next.updated_at=now;
   for(const kind of ['text','audio']){
     const branch=next[kind];requireThat(!input[kind]||now<branch.expires_at,'RECORD_EXPIRED');
+    if(branch.allowed!==input[kind])branch.grant_revision=(branch.grant_revision??0)+1;
     branch.allowed=input[kind];branch.state=input[kind]?'selected':choice[kind].allowed?'revoked':choice[kind].state==='expired'?'expired':'declined';
   }
   return next;
 }
 export function expireRecordingChoice(choice,now){
   const next=structuredClone(choice);let changed=false,invalidated=false;
-  for(const kind of ['text','audio'])if(now>=next[kind].expires_at&&next[kind].state!=='expired'){invalidated||=next[kind].allowed;next[kind].allowed=false;next[kind].state='expired';changed=true;}
+  for(const kind of ['text','audio'])if(now>=next[kind].expires_at&&next[kind].state!=='expired'){invalidated||=next[kind].allowed;if(next[kind].allowed)next[kind].grant_revision=(next[kind].grant_revision??0)+1;next[kind].allowed=false;next[kind].state='expired';changed=true;}
   if(changed){if(invalidated)next.revision++;next.updated_at=now;}return next;
 }
 // Re-read the authoritative choice at every read, external call and result commit.

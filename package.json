@@ -48,7 +48,11 @@
     "check:teacher:isolation": "node scripts/teacher-assistant/check-isolation.js",
     "probe:teacher:browser": "node --env-file-if-exists=.env scripts/teacher-assistant/live-browser-check.js",
     "test:teacher:planning:browser": "node scripts/teacher-assistant/planning-browser-check.js",
-    "probe:teacher:planning": "node --env-file-if-exists=.env scripts/teacher-assistant/planning-live-check.js"
+    "probe:teacher:planning": "node --env-file-if-exists=.env scripts/teacher-assistant/planning-live-check.js",
+    "probe:teacher:report": "node --env-file-if-exists=.env scripts/teacher-assistant/report-semantic-probe.js",
+    "probe:teacher:report:worker": "node --env-file-if-exists=.env scripts/teacher-assistant/report-worker-probe.js",
+    "probe:teacher:pronunciation:audio": "node --env-file-if-exists=.env scripts/teacher-assistant/pronunciation-probe.js",
+    "test:teacher:report:browser": "node scripts/teacher-assistant/deep-report-browser-check.js"
   },
   "dependencies": {
     "@earendil-works/pi-agent-core": "1.2.0",

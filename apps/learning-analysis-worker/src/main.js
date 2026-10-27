@@ -1,10 +1,13 @@
-import {ReportAnalyzer} from '../../../packages/teacher-assistant/report.js';
-
-// No database or user session is opened in this process. This first stage only
-// moves the existing bounded rule report; model and pronunciation paths remain off.
-process.once('message',({endpoint,secret})=>{
-  let stopping=false,timer;const analyzer=new ReportAnalyzer();
-  const call=async(op,input={})=>{const response=await fetch(endpoint,{method:'POST',headers:{authorization:`Bearer ${secret}`,'content-type':'application/json'},body:JSON.stringify({op,input}),signal:AbortSignal.timeout(5000)});if(!response.ok)throw new Error('ANALYSIS_API_ERROR');return response.json();};
-  const poll=async()=>{if(stopping)return;try{const job=await call('claim');if(job.state==='claimed'){const ref={job_id:job.job_id,lease_id:job.lease_id};try{const report=await analyzer.analyze(job.plan,job.evidence,job.attempt);await call('commit',{...ref,source_hash:job.source_hash,report});}catch{try{await call('fail',ref);}catch{/* lease or authorization no longer valid */}}}}catch{/* data service can recover independently */}finally{if(!stopping)timer=setTimeout(poll,300);}};
-  const stop=()=>{stopping=true;clearTimeout(timer);process.exit(0);};process.once('disconnect',stop);process.once('SIGTERM',stop);process.send?.({ready:true});void poll();
+import {runClaimedAnalysis} from './run-analysis.js';
+import {ConversationReportAnalyzer,MiniMaxReportTransport} from '../../../packages/teacher-assistant/deep-analysis/semantic.js';
+import {TencentAudioAssessmentPort} from '../../../packages/provider-tencent-soe/assessment.js';
+import {reportConfiguration} from '../../../packages/teacher-assistant/deep-analysis/config.js';
+// Only this process receives report provider credentials. M4 remains the sole writer.
+process.once('message',({endpoint,secret,analysisEnv={}})=>{
+  let stopping=false,timer,active;const config=reportConfiguration(analysisEnv);
+  const textAnalyzer=new ConversationReportAnalyzer({transport:config.text.provider==='minimax'&&config.text.configured?new MiniMaxReportTransport({apiKey:analysisEnv.MINIMAX_API_KEY,baseURL:analysisEnv.MINIMAX_BASE_URL,model:config.text.model}):undefined});
+  const audioPort=config.audio.provider==='tencent_soe_v2'&&config.audio.configured?new TencentAudioAssessmentPort({appId:analysisEnv.TENCENT_SOE_APP_ID,secretId:analysisEnv.TENCENT_SOE_SECRET_ID,secretKey:analysisEnv.TENCENT_SOE_SECRET_KEY}):undefined;
+  const call=async(op,input={})=>{const response=await fetch(endpoint,{method:'POST',headers:{authorization:`Bearer ${secret}`,'content-type':'application/json'},body:JSON.stringify({op,input}),signal:AbortSignal.timeout(5000)});const result=await response.json();if(!response.ok)throw new Error(/^[A-Z_]+$/.test(result.error)?result.error:'ANALYSIS_API_ERROR');return result;};
+  const poll=async()=>{if(stopping)return;try{const job=await call('claim');if(job.state==='claimed'){active=new AbortController();try{await runClaimedAnalysis({job,call,textAnalyzer,audioPort,signal:active.signal});}catch{try{await call('fail',{job_id:job.job_id,lease_id:job.lease_id});}catch{/* Lease or authorization no longer valid. */}}finally{active=null;}}}catch{/* No provider responses or learner content in logs. */}finally{if(!stopping)timer=setTimeout(poll,300);}};
+  const stop=()=>{stopping=true;clearTimeout(timer);active?.abort();process.exit(0);};process.once('disconnect',stop);process.once('SIGTERM',stop);process.send?.({ready:true});void poll();
 });

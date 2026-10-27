@@ -35,8 +35,8 @@ async function showRecordingNotice({root,api,isCurrent}){
   let target=root;const add=(tag,text)=>{const e=document.createElement(tag);e.textContent=text;target.append(e);};
   add('h2',notice.title);add('p',notice.current);
   add('p',notice.text.purpose);add('p',`${notice.text.recipient} 本地保留 ${notice.text.retention_days} 天。`);
-  if(notice.capabilities?.text_collection){const label=node('label','','check'),check=document.createElement('input');check.type='checkbox';check.id='recording-text';label.append(check,document.createTextNode('同意保存下一次练习的对话文本'));root.append(label);}
-  if(notice.capabilities?.audio_collection){add('p',notice.audio.purpose);add('p',`${notice.audio.recipient} 本地保留 ${notice.audio.retention_days} 天。`);const label=node('label','','check'),check=document.createElement('input');check.type='checkbox';check.id='recording-audio';label.append(check,document.createTextNode('同意保存下一次练习的测试录音'));root.append(label);}
+  if(notice.capabilities?.text_collection){const label=node('label','','check'),check=document.createElement('input');check.type='checkbox';check.id='recording-text';label.append(check,document.createTextNode(notice.capabilities.text_analysis?'同意保存文本，提交后交给 MiniMax 分析本次练习':'同意保存下一次练习的对话文本'));root.append(label);}
+  if(notice.capabilities?.audio_collection){add('p',notice.audio.purpose);add('p',`${notice.audio.recipient} 本地保留 ${notice.audio.retention_days} 天。`);const label=node('label','','check'),check=document.createElement('input');check.type='checkbox';check.id='recording-audio';label.append(check,document.createTextNode(notice.capabilities.pronunciation_analysis?'同意保存测试录音，并将合格学生语音交腾讯评测':'同意保存下一次练习的测试录音'));root.append(label);}
   const details=document.createElement('details');root.append(details);target=details;add('summary','查看记录用途和保留说明');
   for(const [kind,label] of [['text','对话文本'],['audio','学生语音']]){
     add('h3',label);add('p',notice[kind].purpose);add('p',notice[kind].recipient);
@@ -95,7 +95,7 @@ $('audio-recording-revoke').onclick=async()=>{if(!current)return;try{let result;
 $('query-attempt').onclick=()=>queryAttempt().catch(showError);
 $('submit').onclick=async()=>{if(submitting||!current)return;submitting=true;$('submit').disabled=true;$('attempt-state').textContent='提交中，等待服务确认……';const epoch=generation;try{const receipt=await api('submit',{attempt_id:current.id,expected_version:current.version,idempotency_key:current.submit_key});if(epoch!==generation)return;$('submit').hidden=true;$('attempt-state').textContent='已提交 · 本地服务回执 '+receipt.id;await showReport(receipt);await refresh();}catch(e){if(epoch!==generation)return;$('attempt-state').textContent='提交尚未确认，请查询状态；重复提交使用相同请求标识。';showError(e);}finally{submitting=false;$('submit').disabled=false;}};
 async function loadReport(id){const epoch=generation,s=await api('submission',{submission_id:id});if(epoch!==generation)return;await showReport(s);}
-function renderAnalysis(root,a){
+function renderAnalysis(root,a,{showAudio=true}={}){
   const coverage=a.coverage;
   root.append(node('p',`本次接受 ${coverage.accepted_turns} 轮表达；其中 ${coverage.expression_turns} 轮有可分析的目标表达，${coverage.matched_responses} 次有语义相符的问答观察。未命中的表达保持未知。`,'small'));
   if(coverage.truncated)root.append(node('p','证据已达到保留上限，以下只反映保留片段，不代表整场表现。','notice'));
@@ -112,15 +112,36 @@ function renderAnalysis(root,a){
     for(const limitation of s.limitations)card.append(node('p',limitation,'small'));
     root.append(card);
   }
-  const audio=node('article','','analysis-card');audio.dataset.dimension='audio';audio.append(node('h3','发音与语流 · 未评估'),node('p',a.audio.summary),node('p',a.audio.reason,'small'));root.append(audio);
+  if(showAudio){const audio=node('article','','analysis-card');audio.dataset.dimension='audio';audio.append(node('h3','发音与语流 · 未评估'),node('p',a.audio.summary),node('p',a.audio.reason,'small'));root.append(audio);}
   root.append(node('h3',actor.role==='teacher'?'建议跟进 · 最多两项':'下次可以试试'));
   for(const step of a.next_steps){const card=node('article','','practice-step');card.append(node('p',step.basis==='extension'?'拓展练习':'探索练习','small'),node('p',step.reason),node('p',step.activity),node('p',`下次观察：${step.success_criteria}`,'small'));root.append(card);}
 }
+function renderDeepReport(root,s){
+  const deep=s.deep_analysis;if(!deep)return;
+  const states={pending:'等待分析',running:'正在分析',complete:'分析已生成 · 待核对',partial:'已生成部分分析 · 待核对',failed:'分析未完成',disabled:'尚未开启',unavailable:'本次未评估',not_authorized:'记录或分析授权已不可用'};
+  const reasons={not_configured:'服务尚未配置',not_enabled:'该分析尚未开启',not_authorized:'未授权或已撤回',source_unavailable:'来源已不可用或已过期',no_eligible_audio:'声音来源或质量尚未确认，没有可评学生片段',restricted_content:'本次内容不进入普通学习报告',deadline:'分析超时',provider_failed:'分析服务未完成请求',output_rejected:'结果未通过检查',external_outcome_unknown:'外部请求结果未知，需要显式重试'};
+  root.append(node('h3','本次深入分析'),node('p','模型解读需要核对原文；识别文本可能有错，不能据此判断纯听力、独立完成或整体等级。','small'));
+  for(const [kind,label] of [['text','理解与口语表达'],['audio','发音、声调与语流']]){
+    const stage=deep.stages[kind],card=node('article','','analysis-card');card.dataset.deepDimension=kind;card.append(node('h3',label+' · '+(states[stage.state]??'状态待确认')));
+    if(stage.reason)card.append(node('p',reasons[stage.reason]??'本维度暂未完成。'));
+    if(kind==='text'&&stage.result){
+      const result=stage.result,c=result.coverage;card.append(node('p',`${c.windows.every(w=>w.state==='complete')&&!c.unprocessed_windows?'已分析本次保存的对话文本':'已分析部分保存内容，还有内容未完成分析'}；原始记录${c.source_state==='complete'?'完整':'有缺口'}。`,'small'));
+      if(!result.candidates.length)card.append(node('p','本次没有生成足够可靠的具体观察，不表示不会。'));
+      for(const observation of result.candidates){const row=node('div','','analysis-observation');row.append(node('h4',(observation.dimension==='context_understanding'?'情境理解':'口语表达')+' · 待核对'),node('p',observation.observation),node('p',observation.explanation));for(const ref of observation.evidence_refs)row.append(node('p',`原文：“${ref.quote}”`,'analysis-evidence'));row.append(node('p',observation.uncertainty,'small'),node('p','下次可以试试：'+observation.suggestion));card.append(row);}
+    }
+    if(kind==='audio'&&stage.result)card.append(node('p','已保存声学评测候选，尚需核对声音和参考内容；不作为学生等级或已确认的发音诊断。'));
+    root.append(card);
+  }
+  if(deep.retryable&&actor.role==='teacher')root.append(action('重试未完成的分析',async()=>{await api('retry_report',{submission_id:s.id});await loadReport(s.id);}));
+  if(deep.processing){const epoch=generation;reportTimer=setTimeout(()=>{if(epoch===generation)loadReport(s.id).catch(showError);},1200);}
+}
 async function showReport(s){clearTimeout(reportTimer);$('report').hidden=false;$('report-role').textContent=actor.role==='teacher'?'D · 教师报告':'B · 我的反馈';const root=$('report-body');root.replaceChildren();
   if(s.report_state!=='complete'||!s.report){root.append(node('p',s.report_state==='failed'?'作业已提交；报告生成失败，可由老师重试。':'作业已提交；报告正在生成。'));if(s.report_state==='failed'&&actor.role==='teacher')root.append(action('重试生成报告',async()=>{await api('retry_report',{submission_id:s.id});await loadReport(s.id);}));else if(s.report_state!=='failed'){const epoch=generation;reportTimer=setTimeout(()=>{if(epoch===generation)loadReport(s.id).catch(showError);},800);}return;}
-  const r=s.report;root.append(node('p',r.headline),node('p',`语音来源：${r.voice_source==='doubao'?'真实 Doubao 会话':'合成 provider · 工程预览'} · 提交 ${s.id}`,'small'));
-  for(const goal of r.goals){const card=node('div','','goal');card.append(node('h3',goal.label+' · '+(goal.status==='attempt_observed'?'观察到表达尝试':'尚未评估')),node('p',goal.description));for(const ref of goal.evidence??[])card.append(node('p',`识别片段：“${ref.excerpt}” · 轮次 ${ref.turn_id} · 支持归因未知`,'evidence'));root.append(card);}
-  if(r.analysis)renderAnalysis(root,r.analysis);else root.append(node('h3',actor.role==='teacher'?'下一次教学建议':'下次可以试试'),node('p',r.suggestion));for(const limitation of r.limitations)root.append(node('p',limitation,'small'));const details=node('details','');details.append(node('summary','查看本次记录标识'),node('code',`Attempt ${r.attempt_id} · Session ${r.session_id} · Plan ${r.plan_hash.slice(0,16)}`));root.append(details);
+  const r=s.report;root.append(node('p',s.deep_analysis?'回看这次对话的理解与表达；具体解读需要结合原文核对。':r.headline),node('p',`语音来源：${r.voice_source==='doubao'?'真实 Doubao 会话':'合成 provider · 工程预览'} · 提交 ${s.id}`,'small'));
+  renderDeepReport(root,s);let base=root;
+  if(s.deep_analysis){base=node('details');base.append(node('summary','查看基础练习记录'),node('p','这部分依据有限片段记录表达尝试，作为本次深入分析的补充。','small'));root.append(base);}
+  for(const goal of r.goals){const card=node('div','','goal');card.append(node('h3',goal.label+' · '+(goal.status==='attempt_observed'?'观察到表达尝试':'尚未评估')),node('p',goal.description));for(const ref of goal.evidence??[])card.append(node('p',`识别片段：“${ref.excerpt}” · 轮次 ${ref.turn_id} · 支持归因未知`,'evidence'));base.append(card);}
+  if(r.analysis)renderAnalysis(base,r.analysis,{showAudio:!s.deep_analysis});else base.append(node('h3',actor.role==='teacher'?'下一次教学建议':'下次可以试试'),node('p',r.suggestion));for(const limitation of r.limitations)base.append(node('p',limitation,'small'));const details=node('details','');details.append(node('summary','查看本次记录标识'),node('code',`Attempt ${r.attempt_id} · Session ${r.session_id} · Plan ${r.plan_hash.slice(0,16)}`));base.append(details);
 }
 window.addEventListener('pagehide',()=>{generation++;clearTimeout(reportTimer);ws?.close();void stopMedia();});
 enter().catch(e=>{if(e.message!=='UNAUTHORIZED')showError(e);});
