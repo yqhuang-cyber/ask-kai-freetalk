@@ -55,10 +55,10 @@ const context={learner_id:recordScope.learner_id,attempt_id:recordScope.attempt_
 const attempt={id:context.attempt_id,...context};
 const enabled={text_collection:true,audio_collection:true,text_analysis:true,pronunciation_analysis:true,external_processing_reviewed:true};
 const change=(choice,text,audio)=>updateRecordingChoice(choice,{notice_version:recordingNotice().version,expected_revision:choice.revision,text,audio},context,2000);
-test('text and audio choices default off; phase A never enables recording or external analysis',()=>{
+test('text and audio choices default off; text selection enables local collection while external analysis remains off',()=>{
   const initial=newRecordingChoice(attempt,recordingPolicy(),1000);assert.equal(initial.text.allowed,false);assert.equal(initial.audio.allowed,false);
   const selected=change(initial,true,false);assert.equal(selected.audio.allowed,false);
-  assert.throws(()=>authorizeRecording(selected,{context,revision:1,kind:'text',operation:'collect',now:3000}),/NOT_ENABLED/);
+  assert.ok(authorizeRecording(selected,{context,revision:1,kind:'text',operation:'collect',now:3000}));
   assert.throws(()=>authorizeRecording(selected,{context,revision:1,kind:'audio',operation:'collect',now:3000,capabilities:enabled}),/NOT_AUTHORIZED/);
 });
 test('revoke, stale result, wrong learner, notice version and deletion epochs fence all operations',()=>{

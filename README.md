@@ -84,7 +84,7 @@ flowchart TD
 
 M4 的目标职责新增本次主题对话教学记录：完整可用文本、必要学生音频、来源与覆盖、提交 / 分析任务及报告。M4 数据服务负责权威存储与授权，独立 M4 分析 Worker 在明确提交后并行调用 M5 的 MiniMax 文本分析和腾讯智聆新版发音评测，校验汇总后存回 M4；M1 经授权接口查询。此处是新 feature 的架构，FreeTalk 的现有内存资料 / 默认行为仍按上表；当前规则 report job 尚未升级为新 Worker，腾讯也尚未接入。详见[架构与现状核对](docs/conversation-report-m4-architecture.md)、[实施任务](docs/conversation-report-deep-analysis-tasking.md)。
 
-阶段 A 的本地记录契约、独立文本 / 音频选择 API、保留与授权策略已实施，学生页显示准备说明。完整采集、离线 Worker 和腾讯真实评测仍未启用；腾讯尚未配置，真实能力验证保持开放。见[阶段 A 实施与边界](docs/conversation-report-stage-a.md)。
+阶段 A 的本地记录契约和授权策略已实施。阶段 B 工作区正在接入授权文本记录和独立旧规则报告进程，文本和音频实验采集默认关闭；合成浏览器已验证基本流程，声源归属、实际对齐和腾讯真实评测仍待验收。见[阶段 A 实施与边界](docs/conversation-report-stage-a.md)和[阶段 B 进度](docs/conversation-report-stage-b-progress.md)。
 
 ### 3.3 支撑与治理
 

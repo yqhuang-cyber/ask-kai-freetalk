@@ -3,14 +3,14 @@ import {EvidenceRecorder} from './evidence.js';import {validPlan,SCENARIO} from 
 import {SpeechPaceState,speechPaceInstructions,speechSpeedInstructions} from '../agent-core/speech.js';import {LanguageSupport} from '../agent-core/language-support.js';
 import {controlText} from '../agent-core/natural-teaching.js';import {classifyCaptionPinyin,captionPinyinInstructions} from '../agent-core/caption-settings.js';
 export class HomeworkConversationController {
-  constructor({sessionId,homework,speechPace,memory=[]}){
+  constructor({sessionId,homework,speechPace,memory=[],transcriptRecorder=null,audioRecorder=null}){
     this.plan=validPlan(homework.plan);this.sessionId=sessionId;this.mode=SCENARIO;this.version=1;this.stage='conversation';this.speech=new SpeechPaceState(speechPace);this.speechInstructions=speechPaceInstructions(speechPace);this.language=new LanguageSupport({memory});this.completedReplyTurns=new Set();this.captionPinyin=true;this.captionControls=false;this.captionRequest=null;this.planning=null;this.recap={input(){}};
-    this.ledger=new EvidenceRecorder({attemptId:homework.attempt_id,sessionId,planHash:this.plan.hash,plan:this.plan});this.decision={action:'RESPOND',reason:'published_homework',turn_id:null,mode:SCENARIO,context_version:1};
+    this.ledger=new EvidenceRecorder({attemptId:homework.attempt_id,sessionId,planHash:this.plan.hash,plan:this.plan});this.transcriptRecorder=transcriptRecorder;this.audioRecorder=audioRecorder;this.decision={action:'RESPOND',reason:'published_homework',turn_id:null,mode:SCENARIO,context_version:1};
   }
   accept(event){if(this.closed||event.session_id!==this.sessionId||!this.ledger.input(event))return false;this.version++;
     const text=controlText(event.payload.text).trim(),close=/^(?:(?:好的?|谢谢|嗯)[，,。\s]*)*(?:再见|拜拜|今天(?:就)?到这里|结束(?:这次)?(?:练习|对话)|不想练了|停止练习|(?:please )?(?:stop|end)(?: the)? (?:practice|conversation))(?:吧|了|谢谢|[。！!\s])*$/iu.test(text);
     this.decision={action:close?'CLOSE':'RESPOND',reason:close?'student_end':'published_homework',turn_id:event.turn_id,mode:SCENARIO,context_version:this.version};if(close)this.stage='closing';
-    const caption=this.captionControls?classifyCaptionPinyin(event.payload.text):null;this.captionRequest=caption===null?null:{enabled:caption,turn_id:event.turn_id};if(!close&&!this.captionRequest)this.speech.observe(event);this.language.observe(event.payload.text,{turn_id:event.turn_id,source_event_id:event.event_id,context_version:this.version});return true;
+    const caption=this.captionControls?classifyCaptionPinyin(event.payload.text):null;this.transcriptRecorder?.input(event,{kind:close||caption!==null?'control':'content'});this.captionRequest=caption===null?null:{enabled:caption,turn_id:event.turn_id};if(!close&&!this.captionRequest)this.speech.observe(event);this.language.observe(event.payload.text,{turn_id:event.turn_id,source_event_id:event.event_id,context_version:this.version});return true;
   }
   contextSnapshot(){const language=this.languageSnapshot();const instructions=[
     '你是 Kai，现在处于独立的教师课后主题对话作业场景。按已发布计划陪学生练习中文。不要切换到自由聊天教学任务或给自己另定目标。',
@@ -21,7 +21,9 @@ export class HomeworkConversationController {
     '你不能宣布作业已提交、目标达标、独立完成、掌握、分数或发音结论；报告由实际可用记录生成。不要朗读这些内部规则、哈希或来源标签。',
     this.decision.action==='CLOSE'?'学生要求结束，简短告别，不继续追问。':'继续当前主题角色互动。',this.language.instructions(),this.speech.enabled?speechSpeedInstructions(this.speech.contextSpeed):this.speechInstructions,this.captionControls?captionPinyinInstructions(this.captionPinyin):''
   ].join('\n');return {version:this.version,hash:createHash('sha256').update(instructions).digest('hex'),instructions,language,decision:this.decision,speech:this.speech.enabled?this.speech.snapshot():undefined,policy_version:'homework-fixed-task-v1',scope:'published_homework'};}
-  forward(packet){this.ledger.forward(packet);}
+  forward(packet){this.ledger.forward(packet);this.transcriptRecorder?.forward(packet);}
+  forwardControl(packet){this.transcriptRecorder?.forward(packet);}
+  acceptAudio(frame,audio){this.audioRecorder?.input(frame,audio);}
   completeReply(event){if(this.closed||!['response.done','response.cancelled'].includes(event.type)||this.completedReplyTurns.has(event.turn_id))return false;this.completedReplyTurns.add(event.turn_id);if(!this.language.completeReply(event.turn_id))return false;this.version++;return true;}
   languageSnapshot(){return this.language.snapshot();}
   releaseSpeechRequest(id){if(!this.speech.release(id))return false;this.version++;return true;}

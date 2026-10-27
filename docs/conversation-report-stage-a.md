@@ -35,7 +35,7 @@
 
 `id, sequence, role, turn_id, response_id, event_ids, text, kind, status, received_at, speaking_time, uncertainty, source`。
 
-- 学生：`role=learner`、`source=accepted_user_final`、`status=final`、response_id=null；仅接入现有网关已接受的内部 user.final。最终文本按 ASR 内容保存，不能称为逐字准确原话。同一 turn 不能重复计算。
+- 学生：`role=learner`、`source=accepted_user_final`、`status=final`、response_id=null；B 可将明确的结束 / 设置指令标为 control。仅接入现有网关已接受的内部 user.final。最终文本按 ASR 内容保存，不能称为逐字准确原话。同一 turn 不能重复计算。
 - Kai：`source=forwarded_safe_text`，仅安全及输出门放行、实际向页面转发的内容；同一 response 的 delta 先聚合。状态为 completed / cancelled / interrupted / incomplete。控制文本 kind=control，不充当学习成果。
 - speaking_time 在 v1 固定为 null；received_at 是接收时间。event_ids 只证明我们接受的内部事件来源，不能推断供应商 wire event 或供应商保证。
 - sequence 表示本地接受顺序，严格递增；不要求连续，缺口由 manifest 说明。已转发不证明播放、听到或字幕帮助归因；候选 support 固定 unknown。

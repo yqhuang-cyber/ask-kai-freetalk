@@ -1,5 +1,7 @@
 # Incremental delivery
 
+2026-10-27 阶段 B 开发中：工作区已接入隔离的旧规则报告进程与授权文本记录基础（实验开关默认关闭），实验音频已实现独立授权 / 候选分段 / 私有存储与封口，实际声源归属、对齐、完整故障恢复和真人设备验收仍未完成；本机端口权限已恢复，合成回归和浏览器检查通过；[进度与待办](conversation-report-stage-b-progress.md)。
+
 2026-10-27 阶段 A 本地实施：已新增版本化教学记录 / 音频 / 覆盖 / 引用契约，M4 独立记录选择与 Mock 授权 API、分别可配置的 7 天保留策略、撤回 / TTL / epoch 屏障及学生端准备说明。采集与外部分析开关仍关闭；B 接入全文 / 音频存储、内容清理与独立 Worker。腾讯预检和能力实验清单已准备；用户确认服务尚未准备，先完成本地 A，AUD-01 真实声学验证保持开放。[阶段 A 实施](conversation-report-stage-a.md)、[分层验收](eval-results/2026-10-27-report-stage-a.md)。
 
 2026-10-27 M4 架构与供应商确认：用户明确本次对话教学记录及分析结果属于 Module 4 学习者资料，报告异步离线执行。已新增[技术架构确认](conversation-report-m4-architecture.md)和更新[Tasking v1.2](conversation-report-deep-analysis-tasking.md)：M4 权威数据服务 + 独立分析 Worker，唯一 SQLite writer，提交事务只入队，语义 / 声学后台并行并按依赖汇总；腾讯云智聆口语评测新版为已选方案，P0 接入任务 AUD-03-TX01。当前只更新设计与任务，未实施新 Worker / 完整记录 / 腾讯适配器或实际调用，未新增验收结果。此前“未选择供应商”为历史记录。

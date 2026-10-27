@@ -8,3 +8,12 @@ coverage/
 reports/
 .local/
 local/env
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.sqlite.audio/
+*.db
+*.db-shm
+*.db-wal
+*.db.audio/
+*.pcm

@@ -91,7 +91,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         if (ended || ws.readyState !== ws.OPEN) return false;
         if (ws.bufferedAmount > 262144) return finish('CLIENT_BACKPRESSURE');
         ws.send(JSON.stringify(data));
-        if(data.speech_control){(captions?.owns(data)?captions:speech)?.forward(data);return true;}
+        if(data.speech_control){teaching.forwardControl?.(data);(captions?.owns(data)?captions:speech)?.forward(data);return true;}
         const before=teaching.version;
         teaching.forward(data); // Only forwarded packets, after safety/output hold.
         teaching.planning?.observe(data);
@@ -228,7 +228,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         const candidate={target:reply?.turn!==turnId?reply?.id:null,ownerTurn:reply?.turn,confirmed:false};
         speechCandidates.set(turnId,candidate);return candidate;
       };
-      sessions.set(ws,{identity:ticket.identity,teaching,finish,flushContext});
+      sessions.set(ws,{identity:ticket.identity,attemptId:ticket.homework?.attempt_id,teaching,finish,flushContext});
       const restrict = (risk,event) => {
         restricted=true;metrics?.count(providerKind,'restricted');
         slides?.close();
@@ -256,6 +256,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             byteWindow += bytes.length;
             if (byteWindow > provider.audio.input_rate*2*1.25) throw new Error('AUDIO_RATE_LIMIT');
             provider.sendAudio(bytes);
+            teaching.acceptAudio?.(bytes,provider.audio);
           } else {
             if(Date.now()-controlAt>=1000){controlAt=Date.now();controlCount=0;}
             if(++controlCount>20){metrics?.count(providerKind,'control_rate_limited');return finish('CONTROL_RATE_LIMIT');}
@@ -542,6 +543,10 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
     revoke(identity) {
       for(const [key,ticket] of tickets)if(ticket.identity.owner_id===identity.owner_id && ticket.identity.learner_id===identity.learner_id)tickets.delete(key);
       for(const session of sessions.values())if(session.identity.owner_id===identity.owner_id && session.identity.learner_id===identity.learner_id)session.finish('AUTHORIZATION_REVOKED');
+    },
+    stopHomeworkRecording(attemptId,{text=false,audio=false}={}) {
+      for(const ticket of tickets.values())if(ticket.homework?.attempt_id===attemptId){if(text)ticket.homework.recorder?.stopLocal();if(audio)ticket.homework.audioRecorder?.stopLocal();}
+      for(const session of sessions.values())if(session.attemptId===attemptId){if(text)session.teaching.transcriptRecorder?.stopLocal();if(audio)session.teaching.audioRecorder?.stopLocal();}
     },
     close() {clearInterval(sweep);tickets.clear();for(const ws of connections)ws.terminate();wss.close();}
   };

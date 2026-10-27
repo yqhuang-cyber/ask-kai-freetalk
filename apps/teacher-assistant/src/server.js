@@ -1,11 +1,14 @@
 import {createServer} from 'node:http';import {readFile} from 'node:fs/promises';
 import {attachRealtime} from '../../realtime-gateway/src/realtime.js';
 import {HomeworkConversationController} from '../../../packages/teacher-assistant/controller.js';
+import {TranscriptRecorder} from '../../../packages/teacher-assistant/teaching-record/transcript-recorder.js';
+import {AudioRecorder} from '../../../packages/teacher-assistant/teaching-record/audio-recorder.js';
+import {NOTICE_VERSION} from '../../../packages/teacher-assistant/teaching-record/policy.js';
 import {readJson,json,errorStatus} from '../../../packages/teacher-assistant/http.js';import {requireThat} from '../../../packages/teacher-assistant/contracts.js';
 const publicRoot=new URL('../public/',import.meta.url),shared=new URL('../../realtime-gateway/public/',import.meta.url);
 const sharedNames=['audio.js','capture-worklet.js','diagnostics.js','presentation.js','caption-phrases.js','closing-playback.js','speech-playback.js','voice-readiness.js','caption-annotations.js','caption-settings.js'];
-const browserOps=new Set(['recording_notice','recording_choice','recording_choice_update','me','preview','publish','list','attempt','submit','submission','retry_report','delete_my_data','planning_config','draft_create','draft_read','draft_edit','draft_cancel','draft_retry','draft_list']);
-export function createTeacherApp({port,providerFactory,providerKind='doubao',readyTimeoutMs=8000,cookieName='ask_kai_ta_session'}={}){
+const browserOps=new Set(['recording_notice','recording_choice','recording_choice_update','recording_audio_delete','record_read','me','preview','publish','list','attempt','submit','submission','retry_report','delete_my_data','planning_config','draft_create','draft_read','draft_edit','draft_cancel','draft_retry','draft_list']);
+export function createTeacherApp({port,providerFactory,providerKind='doubao',readyTimeoutMs=8000,cookieName='ask_kai_ta_session',transcriptEnabled=false,audioEnabled=false}={}){
   requireThat(/^ask_kai_ta_[a-z0-9_]{1,40}$/.test(cookieName),'INVALID_COOKIE_NAME');
   const server=createServer(async(req,res)=>{
     try{
@@ -21,11 +24,12 @@ export function createTeacherApp({port,providerFactory,providerKind='doubao',rea
         }
         if(op==='logout'){const me=await port.call('me',token);if(me.actor.role==='learner')realtime.revoke({owner_id:'mock-homework-owner',learner_id:me.actor.id});await port.call('logout',token);json(res,200,{ok:true},{'set-cookie':cookie('')});return;}
         if(op==='prepare'){
-          requireThat(!!providerFactory,'VOICE_NOT_CONFIGURED');const prepared=await port.call('prepare',token,input);
-          const ticket=await realtime.create({origin,mode:'teacher_homework',identity:prepared.identity,speechPace:'slow',homework:{attempt_id:prepared.attempt.id,plan:prepared.plan,token}});
-          json(res,200,{...ticket,attempt_id:prepared.attempt.id,plan_hash:prepared.plan.hash,plan_source:prepared.plan.source});return;
+          requireThat(!!providerFactory,'VOICE_NOT_CONFIGURED');const recording=input.recording_text===true,recordingAudio=input.recording_audio===true;if(recording)requireThat(transcriptEnabled,'RECORD_NOT_ENABLED');if(recordingAudio)requireThat(audioEnabled,'RECORD_NOT_ENABLED');if(recording||recordingAudio)requireThat(input.recording_notice_version===NOTICE_VERSION,'RECORD_NOTICE_CHANGED');const prepared=await port.call('prepare',token,input);
+          if(recording||recordingAudio)await port.call('recording_choice_update',token,{attempt_id:prepared.attempt.id,notice_version:NOTICE_VERSION,expected_revision:0,text:recording,audio:recordingAudio});
+          const homework={attempt_id:prepared.attempt.id,plan:prepared.plan,token,recording,recordingAudio};const ticket=await realtime.create({origin,mode:'teacher_homework',identity:prepared.identity,speechPace:'slow',homework});
+          json(res,200,{...ticket,attempt_id:prepared.attempt.id,plan_hash:prepared.plan.hash,plan_source:prepared.plan.source,recording_state:recording?(homework.recorder?'enabled':'failed'):'not_selected',audio_recording_state:recordingAudio?(homework.audioRecorder?'enabled':'failed'):'not_selected'});return;
         }
-        requireThat(browserOps.has(op),'NOT_FOUND');const result=await port.call(op,token,input);json(res,200,result);return;
+        requireThat(browserOps.has(op),'NOT_FOUND');const result=await port.call(op,token,input);if(op==='recording_choice_update')realtime.stopHomeworkRecording(input.attempt_id,{text:!result.text.allowed,audio:!result.audio.allowed});if(op==='recording_notice'){result.capabilities.text_collection=transcriptEnabled;result.capabilities.audio_collection=audioEnabled;if(audioEnabled){result.current='你可以分别选择保存对话文本和测试录音；发音分析尚未开启。';result.audio.purpose='测试录音会保存检测到的声音片段，可能包含背景声或 Kai 的回声，当前不会自动评判发音。';result.choice='文本和测试录音可以分别选择、撤回；不影响继续练习或已有提交。';result.deletion='撤回或到期后删除对应文本或测试录音。已有练习记录和规则反馈仍按原设置保留。';}else if(!transcriptEnabled)result.current='完整对话文本记录和发音分析正在准备中。';}json(res,200,result);return;
       }
       requireThat(req.method==='GET','NOT_FOUND');
       const vendors={'/vendor/pinyin-pro.js':'node_modules/pinyin-pro/dist/index.js','/vendor/pinyin-traditional.js':'node_modules/@pinyin-pro/data/dist/traditional.mjs'};
@@ -34,11 +38,11 @@ export function createTeacherApp({port,providerFactory,providerKind='doubao',rea
     }catch(e){json(res,e.message==='HOMEWORK_SERVICE_UNAVAILABLE'?503:errorStatus(e.message),{error:/^[A-Z_]+$/.test(e.message)?e.message:'TEACHER_APP_ERROR'});}
   });
   const realtime=attachRealtime(server,{providerFactory,providerKind,businessSource:'mock_hskai',readyTimeoutMs,websocketPath:'/api/ta/realtime',protocol:'ask-kai.homework.v1',
-    conversationFactory:ticket=>new HomeworkConversationController({sessionId:ticket.session_id,homework:ticket.homework,speechPace:ticket.speech_pace,memory:ticket.identity.memory}),
+    conversationFactory:ticket=>new HomeworkConversationController({sessionId:ticket.session_id,homework:ticket.homework,speechPace:ticket.speech_pace,memory:ticket.identity.memory,transcriptRecorder:ticket.homework.recorder,audioRecorder:ticket.homework.audioRecorder}),
     sessionLifecycle:{
-      open:ticket=>port.call('bind_session',ticket.homework.token,{attempt_id:ticket.homework.attempt_id,session_id:ticket.session_id}),
-      authorize:ticket=>port.call('authorize_attempt',ticket.homework.token,{attempt_id:ticket.homework.attempt_id,session_id:ticket.session_id}),
-      finalize:async({ticket,controller})=>port.call('finalize',ticket.homework.token,{attempt_id:ticket.homework.attempt_id,evidence:controller.evidence})
+      open:async ticket=>{await port.call('bind_session',ticket.homework.token,{attempt_id:ticket.homework.attempt_id,session_id:ticket.session_id});if(ticket.homework.recording){const recorder=new TranscriptRecorder({port,token:ticket.homework.token,attemptId:ticket.homework.attempt_id,sessionId:ticket.session_id});try{await recorder.open();ticket.homework.recorder=recorder;}catch{/* Conversation can continue; UI reports recording failure. */}}if(ticket.homework.recordingAudio){try{await port.call('audio_authorize',ticket.homework.token,{attempt_id:ticket.homework.attempt_id,session_id:ticket.session_id});ticket.homework.audioRecorder=new AudioRecorder({port,token:ticket.homework.token,attemptId:ticket.homework.attempt_id,sessionId:ticket.session_id});}catch{/* Report failure without interrupting live conversation. */}}},
+      authorize:async ticket=>{const result=await port.call('authorize_attempt',ticket.homework.token,{attempt_id:ticket.homework.attempt_id,session_id:ticket.session_id});if(result.recording){if(!result.recording.text)ticket.homework.recorder?.stopLocal();if(!result.recording.audio)ticket.homework.audioRecorder?.stopLocal();}return result;},
+      finalize:async({ticket,controller,reason})=>{const restricted=['authorization_revoked','safety_restricted'].includes(reason),finish=async recorder=>{if(!recorder)return null;try{return restricted?await recorder.discard():await recorder.seal(reason);}catch{return {state:'failed'};}};const [recording,audio_recording]=await Promise.all([finish(ticket.homework.recorder),finish(ticket.homework.audioRecorder)]);const receipt=await port.call('finalize',ticket.homework.token,{attempt_id:ticket.homework.attempt_id,evidence:controller.evidence});return {...receipt,recording,audio_recording};}
     }});
   server.stopRealtime=()=>realtime.close();return server;
 }

@@ -28,7 +28,7 @@ function validTranscript(segment){
   requireThat(oneOf(segment.role,['learner','kai'])&&oneOf(segment.kind,['content','control'])&&oneOf(segment.uncertainty,['unknown','asr_uncertain','none_reported']),'INVALID_TRANSCRIPT');
   // Only an adapter with independently verified timing may introduce a future timed version.
   requireThat(segment.speaking_time===null,'UNVERIFIED_SPEAKING_TIME');
-  if(segment.role==='learner')requireThat(segment.source==='accepted_user_final'&&segment.response_id===null&&segment.status==='final'&&segment.kind==='content','INVALID_LEARNER_SOURCE');
+  if(segment.role==='learner')requireThat(segment.source==='accepted_user_final'&&segment.response_id===null&&segment.status==='final','INVALID_LEARNER_SOURCE');
   else {id(segment.response_id);requireThat(segment.source==='forwarded_safe_text'&&oneOf(segment.status,['completed','cancelled','interrupted','incomplete']),'INVALID_KAI_SOURCE');}
 }
 function validAudio(audio,record){

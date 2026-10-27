@@ -1,0 +1,20 @@
+// The realtime path only queues bounded data. The M4 service performs every
+// authorization check and is the only durable writer.
+export class TranscriptRecorder {
+  constructor({port,token,attemptId,sessionId}){Object.assign(this,{port,token,attemptId,sessionId});this.queue=[];this.bytes=0;this.sequence=0;this.finals=0;this.responses=0;this.knownResponses=new Map();this.dropped=false;this.flushFailed=false;this.gaps=[];this.closed=false;this.running=null;}
+  gap(sequence,reason){const last=this.gaps.at(-1);if(last&&last.reason===reason&&sequence===last.end+1){last.end=sequence;return;}if(this.gaps.length<100)this.gaps.push({start:sequence,end:sequence,reason});else this.dropped=true;}
+  async open(){return this.port.call('record_start',this.token,{attempt_id:this.attemptId,session_id:this.sessionId});}
+  push(event,kind='content'){if(this.closed)return;const e={event_id:event.event_id,type:event.type,turn_id:event.turn_id,response_id:event.type==='user.final'?null:event.response_id,text:['user.final','response.text.delta'].includes(event.type)?event.payload?.text??'':'',kind,sequence:this.sequence++,received_at:Date.now()};
+    if(e.type==='user.final')this.finals++;if(e.type==='response.started'&&!this.knownResponses.has(e.response_id)){this.knownResponses.set(e.response_id,{turn_id:e.turn_id,closed:false});this.responses++;}
+    if(typeof e.event_id!=='string'||typeof e.turn_id!=='string'||(e.type!=='user.final'&&typeof e.response_id!=='string')||typeof e.text!=='string'||e.text.length>65536){this.dropped=true;this.gap(e.sequence,e.text?.length>65536?'truncated':'unknown');return;}
+    const size=Buffer.byteLength(e.text)+256;if(this.queue.length>=2000||this.bytes+size>2*1024*1024){this.dropped=true;this.gap(e.sequence,'overflow');return;}this.bytes+=size;this.queue.push({event:e,size});this.pump();
+  }
+  input(event,{kind='content'}={}){if(event.type==='user.final'&&event.session_id===this.sessionId)this.push(event,kind);}
+  forward(packet){if(packet.type!=='event')return;const event=packet.event;if(!event||event.session_id!==this.sessionId||!['response.started','response.text.delta','response.done','response.cancelled'].includes(event.type))return;const previous=this.knownResponses.get(event.response_id);if(event.type==='response.started'){if(previous){this.dropped=true;return;}}else if(!previous||previous.closed||previous.turn_id!==event.turn_id){this.dropped=true;return;}this.push(event,packet.speech_control?'control':'content');if(previous&&['response.done','response.cancelled'].includes(event.type))previous.closed=true;}
+  pump(){if(this.running||!this.queue.length)return;const items=[];let bytes=0;while(this.queue.length&&items.length<50&&bytes+this.queue[0].size<=48000){const next=this.queue.shift();items.push(next);bytes+=next.size;this.bytes-=next.size;}if(!items.length){const lost=this.queue.shift();this.bytes-=lost.size;this.dropped=true;this.gap(lost.event.sequence,'truncated');return this.pump();}
+    this.running=this.port.call('record_append',this.token,{attempt_id:this.attemptId,session_id:this.sessionId,events:items.map(x=>x.event)}).catch(()=>{this.flushFailed=true;for(const item of items)this.gap(item.event.sequence,'write_failed');}).finally(()=>{this.running=null;this.pump();});}
+  async seal(reason){if(this.revoked)return {state:'revoked'};this.closed=true;this.pump();let timedOut=false;const drain=async()=>{while(this.running)await this.running;};let timer;await Promise.race([drain(),new Promise(resolve=>{timer=setTimeout(()=>{timedOut=true;resolve();},1500);})]);clearTimeout(timer);
+    return this.port.call('record_seal',this.token,{attempt_id:this.attemptId,session_id:this.sessionId,accepted_finals:this.finals,forwarded_responses:this.responses,dropped:this.dropped,flush_failed:this.flushFailed||timedOut,gap_ranges:this.gaps,end_reason:reason});}
+  discard(){this.closed=true;this.queue=[];this.bytes=0;return this.port.call('record_discard',this.token,{attempt_id:this.attemptId,session_id:this.sessionId});}
+  stopLocal(){this.closed=true;this.revoked=true;this.queue=[];this.bytes=0;}
+}

@@ -1,7 +1,7 @@
 import {requireThat} from '../contracts.js';
 import {recordHash} from './contracts.js';
 
-export const NOTICE_VERSION='deep-report-notice-v1';
+export const NOTICE_VERSION='deep-report-notice-v3';
 export const POLICY_VERSION='deep-report-retention-v1';
 const DAY=86400000;
 export function recordingPolicy({textDays=7,audioDays=7}={}){
@@ -15,12 +15,12 @@ export function configuredRecordingPolicy(env={}){
 export function recordingNotice(policy=recordingPolicy()){
   return {version:NOTICE_VERSION,policy,source:'mock_hskai',
     title:'对话记录与发音分析',
-    current:'完整对话记录与发音分析正在准备中。当前仍只保存少量表达片段，不保存整场文本或录音。',
+    current:'你可以选择保存这次练习的对话识别文本。发音录音和深入分析仍在准备中。',
     text:{purpose:'保存你的识别文本和 Kai 的实际回复，用于分析这次对话的理解与表达。识别文本可能有错。',recipient:'本地学习记录服务；文本分析拟使用 MiniMax，启用前会再次说明。',retention_days:policy.text_days},
     audio:{purpose:'仅保存这次发音评测需要的学生语音片段，用于分析发音、声调与语流。',recipient:'本地学习记录服务；发音评测拟使用腾讯智聆，启用前会再次说明。',retention_days:policy.audio_days},
-    choice:'启用时，文本与音频分别由你选择，可单独关闭或撤回；不影响继续练习或已有提交。',
-    deletion:'撤回或到期后删除对应记录及分析结果。服务商侧的处理状态将单独说明。',
-    capabilities:{text_collection:false,audio_collection:false,text_analysis:false,pronunciation_analysis:false,external_processing_reviewed:false}};
+    choice:'文本记录由你选择，可以撤回；不影响继续练习或已有提交。音频记录启用前会再次征求你的选择。',
+    deletion:'撤回或到期后删除这次保存的完整对话文本。现有练习记录和规则反馈仍按原设置保留。',
+    capabilities:{text_collection:true,audio_collection:false,text_analysis:false,pronunciation_analysis:false,external_processing_reviewed:false}};
 }
 function owner(choice,context){
   requireThat(choice.learner_id===context.learner_id&&choice.attempt_id===context.attempt_id&&choice.auth_epoch===context.auth_epoch&&choice.deletion_epoch===context.deletion_epoch,'RECORD_AUTHORIZATION_REVOKED');
@@ -41,9 +41,9 @@ export function updateRecordingChoice(choice,input,context,now){
   return next;
 }
 export function expireRecordingChoice(choice,now){
-  const next=structuredClone(choice);let changed=false;
-  for(const kind of ['text','audio'])if(now>=next[kind].expires_at&&next[kind].state!=='expired'){next[kind].allowed=false;next[kind].state='expired';changed=true;}
-  if(changed){next.revision++;next.updated_at=now;}return next;
+  const next=structuredClone(choice);let changed=false,invalidated=false;
+  for(const kind of ['text','audio'])if(now>=next[kind].expires_at&&next[kind].state!=='expired'){invalidated||=next[kind].allowed;next[kind].allowed=false;next[kind].state='expired';changed=true;}
+  if(changed){if(invalidated)next.revision++;next.updated_at=now;}return next;
 }
 // Re-read the authoritative choice at every read, external call and result commit.
 // A frozen choice in a job is never a source of current permission.
