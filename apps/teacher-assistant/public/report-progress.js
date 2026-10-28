@@ -3,8 +3,8 @@ const failure={deadline:'请求超时，分析已停止',provider_failed:'服务
 export function reportProgress(submission,{now=Date.now()}={}){
   const deep=submission.deep_analysis;if(!deep)return null;
   const text=deep.stages.text,audio=deep.stages.audio,p=text.progress,active=deep.processing;
-  const textReady=finished(text),failed=submission.report_state==='failed',ready=submission.report_state==='complete';
-  const needsReview=audio.review_required||audio.state==='awaiting_review';
+  const textReady=finished(text),failed=submission.report_state==='failed';
+  const needsReview=audio.review_required||audio.state==='awaiting_review',ready=submission.report_state==='complete'&&!needsReview;
   const audioOff=audio.provider==='none'||['disabled','not_authorized'].includes(audio.state)||audio.reason==='not_enabled';
   const row=(id,label,state,detail)=>({id,label,state,detail});
   let textState=textReady?'complete':text.state==='failed'?'failed':text.state==='running'?'running':text.state==='pending'&&active?'waiting':'unavailable';
@@ -43,5 +43,5 @@ export function renderReportProgress(root,submission){
     const body=node('div','','progress-step-body'),heading=node('div','','progress-step-heading');heading.append(node('h4',step.label),node('span',labels[step.state],'progress-state'));body.append(heading,node('p',step.detail));item.append(dot,body);list.append(item);
   }
   panel.append(list,node('p',progress.live?'进度会自动更新；可以离开页面，稍后从历史报告继续查看。':'以上为实际处理状态；未评估的内容不会被当作已完成分析。','small progress-note'));
-  if(submission.report_state==='complete'){const details=node('details','','report-progress-archive');details.append(node('summary','查看报告生成过程'),panel);root.append(details);}else root.append(panel);
+  if(submission.report_state==='complete'&&progress.steps.at(-1).state==='complete'){const details=node('details','','report-progress-archive');details.append(node('summary','查看报告生成过程'),panel);root.append(details);}else root.append(panel);
 }

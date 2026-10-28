@@ -36,6 +36,7 @@ test('progress is source-bound, bounded, lease-bound and never accepts a previou
 test('teacher review is a distinct wait and does not hide completed text progress or imply Tencent was called',async t=>{
   const f=await deepFixture(t,{env:{...syntheticReportEnv,ASK_KAI_TA_AUDIO_ASSESSMENT_VALIDATED:'0',ASK_KAI_TA_AUDIO_REVIEW_ENABLED:'1'}});let audioCalls=0;
   await runClaimedAnalysis({job:f.service.analysisDelegation.claim(),call:f.call,textAnalyzer:new ConversationReportAnalyzer({transport:syntheticSemanticTransport()}),audioPort:{assess:async()=>audioCalls++}});
+  const teacherView=await f.service.call('submission',f.teacher,{submission_id:f.submission.id}),teacherProgress=reportProgress(teacherView);assert.equal(teacherView.report_state,'complete');assert.equal(teacherView.deep_analysis.stages.audio.review_required,true);assert.equal(teacherProgress.steps[3].state,'action');assert.equal(teacherProgress.steps.at(-1).state,'waiting');assert.match(teacherProgress.summary,/等待老师核对/);
   const s=await read(f),p=reportProgress(s);assert.equal(s.report_state,'awaiting_audio_review');assert.equal(s.deep_analysis.stages.text.result,undefined);assert.equal(p.steps[1].state,'complete');assert.equal(p.steps[2].state,'complete');assert.equal(p.steps[3].state,'action');assert.equal(p.steps[4].state,'waiting');assert.equal(p.steps[5].state,'waiting');assert.equal(audioCalls,0);
 });
 test('retry clears stale attempt progress while successful branches remain completed',async t=>{

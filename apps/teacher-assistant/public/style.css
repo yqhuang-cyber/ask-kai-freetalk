@@ -280,3 +280,5 @@ body[data-role="teacher"] .task-state .en-label{display:block;margin:1px 0 0;fon
 body[data-role="teacher"] .check>span>.en-label{display:block;margin:3px 0 0;font-size:11px}
 body[data-role="teacher"] #ai-stage>.en-label{display:block;margin:3px 0 0}
 @media(max-width:420px){.preparation-steps li>.step-number{flex-shrink:0}.preparation-steps .en-label{font-size:8px}.teacher-shortcuts{gap:16px}.teacher-shortcuts .en-label{font-size:10px;margin-left:5px}}
+
+.teacher-review-prompt{margin:18px 0;padding:20px;border:1px solid #e6d6b7;border-radius:14px;background:#fdfaf2}.teacher-review-prompt h3{margin:0 0 4px;font-size:17px}.teacher-review-prompt>.small{margin:0;color:#796c55}.teacher-review-prompt .audio-review{margin-top:14px;padding-top:14px;border-color:#eadfc8}.teacher-review-prompt .audio-review summary{font-weight:600}.teacher-review-prompt .audio-review-row{background:#fff}.teacher-review-prompt button{margin-top:8px}

@@ -2,7 +2,7 @@ import {renderAudioAssessment,renderAudioReview,clearAudioPreviews} from '/audio
 import {renderReportProgress} from '/report-progress.js';
 import {TeacherPlanningPanel,setBilingualText} from '/teacher-planning.js';
 import {AudioIO} from '/audio.js';import {Presentation} from '/presentation.js';import {ClosingPlayback} from '/closing-playback.js';import {SpeechPlayback} from '/speech-playback.js';import {voiceReadiness} from '/voice-readiness.js';import {CaptionAnnotations} from '/caption-annotations.js';import {CaptionSettingsView} from '/caption-settings.js';
-const $=id=>document.getElementById(id);let actor,plan,config,io,ws,current,sessionId,generation=0,ending=false,publishing=false,submitting=false,identityBusy=false,reportTimer,studentView='practice',studentNavigation=0,activeReportId=null,activeReportAttemptId=null,taskItems=[],historyPage=0,starting=false;
+const $=id=>document.getElementById(id);let actor,plan,config,io,ws,current,sessionId,generation=0,ending=false,publishing=false,submitting=false,identityBusy=false,reportTimer,reportRequest=0,studentView='practice',studentNavigation=0,activeReportId=null,activeReportAttemptId=null,taskItems=[],historyPage=0,starting=false;
 let publishKey=sessionStorage.getItem('ta-publish-key')??crypto.randomUUID();sessionStorage.setItem('ta-publish-key',publishKey);
 const errorLabels={AUDIO_NOT_ELIGIBLE:'请先核对学生声音及录音质量；无法确认的片段保留未评估。',INVALID_AUDIO_REFERENCE:'参考短句必须与原音一致，且不超过 30 字。',SOURCE_CHANGED:'记录来源已变化，请重新打开这次报告。',RECORD_NOT_AUTHORIZED:'本次记录已撤回或当前无权查看。',REPORT_ANALYSIS_ACTIVE:'报告仍在分析，请完成后再核对录音。',INVALID_AUDIO_REVIEW:'请逐项核对录音来源和质量。',AUDIO_REVIEW_CONTRADICTS_MEASUREMENT:'该片段已检测到音频缺陷，不能标为无缺陷。',DEEP_REPORT_NOT_CONFIGURED:'深入报告服务尚未配置完成，请稍后再开始练习。',RECORD_NOTICE_CHANGED:'练习说明已更新，请刷新页面后重新开始。',VOICE_NOT_CONFIGURED:'真实语音尚未配置，教师发布和报告仍可查看。',HOMEWORK_SERVICE_UNAVAILABLE:'本地业务服务暂不可用，请稍后查询状态。',NO_SUBMITTABLE_EVIDENCE:'本次没有足够的有效对话记录，尚不能提交。',ASSIGNMENT_EXPIRED:'作业已过截止时间，当前不能开始或提交。',UNAUTHORIZED:'演示身份已过期，请重新选择身份。',ALREADY_SUBMITTED:'这份作业已经提交，请查看反馈。',ATTEMPT_NOT_ACTIVE:'本次练习已失效，请重新开始。',VERSION_CONFLICT:'练习状态已更新，请先查询状态。'};
 function message(text){$('message').textContent=text;}
@@ -48,17 +48,17 @@ $('report-back').onclick=()=>setStudentView('history',{scroll:true});
 $('history-previous').onclick=()=>{historyPage--;renderTasks(taskItems);};
 $('history-next').onclick=()=>{historyPage++;renderTasks(taskItems);};
 async function refresh(){if(!actor)return;const epoch=generation,identity=actor.id;const tasks=await api('list');if(epoch!==generation||actor.id!==identity)return;taskItems=tasks;renderTasks(tasks);if(current&&!current.submitted&&!ws)await queryAttempt({openReport:actor.role==='learner'&&studentView==='conversation'});if(actor.role==='learner')setStudentView(studentView);}
-function reportLabel(s){if(s.deep_analysis&&['pending','running','awaiting_audio_review'].includes(s.report_state))return '查看报告生成进度';if(actor.role==='teacher')return '查看本次提交与报告';return !s.deep_analysis||s.report_state==='unavailable'?'查看说明':s.report_state==='failed'?'查看分析状态':'查看我的深入报告';}
-function teacherTaskState(submission){const state=submission?.report_state;return !submission?'待学生完成':state==='awaiting_audio_review'?'录音待核对':['pending','running'].includes(state)?'报告生成中':state==='failed'?'分析待重试':state==='complete'&&submission.deep_analysis?'报告已生成':'已提交';}
-function teacherTaskEnglish(submission){return !submission?'Assigned':({awaiting_audio_review:'Review audio',pending:'Analyzing',running:'Analyzing',failed:'Retry analysis',complete:submission.deep_analysis?'Report ready':'Submitted'}[submission.report_state]??'Submitted');}
-function labelReportButton(button,submission){if(actor.role==='teacher')setBilingualText(button,reportLabel(submission),['pending','running','awaiting_audio_review'].includes(submission.report_state)?'View progress':'View report');else button.textContent=reportLabel(submission);}
+function reportLabel(s){if(actor.role==='teacher'&&s.deep_analysis?.stages.audio.review_required&&!s.deep_analysis.processing)return '核对录音并继续';if(s.deep_analysis&&['pending','running','awaiting_audio_review'].includes(s.report_state))return '查看报告生成进度';if(actor.role==='teacher')return '查看本次提交与报告';return !s.deep_analysis||s.report_state==='unavailable'?'查看说明':s.report_state==='failed'?'查看分析状态':'查看我的深入报告';}
+function teacherTaskState(submission){const state=submission?.report_state;if(submission?.deep_analysis?.stages.audio.review_required&&!submission.deep_analysis.processing)return '录音待核对';return !submission?'待学生完成':state==='awaiting_audio_review'?'录音待核对':['pending','running'].includes(state)?'报告生成中':state==='failed'?'分析待重试':state==='complete'&&submission.deep_analysis?'报告已生成':'已提交';}
+function teacherTaskEnglish(submission){if(submission?.deep_analysis?.stages.audio.review_required&&!submission.deep_analysis.processing)return 'Review audio';return !submission?'Assigned':({awaiting_audio_review:'Review audio',pending:'Analyzing',running:'Analyzing',failed:'Retry analysis',complete:submission.deep_analysis?'Report ready':'Submitted'}[submission.report_state]??'Submitted');}
+function labelReportButton(button,submission){if(actor.role==='teacher')setBilingualText(button,reportLabel(submission),submission.deep_analysis?.stages.audio.review_required&&!submission.deep_analysis.processing?'Review audio':['pending','running','awaiting_audio_review'].includes(submission.report_state)?'View progress':'View report');else button.textContent=reportLabel(submission);}
 function updateSubmissionState(submission){
   for(const task of taskItems){
     if(!task.submissions.some(sub=>sub.id===submission.id))continue;
     task.submissions=task.submissions.map(sub=>sub.id===submission.id?submission:sub);
     if(actor.role==='teacher'){
       const badge=[...$('task-list').querySelectorAll('.task')].find(card=>card.dataset.assignmentId===task.id)?.querySelector('.task-state');
-      if(badge){setBilingualText(badge,teacherTaskState(submission),teacherTaskEnglish(submission));badge.dataset.state=submission.report_state??'submitted';}
+      if(badge){setBilingualText(badge,teacherTaskState(submission),teacherTaskEnglish(submission));badge.dataset.state=submission.deep_analysis?.stages.audio.review_required&&!submission.deep_analysis.processing?'awaiting_audio_review':submission.report_state??'submitted';}
     }
   }
 }
@@ -79,7 +79,7 @@ function renderTasks(tasks){
     if(teacher){
       const top=node('div','','teacher-task-top'),submission=item.submissions.at(-1),state=submission?.report_state;
       const stateLabel=teacherTaskState(submission);
-      const status=node('span',stateLabel,'badge task-state');setBilingualText(status,stateLabel,teacherTaskEnglish(submission));status.dataset.state=submission?state??'submitted':'assigned';top.append(node('h3',item.plan.pack.topic),status);
+      const status=node('span',stateLabel,'badge task-state');setBilingualText(status,stateLabel,teacherTaskEnglish(submission));status.dataset.state=submission?.deep_analysis?.stages.audio.review_required&&!submission.deep_analysis.processing?'awaiting_audio_review':submission?state??'submitted':'assigned';top.append(node('h3',item.plan.pack.topic),status);
       card.append(top,node('p',item.plan.goals.map(g=>g.task??g.label).join('；'),'teacher-task-goals'),node('p',`${item.learner_name} · ${item.submissions.length}/1 已提交`,'teacher-task-learner'),node('p',`${item.teacher_name} 布置 · 截止 ${new Date(item.due_at).toLocaleString('zh-CN',{timeZone:item.timezone,dateStyle:'medium',timeStyle:'short'})}`,'small'));
       const source=item.plan.pack.source==='synthetic'?'合成备课草案 · 工程测试'+(item.plan.source==='teacher_edited'?' · 教师已编辑':''):item.plan.source==='authored_fixture'?'预置教学计划':item.plan.source==='teacher_edited'?'AI 草案 · 教师已编辑':'AI 备课计划';
       card.append(node('p',source,'small teacher-task-source'));
@@ -94,7 +94,7 @@ function renderTasks(tasks){
       else content.append(node('p',item.plan.goals.map(g=>g.task??g.label).join('；'),'task-description'),node('p',`${item.teacher_name} 布置 · 截止 ${new Date(item.due_at).toLocaleString('zh-CN',{timeZone:item.timezone,dateStyle:'medium',timeStyle:'short'})}`,'small task-meta'));
     }
     if(!teacher&&!item.submissions.length){const reportReady=!config.deep_report_required||$('recording-notice').dataset.textAnalysis==='true'&&$('recording-notice').dataset.textCollection==='true';const b=action(!config.voice_configured?'真实语音未配置':!reportReady?'深入报告服务未就绪':'开始主题对话',()=>start(item));b.disabled=!config.voice_configured||!reportReady||studentBusy();card.append(b);}
-    for(const sub of item.submissions){const b=action(reportLabel(sub),async()=>{await loadReport(sub.id);if(actor?.role==='teacher'&&!$('report').hidden)$('report').scrollIntoView({block:'start',behavior:'instant'});},true);labelReportButton(b,sub);b.dataset.reportSubmission=sub.id;card.append(b);}
+    for(const sub of item.submissions){const b=action(reportLabel(sub),async()=>{if(await loadReport(sub.id)&&actor?.role==='teacher'&&!$('report').hidden)$('report').scrollIntoView({block:'start',behavior:'instant'});},true);labelReportButton(b,sub);b.dataset.reportSubmission=sub.id;card.append(b);}
     $('task-list').append(card);
   }
 }
@@ -166,12 +166,19 @@ $('recording-revoke').onclick=async()=>{if(!current)return;try{const choice=awai
 $('audio-recording-revoke').onclick=async()=>{if(!current)return;clearAudioPreviews();try{let result;if(current.audio_recording_state==='revoked')result=await api('recording_audio_delete',{attempt_id:current.id});else{const choice=await api('recording_choice',{attempt_id:current.id});result=await api('recording_choice_update',{attempt_id:current.id,notice_version:choice.notice_version,expected_revision:choice.revision,text:choice.text.allowed,audio:false});current.audio_recording_state='revoked';remember();result={state:result.audio_deletion};}const done=result.state==='deleted';current.audio_deletion_pending=!done;remember();$('audio-recording-revoke').hidden=done;$('audio-recording-revoke').textContent='重试删除测试录音';$('audio-recording-status').textContent=done?'已撤回并删除本次测试录音。':'录音授权已撤回，删除尚未完成，请重试。';for(const clip of document.querySelectorAll('[data-deep-dimension="audio"] .audio-clip'))clip.remove();if(studentView==='report'&&activeReportAttemptId===current.id)await loadReport(activeReportId);}catch(e){$('audio-recording-status').textContent='撤回或删除尚未确认，请重试。';showError(e);}};
 $('query-attempt').onclick=()=>queryAttempt().catch(showError);
 $('submit').onclick=async()=>{if(submitting||!current)return;submitting=true;$('submit').disabled=true;$('attempt-state').textContent='提交中，等待服务确认……';const epoch=generation;try{const receipt=await api('submit',{attempt_id:current.id,expected_version:current.version,idempotency_key:current.submit_key});if(epoch!==generation)return;$('submit').hidden=true;$('attempt-state').textContent='已提交，正在准备深入报告。';await showReport(receipt);await refresh();}catch(e){if(epoch!==generation)return;$('attempt-state').textContent='提交尚未确认，请查询状态；重复提交使用相同请求标识。';showError(e);}finally{submitting=false;$('submit').disabled=false;}};
-async function loadReport(id){
+async function loadReport(id,{refresh=false}={}){
   if(actor?.role==='learner'&&studentBusy())return;
-  if(actor?.role==='learner'&&(studentView!=='report'||activeReportId!==id)){studentNavigation++;activeReportId=id;activeReportAttemptId=null;setStudentView('report',{scroll:true});$('report-title').textContent='正在打开报告';$('report-body').replaceChildren();}
-  const epoch=generation,navigation=studentNavigation,s=await api('submission',{submission_id:id});if(epoch!==generation||actor?.role==='learner'&&navigation!==studentNavigation)return;await showReport(s);
+  const selected=activeReportId===id&&(actor?.role!=='learner'||studentView==='report');
+  if(refresh&&!selected)return false;
+  if(!selected){studentNavigation++;activeReportId=id;activeReportAttemptId=null;clearTimeout(reportTimer);clearAudioPreviews();if(actor?.role==='learner')setStudentView('report',{scroll:true});$('report').hidden=false;$('report-title').textContent='正在打开报告';$('report-body').replaceChildren();$('report-body').dataset.reportState='loading';}
+  const epoch=generation,navigation=studentNavigation,request=++reportRequest;
+  const isCurrent=()=>epoch===generation&&navigation===studentNavigation&&request===reportRequest&&activeReportId===id&&(actor?.role!=='learner'||studentView==='report');
+  try{const s=await api('submission',{submission_id:id});if(!isCurrent())return false;await showReport(s);return true;}catch(error){if(isCurrent())throw error;return false;}
 }
-function renderDeepReport(root,s){
+function reportScope(id){const epoch=generation,navigation=studentNavigation;return ()=>epoch===generation&&navigation===studentNavigation&&activeReportId===id&&!$('report').hidden;}
+async function retryCurrentReport(id){const isCurrent=reportScope(id);try{await api('retry_report',{submission_id:id});if(isCurrent())await loadReport(id,{refresh:true});}catch(error){if(isCurrent())throw error;}}
+function scheduleReportRefresh(id){const isCurrent=reportScope(id);reportTimer=setTimeout(()=>{if(isCurrent())loadReport(id,{refresh:true}).catch(showError);},1200);}
+function renderDeepReport(root,s,{reviewShown=false}={}){
   const deep=s.deep_analysis;if(!deep)return;
   const states={pending:'等待分析',running:'正在分析',complete:'分析已生成 · 待核对',partial:'已生成部分分析 · 待核对',failed:'分析未完成',disabled:'尚未开启',unavailable:'本次未评估',not_authorized:'记录或分析授权已不可用'};
   const reasons={review_inconclusive:'已核对的片段仍不足以支持可靠发音判断，本次保留未评估。',not_configured:'服务尚未配置',not_enabled:'该分析尚未开启',not_authorized:'未授权或已撤回',source_unavailable:'来源已不可用或已过期',no_eligible_audio:'录音尚未完成来源和质量核对，确认可用的学生片段后才能评测',restricted_content:'本次内容不进入普通学习报告',deadline:'分析超时',provider_failed:'分析服务未完成请求',output_rejected:'结果未通过检查',external_outcome_unknown:'外部请求结果未知，需要显式重试'};
@@ -184,13 +191,14 @@ function renderDeepReport(root,s){
       if(!result.candidates.length)card.append(node('p','本次没有生成足够可靠的具体观察，不表示不会。'));
       for(const observation of result.candidates){const row=node('div','','analysis-observation');row.append(node('h4',(observation.dimension==='context_understanding'?'情境理解':'口语表达')+' · 待核对'),node('p',observation.observation),node('p',observation.explanation));for(const ref of observation.evidence_refs)row.append(node('p',`原文：“${ref.quote}”`,'analysis-evidence'));row.append(node('p',observation.uncertainty,'small'),node('p','下次可以试试：'+observation.suggestion));card.append(row);}
     }
-    if(kind==='audio'){if(stage.result)renderAudioAssessment(card,stage.result.report??stage.result,{api,submissionId:s.id,onError:showError});if(actor.role==='teacher'&&stage.provider==='tencent_soe_v2')renderAudioReview(card,{api,submissionId:s.id,onSaved:()=>loadReport(s.id),onError:showError});}
+    if(kind==='audio'){if(stage.result)renderAudioAssessment(card,stage.result.report??stage.result,{api,submissionId:s.id,onError:showError});if(actor.role==='teacher'&&stage.provider==='tencent_soe_v2'&&!reviewShown)renderAudioReview(card,{api,submissionId:s.id,isCurrent:reportScope(s.id),onSaved:()=>loadReport(s.id,{refresh:true}),onError:showError});}
     root.append(card);
   }
-  if(deep.retryable)root.append(action('重试未完成的分析',async()=>{await api('retry_report',{submission_id:s.id});await loadReport(s.id);}));
-  if(deep.processing){const epoch=generation;reportTimer=setTimeout(()=>{if(epoch===generation)loadReport(s.id).catch(showError);},1200);}
+  if(deep.retryable)root.append(action('重试未完成的分析',()=>retryCurrentReport(s.id)));
+  if(deep.processing)scheduleReportRefresh(s.id);
 }
 async function showReport(s){
+  activeReportId=s.id;
   updateSubmissionState(s);
   if(actor?.role==='learner'){
     if(current?.id===s.attempt_id){current.submitted=true;remember();}
@@ -198,19 +206,21 @@ async function showReport(s){
   }else $('report-back').hidden=true;
   clearAudioPreviews();clearTimeout(reportTimer);for(const b of document.querySelectorAll('[data-report-submission]'))if(b.dataset.reportSubmission===s.id)labelReportButton(b,s);$('report').hidden=false;$('report-role').textContent=actor.role==='teacher'?'教师端 · 深入报告':'我的深入报告';
   const root=$('report-body');root.replaceChildren();const deep=s.deep_analysis,awaitingReview=s.report_state==='awaiting_audio_review',pending=deep&&['pending','running','awaiting_audio_review'].includes(s.report_state);
-  $('report-title').textContent=awaitingReview?'录音等待核对':pending?'正在分析这次对话':s.report_state==='complete'&&deep?'这次对话的深入报告':s.report_state==='failed'?(deep?.stages.text.reason==='deadline'?'深入分析超时':'深入分析失败'):'深入报告尚未生成';
+  const teacherReview=actor.role==='teacher'&&deep?.stages.audio.review_required&&!deep.processing;
+  $('report-title').textContent=awaitingReview||teacherReview?'录音等待核对':pending?'正在分析这次对话':s.report_state==='complete'&&deep?'这次对话的深入报告':s.report_state==='failed'?(deep?.stages.text.reason==='deadline'?'深入分析超时':'深入分析失败'):'深入报告尚未生成';
+  if(teacherReview){const review=node('div','','teacher-review-prompt');review.append(node('h3','请先核对这次录音'),node('p','回听并确认学生声音和录音质量，保存后系统会继续评测。','small'));renderAudioReview(review,{api,submissionId:s.id,isCurrent:reportScope(s.id),onSaved:()=>loadReport(s.id,{refresh:true}),onError:showError,open:true});root.append(review);}
   renderReportProgress(root,s);
   if(pending){
     root.dataset.reportState='processing';
-    const epoch=generation;reportTimer=setTimeout(()=>{if(epoch===generation)loadReport(s.id).catch(showError);},1200);return;
+    scheduleReportRefresh(s.id);return;
   }
   if(!deep||s.report_state!=='complete'||!deep.stages.text.result){
     root.dataset.reportState=s.report_state==='failed'?'failed':'unavailable';const reason=deep?.stages.text.reason;
     const messages={deadline:'本次文本分析已超时停止，继续等待不会生成报告。可以重试，作业无需重新提交。',provider_failed:'分析服务请求失败，本次分析已停止。可以重试，作业无需重新提交。',output_rejected:'分析结果未通过检查，本次分析已停止。可以重试，作业无需重新提交。',external_outcome_unknown:'分析连接中断，未能确认结果。可以重试，作业无需重新提交。',not_authorized:'本次文本记录已撤回或处理授权已不可用，无法生成深入报告。',source_unavailable:'本次缺少可用对话文本，无法生成深入报告。请新建一次练习。',not_configured:'深入分析服务尚未配置完成。',not_enabled:'本次未启用深入分析。',restricted_content:'这次对话不生成普通学习报告。'};
     root.append(node('p',messages[reason]??(s.report_state==='failed'?'练习已提交，深入分析暂未完成。可以重试，作业无需重新提交。':'这次练习没有可用的深入报告。请新建一次练习，系统会自动记录文本并在提交后分析。')));
-    if(deep?.retryable)root.append(action('重试深入分析',async()=>{await api('retry_report',{submission_id:s.id});await loadReport(s.id);}));return;
+    if(deep?.retryable)root.append(action('重试深入分析',()=>retryCurrentReport(s.id)));return;
   }
-  root.dataset.reportState='ready';renderDeepReport(root,s);
+  root.dataset.reportState='ready';renderDeepReport(root,s,{reviewShown:teacherReview});
 }
 window.addEventListener('pagehide',()=>{clearAudioPreviews();generation++;clearTimeout(reportTimer);ws?.close();void stopMedia();});
 enter().catch(e=>{if(e.message!=='UNAUTHORIZED')showError(e);});

@@ -53,7 +53,8 @@
     "probe:teacher:report:worker": "node --env-file-if-exists=.env scripts/teacher-assistant/report-worker-probe.js",
     "probe:teacher:pronunciation:audio": "node --env-file-if-exists=.env scripts/teacher-assistant/pronunciation-probe.js",
     "test:teacher:audio:browser": "node scripts/teacher-assistant/audio-assessment-browser-check.js",
-    "test:teacher:report:browser": "node scripts/teacher-assistant/deep-report-browser-check.js"
+    "test:teacher:report:browser": "node scripts/teacher-assistant/deep-report-browser-check.js",
+    "test:teacher:recovery:browser": "node scripts/teacher-assistant/report-recovery-browser-check.js"
   },
   "dependencies": {
     "@earendil-works/pi-agent-core": "1.2.0",
