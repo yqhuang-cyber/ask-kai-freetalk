@@ -26,3 +26,5 @@ node --env-file-if-exists=.env scripts/thai-support-spike/probe.js --live --case
 结果与下一步见 [Spike 报告](../../docs/free-talk-thai-support-spike.md)。
 
 独立入口实施后新增 `browser-check.js`（合成 provider / 浏览器设备，测试依赖显式替换，不改产品就绪守卫）与 `gateway-probe.js --live`（真实中泰应用 / Planner / provider，作者输入，汇总记录）；`--suite=natural` 单独补验自然对话。真实 probe 使用临时端口，不影响既有应用。采集成功不表示表面语种、作用范围、翻译或听感全部通过，结果详见[实现与边界](../../docs/free-talk-thai-implementation.md)。
+
+状态故障反复验证：`node scripts/thai-support-spike/state-browser-check.js --repeat=3 --label=final`。真实探针新增 `--run=review-1` 分开留存每次结果、`--suite=scope-clear` 测较短控制句；具体作者句与结果带 hash，不能将不同输入变体混作同一次比较。`--keep-authored-review` 只将明确虚构测试输入的识别及回复文字保存在本地忽略目录，默认关闭，禁止用于真实学习者数据。见[状态验证结果](../../docs/free-talk-thai-state-validation.md)。

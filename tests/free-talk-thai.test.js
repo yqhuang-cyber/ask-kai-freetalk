@@ -4,7 +4,7 @@ import {once} from 'node:events';
 import WebSocket from 'ws';
 import {randomUUID,createHash} from 'node:crypto';
 import {readFileSync} from 'node:fs';
-import {ThaiLanguageSupport} from '../packages/free-talk-thai/language.js';
+import {ThaiLanguageSupport,THAI_POLICY} from '../packages/free-talk-thai/language.js';
 import {ThaiFreeTalkSession} from '../packages/free-talk-thai/session.js';
 import {thaiPlannerTransport} from '../packages/free-talk-thai/planner.js';
 import {TeachingSession} from '../packages/agent-core/teaching.js';
@@ -31,7 +31,7 @@ test('Thai reply-only, session-only, quoted and negated requests stay scoped and
 });
 test('Thai context keeps original quoted data intact and uses a distinct content hash',()=>{
   const th=new ThaiFreeTalkSession({sessionId:'thai',mode:'free'}),en=new TeachingSession({sessionId:'english',mode:'free'});
-  th.accept(event('thai','t1','我没听懂。'));const snapshot=th.contextSnapshot();assert.equal(snapshot.policy_version,'kai-free-thai-v1');assert.notEqual(snapshot.hash,en.contextSnapshot().hash);assert.equal(snapshot.hash,createHash('sha256').update(snapshot.instructions).digest('hex'));
+  th.accept(event('thai','t1','我没听懂。'));const snapshot=th.contextSnapshot();assert.equal(snapshot.policy_version,THAI_POLICY);assert.notEqual(snapshot.hash,en.contextSnapshot().hash);assert.equal(snapshot.hash,createHash('sha256').update(snapshot.instructions).digest('hex'));
   assert(snapshot.instructions.includes('最新输入优先'));assert.equal(snapshot.language.support_mode,'required');assert.equal(th.view().cards.length,0);
 });
 test('Thai planner adaptation changes trusted system messages only',async()=>{

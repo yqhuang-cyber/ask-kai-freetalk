@@ -1,0 +1,1014 @@
+{
+  "date": "2026-10-28",
+  "scope": "free_talk_thai_state_and_lifecycle",
+  "base_commit": "cdcc82f",
+  "engineering": {
+    "full_suite_tests": 849,
+    "new_state_unit_tests": 5,
+    "unit_before": {
+      "passed": 2,
+      "failed": 3
+    },
+    "unit_after": {
+      "passed": 5,
+      "failed": 0
+    },
+    "replay_scenarios": 3,
+    "original_browser_passed": true,
+    "original_frozen_files_unchanged": 8
+  },
+  "browser": {
+    "before": [
+      {
+        "round": 1,
+        "id": "end_before_ready",
+        "passed": false,
+        "error": "ended session must not request microphone on late readiness\n\n1 !== 0\n",
+        "ms": 1942
+      },
+      {
+        "round": 1,
+        "id": "end_during_microphone_permission",
+        "passed": true,
+        "ms": 624
+      },
+      {
+        "round": 1,
+        "id": "end_is_idempotent",
+        "passed": false,
+        "error": "double end must send once\n\n2 !== 1\n",
+        "ms": 529
+      },
+      {
+        "round": 1,
+        "id": "closing_audio_locks_controls",
+        "passed": false,
+        "error": "close pending must not allow another end",
+        "ms": 520
+      },
+      {
+        "round": 1,
+        "id": "learner_change_clears_old_summary",
+        "passed": false,
+        "error": "new learner must not see previous learner recap",
+        "ms": 584
+      },
+      {
+        "round": 1,
+        "id": "reconnect_and_late_events",
+        "passed": true,
+        "ms": 1467
+      },
+      {
+        "round": 1,
+        "id": "cancel_preparation_ignores_late_result",
+        "passed": true,
+        "ms": 341
+      },
+      {
+        "round": 1,
+        "id": "shipped_readiness_rejects_synthetic",
+        "passed": true,
+        "ms": 412
+      },
+      {
+        "round": 1,
+        "id": "safety_notice_stops_capture",
+        "passed": false,
+        "error": "safety.notice must show the support message",
+        "ms": 1861
+      }
+    ],
+    "final_rounds": 3,
+    "final": [
+      {
+        "round": 1,
+        "id": "end_before_ready",
+        "passed": true,
+        "ms": 951
+      },
+      {
+        "round": 1,
+        "id": "end_during_microphone_permission",
+        "passed": true,
+        "ms": 581
+      },
+      {
+        "round": 1,
+        "id": "end_is_idempotent",
+        "passed": true,
+        "ms": 523
+      },
+      {
+        "round": 1,
+        "id": "closing_audio_locks_controls",
+        "passed": true,
+        "ms": 513
+      },
+      {
+        "round": 1,
+        "id": "learner_change_clears_old_summary",
+        "passed": true,
+        "ms": 574
+      },
+      {
+        "round": 1,
+        "id": "reconnect_and_late_events",
+        "passed": true,
+        "ms": 1460
+      },
+      {
+        "round": 1,
+        "id": "cancel_preparation_ignores_late_result",
+        "passed": true,
+        "ms": 322
+      },
+      {
+        "round": 1,
+        "id": "shipped_readiness_rejects_synthetic",
+        "passed": true,
+        "ms": 410
+      },
+      {
+        "round": 1,
+        "id": "safety_notice_stops_capture",
+        "passed": true,
+        "ms": 678
+      },
+      {
+        "round": 2,
+        "id": "end_before_ready",
+        "passed": true,
+        "ms": 684
+      },
+      {
+        "round": 2,
+        "id": "end_during_microphone_permission",
+        "passed": true,
+        "ms": 593
+      },
+      {
+        "round": 2,
+        "id": "end_is_idempotent",
+        "passed": true,
+        "ms": 513
+      },
+      {
+        "round": 2,
+        "id": "closing_audio_locks_controls",
+        "passed": true,
+        "ms": 507
+      },
+      {
+        "round": 2,
+        "id": "learner_change_clears_old_summary",
+        "passed": true,
+        "ms": 556
+      },
+      {
+        "round": 2,
+        "id": "reconnect_and_late_events",
+        "passed": true,
+        "ms": 1468
+      },
+      {
+        "round": 2,
+        "id": "cancel_preparation_ignores_late_result",
+        "passed": true,
+        "ms": 322
+      },
+      {
+        "round": 2,
+        "id": "shipped_readiness_rejects_synthetic",
+        "passed": true,
+        "ms": 405
+      },
+      {
+        "round": 2,
+        "id": "safety_notice_stops_capture",
+        "passed": true,
+        "ms": 653
+      },
+      {
+        "round": 3,
+        "id": "end_before_ready",
+        "passed": true,
+        "ms": 702
+      },
+      {
+        "round": 3,
+        "id": "end_during_microphone_permission",
+        "passed": true,
+        "ms": 591
+      },
+      {
+        "round": 3,
+        "id": "end_is_idempotent",
+        "passed": true,
+        "ms": 532
+      },
+      {
+        "round": 3,
+        "id": "closing_audio_locks_controls",
+        "passed": true,
+        "ms": 528
+      },
+      {
+        "round": 3,
+        "id": "learner_change_clears_old_summary",
+        "passed": true,
+        "ms": 556
+      },
+      {
+        "round": 3,
+        "id": "reconnect_and_late_events",
+        "passed": true,
+        "ms": 1435
+      },
+      {
+        "round": 3,
+        "id": "cancel_preparation_ignores_late_result",
+        "passed": true,
+        "ms": 331
+      },
+      {
+        "round": 3,
+        "id": "shipped_readiness_rejects_synthetic",
+        "passed": true,
+        "ms": 419
+      },
+      {
+        "round": 3,
+        "id": "safety_notice_stops_capture",
+        "passed": true,
+        "ms": 636
+      }
+    ],
+    "synthetic_provider": true,
+    "synthetic_microphone": true
+  },
+  "real_provider": {
+    "sessions": 6,
+    "completed_samples": 15,
+    "runs": [
+      {
+        "kind": "free_thai_ordinary_gateway",
+        "suite": "natural",
+        "run_id": "state-before",
+        "real_provider": true,
+        "business": "independent_mock_hskai",
+        "authored_os_input": true,
+        "browser_audio": false,
+        "human_listening": false,
+        "thai_quality_accepted": false,
+        "samples": [
+          {
+            "id": "natural_music",
+            "expected": "zh_th",
+            "language_state": {
+              "version": "kai-free-thai-v1",
+              "support_locale": "th",
+              "support_mode": "required"
+            },
+            "asr_match": true,
+            "asr_scope": {
+              "once": false,
+              "chinese_only": false
+            },
+            "ownership_matched": true,
+            "han": 20,
+            "thai": 52,
+            "latin": 0,
+            "audio_bytes": 601074,
+            "audio_pcm_ms": 12522,
+            "text_sha256": "f78c036bf15914fc747d45fabfdc5a9e7e9b2091ba44e9279526b1963bdb1fab",
+            "surface_match": true,
+            "response_done": true
+          },
+          {
+            "id": "natural_happy",
+            "expected": "zh_th",
+            "language_state": {
+              "version": "kai-free-thai-v1",
+              "support_locale": "th",
+              "support_mode": "required"
+            },
+            "asr_match": true,
+            "asr_scope": {
+              "once": false,
+              "chinese_only": false
+            },
+            "ownership_matched": true,
+            "han": 20,
+            "thai": 71,
+            "latin": 0,
+            "audio_bytes": 705488,
+            "audio_pcm_ms": 14698,
+            "text_sha256": "7b8e8f477c8ee07b74ac5e4e261308f2eefb99eea55b0f85b7ad6166d1033447",
+            "surface_match": true,
+            "response_done": true
+          }
+        ],
+        "planning": {
+          "mode": "next_turn_advisory",
+          "planner_kind": "llm",
+          "degraded": false,
+          "degraded_reason": null
+        },
+        "status": "observed_expected_surface",
+        "wire_event_counts": {
+          "session.created": 1,
+          "conversation.item.input_audio_transcription.started": 2,
+          "conversation.item.input_audio_transcription.delta": 14,
+          "conversation.item.input_audio_transcription.completed": 2,
+          "response.output_text.delta": 70,
+          "response.output_audio.started": 2,
+          "response.output_audio.delta": 57,
+          "response.output_text.done": 2,
+          "response.output_audio.done": 2,
+          "session.updated": 2,
+          "response.done": 1
+        },
+        "internal_event_counts": {
+          "session.ready": 1,
+          "user.speech.candidate": 2,
+          "user.partial": 14,
+          "user.final": 2,
+          "response.started": 2,
+          "response.text.delta": 70,
+          "response.audio.chunk": 57,
+          "audio.done.observed": 2,
+          "response.done": 2,
+          "context.updated": 2
+        },
+        "provider_state_at_finish": {
+          "ready": true,
+          "active_reply": null,
+          "pending_control": null,
+          "audio_lane": false
+        }
+      },
+      {
+        "kind": "free_thai_ordinary_gateway",
+        "suite": "language_scope",
+        "run_id": "state-before",
+        "real_provider": true,
+        "business": "independent_mock_hskai",
+        "authored_os_input": true,
+        "browser_audio": false,
+        "human_listening": false,
+        "thai_quality_accepted": false,
+        "samples": [
+          {
+            "id": "thai_help",
+            "expected": "zh_th",
+            "language_state": {
+              "version": "kai-free-thai-v1",
+              "support_locale": "th",
+              "support_mode": "required"
+            },
+            "asr_match": true,
+            "asr_scope": {
+              "once": false,
+              "chinese_only": false
+            },
+            "ownership_matched": true,
+            "han": 29,
+            "thai": 93,
+            "latin": 0,
+            "audio_bytes": 971130,
+            "audio_pcm_ms": 20232,
+            "text_sha256": "efd586649dc46b7f12167b38d46f085b8140b8a00953746c0c34cf690077a5a7",
+            "surface_match": true,
+            "response_done": true
+          },
+          {
+            "id": "once_chinese",
+            "expected": "zh",
+            "language_state": {
+              "version": "kai-free-thai-v1",
+              "support_locale": "th",
+              "support_mode": "required"
+            },
+            "asr_match": false,
+            "asr_scope": {
+              "once": true,
+              "chinese_only": false
+            },
+            "ownership_matched": true,
+            "han": 49,
+            "thai": 0,
+            "latin": 0,
+            "audio_bytes": 612604,
+            "audio_pcm_ms": 12763,
+            "text_sha256": "fac6039d1991801bd5b6b247caca44b06c1b70f181163080d2658d420cc874bc",
+            "surface_match": true,
+            "response_done": true
+          },
+          {
+            "id": "restore_thai",
+            "expected": "zh_th",
+            "language_state": {
+              "version": "kai-free-thai-v1",
+              "support_locale": "th",
+              "support_mode": "required"
+            },
+            "asr_match": true,
+            "asr_scope": {
+              "once": false,
+              "chinese_only": false
+            },
+            "ownership_matched": true,
+            "han": 36,
+            "thai": 113,
+            "latin": 0,
+            "audio_bytes": 1259324,
+            "audio_pcm_ms": 26236,
+            "text_sha256": "3f9bb36c868bf92624ca8d65ce0c7e1290d1884e347cb552b1621fa72bc48f91",
+            "surface_match": true,
+            "response_done": true
+          }
+        ],
+        "planning": {
+          "mode": "next_turn_advisory",
+          "planner_kind": "llm",
+          "degraded": false,
+          "degraded_reason": null
+        },
+        "status": "observed_expected_surface",
+        "wire_event_counts": {
+          "session.created": 1,
+          "conversation.item.input_audio_transcription.started": 3,
+          "conversation.item.input_audio_transcription.delta": 30,
+          "conversation.item.input_audio_transcription.completed": 3,
+          "response.output_text.delta": 118,
+          "response.output_audio.started": 3,
+          "response.output_audio.delta": 119,
+          "response.output_text.done": 3,
+          "response.output_audio.done": 3,
+          "session.updated": 3,
+          "response.done": 2
+        },
+        "internal_event_counts": {
+          "session.ready": 1,
+          "user.speech.candidate": 3,
+          "user.partial": 30,
+          "user.final": 3,
+          "response.started": 3,
+          "response.text.delta": 118,
+          "response.audio.chunk": 119,
+          "audio.done.observed": 3,
+          "response.done": 3,
+          "context.updated": 3
+        },
+        "provider_state_at_finish": {
+          "ready": true,
+          "active_reply": null,
+          "pending_control": null,
+          "audio_lane": false
+        }
+      },
+      {
+        "kind": "free_thai_ordinary_gateway",
+        "suite": "natural",
+        "run_id": "state-after-1",
+        "real_provider": true,
+        "business": "independent_mock_hskai",
+        "authored_os_input": true,
+        "browser_audio": false,
+        "human_listening": false,
+        "thai_quality_accepted": false,
+        "samples": [
+          {
+            "id": "natural_music",
+            "expected": "zh_th",
+            "language_at_reply_start": {
+              "version": "kai-free-thai-v2",
+              "support_locale": "th",
+              "support_mode": "required",
+              "session_support_mode": "required",
+              "request_scope": "default"
+            },
+            "language_after_reply": {
+              "version": "kai-free-thai-v2",
+              "support_locale": "th",
+              "support_mode": "required",
+              "session_support_mode": "required",
+              "request_scope": "default"
+            },
+            "asr_match": true,
+            "asr_scope": {
+              "once": false,
+              "chinese_only": false
+            },
+            "input_scope_verifiable": true,
+            "ownership_matched": true,
+            "han": 21,
+            "thai": 71,
+            "latin": 0,
+            "audio_bytes": 658502,
+            "audio_pcm_ms": 13719,
+            "text_sha256": "d0b9511971225c0e44701510707bc9f3aa8fc76c3fec9d30f675e6fe5c9e3661",
+            "surface_match": true,
+            "response_done": true
+          },
+          {
+            "id": "natural_happy",
+            "expected": "zh_th",
+            "language_at_reply_start": {
+              "version": "kai-free-thai-v2",
+              "support_locale": "th",
+              "support_mode": "required",
+              "session_support_mode": "required",
+              "request_scope": "default"
+            },
+            "language_after_reply": {
+              "version": "kai-free-thai-v2",
+              "support_locale": "th",
+              "support_mode": "required",
+              "session_support_mode": "required",
+              "request_scope": "default"
+            },
+            "asr_match": false,
+            "asr_scope": {
+              "once": false,
+              "chinese_only": false
+            },
+            "input_scope_verifiable": false,
+            "ownership_matched": true,
+            "han": 23,
+            "thai": 53,
+            "latin": 0,
+            "audio_bytes": 538034,
+            "audio_pcm_ms": 11209,
+            "text_sha256": "7d7d757858bd45651d5120f2fb035eeb8f983d1b03269903817383814808a13d",
+            "surface_match": true,
+            "response_done": true
+          }
+        ],
+        "planning": {
+          "mode": "next_turn_advisory",
+          "planner_kind": "rule",
+          "degraded": true,
+          "degraded_reason": "planner_validation_failed"
+        },
+        "status": "observed_expected_surface",
+        "wire_event_counts": {
+          "session.created": 1,
+          "conversation.item.input_audio_transcription.started": 2,
+          "conversation.item.input_audio_transcription.delta": 11,
+          "conversation.item.input_audio_transcription.completed": 2,
+          "response.output_text.delta": 63,
+          "response.output_audio.started": 2,
+          "response.output_audio.delta": 49,
+          "response.output_text.done": 2,
+          "response.output_audio.done": 2,
+          "session.updated": 2,
+          "response.done": 1
+        },
+        "internal_event_counts": {
+          "session.ready": 1,
+          "user.speech.candidate": 2,
+          "user.partial": 11,
+          "user.final": 2,
+          "response.started": 2,
+          "response.text.delta": 63,
+          "response.audio.chunk": 49,
+          "audio.done.observed": 2,
+          "response.done": 2,
+          "context.updated": 2
+        },
+        "provider_state_at_finish": {
+          "ready": true,
+          "active_reply": null,
+          "pending_control": null,
+          "audio_lane": false
+        }
+      },
+      {
+        "kind": "free_thai_ordinary_gateway",
+        "suite": "language_scope_clear",
+        "run_id": "state-after-1",
+        "real_provider": true,
+        "business": "independent_mock_hskai",
+        "authored_os_input": true,
+        "browser_audio": false,
+        "human_listening": false,
+        "thai_quality_accepted": false,
+        "samples": [
+          {
+            "id": "thai_help",
+            "expected": "zh_th",
+            "language_at_reply_start": {
+              "version": "kai-free-thai-v2",
+              "support_locale": "th",
+              "support_mode": "required",
+              "session_support_mode": "required",
+              "request_scope": "default"
+            },
+            "language_after_reply": {
+              "version": "kai-free-thai-v2",
+              "support_locale": "th",
+              "support_mode": "required",
+              "session_support_mode": "required",
+              "request_scope": "default"
+            },
+            "asr_match": true,
+            "asr_scope": {
+              "once": false,
+              "chinese_only": false
+            },
+            "input_scope_verifiable": true,
+            "ownership_matched": true,
+            "han": 46,
+            "thai": 11,
+            "latin": 0,
+            "audio_bytes": 671850,
+            "audio_pcm_ms": 13997,
+            "text_sha256": "59a563027c6c1d22ea768a8796113fa6627bae3e9fdbb68f47409915e12c94e7",
+            "surface_match": true,
+            "response_done": true
+          },
+          {
+            "id": "once_no_thai",
+            "expected": "zh",
+            "language_at_reply_start": {
+              "version": "kai-free-thai-v2",
+              "support_locale": "th",
+              "support_mode": "required",
+              "session_support_mode": "required",
+              "request_scope": "default"
+            },
+            "language_after_reply": {
+              "version": "kai-free-thai-v2",
+              "support_locale": "th",
+              "support_mode": "required",
+              "session_support_mode": "required",
+              "request_scope": "default"
+            },
+            "asr_match": false,
+            "asr_scope": {
+              "once": true,
+              "chinese_only": false
+            },
+            "input_scope_verifiable": false,
+            "ownership_matched": true,
+            "han": 42,
+            "thai": 0,
+            "latin": 0,
+            "audio_bytes": 493134,
+            "audio_pcm_ms": 10274,
+            "text_sha256": "6fd774db4a0f2a00524e5cfc73e4f263edb0821f825de4558efac18bdf31e675",
+            "surface_match": true,
+            "response_done": true
+          },
+          {
+            "id": "restore_thai",
+            "expected": "zh_th",
+            "language_at_reply_start": {
+              "version": "kai-free-thai-v2",
+              "support_locale": "th",
+              "support_mode": "required",
+              "session_support_mode": "required",
+              "request_scope": "default"
+            },
+            "language_after_reply": {
+              "version": "kai-free-thai-v2",
+              "support_locale": "th",
+              "support_mode": "required",
+              "session_support_mode": "required",
+              "request_scope": "default"
+            },
+            "asr_match": true,
+            "asr_scope": {
+              "once": false,
+              "chinese_only": false
+            },
+            "input_scope_verifiable": true,
+            "ownership_matched": true,
+            "han": 35,
+            "thai": 0,
+            "latin": 0,
+            "audio_bytes": 431502,
+            "audio_pcm_ms": 8990,
+            "text_sha256": "b088c2a610c5778a7773258b238e63440844cc65fc7cc2a055deeaa48e25991d",
+            "surface_match": false,
+            "response_done": true
+          }
+        ],
+        "planning": {
+          "mode": "next_turn_advisory",
+          "planner_kind": "rule",
+          "degraded": true,
+          "degraded_reason": "planner_validation_failed"
+        },
+        "status": "needs_review",
+        "wire_event_counts": {
+          "session.created": 1,
+          "conversation.item.input_audio_transcription.started": 3,
+          "conversation.item.input_audio_transcription.delta": 34,
+          "conversation.item.input_audio_transcription.completed": 3,
+          "response.output_text.delta": 60,
+          "response.output_audio.started": 3,
+          "response.output_audio.delta": 69,
+          "response.output_text.done": 3,
+          "response.output_audio.done": 3,
+          "session.updated": 3,
+          "response.done": 2
+        },
+        "internal_event_counts": {
+          "session.ready": 1,
+          "user.speech.candidate": 3,
+          "user.partial": 34,
+          "user.final": 3,
+          "response.started": 3,
+          "response.text.delta": 60,
+          "response.audio.chunk": 69,
+          "audio.done.observed": 3,
+          "response.done": 3,
+          "context.updated": 3
+        },
+        "provider_state_at_finish": {
+          "ready": true,
+          "active_reply": null,
+          "pending_control": null,
+          "audio_lane": false
+        }
+      },
+      {
+        "kind": "free_thai_ordinary_gateway",
+        "suite": "natural",
+        "run_id": "state-after-2",
+        "real_provider": true,
+        "business": "independent_mock_hskai",
+        "authored_os_input": true,
+        "browser_audio": false,
+        "human_listening": false,
+        "thai_quality_accepted": false,
+        "samples": [
+          {
+            "id": "natural_music",
+            "expected": "zh_th",
+            "authored_input_sha256": "42b69d4af4bab356f29d4a997526cc70d68a669a2513d7dc20604cabef764d35",
+            "language_at_reply_start": {
+              "version": "kai-free-thai-v2",
+              "support_locale": "th",
+              "support_mode": "required",
+              "session_support_mode": "required",
+              "request_scope": "default"
+            },
+            "language_after_reply": {
+              "version": "kai-free-thai-v2",
+              "support_locale": "th",
+              "support_mode": "required",
+              "session_support_mode": "required",
+              "request_scope": "default"
+            },
+            "asr_match": true,
+            "asr_scope": {
+              "once": false,
+              "chinese_only": false
+            },
+            "input_scope_verifiable": true,
+            "ownership_matched": true,
+            "han": 21,
+            "thai": 45,
+            "latin": 0,
+            "audio_bytes": 573290,
+            "audio_pcm_ms": 11944,
+            "text_sha256": "c228aa771621ac7c4c7d734c382163af645a5094b7806b630dfeea06060b0d81",
+            "surface_match": true,
+            "response_done": true
+          },
+          {
+            "id": "natural_happy",
+            "expected": "zh_th",
+            "authored_input_sha256": "fe6db56feffbb3a6bfc2921df92d6c142b68dcf7e272ea22ac5cb6089b7502c2",
+            "language_at_reply_start": {
+              "version": "kai-free-thai-v2",
+              "support_locale": "th",
+              "support_mode": "required",
+              "session_support_mode": "required",
+              "request_scope": "default"
+            },
+            "language_after_reply": {
+              "version": "kai-free-thai-v2",
+              "support_locale": "th",
+              "support_mode": "required",
+              "session_support_mode": "required",
+              "request_scope": "default"
+            },
+            "asr_match": true,
+            "asr_scope": {
+              "once": false,
+              "chinese_only": false
+            },
+            "input_scope_verifiable": true,
+            "ownership_matched": true,
+            "han": 22,
+            "thai": 48,
+            "latin": 0,
+            "audio_bytes": 547910,
+            "audio_pcm_ms": 11415,
+            "text_sha256": "140a6a95903afc5943cff17b611bd09f371ae2501f47138ec55e5fb057ed4b63",
+            "surface_match": true,
+            "response_done": true
+          }
+        ],
+        "planning": {
+          "mode": "next_turn_advisory",
+          "planner_kind": "llm",
+          "degraded": false,
+          "degraded_reason": null
+        },
+        "status": "observed_expected_surface",
+        "wire_event_counts": {
+          "session.created": 1,
+          "conversation.item.input_audio_transcription.started": 2,
+          "conversation.item.input_audio_transcription.delta": 14,
+          "conversation.item.input_audio_transcription.completed": 2,
+          "response.output_text.delta": 60,
+          "response.output_audio.started": 2,
+          "response.output_audio.delta": 49,
+          "response.output_text.done": 2,
+          "response.output_audio.done": 2,
+          "session.updated": 2,
+          "response.done": 1
+        },
+        "internal_event_counts": {
+          "session.ready": 1,
+          "user.speech.candidate": 2,
+          "user.partial": 14,
+          "user.final": 2,
+          "response.started": 2,
+          "response.text.delta": 60,
+          "response.audio.chunk": 49,
+          "audio.done.observed": 2,
+          "response.done": 2,
+          "context.updated": 2
+        },
+        "provider_state_at_finish": {
+          "ready": true,
+          "active_reply": null,
+          "pending_control": null,
+          "audio_lane": false
+        }
+      },
+      {
+        "kind": "free_thai_ordinary_gateway",
+        "suite": "language_scope_clear",
+        "run_id": "state-after-2",
+        "real_provider": true,
+        "business": "independent_mock_hskai",
+        "authored_os_input": true,
+        "browser_audio": false,
+        "human_listening": false,
+        "thai_quality_accepted": false,
+        "samples": [
+          {
+            "id": "thai_help",
+            "expected": "zh_th",
+            "authored_input_sha256": "5109b38deaba3f9bd8bff6a20696413113a3731b6f8b0c76e2063cab958278ff",
+            "language_at_reply_start": {
+              "version": "kai-free-thai-v2",
+              "support_locale": "th",
+              "support_mode": "required",
+              "session_support_mode": "required",
+              "request_scope": "default"
+            },
+            "language_after_reply": {
+              "version": "kai-free-thai-v2",
+              "support_locale": "th",
+              "support_mode": "required",
+              "session_support_mode": "required",
+              "request_scope": "default"
+            },
+            "asr_match": true,
+            "asr_scope": {
+              "once": false,
+              "chinese_only": false
+            },
+            "input_scope_verifiable": true,
+            "ownership_matched": true,
+            "han": 29,
+            "thai": 77,
+            "latin": 0,
+            "audio_bytes": 873580,
+            "audio_pcm_ms": 18200,
+            "text_sha256": "fd660a18fe3f8424d56334caa7f6756c39d2358797bc069135f7630221abd318",
+            "surface_match": true,
+            "response_done": true
+          },
+          {
+            "id": "once_chinese_short",
+            "expected": "zh",
+            "authored_input_sha256": "849421e6aecd800eeeb6379d6102db1ce10cbc6f002d6de4ca0879e204363821",
+            "language_at_reply_start": {
+              "version": "kai-free-thai-v2",
+              "support_locale": "th",
+              "support_mode": "required",
+              "session_support_mode": "required",
+              "request_scope": "default"
+            },
+            "language_after_reply": {
+              "version": "kai-free-thai-v2",
+              "support_locale": "th",
+              "support_mode": "required",
+              "session_support_mode": "required",
+              "request_scope": "default"
+            },
+            "asr_match": false,
+            "asr_scope": {
+              "once": true,
+              "chinese_only": false
+            },
+            "input_scope_verifiable": false,
+            "ownership_matched": true,
+            "han": 44,
+            "thai": 0,
+            "latin": 0,
+            "audio_bytes": 528180,
+            "audio_pcm_ms": 11004,
+            "text_sha256": "c726f87896f728b9432b75bebdb1f1f9eced162c302b9633faf92d46a43ffc9d",
+            "surface_match": true,
+            "response_done": true
+          },
+          {
+            "id": "restore_thai",
+            "expected": "zh_th",
+            "authored_input_sha256": "bab66d35b51ea8de4db661e172763dd4b45622beb604450c7840befd2d21c706",
+            "language_at_reply_start": {
+              "version": "kai-free-thai-v2",
+              "support_locale": "th",
+              "support_mode": "required",
+              "session_support_mode": "required",
+              "request_scope": "default"
+            },
+            "language_after_reply": {
+              "version": "kai-free-thai-v2",
+              "support_locale": "th",
+              "support_mode": "required",
+              "session_support_mode": "required",
+              "request_scope": "default"
+            },
+            "asr_match": false,
+            "asr_scope": {
+              "once": false,
+              "chinese_only": false
+            },
+            "input_scope_verifiable": false,
+            "ownership_matched": true,
+            "han": 33,
+            "thai": 0,
+            "latin": 0,
+            "audio_bytes": 396808,
+            "audio_pcm_ms": 8267,
+            "text_sha256": "ccff649a9036e6569b41ea6e63c602ef86d9d3cbea13a315526931a2b6e815c7",
+            "surface_match": false,
+            "response_done": true
+          }
+        ],
+        "planning": {
+          "mode": "next_turn_advisory",
+          "planner_kind": "llm",
+          "degraded": false,
+          "degraded_reason": null
+        },
+        "status": "needs_review",
+        "wire_event_counts": {
+          "session.created": 1,
+          "conversation.item.input_audio_transcription.started": 3,
+          "conversation.item.input_audio_transcription.delta": 26,
+          "conversation.item.input_audio_transcription.completed": 3,
+          "response.output_text.delta": 70,
+          "response.output_audio.started": 3,
+          "response.output_audio.delta": 77,
+          "response.output_text.done": 3,
+          "response.output_audio.done": 3,
+          "session.updated": 3,
+          "response.done": 2
+        },
+        "internal_event_counts": {
+          "session.ready": 1,
+          "user.speech.candidate": 3,
+          "user.partial": 26,
+          "user.final": 3,
+          "response.started": 3,
+          "response.text.delta": 70,
+          "response.audio.chunk": 77,
+          "audio.done.observed": 3,
+          "response.done": 3,
+          "context.updated": 3
+        },
+        "provider_state_at_finish": {
+          "ready": true,
+          "active_reply": null,
+          "pending_control": null,
+          "audio_lane": false
+        }
+      }
+    ]
+  },
+  "microphone_human": false,
+  "thai_quality_accepted": false
+}
