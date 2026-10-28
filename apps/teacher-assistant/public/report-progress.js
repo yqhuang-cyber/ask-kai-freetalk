@@ -4,6 +4,7 @@ export function reportProgress(submission,{now=Date.now()}={}){
   const deep=submission.deep_analysis;if(!deep)return null;
   const text=deep.stages.text,audio=deep.stages.audio,p=text.progress,active=deep.processing;
   const textReady=finished(text),failed=submission.report_state==='failed';
+  const automatic=audio.verification_mode==='automatic',verification=audio.verification_summary,verifying=automatic&&verification?.state==='running';
   const needsReview=audio.review_required||audio.state==='awaiting_review',ready=submission.report_state==='complete'&&!needsReview;
   const audioOff=audio.provider==='none'||['disabled','not_authorized'].includes(audio.state)||audio.reason==='not_enabled';
   const row=(id,label,state,detail)=>({id,label,state,detail});
@@ -16,18 +17,18 @@ export function reportProgress(submission,{now=Date.now()}={}){
   if(p?.total)textDetail+=`；已处理 ${p.processed} / ${p.total} 组`;
   const checking=text.state==='running'&&['checking','processed'].includes(p?.phase);
   const audioStarted=audio.state==='running'||finished(audio)||!!audio.started_at;
-  const audioDetail=audio.state==='running'?`正在评测${audio.progress?.current?`第 ${audio.progress.current} / ${audio.progress.total} 段录音`: '已核对的学生录音'}`:finished(audio)?'音频结果已保存，报告会注明实际覆盖':audio.state==='failed'?(failure[audio.reason]??'音频评测已停止'):needsReview?'老师核对后继续，无需在页面等待':audio.reason==='review_inconclusive'?'核对后仍无可靠片段，本次保留未评估':audioOff?'本次不进行音频评测':audio.state==='pending'?'等待检查可用录音':'本次没有符合条件的录音，不作发音判断';
+  const audioDetail=audio.state==='running'&&verifying?'自动核验正在后台进行，完成后评测可用片段':audio.state==='running'?`正在评测${audio.progress?.current?`第 ${audio.progress.current} / ${audio.progress.total} 段录音`: '已核对的学生录音'}`:finished(audio)?'音频结果已保存，报告会注明实际覆盖':audio.state==='failed'?(failure[audio.reason]??'音频评测已停止'):needsReview?'老师核对后继续，无需在页面等待':audio.reason==='review_inconclusive'?'核对后仍无可靠片段，本次保留未评估':audioOff?'本次不进行音频评测':audio.state==='pending'?'等待检查可用录音':'本次没有符合条件的录音，不作发音判断';
   const steps=[
     row('submitted','练习已提交','complete','本次练习已保存，无需重复提交'),
     row('text','理解与口语表达',textState,textDetail),
     row('validation','核对引用与保存文本结果',textReady?'complete':text.reason==='output_rejected'?'failed':checking?'running':!active?'blocked':'waiting',textReady?'文本结果已通过检查并保存':checking?'正在核对原文引用、结论范围与记录来源':!active?'本次未保存可用的文本分析结果':'文本分析返回后进行，不会提前发布未核对结果'),
-    row('review','核对录音来源与质量',needsReview?(active?'waiting':'action'):audioStarted?'complete':audioOff?'skipped':!active?'unavailable':'waiting',needsReview?(active?'本轮分析结束后，老师回听并核对录音':'等待老师回听，确认学生声音和录音质量'):audioStarted?'仅使用已确认来源和质量的片段':audioOff?'本次不需要核对录音':audio.reason==='review_inconclusive'?'已核对，仍不足以支持可靠评测':!active?'本次没有可核对的录音':'后台先检查是否有可评测片段'),
-    row('audio','音频评测',audio.state==='running'?'running':finished(audio)?'complete':audio.state==='failed'?'failed':audioOff?'skipped':needsReview||audio.state==='pending'?'waiting':'unavailable',audioDetail),
+    automatic?row('review','自动核验录音',verification?.state==='complete'?'complete':verifying?'running':audioOff?'skipped':active?'waiting':'unavailable',verification?`已处理 ${verification.checked} / ${verification.total} 段；${verification.eligible} 段可送评，${verification.excluded+verification.failed} 段未采用。`:'后台检查采集来源、录音质量与识别内容，无需老师逐段确认'):row('review','核对录音来源与质量',needsReview?(active?'waiting':'action'):audioStarted?'complete':audioOff?'skipped':!active?'unavailable':'waiting',needsReview?(active?'本轮分析结束后，老师回听并核对录音':'等待老师回听，确认学生声音和录音质量'):audioStarted?'仅使用已确认来源和质量的片段':audioOff?'本次不需要核对录音':audio.reason==='review_inconclusive'?'已核对，仍不足以支持可靠评测':!active?'本次没有可核对的录音':'后台先检查是否有可评测片段'),
+    row('audio','音频评测',audio.state==='running'?(verifying?'waiting':'running'):finished(audio)?'complete':audio.state==='failed'?'failed':audioOff?'skipped':needsReview||audio.state==='pending'?'waiting':'unavailable',audioDetail),
     row('report','生成深入报告',ready?'complete':failed||!active&&!needsReview?'blocked':'waiting',ready?'深入报告已可查看':failed?'修复失败的分析后继续，作业无需重交':needsReview?'文本与录音进度分别保存，核对和评测结束后生成报告':!active?'本次未生成可用报告':'各项处理结束后自动显示报告')
   ];
   const started=text.started_at,ended=text.finished_at;
   const elapsed=started?Math.max(0,Math.floor(((ended??now)-started)/1000)):null;
-  return {steps,summary:ready?'报告已生成':failed?'分析已停止，可以重试':needsReview?(active?'文本处理中 · 录音待核对':'等待老师核对录音'):submission.report_state==='pending'?'已提交，正在排队':active?'正在后台处理':'本次未生成报告',elapsed,live:active,textFinished:!!ended};
+  return {steps,summary:ready?'报告已生成':failed?'分析已停止，可以重试':needsReview?(active?'文本处理中 · 录音待核对':'等待老师核对录音'):submission.report_state==='pending'?'已提交，正在排队':active?(verifying?'正在自动核验录音':'正在后台处理'):'本次未生成报告',elapsed,live:active,textFinished:!!ended};
 }
 const node=(tag,text,cls)=>{const el=document.createElement(tag);el.textContent=text??'';if(cls)el.className=cls;return el;};
 export function renderReportProgress(root,submission){

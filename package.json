@@ -54,7 +54,11 @@
     "probe:teacher:pronunciation:audio": "node --env-file-if-exists=.env scripts/teacher-assistant/pronunciation-probe.js",
     "test:teacher:audio:browser": "node scripts/teacher-assistant/audio-assessment-browser-check.js",
     "test:teacher:report:browser": "node scripts/teacher-assistant/deep-report-browser-check.js",
-    "test:teacher:recovery:browser": "node scripts/teacher-assistant/report-recovery-browser-check.js"
+    "test:teacher:goals:browser": "node scripts/teacher-assistant/goal-execution-browser-check.js",
+    "probe:teacher:goals": "node --env-file-if-exists=.env scripts/teacher-assistant/goal-execution-probe.js",
+    "test:teacher:recovery:browser": "node scripts/teacher-assistant/report-recovery-browser-check.js",
+    "test:teacher:audio:auto:browser": "node scripts/teacher-assistant/audio-auto-browser-check.js",
+    "probe:teacher:audio:asr": "node --env-file-if-exists=.env scripts/teacher-assistant/audio-asr-probe.js"
   },
   "dependencies": {
     "@earendil-works/pi-agent-core": "1.2.0",

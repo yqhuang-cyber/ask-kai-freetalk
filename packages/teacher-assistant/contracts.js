@@ -1,4 +1,6 @@
 import {CAPABILITIES} from './capabilities.js';
+import {GOAL_CONTRACT_VERSION,validOutputRequirement} from './output-requirements.js';
+import {validateGoalProgress} from './goal-progress-contract.js';
 import {createHash} from 'node:crypto';
 import {ANALYSIS_VERSION,diningQuestion,diningAnswer,observeDining,observeOrganization} from './report-observations.js';
 export const SCENARIO='teacher_homework';
@@ -18,6 +20,7 @@ export function validPlan(plan){
     requireThat(Array.isArray(plan.goals)&&plan.goals.length>=1&&plan.goals.length<=3&&new Set(plan.goals.map(g=>g.id)).size===plan.goals.length&&plan.goals.every(g=>CAPABILITIES.some(c=>c.id===g.id&&c.rule===g.observation_rule&&c.kinds.includes(plan.brief.kind))&&typeof g.label==='string'&&g.label.length>0&&g.label.length<=80&&typeof g.task==='string'&&g.task.length<=160&&typeof g.criterion==='string'&&g.criterion.length<=160&&Array.isArray(g.opportunity_ids)&&g.opportunity_ids.length>0&&g.opportunity_ids.every(id=>plan.pack.opportunities.some(o=>o.id===id))),'INVALID_PLAN');
     requireThat(plan.support&&Array.isArray(plan.support.allowed)&&plan.support.allowed.every(s=>['澄清','短句示范','按需简短英文'].includes(s))&&plan.support.independent_use_assessment==='unassessed','INVALID_PLAN');
   }
+  if(plan.goal_contract_version!==undefined)requireThat(plan.goal_contract_version===GOAL_CONTRACT_VERSION&&plan.goals.every(g=>validOutputRequirement(g.output_requirement)),'INVALID_OUTPUT_REQUIREMENT');
   requireThat(plan.hash===digest({...plan,hash:undefined}),'PLAN_HASH_MISMATCH');return plan;
 }
 export function validEvidence(e,attempt,plan){
@@ -43,5 +46,6 @@ export function validEvidence(e,attempt,plan){
     requireThat(Array.isArray(e.organization_observations)&&e.organization_observations.length<=24&&e.organization_observations.every(o=>typeof o.event_id==='string'&&typeof o.turn_id==='string'&&observeOrganization(o.excerpt).some(f=>f.feature_id===o.feature_id)),'INVALID_ORGANIZATION_EVIDENCE');
     requireThat(!plan||plan.pack.topic==='点餐'||e.interactions.length===0,'INVALID_INTERACTION_SCOPE');
   }else requireThat(e.interactions===undefined&&e.recognized_questions===undefined&&e.organization_observations===undefined,'INVALID_ANALYSIS_EVIDENCE');
+  if(e.goal_progress!==undefined){requireThat(!['authorization_revoked','safety_restricted'].includes(e.end_reason),'EVIDENCE_RESTRICTED');validateGoalProgress(e.goal_progress,plan,e);}
   return e;
 }

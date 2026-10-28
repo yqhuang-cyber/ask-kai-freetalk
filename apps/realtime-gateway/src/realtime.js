@@ -252,11 +252,12 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         try {
           if (binary) {
             if (!ready) throw new Error('AUDIO_BEFORE_READY');
+            const input=teaching.decodeAudio?.(bytes)??{pcm:bytes};
             if (Date.now()-windowAt >= 1000) {windowAt=Date.now();byteWindow=0;}
-            byteWindow += bytes.length;
+            byteWindow += input.pcm.length;
             if (byteWindow > provider.audio.input_rate*2*1.25) throw new Error('AUDIO_RATE_LIMIT');
-            provider.sendAudio(bytes);
-            teaching.acceptAudio?.(bytes,provider.audio);
+            provider.sendAudio(input.pcm);
+            teaching.acceptAudio?.(input.pcm,provider.audio,input.metadata);
           } else {
             if(Date.now()-controlAt>=1000){controlAt=Date.now();controlCount=0;}
             if(++controlCount>20){metrics?.count(providerKind,'control_rate_limited');return finish('CONTROL_RATE_LIMIT');}

@@ -2,6 +2,7 @@ import {HomeworkPreparations} from './preparations.js';
 import {RecordingPermissions} from './recording-permissions.js';
 import {AnalysisDelegation} from './analysis-delegation.js';
 import {TranscriptStore} from './transcript-store.js';
+import {AudioAutoChecks} from './audio-auto-checks.js';
 import {AudioReviews} from './audio-reviews.js';
 import {AudioStore} from './audio-store.js';
 import {homeworkActors} from './fixtures.js';
@@ -12,6 +13,7 @@ import {ReportAnalyzer,projectReport,validateReport} from '../../../../packages/
 import {requireThat,id,key,validPlan,validEvidence,digest} from '../../../../packages/teacher-assistant/contracts.js';
 import {existsSync} from 'node:fs';
 import {reportConfiguration} from '../../../../packages/teacher-assistant/deep-analysis/config.js';
+import {projectGoalProgress} from '../../../../packages/teacher-assistant/goal-progress-contract.js';
 const hash=token=>createHash('sha256').update(token).digest('hex');
 export class HomeworkService {
   constructor({path=':memory:',analyzer=new ReportAnalyzer(),planSource=new PresetPlanSource(),actors=homeworkActors,aiPlanSource,recordingPolicy,experimentalAudio=false,analysisConfig=reportConfiguration(),now=()=>Date.now()}={}){this.repo=new HomeworkRepository(path);this.analyzer=analyzer;this.now=now;this.plans=planSource;this.analysisConfig=analysisConfig;
@@ -20,7 +22,7 @@ export class HomeworkService {
     for(const a of this.repo.all('attempts'))if(a.state==='active')this.repo.put('attempts',{...a,state:'interrupted',version:a.version+1});
     this.preparations=new HomeworkPreparations(this,aiPlanSource);
     this.recordingPermissions=new RecordingPermissions(this,recordingPolicy);
-    this.analysisDelegation=new AnalysisDelegation(this);this.audioReviews=new AudioReviews(this);
+    this.analysisDelegation=new AnalysisDelegation(this);this.audioReviews=new AudioReviews(this);this.audioAutoChecks=new AudioAutoChecks(this);
     for(const j of this.repo.all('jobs'))if(j.state==='running')this.repo.put('jobs',{...this.analysisDelegation.deep.recover(j),state:j.external_started?'failed':'pending',lease_id:null,lease_until:null,error:j.external_started?'EXTERNAL_OUTCOME_UNKNOWN':undefined});
     this.transcriptStore=new TranscriptStore(this);
     this.transcriptStore.markInterrupted();
@@ -73,10 +75,18 @@ export class HomeworkService {
       return {ok:true,lease_until:finalizing.lease_until};
     }
     if(op==='finalize'){
-      this.role(a,'learner');const attempt=this.attempt(a,input.attempt_id);this.verifyEpoch(attempt);this.writable(this.assignment(a,attempt.assignment_id));validEvidence(input.evidence,attempt,this.publication(this.assignment(a,attempt.assignment_id)).plan);const fence=digest(input.evidence);
+      this.role(a,'learner');const attempt=this.attempt(a,input.attempt_id);this.verifyEpoch(attempt);this.writable(this.assignment(a,attempt.assignment_id));validEvidence(input.evidence,attempt,this.publication(this.assignment(a,attempt.assignment_id)).plan);const {goal_progress,...baseEvidence}=input.evidence,fence=digest(baseEvidence);
       if(attempt.state==='ended'){requireThat(attempt.evidence_hash===fence,'EVIDENCE_CONFLICT');return {attempt_id:attempt.id,state:attempt.state,evidence_hash:fence};}
       requireThat(attempt.state==='active'&&attempt.lease_until>this.now(),'ATTEMPT_NOT_ACTIVE');requireThat(!['authorization_revoked','safety_restricted'].includes(input.evidence.end_reason),'EVIDENCE_RESTRICTED');
-      this.repo.put('attempts',{...attempt,state:'ended',version:attempt.version+1,evidence:input.evidence,evidence_hash:fence,ended_at:this.now()});return {attempt_id:attempt.id,state:'ended',evidence_hash:fence};
+      this.repo.transaction(()=>{
+        // Model-derived quotes share the transcript's permission and TTL. They
+        // must not leak into longer-lived basic evidence or baseline reports.
+        if(goal_progress)try{const snapshot=this.transcriptStore.read(a,{attempt_id:attempt.id}),record=this.repo.get('deep_records',attempt.id);
+          const grounded=goal_progress.sources.every(source=>snapshot.transcript.some(row=>row.role===source.role&&row.turn_id===source.turn_id&&row.event_ids.includes(source.event_id)&&row.kind==='content'&&row.status===(source.role==='learner'?'final':'completed')&&row.text===source.text));
+          if(grounded&&snapshot.scope.plan_hash===attempt.plan_hash)this.repo.put('deep_records',{...record,live_goal_progress:goal_progress});
+        }catch{/* Missing / withdrawn transcript cannot be resurrected by progress. */}
+        this.repo.put('attempts',{...attempt,state:'ended',version:attempt.version+1,evidence:baseEvidence,evidence_hash:fence,ended_at:this.now()});
+      });return {attempt_id:attempt.id,state:'ended',evidence_hash:fence};
     }
     if(op==='attempt'){let attempt=this.attempt(a,input.attempt_id);if(attempt.state==='active'&&attempt.lease_until<=this.now())attempt=this.repo.put('attempts',{...attempt,state:'interrupted',version:attempt.version+1});return {id:attempt.id,assignment_id:attempt.assignment_id,state:attempt.state,version:attempt.version,evidence_hash:attempt.evidence_hash??null,session_id:attempt.session_id,plan_hash:attempt.plan_hash};}
     if(op==='submit'){
@@ -99,12 +109,13 @@ export class HomeworkService {
     let state=job?.state??'pending',report=r?projectReport(r,a.role):null;
     if(deep){
       const text=deep.stages.text,ready=job.state==='complete'&&['complete','partial'].includes(text.state)&&!!text.result;
-      deep.stages.audio.review_required=this.analysisConfig.audio.manualReview&&deep.stages.audio.reason==='no_eligible_audio'&&!this.audioReviews.hasReview(s.attempt_id);
-      const audio=deep.stages.audio,awaitingReview=ready&&a.role==='learner'&&this.analysisConfig.audio.manualReview&&audio.reason==='no_eligible_audio'&&!this.audioReviews.hasReview(s.attempt_id);
+      deep.stages.audio.review_required=this.analysisConfig.audio.manualReview&&!this.analysisConfig.audio.autoVerification&&deep.stages.audio.verification_mode!=='automatic'&&deep.stages.audio.reason==='no_eligible_audio'&&!this.audioReviews.hasReview(s.attempt_id);
+      const audio=deep.stages.audio,awaitingReview=ready&&a.role==='learner'&&this.analysisConfig.audio.manualReview&&!this.analysisConfig.audio.autoVerification&&deep.stages.audio.verification_mode!=='automatic'&&audio.reason==='no_eligible_audio'&&!this.audioReviews.hasReview(s.attempt_id);
       state=deep.processing?job.state:awaitingReview?'awaiting_audio_review':ready?'complete':job.state==='failed'||text.state==='failed'?'failed':'unavailable';
       if(awaitingReview){audio.state='awaiting_review';audio.reason='source_review_required';}
       if(!ready||awaitingReview){report=null;for(const stage of Object.values(deep.stages))delete stage.result;}
     }
+    if(report)try{const snapshot=this.transcriptStore.read(a,{attempt_id:s.attempt_id}),progress=this.repo.get('deep_records',s.attempt_id)?.live_goal_progress;if(progress&&snapshot.scope.plan_hash===s.plan_hash)report.practice_progress=projectGoalProgress(progress);}catch{/* Use the same read / revoke / expiry boundary as the text report. */}
     return {id:s.id,attempt_id:s.attempt_id,assignment_id:s.assignment_id,state:'submitted',submitted_at:s.submitted_at,report_state:state,report,...(deep?{deep_analysis:deep}:{})};
   }
   async runReports(){if(this.processing)return;this.processing=true;try{for(const job of this.repo.all('jobs').filter(j=>j.state==='pending'&&!j.deep).slice(0,4)){

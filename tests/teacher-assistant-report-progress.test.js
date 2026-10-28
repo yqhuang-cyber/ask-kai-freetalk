@@ -49,3 +49,8 @@ test('progress never treats failed or unavailable analysis as a completed report
   const s={report_state:'failed',deep_analysis:{processing:false,stages:{text:stage,audio:{state:'unavailable',reason:'source_unavailable',provider:'tencent_soe_v2'}}}};
   const p=reportProgress(s,{now:999999});assert.equal(p.elapsed,30);assert.equal(p.steps[1].state,'failed');assert.equal(p.steps[2].state,'blocked');assert.equal(p.steps[3].state,'unavailable');assert.equal(p.steps.at(-1).state,'blocked');assert.match(p.summary,/停止/);
 });
+
+test('automatic verification has no teacher action gate and keeps audio evaluation waiting until recognition finishes',()=>{
+ const s={report_state:'pending',deep_analysis:{processing:true,stages:{text:{state:'complete',provider:'minimax'},audio:{state:'running',provider:'tencent_soe_v2',verification_mode:'automatic',verification_summary:{state:'running',checked:1,total:3,eligible:1,excluded:0,failed:0}}}}};const p=reportProgress(s);assert.equal(p.steps[3].label,'自动核验录音');assert.equal(p.steps[3].state,'running');assert.equal(p.steps[4].state,'waiting');assert.equal(p.steps.some(step=>step.state==='action'),false);
+ s.report_state='complete';s.deep_analysis.processing=false;s.deep_analysis.stages.audio={...s.deep_analysis.stages.audio,state:'unavailable',reason:'no_eligible_audio',verification_summary:{state:'complete',checked:3,total:3,eligible:0,excluded:3,failed:0}};const done=reportProgress(s);assert.equal(done.steps[3].state,'complete');assert.equal(done.steps[4].state,'unavailable');assert.equal(done.steps[5].state,'complete');
+});

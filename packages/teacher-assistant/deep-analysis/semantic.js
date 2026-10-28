@@ -2,9 +2,10 @@ import {MiniMaxJsonTransport} from '../../provider-minimax/planner.js';
 import {recordHash,validateRecord,validateAnalysisCandidate,validateEvidenceRef} from '../teaching-record/contracts.js';
 import {requireThat} from '../contracts.js';
 import {SafetyPolicy} from '../../policy/safety.js';
+import {outputRequirement} from '../output-requirements.js';
 export const SEMANTIC_VERSION='conversation-semantic-v1';
 export const RUBRIC_VERSION='asr-context-review-v1';
-export const PROMPT_VERSION='conversation-semantic-prompt-v1';
+export const PROMPT_VERSION='conversation-semantic-prompt-v2';
 export const WINDOW_BYTES=18000,MAX_WINDOWS=12;
 export function semanticFailureReason(result){
   const reasons=result?.coverage?.windows.filter(w=>w.state==='failed').map(w=>w.reason)??[];
@@ -65,6 +66,7 @@ export class ConversationReportAnalyzer{
   async analyze(plan,record,{signal,previous,beforeCall=async()=>{},onProgress=async()=>{}}={}){
     validateRecord(record);const usageBefore={...this.transport?.reportUsage};let calls=0;requireThat(record.transcript.every(s=>safeAnalysisText(s.text)),'ANALYSIS_RESTRICTED_CONTENT');
     requireThat(this.transport,'REPORT_TEXT_UNCONFIGURED');const started=performance.now(),root=AbortSignal.timeout(this.budgetMs),combined=signal?AbortSignal.any([root,signal]):root,windows=textWindows(record),coverage=[],candidates=[];
+    if(previous?.prompt_version!==PROMPT_VERSION)previous=undefined;
     if(previous){validateSemanticResult(previous,record,{provider:this.transport.provider,model:this.transport.model});candidates.push(...previous.candidates);}
     for(const window of windows.slice(0,MAX_WINDOWS)){
       const metadata={index:window.index,input_hash:window.input_hash,first_sequence:window.first_sequence,last_sequence:window.last_sequence};
@@ -77,7 +79,7 @@ export class ConversationReportAnalyzer{
         const progress={phase:repair?'repairing':'analyzing',current:window.index+1,total:windows.length,processed:coverage.length,attempt:repair+1};
         let authorizationFailed=false;
         try{callSignal.throwIfAborted();try{await beforeCall(progress);}catch(e){authorizationFailed=true;throw e;}callSignal.throwIfAborted();
-          const messages=[{role:'system',content:prompt},{role:'user',content:JSON.stringify({plan:{topic:plan.pack.topic,goals:plan.goals.map(({label,task,criterion})=>({label,task,criterion}))},coverage:record.transcript_manifest,window:window.rows})}];
+          const messages=[{role:'system',content:prompt+'逐一结合已发布的中文口语输出要求分析实际表达；全英文不代替中文输出，接受合理变体和上下文短答。会中进展不替代本次离线核对。'},{role:'user',content:JSON.stringify({plan:{topic:plan.pack.topic,plan_hash:plan.hash,goals:plan.goals.map(g=>({id:g.id,label:g.label,task:g.task,criterion:g.criterion,output_requirement:outputRequirement(g)}))},coverage:record.transcript_manifest,window:window.rows})}];
           if(repair)messages.push({role:'user',content:'上次结果未通过校验。只按指定结构修复原文引用和结论范围，不新增字段。'});
           calls++;const value=await Promise.race([this.transport.completeJSON({messages,signal:callSignal}),new Promise((_,reject)=>{callSignal.addEventListener('abort',()=>reject(new Error('SEMANTIC_TIMEOUT')),{once:true});})]);callSignal.throwIfAborted();
           try{await onProgress({...progress,phase:'checking'});}catch(e){authorizationFailed=true;throw e;}callSignal.throwIfAborted();

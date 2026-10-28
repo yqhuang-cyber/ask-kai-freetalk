@@ -2,6 +2,10 @@
 
 日期：2026-10-26（Asia/Shanghai）。状态：**G0 通过，MD-01～MD-07 最小功能完成；MD-08 工程 / 真实豆包浏览器链路通过，真人走查待验。完整 TA backlog 仅完成这些最小子集。**
 
+2026-10-28 GE-01～04：中文口语输出契约、逐轮模型目标进展、明确听说下一步、继续 / 结束邀请及同源报告子集已接入当前工作区。实际采用 6 秒异步总预算，未达到原 2 秒计划；不阻塞语音，不把 context ACK 当作当轮执行证明。见[实现说明](teacher-goal-execution-implementation.md)与[分层检查](eval-results/2026-10-28-goal-execution.md)。完整 TA-11 与教学验收仍开放。
+
+2026-10-28 当前核对：单学生 AI 备课、M4 异步深入报告、录音核对与腾讯适配已实现子集；完整 TA 任务仍有缺口。逐项状态、报告 A～D 完成门及新增 GE-01～04（中文输出要求、逐轮目标进展与完成邀请）见[需求与实施状态核对](teacher-assistant-status-2026-10-28.md)。下方日期更新保留历史，不代表当前仍未接入 Worker / 模型 / 腾讯适配。
+
 2026-10-26 更新：教师端 AI 前置备课的单学生子集已在隔离分支实现，覆盖 TA-04～TA-08 的必要部分；不是上述完整任务整体完成。见[当前实现 / 剩余范围](teacher-assistant-ai-planning-implementation.md)、[验收](eval-results/2026-10-26-teacher-ai-planning.md)。上述子集现已合并回主干，原 Demo 同时保留预置路径供真人走查。
 
 输入：[PRD v0.2](prd/teacher-assigned-conversation-homework-prd-v0.2.md)、[User Journey](teacher-homework-user-journey.md)、[前置规划需求](teacher-homework-planning-design.md)、[技术方案](teacher-assistant-technical-design.md)。实际最小实现及命令见[实施说明](teacher-assistant-demo-implementation.md)，分层证据见[验收记录](eval-results/2026-10-26-teacher-assistant-demo.md)。其余完整 TA 模块仍为后续产物。
@@ -50,7 +54,7 @@ G-Demo 是本轮首要交付，不是先做原 G1 / G2 的别名。其工程预�
 
 ### 2.2 完整能力 backlog（保留原编号与验收条件）
 
-所有任务当前状态均为“未开始”。下列依赖是逻辑依赖，不授权创建多个聊天、Agent 或工作区。
+下表保留完整任务、依赖与验收条件，不表示各项均已完成或均未开始。当前逐项完成范围与剩余工作见[状态核对](teacher-assistant-status-2026-10-28.md)。下列依赖是逻辑依赖，不授权创建多个聊天、Agent 或工作区。
 
 | ID | 完整任务 | 完整交付依赖 | 原能力验收标号 |
 | --- | --- | --- | --- |
@@ -173,12 +177,12 @@ TA-10 未取得可靠支持归因不阻止 Demo 的保守描述反馈，但阻�
 - **范围：**`packages/teacher-assistant/realtime/{controller,planning-state,context-compiler,validator}.js`。
 - **工作：**实现 TA-09 兼容面；固定 publication / plan / pack，主题范围、核心目标集合和 active_goal 分离；调用新 turn planner，复用语言 / 调速 / 拼音基础规则。
 - **完成条件：**单轮一项主要任务，发布核心标准不可改；暂停练习保留主题，拒绝后不自动激活；允许结束；上下文 / 页面引用同 plan hash；无老师等级进入语音。
-- **验证：**同主题选题 / 相关联想 / 换题、目标次序、求助和困难、未知支持、过期提案、2 秒预算含排队 / 修复 / 校验、材料不可用、同源 task card / instructions。
+- **验证：**同主题选题 / 相关联想 / 换题、目标次序、求助和困难、未知支持、过期提案、材料不可用、同源 task card / instructions。原定 2 秒预算含排队 / 修复 / 校验；GE 实测后当前作业建议链路改用 6 秒异步总预算（含两次授权检查），超时保守降级，2 秒指标不标通过。
 - **边界：**默认 next_turn_advisory，不能把 context ACK 写成实际当轮按计划生成。
 
 ### TA-12：账本、证据窗口与封口
 
-- **2026-10-27 优先子计划：**[完整文本记录与模型分析 DR-01～DR-10](conversation-report-deep-analysis-tasking.md)；该计划尚未实施。
+- **优先子计划：**[完整文本记录与模型分析 DR-01～DR-10](conversation-report-deep-analysis-tasking.md)已实施工程子集；真实发音、教学质量及完整故障验收未完成，见[状态核对](teacher-assistant-status-2026-10-28.md)。
 
 - **范围：**`packages/teacher-assistant/evidence/`、业务 ledger / evidence tables、后台 extractor。
 - **工作：**在实际接受 / 安全 / 输出门边界记账；全任务事件覆盖与语义覆盖分开；异步抽取最小必要上下文与候选；有界缓存 / 持久化、末尾 flush 和 end_fence。

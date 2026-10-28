@@ -42,7 +42,7 @@ export class AudioReviews {
     })};
   }
   preview(actor,input){
-    const s=this.service,c=this.context(actor,input.submission_id),ref=c.manifest.segment_refs.find(r=>r.id===input.segment_id);requireThat(ref,'NOT_FOUND');
+    const s=this.service,c=this.context(actor,input.submission_id);if(input.segment_id?.startsWith('unit-')){const unit=s.repo.get('audio_units',input.segment_id);requireThat(unit&&unit.attempt_id===c.attempt.id&&unit.manifest_hash===c.manifest.manifest_hash&&s.now()<unit.expires_at,'NOT_FOUND');const pcm=s.audioAutoChecks.previewBytes(unit);return {segment_id:unit.id,source_metadata_hash:unit.unit_hash,sample_rate:16000,channels:1,encoding:'pcm_s16le',pcm_base64:pcm.toString('base64')};}const ref=c.manifest.segment_refs.find(r=>r.id===input.segment_id);requireThat(ref,'NOT_FOUND');
     const {segment,pcm_base64}=s.audioStore.read(actor,{attempt_id:c.attempt.id,segment_id:ref.id});requireThat(audioMetadataHash(segment)===ref.metadata_hash,'SOURCE_CHANGED');
     return {segment_id:segment.id,source_metadata_hash:ref.metadata_hash,sample_rate:16000,channels:1,encoding:'pcm_s16le',pcm_base64};
   }

@@ -12,6 +12,15 @@ function preview(parent,{api,submissionId,segmentId,onError}){
   button.onclick=async()=>{button.disabled=true;const epoch=previewEpoch;try{const result=await api('audio_preview',{submission_id:submissionId,segment_id:segmentId});if(!button.isConnected||epoch!==previewEpoch){button.disabled=false;return;}const audio=document.createElement('audio'),url=URL.createObjectURL(wav(result.pcm_base64));audio.controls=true;audio.preload='metadata';audio.src=url;audio.setAttribute('aria-label','本次练习录音片段');previews.add({audio,url});button.replaceWith(audio);}catch(error){if(button.isConnected){button.disabled=false;onError(error);}}};
 }
 const toneName=n=>({0:'标记 0',1:'第一声',2:'第二声',3:'第三声',4:'第四声',5:'轻声'}[n]??'未提供');
+const verificationReasons={teacher_excluded:'老师标记排除',teacher_inconclusive:'人工核对仍不确定',capture_unverified:'采集信息不足',capture_gap:'采集不连续',playback_overlap:'与 Kai 播放重叠',echo_control_unavailable:'回声控制信息不足',incomplete_utterance:'语句超过片段上限',clipping:'检测到削波',insufficient_speech:'有效语音不足',noise_or_uncertain_quality:'噪声或质量难以确认',no_recognized_speech:'未识别到有效语音',multiple_speakers:'识别到多个说话人',overlapping_speakers:'识别时间重叠',language_not_supported:'中文语音不足',asr_not_enabled:'腾讯离线识别尚未开通',asr_failed:'离线识别未完成',asr_timeout:'离线识别超时',external_outcome_unknown:'未确认外部请求结果',restricted_content:'不进入普通学习分析',budget_limit:'超出本轮覆盖上限'};
+export function renderAudioVerification(root,stage,{api,submissionId,onError,teacher=false}){
+  const check=stage.verification_summary;if(!check)return;
+  root.append(node('p',`自动核验 ${check.total} 段：${check.eligible} 段可送评，${check.excluded} 段排除，${check.failed} 段处理未完成。`,'small'));
+  if(check.unselected_sentences)root.append(node('p',`本轮每段语音最多选一句评测，另有 ${check.unselected_sentences} 句未评。`,'small'));
+  if(Object.keys(check.reasons).length)root.append(node('p',Object.entries(check.reasons).map(([reason,n])=>`${verificationReasons[reason]??'未采用'} ${n} 段`).join('；'),'small'));
+  root.append(node('p',teacher?'自动检查不确认真实身份，也不保证检出所有噪声或旁人声音。当前检测尚未经真实教学录音校准，测量作为候选供教学参考。':'自动评测可能漏检背景声，结果仅供本次练习参考。','small'));
+  if(teacher&&check.samples?.length){const details=node('details');details.append(node('summary','可选：查看核验疑点'));for(const sample of check.samples){const row=node('div','','audio-clip');row.append(node('p',`${verificationReasons[sample.reason]??'未采用'} · ${(sample.duration_ms/1000).toFixed(1)} 秒`));preview(row,{api,submissionId,segmentId:sample.segment_id,onError});details.append(row);}root.append(details);}
+}
 export function renderAudioAssessment(root,report,{api,submissionId,onError}){
   if(!report.clips)return;
   root.append(node('p',`已评测 ${report.assessed_segments} 段录音；另有 ${report.unassessed_segments} 段未评。以下只描述这些片段，结果需要听原音核对。`));
@@ -19,8 +28,8 @@ export function renderAudioAssessment(root,report,{api,submissionId,onError}){
   if(report.dimensions.phones==='unavailable')root.append(node('p','本次未提供可用的音素测量，不推断声母或韵母问题。','small'));
   for(const [index,clip] of report.clips.entries()){
     const card=node('article','','audio-clip');card.dataset.audioSegment=clip.segment_id;
-    card.append(node('h4',`录音 ${index+1} · ${(clip.duration_ms/1000).toFixed(1)} 秒`),node('p',clip.mode===1?'已核对短句评测 · 声学候选待核对':'自然对话评测 · 声学候选待核对','small'));
-    if(clip.reference_text)card.append(node('p','核对参考：“'+clip.reference_text+'”'));
+    card.append(node('h4',`录音 ${index+1} · ${(clip.duration_ms/1000).toFixed(1)} 秒`),node('p',clip.mode===1?(clip.reference_basis==='auto_aligned'?'机器对齐短句评测 · 参考可能有错':'已核对短句评测 · 声学候选待核对'):'自然对话评测 · 声学候选待核对','small'));
+    if(clip.reference_text)card.append(node('p',(clip.reference_basis==='auto_aligned'?'机器对齐参考：':'核对参考：')+'“'+clip.reference_text+'”'));
     preview(card,{api,submissionId,segmentId:clip.segment_id,onError});
     const tones=clip.words.filter(w=>w.tone&&w.tone.reference!==w.tone.hypothesis);
     if(tones.length){for(const word of tones.slice(0,4))card.append(node('p',`“${word.word}”：参考为${toneName(word.tone.reference)}，腾讯返回${toneName(word.tone.hypothesis)}，请先回听核对。`));card.append(node('p','核对后可以把这些词放回原短句，慢速说一次，再用自然速度说一次。','practice-step'));}
@@ -34,8 +43,8 @@ export function renderAudioAssessment(root,report,{api,submissionId,onError}){
     card.append(details);root.append(card);
   }
 }
-export function renderAudioReview(root,{api,submissionId,onSaved,onError,open=false,isCurrent=()=>true}){
-  const panel=node('details','','audio-review'),summary=node('summary','教师核对录音来源与质量');panel.open=open;panel.append(summary,node('p','先回听，再逐项确认。无法确认的片段保持“不确定”，不会交给腾讯评测。人工核对不等于专业声学验收。','small'));
+export function renderAudioReview(root,{api,submissionId,onSaved,onError,open=false,automatic=false,isCurrent=()=>true}){
+  const panel=node('details','','audio-review'),summary=node('summary',automatic?'可选：人工修正录音核验':'教师核对录音来源与质量');panel.open=open;panel.append(summary,node('p','先回听，再逐项确认。无法确认的片段保持“不确定”，不会交给腾讯评测。人工核对不等于专业声学验收。','small'));
   const body=node('div'),status=node('p','','small'),save=node('button','保存核对并重新评测');save.type='button';save.hidden=true;
   const load=node('button','查看本次录音','secondary'),recover=node('button','核对保存状态','secondary');load.type=recover.type='button';recover.hidden=true;status.setAttribute('role','status');panel.append(load,body,status,save,recover);root.append(panel);
   let current,rows=[],saving=false,pendingSave=null,savedConfirmed=false,needsReload=false;

@@ -2,15 +2,23 @@ import test from 'node:test';import assert from 'node:assert/strict';import {mkd
 import {HomeworkService} from '../apps/hskai-mock/src/teacher-assistant/service.js';
 import {startHomeworkBackend} from '../packages/hskai-bridge/homework-port.js';
 import {EvidenceRecorder} from '../packages/teacher-assistant/evidence.js';
+import {reportConfiguration} from '../packages/teacher-assistant/deep-analysis/config.js';
+import {syntheticReportEnv} from './helpers/deep-analysis.js';
 
 async function fixture(options={}){
   const service=new HomeworkService(options),teacher=(await service.call('login',null,{actor_id:'mock-teacher-lin'})).token,learner=(await service.call('login',null,{actor_id:'mock-maya-hsk3'})).token;
   const plan=await service.call('preview',teacher,{learner_id:'mock-maya-hsk3',topic:'dining'});
   const published=await service.call('publish',teacher,{learner_id:plan.learner_id,topic:'dining',plan_hash:plan.hash,due_at:new Date(Date.now()+86400000).toISOString(),timezone:'Asia/Shanghai',idempotency_key:'record-choice-publish'});
   const prepared=await service.call('prepare',learner,{assignment_id:published.assignment_id});
-  const input={attempt_id:prepared.attempt.id,notice_version:'deep-report-notice-v5',expected_revision:0,text:true,audio:false};
+  const input={attempt_id:prepared.attempt.id,notice_version:'deep-report-notice-v7',expected_revision:0,text:true,audio:false};
   return {service,teacher,learner,prepared,input};
 }
+test('live goal authorization requires the new disclosure and current text grant, with old recordings still readable',async t=>{
+  const f=await fixture({analysisConfig:reportConfiguration(syntheticReportEnv)});t.after(()=>f.service.close());await f.service.call('recording_choice_update',f.learner,f.input);const scope={attempt_id:f.input.attempt_id,session_id:'goal-permission-session'};await f.service.call('bind_session',f.learner,scope);
+  const grant=await f.service.call('turn_planning_authorize',f.learner,scope);assert.equal(grant.plan_hash,f.prepared.plan.hash);await assert.rejects(f.service.call('turn_planning_authorize',f.teacher,scope),/FORBIDDEN/);
+  const choice=f.service.repo.get('recording_choices',scope.attempt_id);f.service.repo.put('recording_choices',{...choice,notice_version:'deep-report-notice-v5'});await assert.rejects(f.service.call('turn_planning_authorize',f.learner,scope),/RECORD_NOT_AUTHORIZED/);assert.equal((await f.service.call('recording_choice',f.learner,{attempt_id:scope.attempt_id})).notice_version,'deep-report-notice-v5');
+  f.service.repo.put('recording_choices',choice);await f.service.call('recording_choice_update',f.learner,{...f.input,expected_revision:1,text:false});await assert.rejects(f.service.call('turn_planning_authorize',f.learner,{...scope,expected_grant:grant}),/RECORD_NOT_AUTHORIZED/);
+});
 test('M4 stores per-attempt choices separately from attempts and rejects teacher / other learner writes',async t=>{
   const f=await fixture();t.after(()=>f.service.close());
   const before=await f.service.call('recording_choice',f.learner,{attempt_id:f.input.attempt_id});assert.equal(before.revision,0);assert.equal(before.audio.allowed,false);
@@ -26,7 +34,7 @@ test('choice persists across restart; audio stays disabled and interrupted attem
   const dir=mkdtempSync(join(tmpdir(),'kai-recording-choice-'));t.after(()=>rmSync(dir,{force:true,recursive:true}));const path=join(dir,'test.sqlite');
   const f=await fixture({path});await f.service.call('recording_choice_update',f.learner,f.input);f.service.close();
   const restarted=new HomeworkService({path});t.after(()=>restarted.close());const saved=await restarted.call('recording_choice',f.learner,{attempt_id:f.input.attempt_id});assert.equal(saved.text.allowed,true);assert.equal(saved.collection_enabled,true);assert.equal(restarted.repo.get('attempts',f.input.attempt_id).state,'interrupted');
-  assert.deepEqual(restarted.repo.db.prepare('SELECT version FROM migrations ORDER BY version').all().map(r=>r.version),[1,2,3,4,5,6,7]);
+  assert.deepEqual(restarted.repo.db.prepare('SELECT version FROM migrations ORDER BY version').all().map(r=>r.version),[1,2,3,4,5,6,7,8]);
 });
 test('TTL sweep and request path revoke expired branches without reviving or extending them',async t=>{
   let now=Date.now();const f=await fixture({now:()=>now,recordingPolicy:{text_days:7,audio_days:1}});t.after(()=>f.service.close());

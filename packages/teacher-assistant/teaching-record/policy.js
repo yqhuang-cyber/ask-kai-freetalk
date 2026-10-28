@@ -1,8 +1,8 @@
 import {requireThat} from '../contracts.js';
 import {recordHash} from './contracts.js';
 
-export const NOTICE_VERSION='deep-report-notice-v5';
-const readableNotices=['deep-report-notice-v4',NOTICE_VERSION];
+export const NOTICE_VERSION='deep-report-notice-v7';
+const readableNotices=['deep-report-notice-v4','deep-report-notice-v5','deep-report-notice-v6',NOTICE_VERSION];
 export const POLICY_VERSION='deep-report-retention-v1';
 const DAY=86400000;
 export function recordingPolicy({textDays=7,audioDays=7}={}){

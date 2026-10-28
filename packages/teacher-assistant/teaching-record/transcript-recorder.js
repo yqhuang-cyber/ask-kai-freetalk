@@ -16,5 +16,5 @@ export class TranscriptRecorder {
   async seal(reason){if(this.revoked)return {state:'revoked'};this.closed=true;this.pump();let timedOut=false;const drain=async()=>{while(this.running)await this.running;};let timer;await Promise.race([drain(),new Promise(resolve=>{timer=setTimeout(()=>{timedOut=true;resolve();},1500);})]);clearTimeout(timer);
     return this.port.call('record_seal',this.token,{attempt_id:this.attemptId,session_id:this.sessionId,accepted_finals:this.finals,forwarded_responses:this.responses,dropped:this.dropped,flush_failed:this.flushFailed||timedOut,gap_ranges:this.gaps,end_reason:reason});}
   discard(){this.closed=true;this.queue=[];this.bytes=0;return this.port.call('record_discard',this.token,{attempt_id:this.attemptId,session_id:this.sessionId});}
-  stopLocal(){this.closed=true;this.revoked=true;this.queue=[];this.bytes=0;}
+  stopLocal(){this.closed=true;this.revoked=true;this.queue=[];this.bytes=0;this.onStop?.();}
 }

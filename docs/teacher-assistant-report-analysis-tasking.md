@@ -2,6 +2,8 @@
 
 日期：2026-10-27（Asia/Shanghai）。分支：`codex/report-analysis`。本轮根据用户要求，优先细化并实施 TA-12 / TA-15 的分析子集，独立规划听力观察、口语表达和音频评测。自动 A/B/C/D 仍走 TA-20，不作为有用反馈的前置条件。
 
+2026-10-28 当前状态：本文件保留首个切片的历史任务 / 结果，后续 M4 Worker、模型文本分析、录音核对和腾讯适配已接入；旧表中的“待实施 / 未评发音”不能作为当前全量状态。当前逐项缺口与验收门见[状态核对](teacher-assistant-status-2026-10-28.md)和[深入报告任务 §2](conversation-report-deep-analysis-tasking.md#2-当前现状与目标边界)。真实发音与独立教学质量验收仍未通过。
+
 依据：[当前实施边界](implementation-plan.md)、[教师作业 PRD §9–11](prd/teacher-assigned-conversation-homework-prd-v0.2.md)、[完整任务](teacher-assistant-tasking.md)。保留已合入的教师 AI 备课和原 FreeTalk 行为。本地 Mock 身份 / 授课 / 学习记录与真实 Doubao 就绪分别说明。
 
 2026-10-27 后续优先级：用户要求记录完整对话文本，并使用模型基于上下文进行深入分析。新的执行顺序、任务依赖与验收见[完整文本与深入分析 Tasking v1](conversation-report-deep-analysis-tasking.md)；本文件保留首版历史和专项任务。

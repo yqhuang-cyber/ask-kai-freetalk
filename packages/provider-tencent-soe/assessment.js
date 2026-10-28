@@ -4,17 +4,19 @@ import {requireThat} from '../teacher-assistant/contracts.js';
 import {isDeepStrictEqual} from 'node:util';
 export const TENCENT_API_PROFILE='soe-wss-2026-01-16';
 export function audioEligibility(segment){
+  if(segment?.speaker==='learner_channel'&&/^[a-f0-9]{64}$/.test(segment.source_verification_hash??'')&&segment.auto_verification?.admission==='eligible'&&segment.auto_verification.version==='audio-auto-check-v1'&&segment.auto_verification.source_basis==='authorized_mic_channel'&&segment.auto_verification.identity_verified===false&&segment.auto_verification.quality_guaranteed===false)return {eligible:true,reason:null};
   if(segment?.speaker!=='learner_verified')return {eligible:false,reason:'speaker_unverified'};
   if(!segment.quality||!['noise','clipping','missing_frames','overlap'].every(k=>segment.quality[k]==='not_detected'))return {eligible:false,reason:'quality_unverified'};
   return {eligible:true,reason:null};
 }
 export function verifiedAudioReference(segment){
   const alignment=segment?.alignment,reference=alignment?.reference,basis=alignment?.basis;
+  if(basis==='auto_aligned'&&audioEligibility(segment).eligible&&segment.source_verification_hash&&alignment.reference_text_verified===false&&reference?.verified===false&&reference.review_required===true&&reference.basis===basis&&reference.verification_hash===segment.source_verification_hash&&/^[a-f0-9]{64}$/.test(reference.asr_hash??'')&&reference.comparison==='independent_asr_agreement'&&typeof reference.text==='string'&&[...reference.text].length>0&&[...reference.text].length<=30)return reference;
   if(!['author_verified','teacher_reviewed'].includes(basis)||alignment.reference_text_verified!==true||reference?.verified!==true||reference.basis!==basis||typeof reference.text!=='string'||[...reference.text].length<1||[...reference.text].length>30)return null;
   if(basis==='teacher_reviewed'&&(!segment.source_review_hash||reference.review_hash!==segment.source_review_hash))return null;
   return reference;
 }
-const audioSource=segment=>({id:segment.id,sha256:segment.sha256,stream_id:segment.stream_id,sample_start:segment.sample_start,sample_end:segment.sample_end,...(segment.source_review_hash?{source_review_hash:segment.source_review_hash}:{})});
+const audioSource=segment=>({id:segment.id,sha256:segment.sha256,stream_id:segment.stream_id,sample_start:segment.sample_start,sample_end:segment.sample_end,...(segment.source_verification_hash?{source_verification_hash:segment.source_verification_hash}:{}),...(segment.source_review_hash?{source_review_hash:segment.source_review_hash}:{})});
 export function signedAssessmentURL({appId,secretId,secretKey,voiceId,mode=3,reference='',recording=true,timestamp=Math.floor(Date.now()/1000),nonce=randomInt(1,2147483647)}){
   requireThat(/^\d{1,20}$/.test(appId)&&typeof secretId==='string'&&secretId.length>0&&typeof secretKey==='string'&&secretKey.length>0,'TENCENT_CONFIG_REQUIRED');
   const params={secretid:secretId,timestamp,expired:timestamp+300,nonce,server_engine_type:'16k_zh',voice_id:voiceId,voice_format:0,text_mode:0,ref_text:reference,eval_mode:mode,score_coeff:1,sentence_info_enabled:0,rec_mode:recording?1:0};
