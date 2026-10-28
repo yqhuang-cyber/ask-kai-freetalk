@@ -24,3 +24,5 @@ node --env-file-if-exists=.env scripts/thai-support-spike/probe.js --live --case
 命令非零表示采集未完成；能力没有出现时也会正常产出结果，不能用进程退出码当作质量验收。
 
 结果与下一步见 [Spike 报告](../../docs/free-talk-thai-support-spike.md)。
+
+独立入口实施后新增 `browser-check.js`（合成 provider / 浏览器设备，测试依赖显式替换，不改产品就绪守卫）与 `gateway-probe.js --live`（真实中泰应用 / Planner / provider，作者输入，汇总记录）；`--suite=natural` 单独补验自然对话。真实 probe 使用临时端口，不影响既有应用。采集成功不表示表面语种、作用范围、翻译或听感全部通过，结果详见[实现与边界](../../docs/free-talk-thai-implementation.md)。

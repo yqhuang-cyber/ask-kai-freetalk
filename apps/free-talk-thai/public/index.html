@@ -1,0 +1,10 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ask Kai · 中泰自由聊天</title><link rel="stylesheet" href="/web.css"><script type="module" src="/web.js"></script></head><body><main>
+<header><span class="brand">ASK KAI</span><span class="badge">中泰 Free Talk · 实验版</span></header>
+<h1>用中文聊，用泰语帮助理解。</h1><p class="intro">从你想说的事情开始。Kai 先说中文，需要时紧接简短泰语解释。</p>
+<p class="notice">独立中泰入口。使用虚构 Mock 学习者资料；语音连接状态单独显示。泰语发音和自然度尚待人工核验，建议先用中文开口。</p>
+<section class="settings"><label>Mock 学习者 <select id="learner" disabled></select></label><label>Kai 的语速 <select id="pace"><option value="slow">慢速</option><option value="normal">正常</option></select></label><p>语言设置仅用于这场中泰对话，新会话恢复默认。可用中文说“接下来只用中文”或“加上泰语解释”。“仅本轮中文”之后自动恢复泰语仍在验证，未恢复时请明确说“加上泰语解释”。原中英版和教师助教不受此场景设置影响。</p></section>
+<section class="conversation"><div class="statusbar"><h2>和 Kai 聊一聊</h2><span id="status">正在检查服务</span></div><p id="plan">由你选择话题，自然交流。</p><div class="captions"><p id="caption" class="annotated-caption" aria-live="off"></p><p id="student"></p></div>
+<div class="controls"><button id="connect" disabled>开始中泰对话 ↗</button><button id="interrupt" disabled>打断 Kai</button><button id="mute" disabled aria-pressed="false">静音</button><button id="end" disabled>结束</button></div><label><input id="pinyin" type="checkbox" checked> 显示中文拼音</label><p id="pinyin-hint">拼音只显示在字幕中，不朗读。</p><p id="message" role="status">真实语音服务就绪后才开启麦克风。</p></section>
+<section id="summary" hidden><h2>本次对话小结</h2><div id="summary-content"></div><p id="receipt"></p></section>
+<footer>本应用不保存原始音频，供应商留存规则仍待确认。对话小结保存在此入口独立的本地 Mock 内存，重启重置；记录不表示已经掌握或发音合格。</footer>
+</main></body></html>

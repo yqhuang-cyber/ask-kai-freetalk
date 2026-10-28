@@ -314,6 +314,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         teaching.captionControls=provider.speechControlSupported===true;
         appliedContext=teaching.contextSnapshot();
         captions=new CaptionSettings({sessionId:ticket.session_id,send,voiceSupported:teaching.captionControls,english:()=>teaching.languageSnapshot().english_support==='required',
+          confirmation:teaching.captionConfirmation?.bind(teaching),
           speak:(text,control)=>provider.speakFixedText(text,control),
           available:()=>ready&&!ended&&!ending&&!restricted&&!closing.current&&!runtime.active&&!pendingContext&&!pendingCancel.size&&!provider.pendingFixed&&!provider.uiBusy&&!speech?.blocksContext(),
           settled:turn=>[...runtime.responses].some(([id,r])=>r.turn===turn&&!speechReplies.has(id)&&['done','cancelled'].includes(r.status)),
@@ -415,7 +416,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
           if(event.type==='response.started') {
             observation?.record('voice.reply.started',{...ids,applied_context_version:appliedVersion,applied_context_hash:appliedContext.hash,current_context_version:teaching.version,provider_response_id:packet.provider_response_id??null,pending_context:!!pendingContext,decision_turn_id:appliedDecision?.turn_id??null,generation_basis:'unknown'});
             const languageContextMatched=!pendingContext && sameLanguageSupport(appliedLanguage,teaching.languageSnapshot());
-            replyStats.set(event.response_id,{at:performance.now(),turn:event.turn_id,chars:0,deltas:0,chunks:0,pcmMs:0,audit:diagnostics?new ReplyAudit({englishSupport:appliedLanguage.english_support,languageContextMatched}):null});
+            replyStats.set(event.response_id,{at:performance.now(),turn:event.turn_id,chars:0,deltas:0,chunks:0,pcmMs:0,audit:diagnostics?(teaching.createReplyAudit?.({language:appliedLanguage,languageContextMatched})??new ReplyAudit({englishSupport:appliedLanguage.english_support,languageContextMatched})):null});
             diagnose('response.started',{...ids,pending_context:!!pendingContext,pending_cancel:pendingCancel.size>0});
             // Snapshot at the first accepted response-start notification, which
             // can arrive after generation began. This proves ACK/turn matching,

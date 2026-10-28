@@ -1,0 +1,322 @@
+{
+  "date": "2026-10-28",
+  "scope": "free_talk_thai_only",
+  "engineering": {
+    "tests": 844,
+    "passed": 844,
+    "synthetic_replay_scenarios": 3,
+    "original_browser_passed": true,
+    "frozen_original_files_unchanged": 8
+  },
+  "browser": {
+    "synthetic_provider": true,
+    "synthetic_browser_microphone": true,
+    "real_provider": false,
+    "human_listening": false,
+    "preview_blocks_microphone": true,
+    "independent_entry": true,
+    "thai_captions_and_chinese_pinyin": true,
+    "manual_and_voice_pinyin": true,
+    "interrupt_clears_captions": true,
+    "mobile_overflow": false,
+    "summary": true,
+    "page_errors": 0
+  },
+  "real_provider": {
+    "language_scope_attempts": [
+      {
+        "kind": "free_thai_ordinary_gateway",
+        "real_provider": true,
+        "business": "independent_mock_hskai",
+        "authored_os_input": true,
+        "browser_audio": false,
+        "human_listening": false,
+        "thai_quality_accepted": false,
+        "samples": [
+          {
+            "id": "thai_help",
+            "expected": "zh_th",
+            "asr_match": true,
+            "ownership_matched": true,
+            "han": 61,
+            "thai": 11,
+            "latin": 0,
+            "audio_bytes": 888294,
+            "audio_pcm_ms": 18506,
+            "text_sha256": "6ff659a52264129ee0da104f3f78dde7de58abbcaba85efb7c11ac508d01713f",
+            "surface_match": true,
+            "response_done": true
+          },
+          {
+            "id": "once_chinese",
+            "expected": "zh",
+            "asr_match": false,
+            "ownership_matched": true,
+            "han": 57,
+            "thai": 0,
+            "latin": 0,
+            "audio_bytes": 660094,
+            "audio_pcm_ms": 13752,
+            "text_sha256": "3684271aedc5e221350c153be778245f58a24c42bc946bd0ab81ba13b4d5ec39",
+            "surface_match": true,
+            "response_done": true
+          },
+          {
+            "id": "restore_thai",
+            "expected": "zh_th",
+            "asr_match": true,
+            "ownership_matched": true,
+            "han": 52,
+            "thai": 0,
+            "latin": 0,
+            "audio_bytes": 635130,
+            "audio_pcm_ms": 13232,
+            "text_sha256": "0c832abd3785b9652dfef801d374560d8c9ba534ed158bd6a91a206721883c21",
+            "surface_match": false,
+            "response_done": true
+          }
+        ],
+        "planning": {
+          "mode": "next_turn_advisory",
+          "planner_kind": "llm",
+          "degraded": false,
+          "degraded_reason": null
+        },
+        "status": "needs_review"
+      },
+      {
+        "kind": "free_thai_ordinary_gateway",
+        "real_provider": true,
+        "business": "independent_mock_hskai",
+        "authored_os_input": true,
+        "browser_audio": false,
+        "human_listening": false,
+        "thai_quality_accepted": false,
+        "samples": [
+          {
+            "id": "thai_help",
+            "expected": "zh_th",
+            "language_state": {
+              "version": "kai-free-thai-v1",
+              "support_locale": "th",
+              "support_mode": "required"
+            },
+            "asr_match": true,
+            "ownership_matched": true,
+            "han": 40,
+            "thai": 70,
+            "latin": 0,
+            "audio_bytes": 935830,
+            "audio_pcm_ms": 19496,
+            "text_sha256": "b76e11a7475b2163b937b76b7bb162e1f0562c276d135eba00219d85c48e822b",
+            "surface_match": true,
+            "response_done": true
+          },
+          {
+            "id": "once_chinese",
+            "expected": "zh",
+            "language_state": {
+              "version": "kai-free-thai-v1",
+              "support_locale": "th",
+              "support_mode": "required"
+            },
+            "asr_match": false,
+            "ownership_matched": true,
+            "han": 12,
+            "thai": 0,
+            "latin": 0,
+            "audio_bytes": 131742,
+            "audio_pcm_ms": 2745,
+            "text_sha256": "f43af5228dce27531aa19f5c628fb0b244970467649c57708b4a39a345b2c3da",
+            "surface_match": true,
+            "response_done": true
+          },
+          {
+            "id": "restore_thai",
+            "expected": "zh_th",
+            "language_state": {
+              "version": "kai-free-thai-v1",
+              "support_locale": "th",
+              "support_mode": "required"
+            },
+            "asr_match": true,
+            "ownership_matched": true,
+            "han": 45,
+            "thai": 0,
+            "latin": 0,
+            "audio_bytes": 573872,
+            "audio_pcm_ms": 11956,
+            "text_sha256": "b922ec1df31cada2b721538892e8f35d752c214966069e31233744e7a1dc83ee",
+            "surface_match": false,
+            "response_done": true
+          }
+        ],
+        "planning": {
+          "mode": "next_turn_advisory",
+          "planner_kind": "llm",
+          "degraded": false,
+          "degraded_reason": null
+        },
+        "status": "needs_review"
+      },
+      {
+        "kind": "free_thai_ordinary_gateway",
+        "real_provider": true,
+        "business": "independent_mock_hskai",
+        "authored_os_input": true,
+        "browser_audio": false,
+        "human_listening": false,
+        "thai_quality_accepted": false,
+        "samples": [
+          {
+            "id": "thai_help",
+            "expected": "zh_th",
+            "language_state": {
+              "version": "kai-free-thai-v1",
+              "support_locale": "th",
+              "support_mode": "required"
+            },
+            "asr_match": true,
+            "asr_scope": {
+              "once": false,
+              "chinese_only": false
+            },
+            "ownership_matched": true,
+            "han": 33,
+            "thai": 109,
+            "latin": 0,
+            "audio_bytes": 1137490,
+            "audio_pcm_ms": 23698,
+            "text_sha256": "92ce6866c5f0f6d2ac0ff772e137d56ff7812e4f77c29cfa4b19f54455189eb8",
+            "surface_match": true,
+            "response_done": true
+          },
+          {
+            "id": "once_chinese",
+            "expected": "zh",
+            "language_state": {
+              "version": "kai-free-thai-v1",
+              "support_locale": "th",
+              "support_mode": "required"
+            },
+            "asr_match": false,
+            "asr_scope": {
+              "once": true,
+              "chinese_only": false
+            },
+            "ownership_matched": true,
+            "han": 14,
+            "thai": 0,
+            "latin": 0,
+            "audio_bytes": 142552,
+            "audio_pcm_ms": 2970,
+            "text_sha256": "08a187a1bb7edd3abdbed106ffdd94814d3e76f881268b362650bf7c66d5d2d2",
+            "surface_match": true,
+            "response_done": true
+          },
+          {
+            "id": "restore_thai",
+            "expected": "zh_th",
+            "language_state": {
+              "version": "kai-free-thai-v1",
+              "support_locale": "th",
+              "support_mode": "required"
+            },
+            "asr_match": true,
+            "asr_scope": {
+              "once": false,
+              "chinese_only": false
+            },
+            "ownership_matched": true,
+            "han": 27,
+            "thai": 0,
+            "latin": 0,
+            "audio_bytes": 334452,
+            "audio_pcm_ms": 6968,
+            "text_sha256": "378f6495084cb2b97a1b4bb435dc70c42f69f2619d59dc0c947f0f3a1f103e22",
+            "surface_match": false,
+            "response_done": true
+          }
+        ],
+        "planning": {
+          "mode": "next_turn_advisory",
+          "planner_kind": "llm",
+          "degraded": false,
+          "degraded_reason": null
+        },
+        "status": "needs_review"
+      }
+    ],
+    "natural_attempts": [
+      {
+        "kind": "free_thai_ordinary_gateway",
+        "suite": "natural",
+        "real_provider": true,
+        "business": "independent_mock_hskai",
+        "authored_os_input": true,
+        "browser_audio": false,
+        "human_listening": false,
+        "thai_quality_accepted": false,
+        "samples": [
+          {
+            "id": "natural_music",
+            "expected": "zh_th",
+            "language_state": {
+              "version": "kai-free-thai-v1",
+              "support_locale": "th",
+              "support_mode": "required"
+            },
+            "asr_match": true,
+            "asr_scope": {
+              "once": false,
+              "chinese_only": false
+            },
+            "ownership_matched": true,
+            "han": 13,
+            "thai": 44,
+            "latin": 0,
+            "audio_bytes": 456248,
+            "audio_pcm_ms": 9505,
+            "text_sha256": "ba0aa46fa1aa0ad71a519f1a8575f1dc39c1539f8f61780b4ad8f56711108a34",
+            "surface_match": true,
+            "response_done": true
+          }
+        ],
+        "planning": {
+          "mode": "next_turn_advisory",
+          "planner_kind": "llm",
+          "degraded": false,
+          "degraded_reason": null
+        },
+        "status": "incomplete",
+        "failure": "PROBE_FAILED"
+      },
+      {
+        "kind": "free_thai_ordinary_gateway",
+        "suite": "natural",
+        "real_provider": true,
+        "business": "independent_mock_hskai",
+        "authored_os_input": true,
+        "browser_audio": false,
+        "human_listening": false,
+        "thai_quality_accepted": false,
+        "samples": [],
+        "planning": {
+          "mode": "next_turn_advisory",
+          "planner_kind": "llm",
+          "degraded": false,
+          "degraded_reason": null
+        },
+        "status": "incomplete",
+        "failure": "PROBE_TIMEOUT",
+        "incomplete_turn": {
+          "asr_seen": true,
+          "response_started": true,
+          "audio_bytes": 581632
+        }
+      }
+    ]
+  },
+  "quality_accepted": false,
+  "human_listening": false
+}

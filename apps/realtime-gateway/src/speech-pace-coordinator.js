@@ -27,7 +27,7 @@ export class SpeechPaceCoordinator {
     if(c.phase==='ready_after')phase='after';
     if(!phase)return;
     c.phase=`speaking_${phase}`;c.response_id=null;c.audio_ms=0;this.publish();this.arm(30000);
-    try{this.speak(speechConfirmation(c,phase,{english:c.english}),{turn_id:c.turn_id,request_id:c.id,phase});}
+    try{this.speak(this.teaching.speechConfirmation?.(c,phase)??speechConfirmation(c,phase,{english:c.english}),{turn_id:c.turn_id,request_id:c.id,phase});}
     catch{this.expire('SPEECH_CONTROL_FAILED');}
   }
   settle(turn){if(this.current?.turn_id===turn)this.current.original_settled=true;}

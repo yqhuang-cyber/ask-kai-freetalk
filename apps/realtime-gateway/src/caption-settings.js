@@ -2,8 +2,8 @@ import {randomUUID} from 'node:crypto';
 // Session-only absolute settings with exact Web receipts. Voice acknowledgements
 // use the existing fixed-speech lane and actual accepted input provenance.
 export class CaptionSettings {
-  constructor({sessionId,send,speak,available,settled,onApplied,voiceSupported=false,english=()=>false,ackMs=3000}){
-    Object.assign(this,{sessionId,send,speak,available,settled,onApplied,voiceSupported,english,ackMs});
+  constructor({sessionId,send,speak,available,settled,onApplied,voiceSupported=false,english=()=>false,confirmation,ackMs=3000}){
+    Object.assign(this,{sessionId,send,speak,available,settled,onApplied,voiceSupported,english,confirmation,ackMs});
     this.enabled=true;this.revision=0;this.turns=new Set();this.current=null;this.closed=false;
   }
   snapshot(){return {session_id:this.sessionId,pinyin_enabled:this.enabled,revision:this.revision,voice_supported:this.voiceSupported};}
@@ -31,7 +31,7 @@ export class CaptionSettings {
     if(this.closed||!c||!c.voice||c.phase!=='ready_after'||!(c.original_settled||this.settled(c.turn_id))||!this.available())return;
     c.phase='speaking_after';this.publish();this.arm(30000);
     const zh=c.target?'好的，已打开字幕拼音。':'好的，已关闭字幕拼音，中文会继续显示。';
-    const text=zh+(this.english()?(c.target?' Pinyin is now shown.':' Pinyin is hidden; Chinese captions stay on.'):'');
+    const text=this.confirmation?.(c.target)??zh+(this.english()?(c.target?' Pinyin is now shown.':' Pinyin is hidden; Chinese captions stay on.'):'');
     try{this.speak(text,{turn_id:c.turn_id,request_id:c.id,phase:'after'});}catch{this.failed();}
   }
   settle(turn){if(this.current?.turn_id===turn)this.current.original_settled=true;}

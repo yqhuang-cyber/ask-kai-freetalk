@@ -7,6 +7,7 @@
     "node": ">=22.19.0"
   },
   "scripts": {
+    "poc:thai": "node --env-file-if-exists=.env apps/free-talk-thai/src/main.js",
     "start": "node --env-file-if-exists=.env apps/realtime-gateway/src/main.js",
     "poc": "node --env-file-if-exists=.env apps/realtime-gateway/src/main.js --poc",
     "test": "node --test",
