@@ -52,6 +52,7 @@
     "probe:teacher:report": "node --env-file-if-exists=.env scripts/teacher-assistant/report-semantic-probe.js",
     "probe:teacher:report:worker": "node --env-file-if-exists=.env scripts/teacher-assistant/report-worker-probe.js",
     "probe:teacher:pronunciation:audio": "node --env-file-if-exists=.env scripts/teacher-assistant/pronunciation-probe.js",
+    "test:teacher:audio:browser": "node scripts/teacher-assistant/audio-assessment-browser-check.js",
     "test:teacher:report:browser": "node scripts/teacher-assistant/deep-report-browser-check.js"
   },
   "dependencies": {

@@ -2,6 +2,7 @@ import {HomeworkPreparations} from './preparations.js';
 import {RecordingPermissions} from './recording-permissions.js';
 import {AnalysisDelegation} from './analysis-delegation.js';
 import {TranscriptStore} from './transcript-store.js';
+import {AudioReviews} from './audio-reviews.js';
 import {AudioStore} from './audio-store.js';
 import {homeworkActors} from './fixtures.js';
 import {randomUUID,randomBytes,createHash} from 'node:crypto';
@@ -19,7 +20,7 @@ export class HomeworkService {
     for(const a of this.repo.all('attempts'))if(a.state==='active')this.repo.put('attempts',{...a,state:'interrupted',version:a.version+1});
     this.preparations=new HomeworkPreparations(this,aiPlanSource);
     this.recordingPermissions=new RecordingPermissions(this,recordingPolicy);
-    this.analysisDelegation=new AnalysisDelegation(this);
+    this.analysisDelegation=new AnalysisDelegation(this);this.audioReviews=new AudioReviews(this);
     for(const j of this.repo.all('jobs'))if(j.state==='running')this.repo.put('jobs',{...this.analysisDelegation.deep.recover(j),state:j.external_started?'failed':'pending',lease_id:null,lease_until:null,error:j.external_started?'EXTERNAL_OUTCOME_UNKNOWN':undefined});
     this.transcriptStore=new TranscriptStore(this);
     this.transcriptStore.markInterrupted();
@@ -36,6 +37,7 @@ export class HomeworkService {
   async call(op,token,input={}){
     if(op==='login'){const a=this.repo.get('actors',id(input.actor_id));requireThat(a?.active,'UNAUTHORIZED');const opaque=randomBytes(32).toString('hex');this.repo.put('sessions',{id:hash(opaque),actor_id:a.id,auth_epoch:a.auth_epoch,deletion_epoch:a.deletion_epoch,expires:this.now()+3600000});return {token:opaque,actor:this.publicActor(a)};}
     const a=this.actor(token);
+    if(op==='audio_review_manifest')return this.audioReviews.manifest(a,input);if(op==='audio_preview')return this.audioReviews.preview(a,input);if(op==='audio_review')return this.audioReviews.save(a,input);
     if(['audio_authorize','audio_append','audio_read','audio_seal','audio_manifest','audio_discard'].includes(op)){requireThat(this.audioStore,'RECORD_NOT_ENABLED');return this.audioStore.call(op,a,input);}
     if(this.transcriptStore.handles(op))return this.transcriptStore.call(op,a,input);
     if(this.recordingPermissions.handles(op))return this.recordingPermissions.call(op,a,input);
@@ -87,12 +89,24 @@ export class HomeworkService {
         this.repo.put('submissions',s);this.repo.put('jobs',{id:s.id,submission_id:s.id,state:'pending',tries:0,transcript_hash,audio_manifest_hash,deep:this.analysisDelegation.deep.create()});return this.submissionView(s,a);});
     }
     if(op==='submission'){let s=input.submission_id?this.repo.get('submissions',id(input.submission_id)):this.repo.all('submissions').find(s=>s.attempt_id===input.attempt_id);requireThat(s,'NOT_FOUND');this.assignment(a,s.assignment_id);return this.submissionView(s,a);}
-    if(op==='retry_report'){this.role(a,'teacher');const s=this.repo.get('submissions',id(input.submission_id));requireThat(s,'NOT_FOUND');this.assignment(a,s.assignment_id);const job=this.repo.get('jobs',s.id);requireThat(this.analysisDelegation.deep.retryable(job),'REPORT_NOT_FAILED');this.repo.put('jobs',{...this.analysisDelegation.deep.retry(job),state:'pending'});return {state:'pending'};}
+    if(op==='retry_report'){const s=this.repo.get('submissions',id(input.submission_id));requireThat(s,'NOT_FOUND');this.assignment(a,s.assignment_id);const job=this.repo.get('jobs',s.id);if(!job?.deep)this.role(a,'teacher');requireThat(this.analysisDelegation.deep.retryable(job),'REPORT_NOT_FAILED');this.repo.put('jobs',{...this.analysisDelegation.deep.retry(job),state:'pending'});return {state:'pending'};}
     if(op==='revoke_learner'){this.role(a,'teacher');requireThat(a.learners.includes(input.learner_id),'FORBIDDEN');const l=this.repo.get('actors',input.learner_id);this.transcriptStore.eraseLearner(l.id);this.repo.put('actors',{...l,active:false,auth_epoch:l.auth_epoch+1});const audio=this.audioStore?.eraseLearner(l.id)??[];return {ok:true,audio_deletion:audio.some(x=>x.state==='failed')?'failed':'deleted'};}
     if(op==='delete_my_data'){this.role(a,'learner');this.preparations.eraseLearner(a.id);const deleted=this.repo.transaction(()=>{this.recordingPermissions.eraseLearner(a.id);this.transcriptStore.eraseLearner(a.id);for(const table of ['attempts','submissions','reports'])for(const row of this.repo.all(table))if(row.learner_id===a.id||table==='reports'&&this.repo.get('submissions',row.submission_id)?.learner_id===a.id){if(table==='submissions'){this.repo.remove('jobs',row.id);this.repo.remove('reports',row.id);}this.repo.remove(table,row.id);}this.repo.put('actors',{...a,active:false,auth_epoch:a.auth_epoch+1,deletion_epoch:a.deletion_epoch+1});return {ok:true};});const audio=this.audioStore?.eraseLearner(a.id)??[];return {...deleted,audio_deletion:audio.some(x=>x.state==='failed')?'failed':'deleted'};}
     throw new Error('NOT_FOUND');
   }
-  submissionView(s,a){const job=this.repo.get('jobs',s.id),r=this.repo.get('reports',s.id);return {id:s.id,attempt_id:s.attempt_id,assignment_id:s.assignment_id,state:'submitted',submitted_at:s.submitted_at,report_state:job?.deep&&r?'complete':job?.state??'pending',report:r?projectReport(r,a.role):null,...(job?.deep?{deep_analysis:this.analysisDelegation.deep.view(job,a.role)}:{})};}
+  submissionView(s,a){
+    const job=this.repo.get('jobs',s.id),r=this.repo.get('reports',s.id),deep=this.analysisDelegation.deep.view(job,a.role);
+    let state=job?.state??'pending',report=r?projectReport(r,a.role):null;
+    if(deep){
+      const text=deep.stages.text,ready=job.state==='complete'&&['complete','partial'].includes(text.state)&&!!text.result;
+      deep.stages.audio.review_required=this.analysisConfig.audio.manualReview&&deep.stages.audio.reason==='no_eligible_audio'&&!this.audioReviews.hasReview(s.attempt_id);
+      const audio=deep.stages.audio,awaitingReview=ready&&a.role==='learner'&&this.analysisConfig.audio.manualReview&&audio.reason==='no_eligible_audio'&&!this.audioReviews.hasReview(s.attempt_id);
+      state=deep.processing?job.state:awaitingReview?'awaiting_audio_review':ready?'complete':job.state==='failed'||text.state==='failed'?'failed':'unavailable';
+      if(awaitingReview){audio.state='awaiting_review';audio.reason='source_review_required';}
+      if(!ready||awaitingReview){report=null;for(const stage of Object.values(deep.stages))delete stage.result;}
+    }
+    return {id:s.id,attempt_id:s.attempt_id,assignment_id:s.assignment_id,state:'submitted',submitted_at:s.submitted_at,report_state:state,report,...(deep?{deep_analysis:deep}:{})};
+  }
   async runReports(){if(this.processing)return;this.processing=true;try{for(const job of this.repo.all('jobs').filter(j=>j.state==='pending'&&!j.deep).slice(0,4)){
     this.repo.put('jobs',{...job,state:'running',tries:job.tries+1});try{const s=this.repo.get('submissions',job.submission_id),attempt=this.repo.get('attempts',s.attempt_id);this.verifyEpoch(attempt);const item=this.repo.get('assignments',s.assignment_id),p=this.publication(item);requireThat(digest(attempt.evidence)===s.evidence_hash,'EVIDENCE_CONFLICT');const report=await this.analyzer.analyze(p.plan,attempt.evidence,attempt);validateReport(report,p.plan,attempt.evidence,attempt);this.repo.transaction(()=>{this.verifyEpoch(attempt);this.publication(item);requireThat(this.repo.get('submissions',s.id)?.evidence_hash===s.evidence_hash,'SOURCE_CHANGED');requireThat(report.plan_hash===s.plan_hash&&report.attempt_id===attempt.id&&report.evidence_hash===s.evidence_hash&&report.grade===null,'INVALID_REPORT');this.repo.put('reports',{...report,id:s.id,submission_id:s.id,learner_id:s.learner_id});this.repo.put('jobs',{...job,state:'complete',tries:job.tries+1});});}catch{if(this.repo.get('jobs',job.id))this.repo.put('jobs',{...job,state:'failed',tries:job.tries+1,error:'REPORT_ANALYSIS_FAILED'});}
   }}finally{this.processing=false;}}

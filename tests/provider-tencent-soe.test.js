@@ -46,3 +46,9 @@ test('sentence tone and phoneme candidates require an independently verified sea
 test('revocation between opening the socket and sending PCM stops all audio transmission',async t=>{
   const {port,seen}=await providerFixture(t);let authorizations=0;await assert.rejects(port.assess({segment,pcm_base64:pcm.toString('base64')},{beforeSend:async()=>{if(++authorizations===2)throw new Error('RECORD_AUTHORIZATION_REVOKED');}}),/RECORD_AUTHORIZATION_REVOKED/);assert.equal(seen.length,0);
 });
+
+test('a validated result followed by a separate final marker completes, while different sentence results are not silently dropped',async t=>{
+  const action=(different=false)=>(ws,id)=>{ws.send(JSON.stringify({code:0,voice_id:id}));ws.on('message',(_,binary)=>{if(binary)return;ws.send(JSON.stringify({code:0,voice_id:id,result:{...raw,SentenceId:0}}));if(different)ws.send(JSON.stringify({code:0,voice_id:id,result:{...raw,SentenceId:1}}));ws.send(JSON.stringify({code:0,voice_id:id,final:1}));});};
+  const good=await providerFixture(t,{action:action()});const result=await good.port.assess({segment,pcm_base64:pcm.toString('base64')});assert.equal(result.words[0].word,'我');
+  const ambiguous=await providerFixture(t,{action:action(true)});await assert.rejects(ambiguous.port.assess({segment,pcm_base64:pcm.toString('base64')}),/MULTIPLE_SENTENCES/);
+});

@@ -8,7 +8,7 @@ async function fixture(options={}){
   const plan=await service.call('preview',teacher,{learner_id:'mock-maya-hsk3',topic:'dining'});
   const published=await service.call('publish',teacher,{learner_id:plan.learner_id,topic:'dining',plan_hash:plan.hash,due_at:new Date(Date.now()+86400000).toISOString(),timezone:'Asia/Shanghai',idempotency_key:'record-choice-publish'});
   const prepared=await service.call('prepare',learner,{assignment_id:published.assignment_id});
-  const input={attempt_id:prepared.attempt.id,notice_version:'deep-report-notice-v4',expected_revision:0,text:true,audio:false};
+  const input={attempt_id:prepared.attempt.id,notice_version:'deep-report-notice-v5',expected_revision:0,text:true,audio:false};
   return {service,teacher,learner,prepared,input};
 }
 test('M4 stores per-attempt choices separately from attempts and rejects teacher / other learner writes',async t=>{
@@ -26,7 +26,7 @@ test('choice persists across restart; audio stays disabled and interrupted attem
   const dir=mkdtempSync(join(tmpdir(),'kai-recording-choice-'));t.after(()=>rmSync(dir,{force:true,recursive:true}));const path=join(dir,'test.sqlite');
   const f=await fixture({path});await f.service.call('recording_choice_update',f.learner,f.input);f.service.close();
   const restarted=new HomeworkService({path});t.after(()=>restarted.close());const saved=await restarted.call('recording_choice',f.learner,{attempt_id:f.input.attempt_id});assert.equal(saved.text.allowed,true);assert.equal(saved.collection_enabled,true);assert.equal(restarted.repo.get('attempts',f.input.attempt_id).state,'interrupted');
-  assert.deepEqual(restarted.repo.db.prepare('SELECT version FROM migrations ORDER BY version').all().map(r=>r.version),[1,2,3,4,5,6]);
+  assert.deepEqual(restarted.repo.db.prepare('SELECT version FROM migrations ORDER BY version').all().map(r=>r.version),[1,2,3,4,5,6,7]);
 });
 test('TTL sweep and request path revoke expired branches without reviving or extending them',async t=>{
   let now=Date.now();const f=await fixture({now:()=>now,recordingPolicy:{text_days:7,audio_days:1}});t.after(()=>f.service.close());

@@ -85,3 +85,10 @@ test('external use requires separate activation and reviewed purposes, not merel
 test('Tencent preflight never leaks credentials or turns documentation into measured capability',()=>{
   const r=tencentReadiness({TENCENT_SOE_APP_ID:'fake-app-id',TENCENT_SOE_SECRET_ID:'fake-secret-id',TENCENT_SOE_SECRET_KEY:'fake-secret-key'});assert.deepEqual(r.missing_configuration,[]);assert.equal(r.live_call_performed,false);assert.equal(r.ready_for_learner_reports,false);assert.equal(JSON.stringify(r).includes('fake-secret'),false);assert.equal(r.modes.free_speech.tone,'unverified');
 });
+
+test('v4 records remain readable and revocable, but old notices cannot grant a new audio purpose',()=>{
+  const selected=change(newRecordingChoice(attempt,recordingPolicy(),1000),true,false),legacy={...selected,notice_version:'deep-report-notice-v4'};
+  assert.ok(authorizeRecording(legacy,{context,revision:legacy.revision,kind:'text',operation:'read',now:3000,noticeVersion:legacy.notice_version,capabilities:enabled}));
+  const revoke=updateRecordingChoice(legacy,{notice_version:legacy.notice_version,expected_revision:legacy.revision,text:false,audio:false},context,3000);assert.equal(revoke.text.allowed,false);
+  assert.throws(()=>updateRecordingChoice(legacy,{notice_version:legacy.notice_version,expected_revision:legacy.revision,text:true,audio:true},context,3000),/NOTICE_CHANGED/);
+});

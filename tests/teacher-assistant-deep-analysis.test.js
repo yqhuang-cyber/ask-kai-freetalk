@@ -13,10 +13,10 @@ test('submitted text yields referenced semantic candidates while unverified audi
   const f=await deepFixture(t);let audioCalls=0;const job=f.service.analysisDelegation.claim();await runClaimedAnalysis({job,call:f.call,textAnalyzer:analyzer(),audioPort:{assess:async()=>audioCalls++}});
   const teacher=await view(f),student=await f.service.call('submission',f.learner,{submission_id:f.submission.id});assert.equal(teacher.report_state,'complete');assert.equal(teacher.deep_analysis.state,'partial');assert.equal(teacher.deep_analysis.stages.text.state,'complete');assert.equal(teacher.deep_analysis.stages.audio.reason,'no_eligible_audio');assert.equal(audioCalls,0);assert.ok(teacher.deep_analysis.stages.text.result.candidates.length);assert.equal(student.deep_analysis.stages.text.result.candidates[0].evidence_refs[0].source_id,undefined);assert.equal(student.deep_analysis.grade,null);assert.equal(student.deep_analysis.mastery,'unassessed');
 });
-test('base feedback and text results are visible while the independent audio branch is still running',async t=>{
+test('neither basic feedback nor partial text results are published until the background report finishes',async t=>{
   const f=await deepFixture(t,{verifiedAudio:true});let release;const audioPort={assess:async(source,{beforeSend})=>{await beforeSend();await new Promise(resolve=>release=resolve);return fakeAudio().assess(source,{beforeSend:async()=>{}});}};
   const work=runClaimedAnalysis({job:f.service.analysisDelegation.claim(),call:f.call,textAnalyzer:analyzer(),audioPort});await waitFor(()=>!!release&&f.service.repo.get('jobs',f.submission.id).deep.stages.text.state==='complete');
-  const during=await view(f);assert.equal(during.report_state,'complete');assert.equal(during.deep_analysis.processing,true);assert.equal(during.deep_analysis.stages.audio.state,'running');assert.equal((await f.service.call('me',f.learner)).actor.role,'learner');release();await work;assert.equal((await view(f)).deep_analysis.processing,false);
+  const during=await view(f);assert.equal(during.report_state,'running');assert.equal(during.report,null);assert.equal(during.deep_analysis.stages.text.result,undefined);const student=await f.service.call('submission',f.learner,{submission_id:f.submission.id});assert.equal(student.report,null);assert.equal(student.deep_analysis.stages.text.result,undefined);assert.equal(during.deep_analysis.processing,true);assert.equal(during.deep_analysis.stages.audio.state,'running');assert.equal((await f.service.call('me',f.learner)).actor.role,'learner');release();await work;assert.equal((await view(f)).deep_analysis.processing,false);assert.equal((await view(f)).report_state,'complete');assert.ok((await view(f)).deep_analysis.stages.text.result);
 });
 test('withdrawing audio during an uncooperative provider call blocks its late result and preserves text',async t=>{
   const f=await deepFixture(t,{verifiedAudio:true});let release;const work=runClaimedAnalysis({job:f.service.analysisDelegation.claim(),call:f.call,textAnalyzer:analyzer(),audioPort:{assess:async(source,{beforeSend})=>{await beforeSend();await new Promise(resolve=>release=resolve);return fakeAudio().assess(source,{beforeSend:async()=>{}});}}});await waitFor(()=>!!release);
@@ -71,4 +71,29 @@ test('only a sealed independently confirmed reference selects sentence assessmen
   const reference={text:'我',verified:true,basis:'author_verified',version:'synthetic-reference-v1'},f=await deepFixture(t,{verifiedAudio:true,verifiedReference:reference});let mode;
   await runClaimedAnalysis({job:f.service.analysisDelegation.claim(),call:f.call,textAnalyzer:analyzer(),audioPort:{assess:async(source,{beforeSend})=>{mode=source.mode;assert.deepEqual(source.reference,reference);await beforeSend();return normalizeAssessment({PronAccuracy:80,PronFluency:0.8,Words:[{Word:'我',PronAccuracy:80,MemBeginTime:0,MemEndTime:50,Tone:{Valid:true,RefTone:3,HypothesisTone:4}}]},{segment:source.segment,mode:source.mode,reference:source.reference});}}});
   assert.equal(mode,1);assert.deepEqual((await view(f)).deep_analysis.stages.audio.result.assessments[0].words[0].tone,{reference:3,hypothesis:4});
+});
+
+test('a learner may retry only their own failed deep report without re-submitting the homework',async t=>{
+  const f=await deepFixture(t);const failed=new ConversationReportAnalyzer({transport:syntheticSemanticTransport(()=>{throw new Error('SYNTHETIC_FAILURE');})});
+  await runClaimedAnalysis({job:f.service.analysisDelegation.claim(),call:f.call,textAnalyzer:failed});const before=await view(f);assert.equal(before.report_state,'failed');assert.equal(before.report,null);assert.equal(before.deep_analysis.retryable,true);
+  f.service.repo.put('actors',{id:'mock-other-learner',role:'learner',name:'合成其他学生',active:true,auth_epoch:1,deletion_epoch:1});const other=(await f.service.call('login',null,{actor_id:'mock-other-learner'})).token;await assert.rejects(f.service.call('retry_report',other,{submission_id:f.submission.id}),/FORBIDDEN|UNAUTHORIZED/);
+  await f.service.call('retry_report',f.learner,{submission_id:f.submission.id});assert.equal((await view(f)).report_state,'pending');
+  await runClaimedAnalysis({job:f.service.analysisDelegation.claim(),call:f.call,textAnalyzer:analyzer()});assert.equal((await view(f)).report_state,'complete');assert.equal(f.service.repo.all('submissions').length,1);
+});
+test('failed report views distinguish timeouts, provider failures and rejected outputs, including existing jobs',async t=>{
+  for(const [failure,expected] of [['timeout','deadline'],['provider_unavailable','provider_failed'],['output_rejected','output_rejected']]){
+    const f=await deepFixture(t,{audio:false}),transport=syntheticSemanticTransport(()=>{
+      if(failure==='provider_unavailable')throw new Error('PLANNER_UNAVAILABLE');
+      if(failure==='timeout')return new Promise(resolve=>setTimeout(()=>resolve({observations:[]}),80));
+      return {invalid:true};
+    });
+    const hold=setTimeout(()=>{},200);
+    try{await runClaimedAnalysis({job:f.service.analysisDelegation.claim(),call:f.call,textAnalyzer:new ConversationReportAnalyzer({transport,windowBudgetMs:15})});}finally{clearTimeout(hold);}
+    const saved=f.service.repo.get('jobs',f.submission.id);assert.equal(saved.deep.stages.text.reason,expected);
+    // Older jobs stored every unsuccessful window as output_rejected. Derive the
+    // public reason from their coverage without rewriting records or retrying.
+    saved.deep.stages.text.reason='output_rejected';f.service.repo.put('jobs',saved);
+    const student=await f.service.call('submission',f.learner,{submission_id:f.submission.id});
+    assert.equal(student.report_state,'failed');assert.equal(student.deep_analysis.stages.text.reason,expected);assert.equal(student.deep_analysis.stages.text.result,undefined);assert.equal(student.deep_analysis.retryable,true);
+  }
 });

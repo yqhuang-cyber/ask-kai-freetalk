@@ -31,3 +31,10 @@ test('model repair is bounded, timeout does not accept a late response, and larg
   const record=syntheticRecord({rounds:1000}),windows=textWindows(record);assert.ok(windows.length>12);
   const result=await new ConversationReportAnalyzer({transport:syntheticSemanticTransport()}).analyze(semanticPlan,record);assert.equal(result.coverage.windows.length,12);assert.equal(result.coverage.unprocessed_windows,windows.length-12);assert.equal(result.analyzer_version,SEMANTIC_VERSION);
 });
+test('a rejected response gives its repair a fresh request budget within the overall deadline',async()=>{
+  let calls=0;const transport={...syntheticSemanticTransport(),completeJSON:async()=>{
+    await new Promise(resolve=>setTimeout(resolve,80));return ++calls===1?{invalid:true}:{observations:[]};
+  }};
+  const result=await new ConversationReportAnalyzer({transport,windowBudgetMs:140,budgetMs:1000}).analyze(semanticPlan,syntheticRecord());
+  assert.equal(calls,2);assert.equal(result.coverage.windows[0].state,'complete');
+});

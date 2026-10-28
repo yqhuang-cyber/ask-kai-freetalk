@@ -1,7 +1,8 @@
 import {requireThat} from '../contracts.js';
 import {recordHash} from './contracts.js';
 
-export const NOTICE_VERSION='deep-report-notice-v4';
+export const NOTICE_VERSION='deep-report-notice-v5';
+const readableNotices=['deep-report-notice-v4',NOTICE_VERSION];
 export const POLICY_VERSION='deep-report-retention-v1';
 const DAY=86400000;
 export function recordingPolicy({textDays=7,audioDays=7}={}){
@@ -30,7 +31,7 @@ export function newRecordingChoice(attempt,policy,now){
     text:{allowed:false,state:'not_selected',grant_revision:0,processing:'local-only',expires_at:now+policy.text_days*DAY},audio:{allowed:false,state:'not_selected',grant_revision:0,processing:'local-only',expires_at:now+policy.audio_days*DAY},updated_at:now};
 }
 export function updateRecordingChoice(choice,input,context,now){
-  owner(choice,context);requireThat(input.notice_version===NOTICE_VERSION&&choice.notice_version===NOTICE_VERSION,'RECORD_NOTICE_CHANGED');
+  owner(choice,context);requireThat(input.notice_version===choice.notice_version&&readableNotices.includes(choice.notice_version),'RECORD_NOTICE_CHANGED');if(choice.notice_version!==NOTICE_VERSION)requireThat(!['text','audio'].some(kind=>input[kind]&&!choice[kind].allowed),'RECORD_NOTICE_CHANGED');
   requireThat(Number.isSafeInteger(input.expected_revision)&&input.expected_revision===choice.revision,'VERSION_CONFLICT');
   requireThat(typeof input.text==='boolean'&&typeof input.audio==='boolean'&&Object.keys(input).every(k=>['attempt_id','notice_version','expected_revision','text','audio'].includes(k)),'INVALID_RECORD_CHOICE');
   const next=structuredClone(choice);next.revision++;next.updated_at=now;
@@ -51,7 +52,7 @@ export function expireRecordingChoice(choice,now){
 export function authorizeRecording(choice,{context,revision,kind,operation,now,noticeVersion=NOTICE_VERSION,capabilities=recordingNotice().capabilities}){
   requireThat(choice,'RECORD_NOT_AUTHORIZED');owner(choice,context);
   requireThat(['text','audio'].includes(kind)&&['collect','read','provider_call','commit'].includes(operation),'INVALID_RECORD_OPERATION');
-  requireThat(choice.notice_version===noticeVersion&&noticeVersion===NOTICE_VERSION,'RECORD_NOTICE_CHANGED');
+  requireThat(choice.notice_version===noticeVersion&&readableNotices.includes(noticeVersion),'RECORD_NOTICE_CHANGED');
   requireThat(choice.revision===revision,'RECORD_AUTHORIZATION_CHANGED');
   requireThat(choice[kind].allowed&&choice[kind].state==='selected','RECORD_NOT_AUTHORIZED');
   requireThat(now<choice[kind].expires_at,'RECORD_EXPIRED');

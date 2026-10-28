@@ -10,7 +10,7 @@ export class RecordingPermissions {
     const s=this.service;s.role(actor,'learner');
     if(op==='recording_notice'){
       const notice=recordingNotice(this.policy),text=processingPurpose(s.analysisConfig,'text')==='minimax',audio=processingPurpose(s.analysisConfig,'audio')==='tencent_soe_v2';
-      notice.capabilities.text_analysis=text;notice.capabilities.pronunciation_analysis=audio;notice.capabilities.external_processing_reviewed=!!s.analysisConfig?.text.reviewed;
+      notice.capabilities.text_analysis=text;notice.capabilities.pronunciation_analysis=audio;notice.capabilities.audio_review_required=audio&&!s.analysisConfig.audio.validated;notice.capabilities.external_processing_reviewed=!!s.analysisConfig?.text.reviewed;
       if(text){notice.current='你可以选择保存对话文本，并在提交后交给 MiniMax 分析这次练习的理解与表达。识别和分析都可能出错。';notice.text.recipient='本地学习记录服务；明确提交后，获准文本将发送给 MiniMax 文本服务，用于本次报告。';notice.choice='文本和测试录音分别选择、撤回；不影响继续练习或已有提交。';notice.deletion='撤回或到期后删除对应完整文本和由它生成的深入分析。已有练习事实与规则反馈按原设置保留；供应商侧处理不等于本地删除。';}
       if(audio)notice.audio.recipient='本地学习记录服务；明确提交且确认声音来源与质量后，获准片段将发送腾讯智聆新版服务。';
       return notice;
