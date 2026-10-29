@@ -30,7 +30,7 @@ try{
   const context=await browser.newContext(),page=await context.newPage({viewport:{width:1280,height:900}}),errors=[];
   page.on('pageerror',e=>errors.push(e.message));
   await page.addInitScript(()=>{window.microphoneRequests=0;const original=navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);navigator.mediaDevices.getUserMedia=async(...a)=>{window.microphoneRequests++;return original(...a);};});
-  await page.goto(await start());await page.locator('#status').filter({hasText:'语音未配置'}).waitFor();assert(await page.locator('#connect').isDisabled());assert.equal(await page.evaluate(()=>window.microphoneRequests),0);
+  await page.goto(await start());await page.locator('#status').filter({hasText:'语音未配置'}).waitFor();assert.equal(await page.locator('#learner').inputValue(),'mock-dao-hsk4');assert(await page.locator('#connect').isDisabled());assert.equal(await page.evaluate(()=>window.microphoneRequests),0);
   // Explicit test-only dependency replacement. Shipped readiness remains real-only.
   await context.route('**/voice-readiness.js',route=>route.fulfill({contentType:'text/javascript',body:'export function voiceReadiness(p,a){return p.synthetic===true&&a?{status:"合成联调中",real_provider:false}:null;}'}));
   await page.goto(await start(()=>{const p=new SyntheticProvider();providers.push(p);return p;}));await page.locator('#connect').waitFor();await page.locator('#connect').click();await page.locator('#message').filter({hasText:'可以开始说中文'}).waitFor();assert.equal(await page.evaluate(()=>window.microphoneRequests),1);

@@ -206,16 +206,17 @@ try {
   assert.equal(await page.locator('#backend-note').isVisible(),true);assert.match(await page.locator('#backend-note').textContent(),/本地 mock/);
   assert.equal(await page.evaluate(()=>document.cookie.includes('ask_kai_launch')),false);
   await page.waitForFunction(()=>!document.querySelector('#mock-learner-select').disabled && !document.querySelector('#learner-profile').hidden);
-  assert.equal(await page.locator('#mock-learner-select option').count(),4);
+  assert.equal(await page.locator('#mock-learner-select option').count(),5);
   await page.locator('#learner-profile > summary').click();
   assert.match(await page.locator('#learner-profile-content').textContent(),/Alex.*HSK1/s);
-  const switchCases=[['mock-maya-hsk3','Maya','HSK3'],['mock-leo-hsk5','Leo','HSK5'],['mock-nina-hsk7','Nina','HSK7'],['poc-learner','Alex','HSK1']];
+  const switchCases=[['mock-maya-hsk3','Maya','HSK3'],['mock-dao-hsk4','Dao','HSK1'],['mock-leo-hsk5','Leo','HSK5'],['mock-nina-hsk7','Nina','HSK7'],['poc-learner','Alex','HSK1']];
   for(const [uid,name,level] of switchCases) {
     await page.locator('#mock-learner-select').selectOption(uid);
     await page.waitForFunction(({name,level})=>!document.querySelector('#mock-learner-select').disabled && document.querySelector('#learner-profile-content').textContent.includes(name+' · '+level),{name,level});
     const content=await page.locator('#learner-profile-content').textContent();assert.match(content,/个人画像/);assert.match(content,/学习画像/);assert.match(content,/近期学习记录/);assert.match(content,/模拟掌握/);
     assert.match(content,/完整累计知识目录/);assert.match(content,/交流技能摘要/);assert.match(content,/已模拟通过/);
     if(level==='HSK3'){assert.match(content,/HSK1：70 项；模拟掌握 70 项/);assert.match(content,/HSK2：78 项；模拟掌握 78 项/);assert.match(content,/累计模拟掌握 244/);}
+    if(uid==='mock-dao-hsk4'){assert.match(content,/母语：泰语/);assert.match(content,/中文初学者/);assert.doesNotMatch(content,/正在学习 HSK5/);}
     if(level==='HSK7')assert.match(content,/HSK7-9：134 项；模拟掌握 72 项/);
     assert.equal(await page.evaluate(()=>window.microphoneRequests),0);
     assert.equal(await page.locator('#connection-status').textContent(),'未连接');

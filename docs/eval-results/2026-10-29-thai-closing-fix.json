@@ -1,0 +1,113 @@
+{
+  "date": "2026-10-29",
+  "product_change": "free_thai_web_listener_closing.state_to_session.closing",
+  "shared_or_english_runtime_changed": false,
+  "verification": {
+    "full_tests_passed": 861,
+    "synthetic_replay_scenarios": 3,
+    "protected_legacy_files_unchanged": 8,
+    "english_closing_browser_passed": true,
+    "thai_closing_browser_passed": 3,
+    "real_provider": false,
+    "human_listening": false
+  },
+  "browser": {
+    "kind": "thai_oral_close_browser_regression",
+    "baseline": false,
+    "synthetic_provider": true,
+    "synthetic_browser_audio": true,
+    "real_provider": false,
+    "human_listening": false,
+    "production_playback_timeout_ms": 35000,
+    "results": [
+      {
+        "name": "goodbye_closes_after_playback",
+        "passed": true,
+        "receipt_source": "automatic",
+        "closed_by": "owned_playback_receipt",
+        "microphone_released": true,
+        "closing_playback_reports": 1,
+        "session_closed_ms": 1269,
+        "closing_phases": [
+          {
+            "phase": "preparing_close",
+            "at_ms": 33
+          },
+          {
+            "phase": "presenting_close",
+            "at_ms": 384
+          },
+          {
+            "phase": "awaiting_playback",
+            "at_ms": 393
+          },
+          {
+            "phase": "finalizing_record",
+            "at_ms": 1262
+          }
+        ],
+        "test_timeout_ms": 5000,
+        "page_errors": 0
+      },
+      {
+        "name": "pause_defers_close_until_resume",
+        "passed": true,
+        "receipt_source": "automatic",
+        "pause_prevented_close": true,
+        "closed_by": "owned_playback_receipt_after_resume",
+        "closing_playback_reports": 1,
+        "session_closed_ms": 2308,
+        "closing_phases": [
+          {
+            "phase": "preparing_close",
+            "at_ms": 10
+          },
+          {
+            "phase": "presenting_close",
+            "at_ms": 363
+          },
+          {
+            "phase": "awaiting_playback",
+            "at_ms": 377
+          },
+          {
+            "phase": "finalizing_record",
+            "at_ms": 2301
+          }
+        ],
+        "test_timeout_ms": 5000,
+        "page_errors": 0
+      },
+      {
+        "name": "continuation_rejects_old_playback_receipt",
+        "passed": true,
+        "receipt_source": "test_injected_old_receipt",
+        "old_receipt_rejected": true,
+        "continuation_kept_session_open": true,
+        "closed_by": "manual_cleanup",
+        "closing_playback_reports": 1,
+        "session_closed_ms": 2398,
+        "closing_phases": [
+          {
+            "phase": "preparing_close",
+            "at_ms": 2
+          },
+          {
+            "phase": "presenting_close",
+            "at_ms": 355
+          },
+          {
+            "phase": "awaiting_playback",
+            "at_ms": 374
+          },
+          {
+            "phase": "cancelled",
+            "at_ms": 391
+          }
+        ],
+        "test_timeout_ms": 5000,
+        "page_errors": 0
+      }
+    ]
+  }
+}

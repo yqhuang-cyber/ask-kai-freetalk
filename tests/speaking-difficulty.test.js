@@ -18,7 +18,7 @@ const contextFor = name => accountContext(identity(MOCK_LEARNERS.find(learner =>
 const choice = (overrides, ref) => ({ lexical_style: 'everyday', sentence_structure: 'simple', new_word_policy: 'avoid', focus_term: null, reason: '按当前需要选择说法。', refs: [ref], ...overrides });
 
 test('vocabulary ceiling follows completed level and keeps the shared advanced band unresolved', () => {
-  const levels = { Alex: [1, 1, 'not_applicable'], Maya: [3, 3, 'not_applicable'], Leo: [5, 5, 'not_applicable'], Nina: [7, 6, 'shared_7_to_9_unresolved'] };
+  const levels = { Alex: [1, 1, 'not_applicable'], Maya: [3, 3, 'not_applicable'], Dao: [1, 1, 'not_applicable'], Leo: [5, 5, 'not_applicable'], Nina: [7, 6, 'shared_7_to_9_unresolved'] };
   for (const [name, [profile, verified, band]] of Object.entries(levels)) {
     const constraints = deriveSpeakingConstraints(contextFor(name));
     assert.equal(constraints.profile_level, profile);

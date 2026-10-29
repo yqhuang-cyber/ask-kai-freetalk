@@ -1,0 +1,273 @@
+{
+  "date": "2026-10-29",
+  "kind": "thai_caption_timing_fix",
+  "scope": "free_thai_only",
+  "verification": {
+    "full_tests_passed": 861,
+    "synthetic_replay_scenarios": 3,
+    "thai_state_browser_passed": 18,
+    "thai_page_browser": true,
+    "english_page_browser": true,
+    "legacy_protected_files_unchanged": 8,
+    "legacy_caption_audio_files_unchanged": 3,
+    "real_natural_word_alignment_measured": false,
+    "human_listening": false
+  },
+  "calibration": {
+    "kind": "authored_fixed_speech_duration_calibration",
+    "run": "20261029-v1",
+    "real_provider": true,
+    "human_listening": false,
+    "production_code_changed": false,
+    "speed": 0,
+    "samples": [
+      {
+        "topic": "happy",
+        "locale": "zh",
+        "text_sha256": "456c6fc7412c923d2c8e8afd1c8755a7b59c11d3fd079c98359d3b2e52f767f0",
+        "han": 14,
+        "thai_graphemes": 0,
+        "complete": true,
+        "audio_pcm_ms": 2611,
+        "closed_ack": true
+      },
+      {
+        "topic": "happy",
+        "locale": "th",
+        "text_sha256": "38c9d7d2cc99bc6fb32566c4c2f931e94b79b8a5834e793e7f94c9a9ebeadf8d",
+        "han": 0,
+        "thai_graphemes": 29,
+        "complete": true,
+        "audio_pcm_ms": 2382,
+        "closed_ack": true
+      },
+      {
+        "topic": "music",
+        "locale": "zh",
+        "text_sha256": "f5aa38c612d21f2d794288ed17477cd70af4a4c370b606c537305e7fd5f3bb2c",
+        "han": 14,
+        "thai_graphemes": 0,
+        "complete": true,
+        "audio_pcm_ms": 2587,
+        "closed_ack": true
+      },
+      {
+        "topic": "music",
+        "locale": "th",
+        "text_sha256": "a05def39973b7476f9f369634bc01503c63e34cb8ebb77a0b8f64b0ea5aa4a5b",
+        "han": 0,
+        "thai_graphemes": 25,
+        "complete": true,
+        "audio_pcm_ms": 2378,
+        "closed_ack": true
+      }
+    ]
+  },
+  "before": {
+    "normal": {
+      "pace": "normal",
+      "samples": [
+        {
+          "locale": "th",
+          "first_thai_reveal_ms": 9503,
+          "last_text_ms": 2272,
+          "completion_ms": 15672,
+          "last_reveal_ms": 15345,
+          "policy": "kai-thai-captions-v1",
+          "cues_ms": [
+            0,
+            3000,
+            7169.269927536232,
+            8798.64945652174,
+            10753.90489130435,
+            12057.408514492756,
+            13360.91213768116,
+            14664.415760869566
+          ],
+          "page_errors": 0,
+          "synthetic_browser_audio": true,
+          "human_listening": false
+        },
+        {
+          "locale": "en",
+          "first_thai_reveal_ms": null,
+          "last_text_ms": 1333,
+          "completion_ms": 10235,
+          "last_reveal_ms": 8610,
+          "policy": "kai-captions-v1",
+          "cues_ms": [
+            0,
+            2394.5625000000005,
+            2594.1093750000005,
+            2793.6562500000005,
+            3392.2968750000005,
+            4988.671875000001,
+            5188.218750000001,
+            7582.781250000001,
+            7981.875000000001
+          ],
+          "page_errors": 0,
+          "synthetic_browser_audio": true,
+          "human_listening": false
+        }
+      ]
+    },
+    "slow": {
+      "pace": "slow",
+      "samples": [
+        {
+          "locale": "th",
+          "first_thai_reveal_ms": 7559,
+          "last_text_ms": 1752,
+          "completion_ms": 13400,
+          "last_reveal_ms": 12507,
+          "policy": "kai-thai-captions-v1",
+          "cues_ms": [
+            0,
+            2787.089285714285,
+            6503.208333333332,
+            6812.88492063492,
+            7122.561507936506,
+            8670.944444444443,
+            10529.003968253966,
+            12077.386904761903
+          ],
+          "page_errors": 0,
+          "synthetic_browser_audio": true,
+          "human_listening": false
+        },
+        {
+          "locale": "en",
+          "first_thai_reveal_ms": null,
+          "last_text_ms": 1382,
+          "completion_ms": 12994,
+          "last_reveal_ms": 10398,
+          "policy": "kai-captions-v1",
+          "cues_ms": [
+            0,
+            3191.648936170214,
+            3457.619680851065,
+            3723.590425531916,
+            5585.385638297874,
+            5851.3563829787245,
+            9043.005319148939,
+            9574.94680851064,
+            9840.917553191492
+          ],
+          "page_errors": 0,
+          "synthetic_browser_audio": true,
+          "human_listening": false
+        }
+      ]
+    }
+  },
+  "after": {
+    "normal": {
+      "pace": "normal",
+      "samples": [
+        {
+          "locale": "th",
+          "first_thai_reveal_ms": 7092,
+          "last_text_ms": 2272,
+          "completion_ms": 15643,
+          "last_reveal_ms": 14726,
+          "policy": "kai-thai-captions-v2",
+          "cues_ms": [
+            0,
+            1480,
+            2200,
+            4223.36475409836,
+            5943.562158469946,
+            6435.047131147542,
+            8400.987021857924,
+            9506.828210382515,
+            10981.283128415302,
+            12455.738046448088,
+            14053.064207650274
+          ],
+          "page_errors": 0,
+          "synthetic_browser_audio": true,
+          "human_listening": false
+        },
+        {
+          "locale": "en",
+          "first_thai_reveal_ms": null,
+          "last_text_ms": 1334,
+          "completion_ms": 10158,
+          "last_reveal_ms": 8614,
+          "policy": "kai-captions-v1",
+          "cues_ms": [
+            0,
+            2394.5625000000005,
+            2594.1093750000005,
+            2793.6562500000005,
+            3392.2968750000005,
+            4988.671875000001,
+            5188.218750000001,
+            7582.781250000001,
+            7981.875000000001
+          ],
+          "page_errors": 0,
+          "synthetic_browser_audio": true,
+          "human_listening": false
+        }
+      ]
+    },
+    "slow": {
+      "pace": "slow",
+      "samples": [
+        {
+          "locale": "th",
+          "first_thai_reveal_ms": 5998,
+          "last_text_ms": 1753,
+          "completion_ms": 13451,
+          "last_reveal_ms": 11741,
+          "policy": "kai-thai-captions-v2",
+          "cues_ms": [
+            0,
+            1480,
+            1960,
+            4406.43923611111,
+            5490.307291666665,
+            5490.307291666665,
+            7658.0434027777765,
+            9690.296006944443,
+            11316.098090277776
+          ],
+          "page_errors": 0,
+          "synthetic_browser_audio": true,
+          "human_listening": false
+        },
+        {
+          "locale": "en",
+          "first_thai_reveal_ms": null,
+          "last_text_ms": 1381,
+          "completion_ms": 12989,
+          "last_reveal_ms": 10390,
+          "policy": "kai-captions-v1",
+          "cues_ms": [
+            0,
+            3191.648936170214,
+            3457.619680851065,
+            3723.590425531916,
+            5585.385638297874,
+            5851.3563829787245,
+            9043.005319148939,
+            9574.94680851064,
+            9840.917553191492
+          ],
+          "page_errors": 0,
+          "synthetic_browser_audio": true,
+          "human_listening": false
+        }
+      ]
+    }
+  },
+  "hashes": {
+    "apps/realtime-gateway/public/presentation.js": "bd7ba56ca69031f4b8d6f5a8cae5250964520d1600a68555a2a3d8741daf40cb",
+    "apps/realtime-gateway/public/caption-phrases.js": "050c7a4ff9de152c8e409a39c4eea0e8d7aaec34772d9092781e009732bd2796",
+    "apps/realtime-gateway/public/audio.js": "04ed78c9a21bcbb09dd813ce16aa47b6be73a68b24b7464115fcec525a2c019a",
+    "apps/free-talk-thai/public/presentation.js": "b7c2c8f2bec7b1ca50581de0874053b8767c468ca4892d893c12283eb51ffe50",
+    "apps/free-talk-thai/public/caption-phrases.js": "84773ee7aaf2aba4847bccd305b0a96a257f80aa5f60e2c6fe60b4b80c4735ed"
+  }
+}

@@ -11,15 +11,17 @@ import {wavPCM} from '../prepare-fc-probe-inputs.js';
 const natural=process.argv.includes('--suite=natural');
 const clearScope=process.argv.includes('--suite=scope-clear');
 const runId=process.argv.find(a=>a.startsWith('--run='))?.slice(6)??null,keepReview=process.argv.includes('--keep-authored-review');
+const learnerId=process.argv.find(a=>a.startsWith('--learner='))?.slice(10)??'poc-learner';
 const cases=natural?[{id:'natural_music',text:'你好，我喜欢音乐。',expected:'zh_th'},{id:'natural_happy',text:'今天我的心情很好。',expected:'zh_th'}]:[{id:'thai_help',text:'请解释散步是什么意思，先说中文再用泰语解释。',expected:'zh_th'},{id:clearScope?'once_chinese_short':'once_chinese',text:clearScope?'这次只说中文。':'这次回答只用中文。',expected:'zh'},{id:'restore_thai',text:'请解释放松是什么意思。',expected:'zh_th'}];
-if(!process.argv.includes('--live')||natural&&clearScope||process.argv.slice(2).some(a=>!['--live','--suite=natural','--suite=scope-clear','--keep-authored-review'].includes(a)&&!/^--run=[a-z0-9-]{1,40}$/.test(a))||process.argv.filter(a=>a.startsWith('--run=')).length>1)throw Error('EXPLICIT_LIVE_REQUIRED');
-const profile=JSON.parse(await readFile(process.env.DOUBAO_REALTIME_PROFILE??'.local/seeduplex-profile.json','utf8'));validateSeeduplexProfile(profile);
+if(!process.argv.includes('--live')||natural&&clearScope||process.argv.slice(2).some(a=>!['--live','--suite=natural','--suite=scope-clear','--keep-authored-review'].includes(a)&&!/^--run=[a-z0-9-]{1,40}$/.test(a)&&!/^--learner=[a-z0-9-]{1,40}$/.test(a))||process.argv.filter(a=>a.startsWith('--run=')).length>1||process.argv.filter(a=>a.startsWith('--learner=')).length>1)throw Error('EXPLICIT_LIVE_REQUIRED');
+const profile=JSON.parse(await readFile(process.env.ASK_KAI_THAI_REALTIME_PROFILE??process.env.DOUBAO_REALTIME_PROFILE??'.local/seeduplex-profile.json','utf8'));validateSeeduplexProfile(profile);
 const dir='.local/thai-support-spike';await mkdir(dir,{recursive:true});
 const inputs=[];for(const c of cases){const base=dir+'/gateway-'+c.id;execFileSync('/usr/bin/say',['-v','Tingting','-o',base+'.aiff',c.text]);execFileSync('/usr/bin/afconvert',['-f','WAVE','-d','LEI16@16000','-c','1',base+'.aiff',base+'.wav']);inputs.push(wavPCM(await readFile(base+'.wav')));}
 let backend,server,ws,pump,current,ready=false,audio=Buffer.alloc(0),position=0,failure;
 let voice;const wireCounts={},internalCounts={},privateReview=[];
 const providerState=()=>voice?{ready:voice.ready,active_reply:voice.activeReply?{status:voice.activeReply.status,text_started:voice.activeReply.textStarted,text_done:voice.activeReply.textDone,audio_done:voice.activeReply.audioDone}:null,pending_control:voice.pendingControl?.kind??null,audio_lane:!!voice.audioLane}:null;
 const report={kind:'free_thai_ordinary_gateway',suite:natural?'natural':clearScope?'language_scope_clear':'language_scope',run_id:runId,real_provider:false,business:'independent_mock_hskai',authored_os_input:true,browser_audio:false,human_listening:false,thai_quality_accepted:false,samples:[]};
+report.learner_id=learnerId;
 const wait=async predicate=>{const end=Date.now()+40000;while(!await predicate()){if(failure)throw Error(failure);if(Date.now()>end)throw Error('PROBE_TIMEOUT');await new Promise(r=>setTimeout(r,40));}};
 const hash=v=>createHash('sha256').update(v).digest('hex');
 try{
@@ -28,7 +30,7 @@ try{
     voice.receive=raw=>{if(typeof raw?.type==='string'&&/^[a-z_.]{1,100}$/.test(raw.type))wireCounts[raw.type]=(wireCounts[raw.type]??0)+1;receive(raw);};
     const open=voice.open.bind(voice);voice.open=options=>open({...options,onEvent:packet=>{const type=packet.event?.type??packet.control;if(type)internalCounts[type]=(internalCounts[type]??0)+1;options.onEvent(packet);}});return voice;
   }});server.listen(0,'127.0.0.1');await once(server,'listening');const origin='http://127.0.0.1:'+server.address().port;
-  const login=await fetch(origin+'/api/poc/launch',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:JSON.stringify({uid:'poc-learner'})}),cookie=login.headers.get('set-cookie')?.split(';')[0];if(!cookie)throw Error('LOGIN_FAILED');
+  const login=await fetch(origin+'/api/poc/launch',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:JSON.stringify({uid:learnerId})}),cookie=login.headers.get('set-cookie')?.split(';')[0];if(!cookie)throw Error('LOGIN_FAILED');
   const call=async(path,body)=>{const r=await fetch(origin+path,{method:body===undefined?'GET':'POST',headers:{Origin:origin,Cookie:cookie,'Content-Type':'application/json'},...(body===undefined?{}:{body:JSON.stringify(body)})});if(!r.ok)throw Error('GATEWAY_REQUEST_FAILED');return r.json();};
   const entry={mode:'free',speech_pace:'slow'},prepared=await call('/api/conversation-preparations',entry);let view;
   await wait(async()=>{view=await call('/api/conversation-preparations/'+prepared.preparation_id);if(view.status==='failed')throw Error('PREPARATION_FAILED');return view.status==='ready';});report.planning=view.view?.planning;
@@ -41,7 +43,7 @@ try{
     const p=JSON.parse(bytes);
     if(p.type==='session.failed'){failure='SESSION_FAILED';if(/^[A-Z_]{1,100}$/.test(p.code??''))report.gateway_failure_code=p.code;return;}
     if(p.type==='session.closed'){closed=true;if(current&&!current.done&&!failure)failure='SESSION_CLOSED_BEFORE_REPLY_COMPLETE';return;}
-    if(p.type==='closing.state')report.last_closing_phase=p.phase;
+    if(p.type==='session.closing')report.last_closing_phase=p.phase;
     if(p.type==='output.stop')report.output_stop_count=(report.output_stop_count??0)+1;
     if(p.type==='teaching.state'&&current)current.language=p.language_policy;
     const e=p.event;if(!e)return;

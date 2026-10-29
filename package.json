@@ -8,6 +8,7 @@
   },
   "scripts": {
     "poc:thai": "node --env-file-if-exists=.env apps/free-talk-thai/src/main.js",
+    "share:thai": "node --env-file-if-exists=.env apps/free-talk-thai/src/share.js",
     "start": "node --env-file-if-exists=.env apps/realtime-gateway/src/main.js",
     "poc": "node --env-file-if-exists=.env apps/realtime-gateway/src/main.js --poc",
     "test": "node --test",

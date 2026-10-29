@@ -11,14 +11,15 @@ import { setup } from './helpers/realtime.js';
 async function backendFor(t,options={}){const b=await startMockBackend(options);t.after(()=>b.close());return b;}
 const authorize=async(b,uid)=>b.bridge.verify(await b.pocPort.issue(uid),'session:create');
 
-test('four authored accounts have UID-linked profiles, bounded knowledge and referenced mock mastery',async t=>{
-  const b=await backendFor(t),catalog=await b.pocPort.list();assert.equal(catalog.learners.length,4);
-  assert.deepEqual(catalog.learners.map(l=>l.course_level),['HSK1','HSK3','HSK5','HSK7']);
-  assert.equal(new Set(catalog.learners.map(l=>l.uid)).size,4);
+test('authored accounts have UID-linked profiles, bounded knowledge and referenced mock mastery',async t=>{
+  const b=await backendFor(t),catalog=await b.pocPort.list();assert.equal(catalog.learners.length,5);
+  assert.deepEqual(catalog.learners.map(l=>l.course_level),['HSK1','HSK3','HSK5','HSK7','HSK1']);
+  assert.equal(new Set(catalog.learners.map(l=>l.uid)).size,5);
   const counts=[];
   for(const a of catalog.learners){
     const i=await authorize(b,a.uid),ctx=await b.planningPort.read(i);
     assert.equal(ctx.learner_id,a.uid);assert.equal(ctx.student_profile.preferred_name,a.name);assert.equal(ctx.learning_profile.course_level,a.course_level);
+    assert.equal(ctx.student_profile.native_language,a.uid==='mock-dao-hsk4'?'泰语':'en');
     assert.ok(ctx.student_profile.background.learning_motivation);assert.ok(ctx.learning_profile.ability_summary);
     const full=await b.learnerDataPort.readPart(i,'learning-profile');assert.ok(full.inventory.grammar_total>70);
     const summary=ctx.learning_profile.syllabus_summary;assert.equal(summary.grammar_mastered,full.inventory.grammar_mastered);assert.ok(!Object.hasOwn(summary,'grammar_points'));
@@ -28,7 +29,22 @@ test('four authored accounts have UID-linked profiles, bounded knowledge and ref
     const mastered=ctx.learning_profile.knowledge_points.filter(k=>k.mastery_status==='mock_mastered');counts.push(mastered.length);
     assert.ok(mastered.every(k=>k.evidence_origin==='authored_fixture'));assert.equal(ctx.learning_history.length,6);
   }
-  assert.deepEqual(counts,[7,12,12,16]);
+  assert.deepEqual(counts,[7,12,12,16,7]);
+  const dao=await b.planningPort.read(await authorize(b,'mock-dao-hsk4'));
+  assert.equal(dao.student_profile.background.life_context.includes('曼谷'),true);
+  assert.equal(dao.learning_profile.syllabus_summary.completed_level,1);
+  assert.equal(dao.learning_profile.syllabus_summary.current_study_scope,'2');
+  assert.equal(dao.learning_profile.syllabus_summary.grammar_mastered,70);
+  assert.equal(dao.learning_profile.syllabus_summary.vocabulary.reference_cumulative,300);
+  assert.equal(dao.learning_profile.comprehension,'beginner');
+  assert.deepEqual(dao.learning_profile.reported_known_expressions,[]);
+  assert.deepEqual(dao.learning_profile.review_candidates,['frequency-expression']);
+  const {ThaiFreeTalkSession}=await import('../packages/free-talk-thai/session.js');
+  const memory=await b.memoryPort.read(await authorize(b,'mock-dao-hsk4'));
+  assert.equal(memory.find(r=>r.field==='chinese_comprehension').value,'beginner');
+  const session=new ThaiFreeTalkSession({sessionId:'dao-profile-check',mode:'free',memory});
+  assert.equal(session.languageSnapshot().comprehension,'beginner');
+  assert.equal(session.languageSnapshot().support_mode,'required');
 });
 
 test('planning read calls three independently scoped HTTP interfaces; foreign UID, scope and stale envelopes fail',async t=>{
@@ -116,7 +132,7 @@ test('official reference is cumulative, source indexed and advanced 7-9 is not a
   const {validateSyllabusInventory}=await import('../packages/contracts/hsk-inventory.js');
   assert.deepEqual(HSK_REFERENCE.vocabulary_counts,{'1':300,'2':200,'3':500,'4':1000,'5':1600,'6':1800,'7-9':5600});
   const inv=MOCK_LEARNERS.map(i=>accountSyllabusInventory(i));
-  assert.deepEqual(inv.map(x=>x.grammar_mastered),[70,244,409,530]);
+  assert.deepEqual(inv.map(x=>x.grammar_mastered),[70,244,409,530,70]);
   for(let n=1;n<4;n++){const now=new Map(inv[n].grammar_points.map(p=>[p.kp_id,p]));for(const p of inv[n-1].grammar_points.filter(k=>k.mastery_status==='mock_mastered'))assert.equal(now.get(p.kp_id)?.mastery_status,'mock_mastered');}
   assert.equal(inv[3].per_level['7-9'].total,134);assert.equal(inv[3].per_level['7-9'].mastered,72);
   const missing=structuredClone(inv[1]);missing.grammar_points.find(k=>k.introduced_level==='1').mastery_status='practicing';assert.throws(()=>validateSyllabusInventory(missing,MOCK_LEARNERS[1]));

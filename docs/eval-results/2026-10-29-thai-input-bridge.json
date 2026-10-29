@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-29",
+  "scope": "free_talk_thai_manual_input_bridge",
+  "business_source": "local_mock_hskai",
+  "routing": "manual_zh_th",
+  "thai_agent_context": "deferred_minimal_m2_only",
+  "synthetic": {
+    "verify_pass": 884,
+    "verify_fail": 0,
+    "replay_scenarios": ["normal", "interruption", "failure"],
+    "original_browser": "passed_after_hsk1_fixture_expectation_correction",
+    "legacy_thai_browser": "passed",
+    "manual_thai_browser_checks_pass": 9,
+    "browser_page_errors": 0,
+    "protected_original_files_unchanged": 8
+  },
+  "real_provider": {
+    "short_trigger_comparison_calls": 9,
+    "short_trigger_duration_ms": 794.6875,
+    "short_trigger_content_checks": "3/3",
+    "short_trigger_first_audio_median_ms": 3390,
+    "long_trigger_first_audio_median_ms": 5947,
+    "gateway_zh_external_asr_calls": 0,
+    "gateway_playback_receipt": "node_simulated",
+    "automatic_language_detection": "not_enabled_no_labels_observed"
+  },
+  "real_browser": {
+    "provider": "real_doubao_asr_and_s2s",
+    "input": "authored_web_audio_stream",
+    "playback": "actual_web_audio_clock",
+    "first_run": "stopped_on_missing_operator_content_assertion",
+    "second_run_flow_checks_pass": 9,
+    "page_errors": 0,
+    "asr_operator_preserved": false,
+    "model_asked_clarification": true,
+    "hardware_microphone": false,
+    "human_listening": false,
+    "all_final_changes_repeated_with_real_browser": false
+  },
+  "production_quality_accepted": false
+}

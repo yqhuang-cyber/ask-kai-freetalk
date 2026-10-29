@@ -8,7 +8,7 @@ export function syllabusInventory(identity,level,{fixtureAt=Date.now()}={}) {
   const completed=Number(level.replace('HSK','')),lower=completed===7?6:completed;
   const prior=Array.from({length:lower},(_,i)=>i+1),next=lower<6?String(lower+1):'7-9';
   const id=g=>`${identity.learner_id}-course-hsk${g}`;
-  const offsets=({1:[20],3:[450,200,25],5:[1250,1000,760,430,30],7:[2600,2200,1800,1300,900,450]})[completed];
+  const offsets=({1:[20],3:[450,200,25],4:[900,500,180,40],5:[1250,1000,760,430,30],7:[2600,2200,1800,1300,900,450]})[completed];
   const evidence=prior.map(g=>({record_id:id(g),source:'mock_hskai',evidence_origin:'authored_fixture',level:String(g),result:'mock_completed',scope:'knowledge_recognition_and_controlled_use',updated_at:new Date(fixtureAt-offsets[g-1]*86400000).toISOString()}));
   if(completed===7)evidence.push({record_id:id(7),source:'mock_hskai',evidence_origin:'authored_fixture',level:'7-9',result:'mock_completed',scope:'authored_hsk7_subset_only',updated_at:new Date(fixtureAt-20*86400000).toISOString()});
   const selected=grammar.entries.filter(k=>k.introduced_level==='7-9'?completed>=6:Number(k.introduced_level)<=lower+1);

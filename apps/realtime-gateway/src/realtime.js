@@ -47,7 +47,12 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
       let outputGate,closing,speech,captions,slides,initialUi,uiReplyTimer,slidesOffered=false;
       let contextWireVersion=1;
       const speechReplies=new Set();
-      const advanceControls=()=>{speech?.advance();captions?.advance();};
+      let queuedInputMode=null;
+      const advanceControls=()=>{speech?.advance();captions?.advance();applyInputMode();};
+      function applyInputMode(){
+        if(!queuedInputMode||ended||ending||runtime.active||pendingCancel.size||pendingContext||provider?.pendingFixed||closing?.current)return;
+        const mode=queuedInputMode;queuedInputMode=null;void provider.setInputMode(mode).catch(()=>finish('INPUT_MODE_SWITCH_FAILED'));
+      }
       let ended = false;
       let ending=false;
       const finalText=new Map(),exitReplies=new Set(),replyText=new Map();
@@ -91,6 +96,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         if (ended || ws.readyState !== ws.OPEN) return false;
         if (ws.bufferedAmount > 262144) return finish('CLIENT_BACKPRESSURE');
         ws.send(JSON.stringify(data));
+        provider?.observeForwarded?.(data); // Optional M2 bridge history: forwarded output only.
         if(data.speech_control){teaching.forwardControl?.(data);(captions?.owns(data)?captions:speech)?.forward(data);return true;}
         const before=teaching.version;
         teaching.forward(data); // Only forwarded packets, after safety/output hold.
@@ -109,7 +115,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
           const marked=exitReplies.has(event.response_id);
           const stale=runtime.finalTurns.has(event.turn_id)&&latestInputTurn!==event.turn_id;
           const suppressed=!!heard&&providerExitSuppressed(heard);
-          const enter=!diagnostics&&!closing?.current&&!stale&&!suppressed&&(marked||farewell);
+          const enter=!diagnostics&&!closing?.current&&!stale&&!suppressed&&(!provider?.managesClosing||provider.isEndTurn?.(event.turn_id))&&(marked||farewell);
           traceClose(enter?'这句回复进入收束':'这句回复没有进入收束',diagnostics?'诊断开关开着，不进入收束。':closing?.current?'已经在收束里。':stale?'这句回复不属于最新的学生话。':suppressed?'学生这句被当成问词义或疑问，不收束。':marked?'这句带了退出码。':farewell?'回复像告别。':'没有退出码，回复也不像告别。');
           if(enter){
             teaching.planning?.invalidate('student_end');
@@ -180,6 +186,9 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
       let leaseChecking=false;
       const authorizationLease=sessionLifecycle?.authorize?setInterval(async()=>{if(ended||leaseChecking)return;leaseChecking=true;try{await sessionLifecycle.authorize(ticket);}catch{void finish('AUTHORIZATION_REVOKED');}finally{leaseChecking=false;}},3000):undefined;
       const flushContext = () => {
+        // Thai workaround deliberately defers full Agent context; no fake ACK.
+        if(provider?.contextMode==='deferred')return;
+        if(queuedInputMode)return;
         if(ended || ending || !ready || runtime.active || provider?.pendingFixed || provider?.uiBusy || pendingCancel.size || pendingContext || speech?.blocksContext() || captions?.blocksContext() || appliedVersion===teaching.version&&!slides?.dirty){if(!ended&&!ending&&appliedVersion!==teaching.version)observation?.record('voice.context.waiting',{context_version:teaching.version,applied_context_version:appliedVersion,active_reply:!!runtime.active,pending_cancel:pendingCancel.size>0,pending_context:!!pendingContext,ready});return;}
         let ui;try{ui=slides?.configuration();}catch{return finish('SLIDES_CAPABILITY_LIMIT');}
         const base=teaching.contextSnapshot(),snapshot=slides?slides.contextSnapshot(base,ui):base,version=slides?++contextWireVersion:snapshot.version,decision=snapshot.decision;
@@ -199,6 +208,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
         },cancelTimeoutMs);
       };
       const interrupt = (responseId,source='manual') => {
+        if(source==='manual')provider?.cancelPendingInput?.();
         const active = runtime.active;
         const id=responseId ?? active?.id ?? lastResponse?.id;
         if(source==='manual'||speechReplies.has(id)&&['asr_confirmed','provider_speech_start'].includes(source)){
@@ -231,6 +241,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
       sessions.set(ws,{identity:ticket.identity,attemptId:ticket.homework?.attempt_id,teaching,finish,flushContext});
       const restrict = (risk,event) => {
         restricted=true;metrics?.count(providerKind,'restricted');
+        provider?.cancelPendingInput?.();
         slides?.close();
         outputGate?.close();
         diagnose('cancel.requested',{response_id:runtime.active?.id??lastResponse?.id,source:'safety',active:!!runtime.active,pending_context:!!pendingContext});
@@ -286,6 +297,10 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
               }
             }
             else if (value?.type==='response.cancel' && ready && Object.keys(value).every(k=>['type','response_id'].includes(k)) && (value.response_id===undefined || /^[a-zA-Z0-9_.:-]{1,128}$/.test(value.response_id))) interrupt(value.response_id);
+            else if(value?.type==='input.mode'&&ready&&typeof provider.setInputMode==='function'&&['zh','th'].includes(value.mode)&&Object.keys(value).every(k=>['type','mode'].includes(k))){
+              if(runtime.active||provider.pendingFixed||closing.current){send({type:'input.state',mode:provider.mode,phase:'busy',message:'请先打断当前回复，再切换输入语言。'});return;}
+              queuedInputMode=value.mode;send({type:'input.state',mode:provider.mode,phase:'switching',message:'正在切换输入语言……'});applyInputMode();
+            }
             else if(value?.type==='closing.playback'&&Object.keys(value).every(k=>['type','closing_id','response_id','summary_revision','state','audio_ms'].includes(k)))closing.report(value);
             else if(value?.type==='caption.set'&&ready&&value.session_id===ticket.session_id&&typeof value.pinyin_enabled==='boolean'&&Object.keys(value).every(k=>['type','session_id','pinyin_enabled'].includes(k))){captions.set(value.pinyin_enabled);}
             else if(value?.type==='caption.ack'&&Object.keys(value).every(k=>['type','session_id','revision','request_id','pinyin_enabled','status'].includes(k))){captions?.acknowledge(value);advanceControls();flushContext();}
@@ -327,6 +342,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
           clearTimeout(readyTimer);readyTimer=setTimeout(()=>finish('PROVIDER_READY_TIMEOUT'),readyTimeoutMs);
           return provider.open({sessionId:ticket.session_id,instructions:appliedContext.instructions,onFailure:code=>finish(code),onEvent:packet=> {
           if (ended || ending || restricted) return;
+          if(packet.control==='input.state'){send({type:'input.state',...packet.state});if(packet.state.phase==='listening'&&provider.contextMode!=='deferred')flushContext();return;}
           if(packet.control==='ui.calls'){
             if(!slides)return finish('UNEXPECTED_PROVIDER_TOOL');
             clearTimeout(uiReplyTimer);uiReplyTimer=setTimeout(()=>finish('UI_REPLY_TIMEOUT'),30000);
@@ -348,7 +364,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             diagnose('cancel.skipped',{response_id:packet.response_id,turn_id:packet.turn_id,reason:packet.reason,source:pending.source});
             completeStats(packet.response_id,'cancelled');speech?.settle(packet.turn_id);captions?.settle(packet.turn_id);advanceControls();flushContext();return;
           }
-          if (packet.control==='user.speech.started') {diagnose('user.speech.started',{turn_id:packet.turn_id,source:'provider_speech_start',active:!!runtime.active});if(ready)interrupt(undefined,'provider_speech_start');return;}
+          if (packet.control==='user.speech.started') {diagnose('user.speech.started',{turn_id:packet.turn_id,source:packet.source??'provider_speech_start',active:!!runtime.active});if(ready)interrupt(undefined,'provider_speech_start');return;}
           if(packet.control==='audio.done.observed'){
             const code=packet.body?.status_code;
             const recognized=code==='20000002'||code===20000002;
@@ -414,7 +430,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
           if (packet.event.type==='response.started'){lastResponse={id:packet.event.response_id,turn:packet.event.turn_id};policy.newResponse();replyAt=performance.now();firstAudio=false;}
           const event=packet.event,ids={response_id:event.response_id,turn_id:event.turn_id};
           if(event.type==='response.started') {
-            observation?.record('voice.reply.started',{...ids,applied_context_version:appliedVersion,applied_context_hash:appliedContext.hash,current_context_version:teaching.version,provider_response_id:packet.provider_response_id??null,pending_context:!!pendingContext,decision_turn_id:appliedDecision?.turn_id??null,generation_basis:'unknown'});
+            observation?.record('voice.reply.started',{...ids,applied_context_version:provider.contextMode==='deferred'?null:appliedVersion,applied_context_hash:provider.contextMode==='deferred'?null:appliedContext.hash,current_context_version:teaching.version,provider_response_id:packet.provider_response_id??null,pending_context:!!pendingContext,decision_turn_id:provider.contextMode==='deferred'?null:appliedDecision?.turn_id??null,generation_basis:provider.contextMode==='deferred'?'minimal_m2_context':'unknown'});
             const languageContextMatched=!pendingContext && sameLanguageSupport(appliedLanguage,teaching.languageSnapshot());
             replyStats.set(event.response_id,{at:performance.now(),turn:event.turn_id,chars:0,deltas:0,chunks:0,pcmMs:0,audit:diagnostics?(teaching.createReplyAudit?.({language:appliedLanguage,languageContextMatched})??new ReplyAudit({englishSupport:appliedLanguage.english_support,languageContextMatched})):null});
             diagnose('response.started',{...ids,pending_context:!!pendingContext,pending_cancel:pendingCancel.size>0});
@@ -450,6 +466,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
           // Register accepted input/request provenance after safety, before a
           // final releases held teacher text. Plans alone remain no evidence.
           const acceptedTeaching=teaching.accept(packet.event);
+          const inputDecision=acceptedTeaching?(provider.inputDecision?.(event,teaching.view().decision)??teaching.view().decision):null;
           if(acceptedTeaching){observation?.record('student.input.accepted',{turn_id:event.turn_id,source_event_id:event.event_id,text:event.payload.text});latestInputTurn=event.turn_id;finalText.set(event.turn_id,event.payload.text);}
           if(acceptedTeaching&&captions){
             const request=teaching.captionRequest?.turn_id===event.turn_id?teaching.captionRequest:null;
@@ -459,7 +476,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             }}
           }
           if(acceptedTeaching&&teaching.view().decision.action==='CLOSE'&&/(?:不用总结|不(?:用|要)回顾|(?:现在|马上|立刻)(?:就)?结束|(?:end|stop) (?:right now|immediately)|no (?:recap|summary))/iu.test(controlText(event.payload.text))){closing.delivery='skipped';void finish();return;}
-          if(acceptedTeaching&&!diagnostics){closing.input(event,teaching.view().decision,teaching.summarySnapshot());if(teaching.view().decision.action==='CLOSE')teaching.planning?.invalidate('student_end');}
+          if(acceptedTeaching&&!diagnostics){closing.input(event,inputDecision,teaching.summarySnapshot());if(inputDecision.action==='CLOSE')teaching.planning?.invalidate('student_end');}
           if(outputGate && ['user.partial','user.final'].includes(event.type)) {
             if(event.type==='user.final' || !runtime.finalTurns.has(event.turn_id)) {
               const candidate=captureSpeech(event.turn_id);
@@ -495,7 +512,7 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
             // A final can arrive after this reply's observed terminal boundary.
             // Flush only that owned completed turn, never an arbitrary early final.
             if(teaching.completedReplyTurns.has(event.turn_id))flushContext();
-            if(teaching.planning&&decision.action!=='CLOSE')void teaching.planTurn(event).then(plan=> {
+            if(teaching.planning&&decision.action!=='CLOSE'&&provider.contextMode!=='deferred')void teaching.planTurn(event).then(plan=> {
               if(!plan||ended)return;
               send({type:'teaching.state',...teaching.view()});flushContext();
             }).catch(()=>diagnose('planning.rejected',{turn_id:event.turn_id,reason:'planning_failed'}));
@@ -524,11 +541,12 @@ export function attachRealtime(server,{providerFactory,providerKind='doubao',bus
   });
   return {
     available:!!providerFactory,
-    async create({origin,mode,identity,speechPace,planning,bindPlanning,homework}) {
+    async create({origin,mode,identity,speechPace,planning,bindPlanning,homework,inputMode}) {
       if (!providerFactory) return null;
       if (tickets.size+connections.size >= maxConnections) throw new Error('SESSION_CAPACITY');
       const token = randomUUID();
       const ticket = {session_id:randomUUID(),mode,speech_pace:speechPace,origin,identity,expires:Math.min(Date.now()+30000,identity.expires)};
+      if(inputMode!==undefined){if(!['zh','th'].includes(inputMode))throw Error('INVALID_INPUT_MODE');ticket.input_mode=inputMode;}
       if(homework)ticket.homework=homework;
       if(sessionLifecycle?.open)await sessionLifecycle.open(ticket);
       if(planning)ticket.planning=bindPlanning(planning,ticket.session_id);

@@ -8,16 +8,16 @@ import {ThaiFreeTalkSession} from '../../../packages/free-talk-thai/session.js';
 
 const COOKIE='ask_kai_thai_launch',PROTOCOL='ask-kai.thai.v1';
 const own=new URL('../public/',import.meta.url),shared=new URL('../../realtime-gateway/public/',import.meta.url);
-const files=new Map(['index.html','web.js','web.css','caption-phrases.js'].map(f=>['/'+(f==='index.html'?'':f),new URL(f,own)]));
-for(const f of ['audio.js','capture-worklet.js','diagnostics.js','presentation.js','voice-readiness.js','caption-annotations.js','caption-settings.js','closing-playback.js','speech-playback.js'])files.set('/'+f,new URL(f,shared));
+const files=new Map(['index.html','web.js','web.css','caption-phrases.js','presentation.js'].map(f=>['/'+(f==='index.html'?'':f),new URL(f,own)]));
+for(const f of ['audio.js','capture-worklet.js','diagnostics.js','voice-readiness.js','caption-annotations.js','caption-settings.js','closing-playback.js','speech-playback.js'])files.set('/'+f,new URL(f,shared));
 files.set('/vendor/pinyin-pro.js',new URL('../../../node_modules/pinyin-pro/dist/index.js',shared));
 files.set('/vendor/pinyin-traditional.js',new URL('../../../node_modules/@pinyin-pro/data/dist/traditional.mjs',shared));
 const json=(res,status,value)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8'});res.end(JSON.stringify(value));};
-const freeEntry=input=>{if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).some(k=>!['mode','speech_pace','preparation_id'].includes(k))||input.mode!=='free'||!['slow','normal'].includes(input.speech_pace??'slow'))throw Error('INVALID_THAI_ENTRY');return {mode:'free',speech_pace:input.speech_pace??'slow'};};
+const freeEntry=input=>{if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).some(k=>!['mode','speech_pace','preparation_id','input_mode'].includes(k))||input.mode!=='free'||!['slow','normal'].includes(input.speech_pace??'slow')||input.input_mode!==undefined&&!['zh','th'].includes(input.input_mode))throw Error('INVALID_THAI_ENTRY');return {mode:'free',speech_pace:input.speech_pace??'slow'};};
 
 // Independent HTTP entry, cookie, one-use preparation store and Mock backend.
 // No route can select teacher/topic/mission or mutate the old language profile.
-export function createThaiApp({backend,planner,providerFactory,providerKind='doubao',...realtimeOptions}){
+export function createThaiApp({backend,planner,providerFactory,providerKind='doubao',inputBridge=false,...realtimeOptions}){
   const {bridge,pocPort,memoryPort,planningPort}=backend;
   const preparations=new Preparations({initializer:new ConversationInitializer({port:planningPort,planner,mode:'next_turn_advisory'})});
   const authorize=(req,scope)=>{
@@ -37,7 +37,7 @@ export function createThaiApp({backend,planner,providerFactory,providerKind='dou
       if(req.method==='GET'&&files.has(url.pathname)){const path=files.get(url.pathname),content=await readFile(path);res.writeHead(200,{'Content-Type':/\.m?js$/.test(path.pathname)?'text/javascript; charset=utf-8':path.pathname.endsWith('.css')?'text/css; charset=utf-8':'text/html; charset=utf-8'});return res.end(content);}
       if(req.method==='GET'&&url.pathname==='/favicon.ico'){res.writeHead(204);return res.end();}
       if(req.method==='GET'&&url.pathname==='/healthz')return json(res,200,{service:'ask-kai-free-thai',status:'ok',provider_connected:false});
-      if(req.method==='GET'&&url.pathname==='/api/runtime')return json(res,200,{scenario:'free_thai',backend:'mock_hskai',voice_configured:!!providerFactory,provider_connected:false,support_locale:'th',experimental:true,thai_quality_accepted:false,planner_configured:!!planner});
+      if(req.method==='GET'&&url.pathname==='/api/runtime')return json(res,200,{scenario:'free_thai',backend:'mock_hskai',voice_configured:!!providerFactory,provider_connected:false,support_locale:'th',experimental:true,thai_quality_accepted:false,planner_configured:!!planner,input_bridge:inputBridge,input_modes:inputBridge?['zh','th']:['zh'],thai_agent_context_deferred:inputBridge});
       if(req.method==='GET'&&url.pathname==='/api/poc/learners')return json(res,200,await pocPort.list());
       if(req.method==='POST'&&url.pathname==='/api/poc/launch'){
         const input=await readJson(req,256);if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).some(k=>k!=='uid')||typeof input.uid!=='string'||!pocPort.has(input.uid))return json(res,400,{error:'INVALID_MOCK_LEARNER'});
@@ -58,7 +58,8 @@ export function createThaiApp({backend,planner,providerFactory,providerKind='dou
         identity.memory=await memoryPort.read(identity);
         let planning;try{planning=await preparations.consume(identity,input.preparation_id,entry);}catch{return json(res,409,{error:'PREPARATION_UNAVAILABLE_OR_STALE'});}
         bridge.consume(identity);
-        return json(res,201,{...await realtime.create({origin,mode:'free',identity,planning,bindPlanning:(result,id)=>preparations.bind(result,id),speechPace:entry.speech_pace}),scenario:'free_thai'});
+        if(!inputBridge&&input.input_mode==='th')return json(res,400,{error:'THAI_INPUT_NOT_CONFIGURED'});
+        return json(res,201,{...await realtime.create({origin,mode:'free',identity,planning,bindPlanning:(result,id)=>preparations.bind(result,id),speechPace:entry.speech_pace,...(inputBridge?{inputMode:input.input_mode??'zh'}:{})}),scenario:'free_thai'});
       }
       if(req.method==='POST'&&url.pathname==='/api/authorization/revoke'){const identity=authorize(req,'session:revoke');preparations.revoke(identity);realtime.revoke(identity);return json(res,200,{revoked:true});}
       const conversation=url.pathname.match(/^\/api\/conversations\/([A-Za-z0-9_-]{1,128})$/);

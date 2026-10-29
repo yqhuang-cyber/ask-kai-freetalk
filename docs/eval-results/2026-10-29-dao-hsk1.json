@@ -1,0 +1,92 @@
+{
+  "date": "2026-10-29",
+  "learner_id": "mock-dao-hsk4",
+  "course_level": "HSK1",
+  "comprehension": "beginner",
+  "language_rules_changed": false,
+  "verification": {
+    "tests_passed": 861,
+    "synthetic_replay_scenarios": 3,
+    "real_provider": true,
+    "real_rounds": 2,
+    "browser_audio": false,
+    "human_listening": false,
+    "thai_quality_accepted": false
+  },
+  "planning": {
+    "mode": "next_turn_advisory",
+    "planner_kind": "llm",
+    "degraded": false,
+    "degraded_reason": null
+  },
+  "samples": [
+    {
+      "id": "natural_music",
+      "expected": "zh_th",
+      "authored_input_sha256": "42b69d4af4bab356f29d4a997526cc70d68a669a2513d7dc20604cabef764d35",
+      "language_at_reply_start": {
+        "version": "kai-free-thai-v2",
+        "support_locale": "th",
+        "support_mode": "required",
+        "session_support_mode": "required",
+        "request_scope": "default"
+      },
+      "language_after_reply": {
+        "version": "kai-free-thai-v2",
+        "support_locale": "th",
+        "support_mode": "required",
+        "session_support_mode": "required",
+        "request_scope": "default"
+      },
+      "asr_match": true,
+      "asr_scope": {
+        "once": false,
+        "chinese_only": false
+      },
+      "input_scope_verifiable": true,
+      "ownership_matched": true,
+      "han": 20,
+      "thai": 54,
+      "latin": 0,
+      "audio_bytes": 588272,
+      "audio_pcm_ms": 12256,
+      "text_sha256": "e1349f6977b6ec43ab082867957db1d5f0c56dd69b665ff82d036c057d1fba3d",
+      "surface_match": true,
+      "response_done": true
+    },
+    {
+      "id": "natural_happy",
+      "expected": "zh_th",
+      "authored_input_sha256": "fe6db56feffbb3a6bfc2921df92d6c142b68dcf7e272ea22ac5cb6089b7502c2",
+      "language_at_reply_start": {
+        "version": "kai-free-thai-v2",
+        "support_locale": "th",
+        "support_mode": "required",
+        "session_support_mode": "required",
+        "request_scope": "default"
+      },
+      "language_after_reply": {
+        "version": "kai-free-thai-v2",
+        "support_locale": "th",
+        "support_mode": "required",
+        "session_support_mode": "required",
+        "request_scope": "default"
+      },
+      "asr_match": true,
+      "asr_scope": {
+        "once": false,
+        "chinese_only": false
+      },
+      "input_scope_verifiable": true,
+      "ownership_matched": true,
+      "han": 19,
+      "thai": 51,
+      "latin": 0,
+      "audio_bytes": 573802,
+      "audio_pcm_ms": 11954,
+      "text_sha256": "c4667c12ad75347abc8910e7fc6a13f70bdd34f3fc15a2c4333512213be617a0",
+      "surface_match": true,
+      "response_done": true
+    }
+  ]
+}

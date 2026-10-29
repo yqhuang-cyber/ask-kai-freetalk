@@ -1,0 +1,1285 @@
+{
+  "date": "2026-10-29",
+  "production_code_changed": false,
+  "verification": {
+    "targeted_tests": 21,
+    "passed": 21,
+    "real_provider_attempts": 6,
+    "real_provider_complete": 4,
+    "synthetic_browser_replays": 2,
+    "human_listening": false,
+    "word_alignment_measured": false
+  },
+  "primary": {
+    "date": "2026-10-29",
+    "run": "20261029-v1",
+    "kind": "caption_sync_diagnostic",
+    "real_provider": true,
+    "browser_audio": false,
+    "human_listening": false,
+    "production_code_changed": false,
+    "source_sha256": "bd7ba56ca69031f4b8d6f5a8cae5250964520d1600a68555a2a3d8741daf40cb",
+    "input_pcm_sha256": "d3f4c79318735693d9e5e9b46a10549aeb8a48fc0620de7128a81d5100b41d45",
+    "input_kind": "authored_reused_chinese_audio",
+    "planner": "frozen_authorized_mock_rule_plan",
+    "samples": [
+      {
+        "id": "th-slow",
+        "locale": "th",
+        "pace": "slow",
+        "complete": false,
+        "instructions_sha256": "9f2fb77cd89b02e88cc92932447b2e1ee543ad8c802739eae01c288fbb90e3f8",
+        "failure": "PROVIDER_DISCONNECTED",
+        "closed_ack": false
+      },
+      {
+        "id": "en-slow",
+        "locale": "en",
+        "pace": "slow",
+        "complete": false,
+        "instructions_sha256": "8c90b28f64ff7218e62dacc09c241c56372ae44fdde4d6e636f0dea163d60cc0",
+        "failure": "PROBE_TIMEOUT",
+        "closed_ack": false
+      },
+      {
+        "id": "th-normal",
+        "locale": "th",
+        "pace": "normal",
+        "complete": true,
+        "instructions_sha256": "473da6166e89db7b88eb8c2e84a3e79d70a3fc64cfcc6b97db551579642c498c",
+        "asr_exact": true,
+        "ownership_matched": true,
+        "text_chunks": 38,
+        "audio_chunks": 37,
+        "output_chars": 116,
+        "output_sha256": "b9529ae716d5e3e690ee662f7231ac0d9cb43615fab79073380ffd935c835589",
+        "han": 27,
+        "thai": 83,
+        "latin_words": 0,
+        "audio_pcm_ms": 14990,
+        "first_text_ms": 3841,
+        "first_audio_ms": 4418,
+        "last_text_ms": 6112,
+        "done_ms": 7592,
+        "first_text_minus_audio_ms": -577,
+        "presentation": {
+          "kind": "production_policy",
+          "clock": "simulated_pcm_not_device",
+          "first_reveal_ms": 4481,
+          "last_reveal_ms": 19121,
+          "audio_start_ms": 4448,
+          "audio_end_ms": 19438,
+          "audio_pcm_ms": 14990,
+          "caption_tail_after_audio_ms": 0,
+          "completion_ms": 19441,
+          "reveals": [
+            {
+              "at_ms": 4481,
+              "visible_chars": 11,
+              "available_chars": 42,
+              "phrase_units": 10,
+              "cue_at_ms": 0,
+              "played_ms": 33
+            },
+            {
+              "at_ms": 7521,
+              "visible_chars": 23,
+              "available_chars": 116,
+              "phrase_units": 12,
+              "cue_at_ms": 3000,
+              "played_ms": 3073.0000000000005
+            },
+            {
+              "at_ms": 11841,
+              "visible_chars": 30,
+              "available_chars": 116,
+              "phrase_units": 5,
+              "cue_at_ms": 7328.587037037038,
+              "played_ms": 7393.000000000003
+            },
+            {
+              "at_ms": 13521,
+              "visible_chars": 55,
+              "available_chars": 116,
+              "phrase_units": 6,
+              "cue_at_ms": 8994.175000000001,
+              "played_ms": 9073.000000000004
+            },
+            {
+              "at_ms": 15441,
+              "visible_chars": 74,
+              "available_chars": 116,
+              "phrase_units": 4,
+              "cue_at_ms": 10992.880555555557,
+              "played_ms": 10993.000000000004
+            },
+            {
+              "at_ms": 16801,
+              "visible_chars": 110,
+              "available_chars": 116,
+              "phrase_units": 7,
+              "cue_at_ms": 12325.350925925928,
+              "played_ms": 12353.000000000004
+            },
+            {
+              "at_ms": 19121,
+              "visible_chars": 116,
+              "available_chars": 116,
+              "phrase_units": 1,
+              "cue_at_ms": 14657.174074074075,
+              "played_ms": 14673.000000000007
+            }
+          ],
+          "checkpoints": [
+            {
+              "audio_fraction": 0.25,
+              "at_ms": 8196,
+              "visible_chars": 23,
+              "total_chars": 116
+            },
+            {
+              "audio_fraction": 0.5,
+              "at_ms": 11943,
+              "visible_chars": 30,
+              "total_chars": 116
+            },
+            {
+              "audio_fraction": 0.75,
+              "at_ms": 15691,
+              "visible_chars": 74,
+              "total_chars": 116
+            },
+            {
+              "audio_fraction": 1,
+              "at_ms": 19438,
+              "visible_chars": 116,
+              "total_chars": 116
+            }
+          ]
+        },
+        "diagnostic_zero_gate": {
+          "kind": "diagnostic_zero_stream_gate",
+          "clock": "simulated_pcm_not_device",
+          "first_reveal_ms": 4481,
+          "last_reveal_ms": 19121,
+          "audio_start_ms": 4448,
+          "audio_end_ms": 19438,
+          "audio_pcm_ms": 14990,
+          "caption_tail_after_audio_ms": 0,
+          "completion_ms": 19441,
+          "reveals": [
+            {
+              "at_ms": 4481,
+              "visible_chars": 11,
+              "available_chars": 42,
+              "phrase_units": 10,
+              "cue_at_ms": 0,
+              "played_ms": 33
+            },
+            {
+              "at_ms": 4801,
+              "visible_chars": 23,
+              "available_chars": 63,
+              "phrase_units": 12,
+              "cue_at_ms": 0,
+              "played_ms": 353.0000000000003
+            },
+            {
+              "at_ms": 5121,
+              "visible_chars": 30,
+              "available_chars": 71,
+              "phrase_units": 5,
+              "cue_at_ms": 0,
+              "played_ms": 673.0000000000002
+            },
+            {
+              "at_ms": 5441,
+              "visible_chars": 55,
+              "available_chars": 85,
+              "phrase_units": 6,
+              "cue_at_ms": 0,
+              "played_ms": 993
+            },
+            {
+              "at_ms": 5761,
+              "visible_chars": 74,
+              "available_chars": 96,
+              "phrase_units": 4,
+              "cue_at_ms": 0,
+              "played_ms": 1313
+            },
+            {
+              "at_ms": 6081,
+              "visible_chars": 110,
+              "available_chars": 113,
+              "phrase_units": 7,
+              "cue_at_ms": 0,
+              "played_ms": 1633.0000000000002
+            },
+            {
+              "at_ms": 19121,
+              "visible_chars": 116,
+              "available_chars": 116,
+              "phrase_units": 1,
+              "cue_at_ms": 14657.174074074075,
+              "played_ms": 14673.000000000007
+            }
+          ],
+          "checkpoints": [
+            {
+              "audio_fraction": 0.25,
+              "at_ms": 8196,
+              "visible_chars": 110,
+              "total_chars": 116
+            },
+            {
+              "audio_fraction": 0.5,
+              "at_ms": 11943,
+              "visible_chars": 110,
+              "total_chars": 116
+            },
+            {
+              "audio_fraction": 0.75,
+              "at_ms": 15691,
+              "visible_chars": 110,
+              "total_chars": 116
+            },
+            {
+              "audio_fraction": 1,
+              "at_ms": 19438,
+              "visible_chars": 116,
+              "total_chars": 116
+            }
+          ]
+        },
+        "max_extra_gate_delay_ms": 10720,
+        "closed_ack": true
+      },
+      {
+        "id": "en-normal",
+        "locale": "en",
+        "pace": "normal",
+        "complete": true,
+        "instructions_sha256": "4aade6a2cb638bf9ed3f4f4afde693aff65326d5a131560a1ac19895240c4663",
+        "asr_exact": true,
+        "ownership_matched": true,
+        "text_chunks": 27,
+        "audio_chunks": 25,
+        "output_chars": 88,
+        "output_sha256": "f63cbfd5c92fb4c59d3a2809ba2107a0bb0cc9ad86765bfb60c9d80f1201d690",
+        "han": 33,
+        "thai": 0,
+        "latin_words": 13,
+        "audio_pcm_ms": 9578,
+        "first_text_ms": 3308,
+        "first_audio_ms": 3819,
+        "last_text_ms": 4640,
+        "done_ms": 5564,
+        "first_text_minus_audio_ms": -511,
+        "presentation": {
+          "kind": "production_policy",
+          "clock": "simulated_pcm_not_device",
+          "first_reveal_ms": 3868,
+          "last_reveal_ms": 11868,
+          "audio_start_ms": 3849,
+          "audio_end_ms": 13427,
+          "audio_pcm_ms": 9578,
+          "caption_tail_after_audio_ms": 0,
+          "completion_ms": 13468,
+          "reveals": [
+            {
+              "at_ms": 3868,
+              "visible_chars": 13,
+              "available_chars": 57,
+              "phrase_units": 12,
+              "cue_at_ms": 0,
+              "played_ms": 19
+            },
+            {
+              "at_ms": 6268,
+              "visible_chars": 14,
+              "available_chars": 88,
+              "phrase_units": 1,
+              "cue_at_ms": 2394.5625000000005,
+              "played_ms": 2418.9999999999995
+            },
+            {
+              "at_ms": 6588,
+              "visible_chars": 15,
+              "available_chars": 88,
+              "phrase_units": 1,
+              "cue_at_ms": 2594.1093750000005,
+              "played_ms": 2739
+            },
+            {
+              "at_ms": 6908,
+              "visible_chars": 24,
+              "available_chars": 88,
+              "phrase_units": 3,
+              "cue_at_ms": 2793.6562500000005,
+              "played_ms": 3059
+            },
+            {
+              "at_ms": 7308,
+              "visible_chars": 63,
+              "available_chars": 88,
+              "phrase_units": 8,
+              "cue_at_ms": 3392.2968750000005,
+              "played_ms": 3458.9999999999995
+            },
+            {
+              "at_ms": 8908,
+              "visible_chars": 64,
+              "available_chars": 88,
+              "phrase_units": 1,
+              "cue_at_ms": 4988.671875000001,
+              "played_ms": 5059.000000000001
+            },
+            {
+              "at_ms": 9228,
+              "visible_chars": 76,
+              "available_chars": 88,
+              "phrase_units": 12,
+              "cue_at_ms": 5188.218750000001,
+              "played_ms": 5379.000000000001
+            },
+            {
+              "at_ms": 11468,
+              "visible_chars": 79,
+              "available_chars": 88,
+              "phrase_units": 2,
+              "cue_at_ms": 7582.781250000001,
+              "played_ms": 7619.000000000003
+            },
+            {
+              "at_ms": 11868,
+              "visible_chars": 88,
+              "available_chars": 88,
+              "phrase_units": 8,
+              "cue_at_ms": 7981.875000000001,
+              "played_ms": 8019.000000000002
+            }
+          ],
+          "checkpoints": [
+            {
+              "audio_fraction": 0.25,
+              "at_ms": 6244,
+              "visible_chars": 13,
+              "total_chars": 88
+            },
+            {
+              "audio_fraction": 0.5,
+              "at_ms": 8638,
+              "visible_chars": 63,
+              "total_chars": 88
+            },
+            {
+              "audio_fraction": 0.75,
+              "at_ms": 11033,
+              "visible_chars": 76,
+              "total_chars": 88
+            },
+            {
+              "audio_fraction": 1,
+              "at_ms": 13427,
+              "visible_chars": 88,
+              "total_chars": 88
+            }
+          ]
+        },
+        "diagnostic_zero_gate": {
+          "kind": "diagnostic_zero_stream_gate",
+          "clock": "simulated_pcm_not_device",
+          "first_reveal_ms": 3868,
+          "last_reveal_ms": 11868,
+          "audio_start_ms": 3849,
+          "audio_end_ms": 13427,
+          "audio_pcm_ms": 9578,
+          "caption_tail_after_audio_ms": 0,
+          "completion_ms": 13468,
+          "reveals": [
+            {
+              "at_ms": 3868,
+              "visible_chars": 13,
+              "available_chars": 57,
+              "phrase_units": 12,
+              "cue_at_ms": 0,
+              "played_ms": 19
+            },
+            {
+              "at_ms": 4188,
+              "visible_chars": 14,
+              "available_chars": 73,
+              "phrase_units": 1,
+              "cue_at_ms": 0,
+              "played_ms": 339
+            },
+            {
+              "at_ms": 4508,
+              "visible_chars": 15,
+              "available_chars": 84,
+              "phrase_units": 1,
+              "cue_at_ms": 0,
+              "played_ms": 659.0000000000002
+            },
+            {
+              "at_ms": 4828,
+              "visible_chars": 24,
+              "available_chars": 88,
+              "phrase_units": 3,
+              "cue_at_ms": 0,
+              "played_ms": 979
+            },
+            {
+              "at_ms": 5148,
+              "visible_chars": 63,
+              "available_chars": 88,
+              "phrase_units": 8,
+              "cue_at_ms": 0,
+              "played_ms": 1299
+            },
+            {
+              "at_ms": 5468,
+              "visible_chars": 64,
+              "available_chars": 88,
+              "phrase_units": 1,
+              "cue_at_ms": 0,
+              "played_ms": 1619
+            },
+            {
+              "at_ms": 9068,
+              "visible_chars": 76,
+              "available_chars": 88,
+              "phrase_units": 12,
+              "cue_at_ms": 5188.218750000001,
+              "played_ms": 5219.000000000001
+            },
+            {
+              "at_ms": 11468,
+              "visible_chars": 79,
+              "available_chars": 88,
+              "phrase_units": 2,
+              "cue_at_ms": 7582.781250000001,
+              "played_ms": 7619.000000000003
+            },
+            {
+              "at_ms": 11868,
+              "visible_chars": 88,
+              "available_chars": 88,
+              "phrase_units": 8,
+              "cue_at_ms": 7981.875000000001,
+              "played_ms": 8019.000000000002
+            }
+          ],
+          "checkpoints": [
+            {
+              "audio_fraction": 0.25,
+              "at_ms": 6244,
+              "visible_chars": 64,
+              "total_chars": 88
+            },
+            {
+              "audio_fraction": 0.5,
+              "at_ms": 8638,
+              "visible_chars": 64,
+              "total_chars": 88
+            },
+            {
+              "audio_fraction": 0.75,
+              "at_ms": 11033,
+              "visible_chars": 76,
+              "total_chars": 88
+            },
+            {
+              "audio_fraction": 1,
+              "at_ms": 13427,
+              "visible_chars": 88,
+              "total_chars": 88
+            }
+          ]
+        },
+        "max_extra_gate_delay_ms": 3440,
+        "closed_ack": true
+      }
+    ]
+  },
+  "retry": {
+    "date": "2026-10-29",
+    "run": "20261029-slow-retry",
+    "kind": "caption_sync_diagnostic",
+    "real_provider": true,
+    "browser_audio": false,
+    "human_listening": false,
+    "production_code_changed": false,
+    "source_sha256": "bd7ba56ca69031f4b8d6f5a8cae5250964520d1600a68555a2a3d8741daf40cb",
+    "input_pcm_sha256": "d3f4c79318735693d9e5e9b46a10549aeb8a48fc0620de7128a81d5100b41d45",
+    "input_kind": "authored_reused_chinese_audio",
+    "planner": "frozen_authorized_mock_rule_plan",
+    "samples": [
+      {
+        "id": "th-slow",
+        "locale": "th",
+        "pace": "slow",
+        "complete": true,
+        "instructions_sha256": "9f2fb77cd89b02e88cc92932447b2e1ee543ad8c802739eae01c288fbb90e3f8",
+        "asr_exact": true,
+        "ownership_matched": true,
+        "text_chunks": 30,
+        "audio_chunks": 28,
+        "output_chars": 95,
+        "output_sha256": "2df52c1d8f8eefc51aa79aca0080802cdfafdaed7182ab3c6bbba15076b754a5",
+        "han": 21,
+        "thai": 69,
+        "latin_words": 0,
+        "audio_pcm_ms": 13006,
+        "first_text_ms": 3322,
+        "first_audio_ms": 3645,
+        "last_text_ms": 5073,
+        "done_ms": 6083,
+        "first_text_minus_audio_ms": -323,
+        "presentation": {
+          "kind": "production_policy",
+          "clock": "simulated_pcm_not_device",
+          "first_reveal_ms": 3722,
+          "last_reveal_ms": 15802,
+          "audio_start_ms": 3675,
+          "audio_end_ms": 16681,
+          "audio_pcm_ms": 13006,
+          "caption_tail_after_audio_ms": 0,
+          "completion_ms": 16682,
+          "reveals": [
+            {
+              "at_ms": 3722,
+              "visible_chars": 10,
+              "available_chars": 27,
+              "phrase_units": 9,
+              "cue_at_ms": 0,
+              "played_ms": 47
+            },
+            {
+              "at_ms": 6522,
+              "visible_chars": 22,
+              "available_chars": 95,
+              "phrase_units": 12,
+              "cue_at_ms": 2787.089285714285,
+              "played_ms": 2847
+            },
+            {
+              "at_ms": 10202,
+              "visible_chars": 23,
+              "available_chars": 95,
+              "phrase_units": 1,
+              "cue_at_ms": 6503.208333333332,
+              "played_ms": 6526.999999999999
+            },
+            {
+              "at_ms": 10522,
+              "visible_chars": 24,
+              "available_chars": 95,
+              "phrase_units": 1,
+              "cue_at_ms": 6812.88492063492,
+              "played_ms": 6846.999999999999
+            },
+            {
+              "at_ms": 10842,
+              "visible_chars": 53,
+              "available_chars": 95,
+              "phrase_units": 7,
+              "cue_at_ms": 7122.561507936506,
+              "played_ms": 7166.999999999998
+            },
+            {
+              "at_ms": 13002,
+              "visible_chars": 67,
+              "available_chars": 95,
+              "phrase_units": 4,
+              "cue_at_ms": 9290.297619047618,
+              "played_ms": 9326.999999999998
+            },
+            {
+              "at_ms": 14282,
+              "visible_chars": 82,
+              "available_chars": 95,
+              "phrase_units": 5,
+              "cue_at_ms": 10529.003968253966,
+              "played_ms": 10606.999999999998
+            },
+            {
+              "at_ms": 15802,
+              "visible_chars": 95,
+              "available_chars": 95,
+              "phrase_units": 3,
+              "cue_at_ms": 12077.386904761903,
+              "played_ms": 12126.999999999998
+            }
+          ],
+          "checkpoints": [
+            {
+              "audio_fraction": 0.25,
+              "at_ms": 6927,
+              "visible_chars": 22,
+              "total_chars": 95
+            },
+            {
+              "audio_fraction": 0.5,
+              "at_ms": 10178,
+              "visible_chars": 22,
+              "total_chars": 95
+            },
+            {
+              "audio_fraction": 0.75,
+              "at_ms": 13430,
+              "visible_chars": 67,
+              "total_chars": 95
+            },
+            {
+              "audio_fraction": 1,
+              "at_ms": 16681,
+              "visible_chars": 95,
+              "total_chars": 95
+            }
+          ]
+        },
+        "diagnostic_zero_gate": {
+          "kind": "diagnostic_zero_stream_gate",
+          "clock": "simulated_pcm_not_device",
+          "first_reveal_ms": 3722,
+          "last_reveal_ms": 15802,
+          "audio_start_ms": 3675,
+          "audio_end_ms": 16681,
+          "audio_pcm_ms": 13006,
+          "caption_tail_after_audio_ms": 0,
+          "completion_ms": 16682,
+          "reveals": [
+            {
+              "at_ms": 3722,
+              "visible_chars": 10,
+              "available_chars": 27,
+              "phrase_units": 9,
+              "cue_at_ms": 0,
+              "played_ms": 47
+            },
+            {
+              "at_ms": 4042,
+              "visible_chars": 22,
+              "available_chars": 47,
+              "phrase_units": 12,
+              "cue_at_ms": 0,
+              "played_ms": 367
+            },
+            {
+              "at_ms": 4362,
+              "visible_chars": 23,
+              "available_chars": 62,
+              "phrase_units": 1,
+              "cue_at_ms": 0,
+              "played_ms": 687
+            },
+            {
+              "at_ms": 4682,
+              "visible_chars": 24,
+              "available_chars": 75,
+              "phrase_units": 1,
+              "cue_at_ms": 0,
+              "played_ms": 1007
+            },
+            {
+              "at_ms": 5002,
+              "visible_chars": 53,
+              "available_chars": 84,
+              "phrase_units": 7,
+              "cue_at_ms": 0,
+              "played_ms": 1327
+            },
+            {
+              "at_ms": 5322,
+              "visible_chars": 67,
+              "available_chars": 95,
+              "phrase_units": 4,
+              "cue_at_ms": 0,
+              "played_ms": 1647
+            },
+            {
+              "at_ms": 5642,
+              "visible_chars": 82,
+              "available_chars": 95,
+              "phrase_units": 5,
+              "cue_at_ms": 0,
+              "played_ms": 1967
+            },
+            {
+              "at_ms": 15802,
+              "visible_chars": 95,
+              "available_chars": 95,
+              "phrase_units": 3,
+              "cue_at_ms": 12077.386904761903,
+              "played_ms": 12126.999999999998
+            }
+          ],
+          "checkpoints": [
+            {
+              "audio_fraction": 0.25,
+              "at_ms": 6927,
+              "visible_chars": 82,
+              "total_chars": 95
+            },
+            {
+              "audio_fraction": 0.5,
+              "at_ms": 10178,
+              "visible_chars": 82,
+              "total_chars": 95
+            },
+            {
+              "audio_fraction": 0.75,
+              "at_ms": 13430,
+              "visible_chars": 82,
+              "total_chars": 95
+            },
+            {
+              "audio_fraction": 1,
+              "at_ms": 16681,
+              "visible_chars": 95,
+              "total_chars": 95
+            }
+          ]
+        },
+        "max_extra_gate_delay_ms": 8640,
+        "closed_ack": true
+      },
+      {
+        "id": "en-slow",
+        "locale": "en",
+        "pace": "slow",
+        "complete": true,
+        "instructions_sha256": "f882ae8d5ff1e2667280b2a7a3f69f151ff9222369c09f11c7d14cf3ec3cefb6",
+        "asr_exact": true,
+        "ownership_matched": true,
+        "text_chunks": 28,
+        "audio_chunks": 25,
+        "output_chars": 111,
+        "output_sha256": "287d0d79293dae546de49a93cb733c726f2ac32b515e7d75757fdb3e0ad0c484",
+        "han": 26,
+        "thai": 0,
+        "latin_words": 18,
+        "audio_pcm_ms": 12501,
+        "first_text_ms": 3247,
+        "first_audio_ms": 3597,
+        "last_text_ms": 4627,
+        "done_ms": 5633,
+        "first_text_minus_audio_ms": -350,
+        "presentation": {
+          "kind": "production_policy",
+          "clock": "simulated_pcm_not_device",
+          "first_reveal_ms": 3647,
+          "last_reveal_ms": 13567,
+          "audio_start_ms": 3627,
+          "audio_end_ms": 16128,
+          "audio_pcm_ms": 12501,
+          "caption_tail_after_audio_ms": 0,
+          "completion_ms": 16207,
+          "reveals": [
+            {
+              "at_ms": 3647,
+              "visible_chars": 12,
+              "available_chars": 49,
+              "phrase_units": 12,
+              "cue_at_ms": 0,
+              "played_ms": 20
+            },
+            {
+              "at_ms": 6847,
+              "visible_chars": 13,
+              "available_chars": 111,
+              "phrase_units": 1,
+              "cue_at_ms": 3191.648936170214,
+              "played_ms": 3220
+            },
+            {
+              "at_ms": 7167,
+              "visible_chars": 14,
+              "available_chars": 111,
+              "phrase_units": 1,
+              "cue_at_ms": 3457.619680851065,
+              "played_ms": 3540
+            },
+            {
+              "at_ms": 7487,
+              "visible_chars": 49,
+              "available_chars": 111,
+              "phrase_units": 7,
+              "cue_at_ms": 3723.590425531916,
+              "played_ms": 3860
+            },
+            {
+              "at_ms": 9247,
+              "visible_chars": 50,
+              "available_chars": 111,
+              "phrase_units": 1,
+              "cue_at_ms": 5585.385638297874,
+              "played_ms": 5620.000000000001
+            },
+            {
+              "at_ms": 9567,
+              "visible_chars": 62,
+              "available_chars": 111,
+              "phrase_units": 12,
+              "cue_at_ms": 5851.3563829787245,
+              "played_ms": 5940.000000000001
+            },
+            {
+              "at_ms": 12687,
+              "visible_chars": 65,
+              "available_chars": 111,
+              "phrase_units": 2,
+              "cue_at_ms": 9043.005319148939,
+              "played_ms": 9060.000000000002
+            },
+            {
+              "at_ms": 13247,
+              "visible_chars": 66,
+              "available_chars": 111,
+              "phrase_units": 1,
+              "cue_at_ms": 9574.94680851064,
+              "played_ms": 9620.000000000002
+            },
+            {
+              "at_ms": 13567,
+              "visible_chars": 111,
+              "available_chars": 111,
+              "phrase_units": 10,
+              "cue_at_ms": 9840.917553191492,
+              "played_ms": 9940.000000000002
+            }
+          ],
+          "checkpoints": [
+            {
+              "audio_fraction": 0.25,
+              "at_ms": 6752,
+              "visible_chars": 12,
+              "total_chars": 111
+            },
+            {
+              "audio_fraction": 0.5,
+              "at_ms": 9877,
+              "visible_chars": 62,
+              "total_chars": 111
+            },
+            {
+              "audio_fraction": 0.75,
+              "at_ms": 13002,
+              "visible_chars": 65,
+              "total_chars": 111
+            },
+            {
+              "audio_fraction": 1,
+              "at_ms": 16128,
+              "visible_chars": 111,
+              "total_chars": 111
+            }
+          ]
+        },
+        "diagnostic_zero_gate": {
+          "kind": "diagnostic_zero_stream_gate",
+          "clock": "simulated_pcm_not_device",
+          "first_reveal_ms": 3647,
+          "last_reveal_ms": 13567,
+          "audio_start_ms": 3627,
+          "audio_end_ms": 16128,
+          "audio_pcm_ms": 12501,
+          "caption_tail_after_audio_ms": 0,
+          "completion_ms": 16207,
+          "reveals": [
+            {
+              "at_ms": 3647,
+              "visible_chars": 12,
+              "available_chars": 49,
+              "phrase_units": 12,
+              "cue_at_ms": 0,
+              "played_ms": 20
+            },
+            {
+              "at_ms": 3967,
+              "visible_chars": 13,
+              "available_chars": 59,
+              "phrase_units": 1,
+              "cue_at_ms": 0,
+              "played_ms": 340
+            },
+            {
+              "at_ms": 4287,
+              "visible_chars": 14,
+              "available_chars": 69,
+              "phrase_units": 1,
+              "cue_at_ms": 0,
+              "played_ms": 660
+            },
+            {
+              "at_ms": 4607,
+              "visible_chars": 49,
+              "available_chars": 106,
+              "phrase_units": 7,
+              "cue_at_ms": 0,
+              "played_ms": 980
+            },
+            {
+              "at_ms": 4927,
+              "visible_chars": 50,
+              "available_chars": 111,
+              "phrase_units": 1,
+              "cue_at_ms": 0,
+              "played_ms": 1300
+            },
+            {
+              "at_ms": 5247,
+              "visible_chars": 62,
+              "available_chars": 111,
+              "phrase_units": 12,
+              "cue_at_ms": 0,
+              "played_ms": 1620
+            },
+            {
+              "at_ms": 5567,
+              "visible_chars": 65,
+              "available_chars": 111,
+              "phrase_units": 2,
+              "cue_at_ms": 0,
+              "played_ms": 1940.0000000000002
+            },
+            {
+              "at_ms": 13247,
+              "visible_chars": 66,
+              "available_chars": 111,
+              "phrase_units": 1,
+              "cue_at_ms": 9574.94680851064,
+              "played_ms": 9620.000000000002
+            },
+            {
+              "at_ms": 13567,
+              "visible_chars": 111,
+              "available_chars": 111,
+              "phrase_units": 10,
+              "cue_at_ms": 9840.917553191492,
+              "played_ms": 9940.000000000002
+            }
+          ],
+          "checkpoints": [
+            {
+              "audio_fraction": 0.25,
+              "at_ms": 6752,
+              "visible_chars": 65,
+              "total_chars": 111
+            },
+            {
+              "audio_fraction": 0.5,
+              "at_ms": 9877,
+              "visible_chars": 65,
+              "total_chars": 111
+            },
+            {
+              "audio_fraction": 0.75,
+              "at_ms": 13002,
+              "visible_chars": 65,
+              "total_chars": 111
+            },
+            {
+              "audio_fraction": 1,
+              "at_ms": 16128,
+              "visible_chars": 111,
+              "total_chars": 111
+            }
+          ]
+        },
+        "max_extra_gate_delay_ms": 7120,
+        "closed_ack": true
+      }
+    ]
+  },
+  "browser": {
+    "kind": "synthetic_browser_caption_replay",
+    "source_run": "20261029-v1",
+    "samples": [
+      {
+        "locale": "th",
+        "synthetic_browser_audio": true,
+        "real_live_provider": false,
+        "human_listening": false,
+        "completion_ms": 15672,
+        "last_text_ms": 2272,
+        "first_thai_reveal_ms": 9503,
+        "max_paint_ms": 2.199999988079071,
+        "rows": [
+          {
+            "at_ms": 656,
+            "visible_chars": 11,
+            "cue_at_ms": 0,
+            "played_ms": 12.846333333333293,
+            "policy": "kai-thai-captions-v1"
+          },
+          {
+            "at_ms": 3665,
+            "visible_chars": 23,
+            "cue_at_ms": 3000,
+            "played_ms": 3023.299333333333,
+            "policy": "kai-thai-captions-v1"
+          },
+          {
+            "at_ms": 7882,
+            "visible_chars": 30,
+            "cue_at_ms": 7169.269927536232,
+            "played_ms": 7239.978999999999,
+            "policy": "kai-thai-captions-v1"
+          },
+          {
+            "at_ms": 9503,
+            "visible_chars": 55,
+            "cue_at_ms": 8798.64945652174,
+            "played_ms": 8859.915333357176,
+            "policy": "kai-thai-captions-v1"
+          },
+          {
+            "at_ms": 11451,
+            "visible_chars": 71,
+            "cue_at_ms": 10753.90489130435,
+            "played_ms": 10808.371999976156,
+            "policy": "kai-thai-captions-v1"
+          },
+          {
+            "at_ms": 12750,
+            "visible_chars": 94,
+            "cue_at_ms": 12057.408514492756,
+            "played_ms": 12106.569999964237,
+            "policy": "kai-thai-captions-v1"
+          },
+          {
+            "at_ms": 14048,
+            "visible_chars": 110,
+            "cue_at_ms": 13360.91213768116,
+            "played_ms": 13404.696333309492,
+            "policy": "kai-thai-captions-v1"
+          },
+          {
+            "at_ms": 15345,
+            "visible_chars": 116,
+            "cue_at_ms": 14664.415760869566,
+            "played_ms": 14701.783333333333,
+            "policy": "kai-thai-captions-v1"
+          }
+        ],
+        "paints": [
+          {
+            "at_ms": 656,
+            "visible_chars": 11,
+            "available_chars": 42,
+            "thai_visible": false,
+            "paint_ms": 1.5999999642372131
+          },
+          {
+            "at_ms": 3665,
+            "visible_chars": 23,
+            "available_chars": 116,
+            "thai_visible": false,
+            "paint_ms": 0.800000011920929
+          },
+          {
+            "at_ms": 7882,
+            "visible_chars": 30,
+            "available_chars": 116,
+            "thai_visible": false,
+            "paint_ms": 1
+          },
+          {
+            "at_ms": 9503,
+            "visible_chars": 55,
+            "available_chars": 116,
+            "thai_visible": true,
+            "paint_ms": 1.300000011920929
+          },
+          {
+            "at_ms": 11451,
+            "visible_chars": 71,
+            "available_chars": 116,
+            "thai_visible": true,
+            "paint_ms": 1.199999988079071
+          },
+          {
+            "at_ms": 12750,
+            "visible_chars": 94,
+            "available_chars": 116,
+            "thai_visible": true,
+            "paint_ms": 2.199999988079071
+          },
+          {
+            "at_ms": 14048,
+            "visible_chars": 110,
+            "available_chars": 116,
+            "thai_visible": true,
+            "paint_ms": 1.5
+          },
+          {
+            "at_ms": 15345,
+            "visible_chars": 116,
+            "available_chars": 116,
+            "thai_visible": true,
+            "paint_ms": 1.5
+          }
+        ],
+        "playback": {
+          "played_ms": 14990.291666666668,
+          "received_ms": 14990.291666666668,
+          "queued_ms": 0,
+          "running": true,
+          "clock_source": "output_timestamp"
+        },
+        "page_errors": 0
+      },
+      {
+        "locale": "en",
+        "synthetic_browser_audio": true,
+        "real_live_provider": false,
+        "human_listening": false,
+        "completion_ms": 10235,
+        "last_text_ms": 1333,
+        "first_thai_reveal_ms": null,
+        "max_paint_ms": 2.100000023841858,
+        "rows": [
+          {
+            "at_ms": 657,
+            "visible_chars": 13,
+            "cue_at_ms": 0,
+            "played_ms": 76.1333333452543,
+            "policy": "kai-captions-v1"
+          },
+          {
+            "at_ms": 3009,
+            "visible_chars": 14,
+            "cue_at_ms": 2394.5625000000005,
+            "played_ms": 2428.5963333452546,
+            "policy": "kai-captions-v1"
+          },
+          {
+            "at_ms": 3335,
+            "visible_chars": 15,
+            "cue_at_ms": 2594.1093750000005,
+            "played_ms": 2755.035666642825,
+            "policy": "kai-captions-v1"
+          },
+          {
+            "at_ms": 3660,
+            "visible_chars": 24,
+            "cue_at_ms": 2793.6562500000005,
+            "played_ms": 3079.963,
+            "policy": "kai-captions-v1"
+          },
+          {
+            "at_ms": 3986,
+            "visible_chars": 63,
+            "cue_at_ms": 3392.2968750000005,
+            "played_ms": 3406.0103333214124,
+            "policy": "kai-captions-v1"
+          },
+          {
+            "at_ms": 5611,
+            "visible_chars": 64,
+            "cue_at_ms": 4988.671875000001,
+            "played_ms": 5030.962000000001,
+            "policy": "kai-captions-v1"
+          },
+          {
+            "at_ms": 5936,
+            "visible_chars": 76,
+            "cue_at_ms": 5188.218750000001,
+            "played_ms": 5354.867999976159,
+            "policy": "kai-captions-v1"
+          },
+          {
+            "at_ms": 8203,
+            "visible_chars": 79,
+            "cue_at_ms": 7582.781250000001,
+            "played_ms": 7623.16299998808,
+            "policy": "kai-captions-v1"
+          },
+          {
+            "at_ms": 8610,
+            "visible_chars": 88,
+            "cue_at_ms": 7981.875000000001,
+            "played_ms": 8029.3943332975705,
+            "policy": "kai-captions-v1"
+          }
+        ],
+        "paints": [
+          {
+            "at_ms": 657,
+            "visible_chars": 13,
+            "available_chars": 63,
+            "thai_visible": false,
+            "paint_ms": 1.9000000357627869
+          },
+          {
+            "at_ms": 3009,
+            "visible_chars": 14,
+            "available_chars": 88,
+            "thai_visible": false,
+            "paint_ms": 1.300000011920929
+          },
+          {
+            "at_ms": 3335,
+            "visible_chars": 15,
+            "available_chars": 88,
+            "thai_visible": false,
+            "paint_ms": 0.3999999761581421
+          },
+          {
+            "at_ms": 3660,
+            "visible_chars": 24,
+            "available_chars": 88,
+            "thai_visible": false,
+            "paint_ms": 0.6000000238418579
+          },
+          {
+            "at_ms": 3986,
+            "visible_chars": 63,
+            "available_chars": 88,
+            "thai_visible": false,
+            "paint_ms": 0.699999988079071
+          },
+          {
+            "at_ms": 5611,
+            "visible_chars": 64,
+            "available_chars": 88,
+            "thai_visible": false,
+            "paint_ms": 1
+          },
+          {
+            "at_ms": 5936,
+            "visible_chars": 76,
+            "available_chars": 88,
+            "thai_visible": false,
+            "paint_ms": 2.100000023841858
+          },
+          {
+            "at_ms": 8203,
+            "visible_chars": 79,
+            "available_chars": 88,
+            "thai_visible": false,
+            "paint_ms": 0.40000003576278687
+          },
+          {
+            "at_ms": 8610,
+            "visible_chars": 88,
+            "available_chars": 88,
+            "thai_visible": false,
+            "paint_ms": 1.300000011920929
+          }
+        ],
+        "playback": {
+          "played_ms": 9578.250000000002,
+          "received_ms": 9578.250000000002,
+          "queued_ms": 0,
+          "running": true,
+          "clock_source": "output_timestamp"
+        },
+        "page_errors": 0
+      }
+    ]
+  }
+}

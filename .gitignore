@@ -17,3 +17,5 @@ local/env
 *.db-wal
 *.db.audio/
 *.pcm
+# Authored short control phrase only; no learner/provider recording.
+!apps/free-talk-thai/assets/trigger.pcm

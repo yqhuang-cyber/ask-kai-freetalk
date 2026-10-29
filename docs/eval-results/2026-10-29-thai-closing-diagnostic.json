@@ -1,0 +1,41 @@
+{
+  "kind": "thai_oral_close_diagnostic",
+  "synthetic_provider": true,
+  "synthetic_browser_audio": true,
+  "real_provider": false,
+  "human_listening": false,
+  "production_code_changed": false,
+  "authored_user_intent": "goodbye",
+  "test_playback_timeout_ms": 1600,
+  "production_playback_timeout_ms": 35000,
+  "received_closing_states": [
+    {
+      "type": "session.closing",
+      "phase": "preparing_close",
+      "at_ms": 27
+    },
+    {
+      "type": "session.closing",
+      "phase": "presenting_close",
+      "at_ms": 382
+    },
+    {
+      "type": "session.closing",
+      "phase": "awaiting_playback",
+      "at_ms": 392
+    },
+    {
+      "type": "session.closing",
+      "phase": "finalizing_record",
+      "at_ms": 1985
+    }
+  ],
+  "after_caption": {
+    "at_ms": 1078,
+    "connect_disabled": true,
+    "client_playback_reports": 0
+  },
+  "closing_playback_reports": 0,
+  "session_closed_ms": 1988,
+  "page_errors": 0
+}

@@ -24,7 +24,7 @@ function adapter(kind,proposalFor,captured=[]) {
 }
 
 for(const kind of ['full','draft','pi']) {
-  test(`${kind}: four learners receive initial communication plans with host-owned empty goals`,async()=>{
+  test(`${kind}: authored learners receive initial communication plans with host-owned empty goals`,async()=>{
     for(const learner of MOCK_LEARNERS) {
       const f=fixture(learner),captured=[],planner=adapter(kind,()=>f.proposal,captured);
       const result=await new ConversationInitializer({port:f.port,planner}).prepare(f.entry,f.identity);

@@ -1,0 +1,579 @@
+{
+  "version": 1,
+  "date": "2026-10-29",
+  "kind": "free_talk_thai_front_asr_s2s_spike",
+  "model": "1.2.6.1",
+  "voice": "zh_female_vv_uranus_bigtts",
+  "product_changed_this_spike": false,
+  "original_zh_en_changed_this_spike": false,
+  "teacher_assistant_changed_this_spike": false,
+  "raw_wire_trace_saved": false,
+  "real_learner_data_used": false,
+  "real_asr_final_obtained": false,
+  "end_to_end_bridge_verified": false,
+  "native_text_query_verified": false,
+  "thai_output_quality_accepted": false,
+  "browser_audio_tested": false,
+  "human_listening_tested": false,
+  "synthetic": {
+    "verify_passed": 866,
+    "verify_failed": 0,
+    "replay_passed": 3,
+    "protected_files_unchanged": 8
+  },
+  "asr": [
+    {
+      "run": "baseline",
+      "id": "th_fixed",
+      "resource": "volc.seedasr.sauc.duration",
+      "mode": "th-TH",
+      "upgrade": false,
+      "final": false,
+      "packets_sent": 0,
+      "error_code": null,
+      "http_status": 403,
+      "ended": "handshake_rejected"
+    },
+    {
+      "run": "baseline",
+      "id": "th_fixed_asr1_access_control",
+      "resource": "volc.bigasr.sauc.duration",
+      "mode": "th-TH",
+      "upgrade": false,
+      "final": false,
+      "packets_sent": 0,
+      "error_code": null,
+      "http_status": 403,
+      "ended": "handshake_rejected"
+    },
+    {
+      "run": "asr_denial_diagnostic",
+      "id": "th_fixed",
+      "resource": "volc.seedasr.sauc.duration",
+      "mode": "th-TH",
+      "upgrade": false,
+      "final": false,
+      "packets_sent": 0,
+      "error_code": null,
+      "http_status": 403,
+      "denial_category": "resource_access_not_granted",
+      "ended": "handshake_rejected"
+    },
+    {
+      "run": "asr_denial_diagnostic",
+      "id": "th_fixed_asr1_access_control",
+      "resource": "volc.bigasr.sauc.duration",
+      "mode": "th-TH",
+      "upgrade": false,
+      "final": false,
+      "packets_sent": 0,
+      "error_code": null,
+      "http_status": 403,
+      "denial_category": "resource_access_not_granted",
+      "ended": "handshake_rejected"
+    }
+  ],
+  "native_runs": [
+    {
+      "run": "baseline",
+      "source_metadata_sha256": "b1b5258683f6b0d753adcc8a91df7387528f6b5407169046bad8ffad398c8bdc",
+      "kind": "front_asr_current_s2s_capability",
+      "ended": null,
+      "session_closed_ack": null,
+      "samples": [
+        {
+          "id": "audio_zh_positive",
+          "mode": "audio",
+          "input_source": "authored_os_tts",
+          "ready": true,
+          "history_ack": false,
+          "audio_bytes": 299230,
+          "audio_non_silent": true,
+          "response_complete": true,
+          "session_closed_ack": true,
+          "event_counts": {
+            "session.created": 1,
+            "conversation.item.input_audio_transcription.started": 1,
+            "conversation.item.input_audio_transcription.delta": 8,
+            "conversation.item.input_audio_transcription.completed": 1,
+            "response.output_text.delta": 9,
+            "response.output_audio.started": 1,
+            "response.output_text.done": 1,
+            "response.output_audio.delta": 12,
+            "response.output_audio.done": 1
+          },
+          "first_audio_after_submit_ms": 3142,
+          "ended": "audio_done",
+          "output_characters": 22,
+          "han": 3,
+          "thai": 6,
+          "latin_words": 0,
+          "product_turn_ownership_tested": false
+        },
+        {
+          "id": "history_zh_single",
+          "mode": "history_user",
+          "input_source": "authored_text",
+          "ready": true,
+          "history_ack": false,
+          "audio_bytes": 0,
+          "audio_non_silent": false,
+          "response_complete": false,
+          "session_closed_ack": true,
+          "event_counts": {
+            "session.created": 1
+          },
+          "ended": "observation_window",
+          "output_characters": 0,
+          "han": 0,
+          "thai": 0,
+          "latin_words": 0,
+          "product_turn_ownership_tested": false
+        },
+        {
+          "id": "history_th_single",
+          "mode": "history_user",
+          "input_source": "authored_text",
+          "ready": true,
+          "history_ack": false,
+          "audio_bytes": 0,
+          "audio_non_silent": false,
+          "response_complete": false,
+          "session_closed_ack": true,
+          "event_counts": {
+            "session.created": 1
+          },
+          "ended": "observation_window",
+          "output_characters": 0,
+          "han": 0,
+          "thai": 0,
+          "latin_words": 0,
+          "product_turn_ownership_tested": false
+        },
+        {
+          "id": "history_zh_complete_qa",
+          "mode": "history_pair",
+          "input_source": "authored_complete_qa_fixture",
+          "ready": true,
+          "history_ack": true,
+          "audio_bytes": 0,
+          "audio_non_silent": false,
+          "response_complete": false,
+          "session_closed_ack": true,
+          "event_counts": {
+            "session.created": 1,
+            "conversation.item.added": 1
+          },
+          "ended": "observation_window",
+          "output_characters": 0,
+          "han": 0,
+          "thai": 0,
+          "latin_words": 0,
+          "product_turn_ownership_tested": false
+        },
+        {
+          "id": "recitation_zh_negative",
+          "mode": "recitation",
+          "input_source": "authored_text",
+          "ready": true,
+          "history_ack": false,
+          "audio_bytes": 109104,
+          "audio_non_silent": true,
+          "response_complete": true,
+          "session_closed_ack": true,
+          "event_counts": {
+            "session.created": 1,
+            "response.output_audio.started": 1,
+            "response.output_audio.delta": 5,
+            "response.output_audio.done": 1,
+            "response.done": 1
+          },
+          "first_audio_after_submit_ms": 634,
+          "ended": "audio_done",
+          "output_characters": 0,
+          "han": 0,
+          "thai": 0,
+          "latin_words": 0,
+          "product_turn_ownership_tested": false
+        },
+        {
+          "id": "history_th_single_repeat",
+          "mode": "history_user",
+          "input_source": "authored_text",
+          "ready": true,
+          "history_ack": false,
+          "audio_bytes": 0,
+          "audio_non_silent": false,
+          "response_complete": false,
+          "session_closed_ack": true,
+          "event_counts": {
+            "session.created": 1
+          },
+          "ended": "observation_window",
+          "output_characters": 0,
+          "han": 0,
+          "thai": 0,
+          "latin_words": 0,
+          "product_turn_ownership_tested": false
+        }
+      ]
+    },
+    {
+      "run": "history_activation_input_text",
+      "source_metadata_sha256": "4318e5ad772a473ebaeb53c923425dca4d8dedaae8df943cb802c3bd229f56e8",
+      "kind": "authored_history_plus_audio_followup",
+      "ended": null,
+      "session_closed_ack": null,
+      "samples": [
+        {
+          "id": "thai_three_plus_five",
+          "mode": "history_audio_trigger",
+          "input_source": "authored_context_plus_activation_audio",
+          "ready": true,
+          "history_ack": true,
+          "audio_bytes": 672114,
+          "audio_non_silent": true,
+          "response_complete": true,
+          "session_closed_ack": true,
+          "event_counts": {
+            "session.created": 1,
+            "conversation.item.added": 1,
+            "conversation.item.input_audio_transcription.started": 1,
+            "conversation.item.input_audio_transcription.delta": 14,
+            "conversation.item.input_audio_transcription.completed": 1,
+            "response.output_text.delta": 33,
+            "response.output_audio.started": 1,
+            "response.output_audio.delta": 29,
+            "response.output_text.done": 1,
+            "response.output_audio.done": 1
+          },
+          "first_audio_after_submit_ms": 5162,
+          "ended": "audio_done",
+          "output_characters": 96,
+          "han": 23,
+          "thai": 69,
+          "latin_words": 0,
+          "expected_answer_surface": false
+        },
+        {
+          "id": "thai_nine_minus_two",
+          "mode": "history_audio_trigger",
+          "input_source": "authored_context_plus_activation_audio",
+          "ready": true,
+          "history_ack": true,
+          "audio_bytes": 950068,
+          "audio_non_silent": true,
+          "response_complete": true,
+          "session_closed_ack": true,
+          "event_counts": {
+            "session.created": 1,
+            "conversation.item.added": 1,
+            "conversation.item.input_audio_transcription.started": 1,
+            "conversation.item.input_audio_transcription.delta": 14,
+            "conversation.item.input_audio_transcription.completed": 1,
+            "response.output_text.delta": 41,
+            "response.output_audio.started": 1,
+            "response.output_audio.delta": 40,
+            "response.output_text.done": 1,
+            "response.output_audio.done": 1
+          },
+          "first_audio_after_submit_ms": 5143,
+          "ended": "audio_done",
+          "output_characters": 117,
+          "han": 34,
+          "thai": 77,
+          "latin_words": 0,
+          "expected_answer_surface": false
+        }
+      ]
+    },
+    {
+      "run": "history_activation_text",
+      "source_metadata_sha256": "480c102c05ff24f0602fdac9b6a17480dbb7778e3b7df7cea4f55a65e6486ca1",
+      "kind": "authored_history_plus_audio_followup",
+      "ended": null,
+      "session_closed_ack": null,
+      "samples": [
+        {
+          "id": "thai_three_plus_five",
+          "mode": "history_audio_trigger",
+          "input_source": "authored_context_plus_activation_audio",
+          "ready": true,
+          "history_ack": true,
+          "audio_bytes": 1164328,
+          "audio_non_silent": true,
+          "response_complete": true,
+          "session_closed_ack": true,
+          "event_counts": {
+            "session.created": 1,
+            "conversation.item.added": 1,
+            "conversation.item.retrieved": 1,
+            "conversation.item.input_audio_transcription.started": 1,
+            "conversation.item.input_audio_transcription.delta": 14,
+            "conversation.item.input_audio_transcription.completed": 1,
+            "response.output_text.delta": 31,
+            "response.output_audio.started": 1,
+            "response.output_audio.delta": 48,
+            "response.output_text.done": 1,
+            "response.output_audio.done": 1
+          },
+          "history_content_type": "text",
+          "history_retrieved_items": 2,
+          "history_query_observed": false,
+          "history_returned_content_types": [
+            "input_text"
+          ],
+          "audio_trigger_after_history_readback": true,
+          "first_audio_after_submit_ms": 5181,
+          "ended": "audio_done",
+          "output_characters": 97,
+          "han": 21,
+          "thai": 72,
+          "latin_words": 0,
+          "expected_answer_surface": false
+        },
+        {
+          "id": "thai_nine_minus_two",
+          "mode": "history_audio_trigger",
+          "input_source": "authored_context_plus_activation_audio",
+          "ready": true,
+          "history_ack": true,
+          "audio_bytes": 900322,
+          "audio_non_silent": true,
+          "response_complete": true,
+          "session_closed_ack": true,
+          "event_counts": {
+            "session.created": 1,
+            "conversation.item.added": 1,
+            "conversation.item.retrieved": 1,
+            "conversation.item.input_audio_transcription.started": 1,
+            "conversation.item.input_audio_transcription.delta": 14,
+            "conversation.item.input_audio_transcription.completed": 1,
+            "response.output_text.delta": 32,
+            "response.output_audio.started": 1,
+            "response.output_audio.delta": 38,
+            "response.output_text.done": 1,
+            "response.output_audio.done": 1
+          },
+          "history_content_type": "text",
+          "history_retrieved_items": 2,
+          "history_query_observed": false,
+          "history_returned_content_types": [
+            "input_text"
+          ],
+          "audio_trigger_after_history_readback": true,
+          "first_audio_after_submit_ms": 5533,
+          "ended": "audio_done",
+          "output_characters": 92,
+          "han": 21,
+          "thai": 67,
+          "latin_words": 0,
+          "expected_answer_surface": false
+        }
+      ]
+    },
+    {
+      "run": "history_readback_shape",
+      "source_metadata_sha256": "ba733a6252f25f68da20a559f7a5f1c52c88fbfa1fbe2ba980fa7bef367a5e0e",
+      "kind": "authored_history_plus_audio_followup",
+      "ended": null,
+      "session_closed_ack": null,
+      "samples": [
+        {
+          "id": "thai_three_plus_five",
+          "mode": "history_audio_trigger",
+          "input_source": "authored_context_plus_activation_audio",
+          "ready": true,
+          "history_ack": true,
+          "audio_bytes": 746044,
+          "audio_non_silent": true,
+          "response_complete": true,
+          "session_closed_ack": true,
+          "event_counts": {
+            "session.created": 1,
+            "conversation.item.added": 1,
+            "conversation.item.retrieved": 1,
+            "conversation.item.input_audio_transcription.started": 1,
+            "conversation.item.input_audio_transcription.delta": 14,
+            "conversation.item.input_audio_transcription.completed": 1,
+            "response.output_text.delta": 33,
+            "response.output_audio.started": 1,
+            "response.output_audio.delta": 32,
+            "response.output_text.done": 1,
+            "response.output_audio.done": 1
+          },
+          "history_content_type": "text",
+          "history_retrieved_items": 2,
+          "history_query_observed": false,
+          "history_returned_content_types": [
+            "input_text"
+          ],
+          "audio_trigger_after_history_readback": true,
+          "first_audio_after_submit_ms": 5623,
+          "ended": "audio_done",
+          "output_characters": 92,
+          "han": 21,
+          "thai": 67,
+          "latin_words": 0,
+          "expected_answer_surface": false
+        }
+      ]
+    },
+    {
+      "run": "initial_history",
+      "source_metadata_sha256": "d4aab3a2185078532c3a41ae09a509b8b8c166b91fd7412e54246c1ff70da382",
+      "kind": "authored_history_plus_audio_followup",
+      "ended": null,
+      "session_closed_ack": null,
+      "samples": [
+        {
+          "id": "thai_three_plus_five",
+          "mode": "initial_history_audio_trigger",
+          "input_source": "authored_context_plus_activation_audio",
+          "ready": true,
+          "history_ack": false,
+          "audio_bytes": 334574,
+          "audio_non_silent": true,
+          "response_complete": true,
+          "session_closed_ack": true,
+          "event_counts": {
+            "session.created": 1,
+            "conversation.item.retrieved": 1,
+            "conversation.item.input_audio_transcription.started": 1,
+            "conversation.item.input_audio_transcription.delta": 14,
+            "conversation.item.input_audio_transcription.completed": 1,
+            "response.output_text.delta": 10,
+            "response.output_audio.started": 1,
+            "response.output_text.done": 1,
+            "response.output_audio.delta": 15,
+            "response.output_audio.done": 1
+          },
+          "history_retrieved_items": 2,
+          "history_query_observed": true,
+          "history_returned_content_types": [
+            "input_text"
+          ],
+          "audio_trigger_after_history_readback": true,
+          "first_audio_after_submit_ms": 5459,
+          "ended": "audio_done",
+          "output_characters": 28,
+          "han": 6,
+          "thai": 20,
+          "latin_words": 0,
+          "asr_matches_audio_script": true,
+          "expected_answer_surface": true
+        },
+        {
+          "id": "thai_nine_minus_two",
+          "mode": "initial_history_audio_trigger",
+          "input_source": "authored_context_plus_activation_audio",
+          "ready": true,
+          "history_ack": false,
+          "audio_bytes": 322642,
+          "audio_non_silent": true,
+          "response_complete": true,
+          "session_closed_ack": true,
+          "event_counts": {
+            "session.created": 1,
+            "conversation.item.retrieved": 1,
+            "conversation.item.input_audio_transcription.started": 1,
+            "conversation.item.input_audio_transcription.delta": 14,
+            "conversation.item.input_audio_transcription.completed": 1,
+            "response.output_text.delta": 10,
+            "response.output_audio.started": 1,
+            "response.output_text.done": 1,
+            "response.output_audio.delta": 15,
+            "response.output_audio.done": 1
+          },
+          "history_retrieved_items": 2,
+          "history_query_observed": true,
+          "history_returned_content_types": [
+            "input_text"
+          ],
+          "audio_trigger_after_history_readback": true,
+          "first_audio_after_submit_ms": 5616,
+          "ended": "audio_done",
+          "output_characters": 30,
+          "han": 3,
+          "thai": 22,
+          "latin_words": 0,
+          "asr_matches_audio_script": true,
+          "expected_answer_surface": true
+        }
+      ]
+    },
+    {
+      "run": "runtime_history_update",
+      "source_metadata_sha256": "e61abe4d097695a417cac609319a6fc0179bb12331cf8dc53b0fa8a376772a24",
+      "kind": "runtime_history_updates_one_native_socket",
+      "ended": "history_not_applied",
+      "session_closed_ack": true,
+      "samples": [
+        {
+          "id": "plus",
+          "update_ack": true,
+          "history_readback": false,
+          "activation_asr_exact": false,
+          "audio_bytes": 0,
+          "audio_non_silent": false,
+          "response_complete": false,
+          "answer_surface": false,
+          "output_before_activation": false
+        }
+      ]
+    },
+    {
+      "run": "runtime_instruction_update",
+      "source_metadata_sha256": "17db0e873dd8a9ebf79b513afe07868e3be68b87b864b990b8e08c01717836f9",
+      "kind": "instruction_context_updates_one_native_socket",
+      "ended": "two_turns_complete",
+      "session_closed_ack": true,
+      "samples": [
+        {
+          "id": "plus",
+          "update_ack": true,
+          "history_readback": false,
+          "activation_asr_exact": true,
+          "audio_bytes": 684844,
+          "audio_non_silent": true,
+          "response_complete": true,
+          "answer_surface": false,
+          "output_before_activation": false,
+          "han": 22,
+          "thai": 68,
+          "latin_words": 0,
+          "product_turn_ownership_tested": false
+        },
+        {
+          "id": "minus",
+          "update_ack": true,
+          "history_readback": false,
+          "activation_asr_exact": true,
+          "audio_bytes": 300688,
+          "audio_non_silent": true,
+          "response_complete": true,
+          "answer_surface": true,
+          "output_before_activation": false,
+          "han": 3,
+          "thai": 19,
+          "latin_words": 0,
+          "product_turn_ownership_tested": false
+        }
+      ]
+    }
+  ],
+  "real_native_connections": 15,
+  "asr_handshakes_rejected": 4,
+  "review": {
+    "reviewer": "Codex_text_review_of_authored_cases",
+    "human_review": false,
+    "initial_history_correct": 2,
+    "initial_history_total": 2,
+    "instruction_update_correct": 1,
+    "instruction_update_total": 2,
+    "instruction_update_failure": "first_question_not_received_response",
+    "runtime_history_update": "ACK_received_but_question_not_in_readback; stopped_before_activation",
+    "history_content_format_controls": "retrieved_user_and_assistant_text_empty; cannot infer Thai comprehension failure",
+    "surface_only_checks_not_used_as_full_bridge_pass": true
+  }
+}

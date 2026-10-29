@@ -1,0 +1,10 @@
+{
+  "text": "请回答。",
+  "source": "authored macOS say Tingting",
+  "format": "pcm_s16le",
+  "sample_rate": 16000,
+  "channels": 1,
+  "duration_ms": 794.6875,
+  "sha256": "7467ebd446a680f3ffde66c0a236f0411e5cd3932f5d6fe0efa5dad8434640d2",
+  "purpose": "program activation only; not learner audio"
+}
